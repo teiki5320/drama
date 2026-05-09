@@ -1,0 +1,7 @@
+[
+  {"ticker":"LUG","name":"Lu Group","sector":"Immobilier / Tech","price":139,"description":"Conglomérat de NeoCity. Le siège est dans la Tour Lu. Action solide, croissance steady.","unlockedAtDay":null},
+  {"ticker":"NCT","name":"NeoCity Tower Holdings","sector":"Immobilier","price":88,"description":"Gestionnaire des tours du quartier financier. 40% de leurs contrats viennent de Lu Group, donc corrélé.","unlockedAtDay":null},
+  {"ticker":"NCB","name":"NeoCity Bank","sector":"Banque","price":69,"description":"Banque commerciale historique. Stable, peu de croissance, dividende régulier.","unlockedAtDay":null},
+  {"ticker":"HENG","name":"Heng International","sector":"Hôtellerie","price":220,"description":"Le groupe de Tristan. Volatile, dépend des contrats asiatiques.","unlockedAtDay":10},
+  {"ticker":"HAN","name":"Hanami Café Co.","sector":"Food & Beverage","price":12,"description":"Chaîne de cafés artisanaux. Action pas chère. Opportunité ou piège — selon comment tu lis le secteur.","unlockedAtDay":null}
+]

@@ -1,0 +1,279 @@
+[
+  {
+    "id": 1,
+    "date": "Vendredi 3 juin",
+    "location": "Studio, Belleville",
+    "time": "07:42",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Je note tout depuis hier. C'est Camille qui m'a dit de le faire. « Tu vas vivre des trucs que tu vas oublier de vivre si tu les écris pas. » Camille dit toujours des phrases comme ça avec un croissant dans la bouche.\n\nDonc voilà. Carnet. Stylo bic vert parce que je n'ai pas trouvé le noir.\n\nMaman a passé une mauvaise nuit. Je l'ai entendue tousser à 4h. J'ai fait semblant de dormir parce que si elle sait que je l'ai entendue, elle va s'excuser. Maman s'excuse de tomber malade. C'est insupportable.\n\nJe pars livrer dans dix minutes. Vélo, pluie, le 8ème encore. Les riches commandent leur petit-déj à 8h pile, c'est mathématique."
+      },
+      {
+        "type": "sectionTitle",
+        "content": "08:14 — Avenue Montaigne"
+      },
+      {
+        "type": "sms",
+        "conversation": "maman",
+        "messages": [
+          {"sender": "Maman", "content": "Tu as mangé ?"},
+          {"sender": "Moi", "content": "Oui."},
+          {"sender": "Maman", "content": "« Oui ». Tu réponds « oui » depuis trois jours. Donne-moi un détail."},
+          {"sender": "Moi", "content": "Pain au chocolat de la veille trempé dans du thé. Ça m'a tenu."},
+          {"sender": "Maman", "content": "Merci ma fille. Couvre-toi, il pleut."},
+          {"sender": "Moi", "content": "Toi couvre-toi surtout."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Je range le téléphone. Le feu passe au vert."
+      },
+      {
+        "type": "sectionTitle",
+        "content": "08:17 — La collision"
+      },
+      {
+        "type": "prose",
+        "content": "Une berline noire surgit de la rue François 1er. Freins. Pas assez tôt.\n\nLe vélo finit sous la roue avant. Mon genou s'ouvre sur le bitume. Le sac de livraison explose — bowl renversé, smoothie sur ma jambe, le tout vaut 38€ que je vais devoir rembourser à la plateforme.\n\nL'homme qui sort de la voiture a un costume qui coûte plus que mon loyer annuel. Il regarde sa montre avant de me regarder moi. Première erreur."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Lui", "content": "Ça va aller. Pour le vélo et la consultation. (Il sort 200€.)"},
+          {"sender": "Moi", "content": "Gardez votre argent."},
+          {"sender": "Lui", "content": "Pardon ?"},
+          {"sender": "Moi", "content": "Votre assurance va payer correctement, comme tout le monde. Je ne suis pas un pourboire."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Il me tend une carte de visite. *Tristan Heng — Heng International — Directeur Europe.* Je la déchire devant lui et je laisse tomber les morceaux dans la flaque.\n\nJe repars en boitant avec mon vélo cassé sur l'épaule."
+      }
+    ],
+    "choice": {
+      "prompt": "Comment je raconte ça à Camille ce soir ?",
+      "options": [
+        {"text": "« Je l'ai humilié. C'était jouissif. »", "argent": 0, "mood": -1, "reputation": 1},
+        {"text": "« Je crois que j'ai été conne. »", "argent": 0, "mood": 1, "reputation": 0},
+        {"text": "« J'ai gardé sa carte. » (mensonge)", "argent": 0, "mood": 0, "reputation": 0, "triggersScene": "carte_recollee"}
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "date": "Samedi 4 juin",
+    "location": "Hôpital Tenon",
+    "time": "06:30",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Le néphrologue veut me parler en privé. Quand un médecin veut te parler en privé à 6h30 du matin, c'est jamais pour te dire que ça va.\n\nLe Dr Aubin a un visage que j'aime bien. Il porte des lunettes en écaille et il prend toujours le temps. Il pose son stylo avant de parler — c'est quelqu'un qui ne lit pas à haute voix une fiche, c'est quelqu'un qui réfléchit.\n\n— Madame Marchand, votre mère a besoin d'un traitement de seconde ligne. C'est un protocole hors AMM, donc non remboursé.\n— Combien ?\n— Dix-huit mille euros sur six mois.\n\nJe n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a 2 384€ et c'est déjà un miracle de fin de mois.\n\nJe ressors. Le hall sent l'eau de Javel et le café froid. Je m'assois sur un banc et je calcule trois fois. Trois fois la même réponse."
+      }
+    ],
+    "choice": {
+      "prompt": "Premier réflexe ?",
+      "options": [
+        {"text": "Pleurer dans les toilettes du rez-de-chaussée", "argent": 0, "mood": -1, "reputation": 0},
+        {"text": "Sortir un carnet et faire un tableau Excel mental", "argent": 0, "mood": 0, "reputation": 1},
+        {"text": "Appeler Camille immédiatement", "argent": 0, "mood": 1, "reputation": 0}
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "date": "Dimanche 5 juin",
+    "location": "Studio",
+    "time": "14:30",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Calculs. Calculs. Calculs.\n\nSi je double les livraisons : +400€/mois. Si je prends un troisième service de nuit : +600€/mois mais je ne dors plus. Total potentiel sur six mois : 6 000€. Manque : 12 000€.\n\nJ'ai appelé la banque. Pas de prêt sans garant. Mon père français — celui de mon nom, Antoine Marchand, parti quand j'avais 6 ans — ne sera jamais garant de quoi que ce soit, on ne s'est pas vus depuis dix-huit ans.\n\nMaman regarde un film français des années 80 dans le canapé. Catherine Deneuve sourit. Maman sourit aussi. Elle ne sait rien."
+      }
+    ],
+    "choice": {
+      "prompt": "Que faire ?",
+      "options": [
+        {"text": "Demander un crédit conso (refusé d'avance mais essayer)", "argent": -50, "mood": -1, "reputation": 0},
+        {"text": "Chercher un troisième job", "argent": 100, "mood": -2, "reputation": 0},
+        {"text": "Recoller la carte de Tristan Heng", "argent": 0, "mood": -1, "reputation": 1, "triggersScene": "tentation"}
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "date": "Lundi 6 juin",
+    "location": "Café Hanami, près du campus",
+    "time": "14:02",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Camille pose son croissant."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Camille", "content": "Tu vas le rappeler."},
+          {"sender": "Moi", "content": "Non."},
+          {"sender": "Camille", "content": "Shen. Dix-huit mille. Ta mère."},
+          {"sender": "Moi", "content": "Je ne mendie pas chez les Heng."},
+          {"sender": "Camille", "content": "C'est pas mendier si tu rends. C'est emprunter."},
+          {"sender": "Camille", "content": "Tu as gardé sa carte hein."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "J'ai recollé les morceaux hier soir sur la table de la cuisine. Avec du scotch transparent. C'est ridicule. Le numéro est lisible."
+      },
+      {
+        "type": "sectionTitle",
+        "content": "Le soir"
+      },
+      {
+        "type": "sms",
+        "conversation": "camille",
+        "messages": [
+          {"sender": "Camille", "content": "Alors ?"},
+          {"sender": "Moi", "content": "J'y réfléchis."},
+          {"sender": "Camille", "content": "Ça veut dire oui."},
+          {"sender": "Moi", "content": "Ça veut dire que j'y réfléchis."},
+          {"sender": "Camille", "content": "Ça veut dire oui mais avec dignité."},
+          {"sender": "Moi", "content": "🙄"}
+        ]
+      }
+    ],
+    "choice": {
+      "prompt": "J'appelle Tristan Heng ?",
+      "options": [
+        {"text": "Oui, lundi prochain. Je demande un prêt à rembourser.", "argent": 0, "mood": -2, "reputation": 2, "unlocks": ["tristan_phone"]},
+        {"text": "Non. Je trouve une autre solution.", "argent": 0, "mood": 0, "reputation": 0},
+        {"text": "J'attends une semaine pour décider.", "argent": 0, "mood": -1, "reputation": 0}
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "date": "Mardi 7 juin",
+    "location": "Studio",
+    "time": "23:15",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "La carte est recollée. Le scotch a légèrement jauni le carton. Le numéro forme une diagonale parce que j'ai mal aligné les morceaux. J'ai mis une assiette dessus pour qu'elle reste plate.\n\nMaman dort. La pluie tombe contre la fenêtre. C'est le moment où je suis le plus seule de la journée, et c'est aussi le moment où je m'aime le plus. Curieux.\n\nJe relis les SMS de Camille. *« Ça veut dire oui mais avec dignité. »* Elle a raison. Si j'y vais, c'est avec un dossier. Pas en quémandeuse.\n\nJ'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
+      }
+    ],
+    "choice": {
+      "prompt": "Comment je me prépare ?",
+      "options": [
+        {"text": "Tableur Excel propre, dossier imprimé chez Camille", "argent": -10, "mood": 1, "reputation": 1},
+        {"text": "Note vocale dans mon téléphone, je ferai au feeling", "argent": 0, "mood": 0, "reputation": 0},
+        {"text": "Je n'apporte rien, je veux voir comment il réagit", "argent": 0, "mood": -1, "reputation": 2}
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "date": "Mercredi 8 juin",
+    "location": "Studio",
+    "time": "19:00",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Camille est là. Elle a apporté un tailleur noir. *« Il était à ma mère, il devrait te tomber comme un gant. Non — comme une armure. »*\n\nJe l'enfile. Le miroir me dit quelqu'un d'autre. Pas plus belle, pas moins. Juste plus coupée. Plus tranchante."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Camille", "content": "Tu ressembles à une avocate qui va plaider sa propre affaire."},
+          {"sender": "Moi", "content": "C'est exactement ça."},
+          {"sender": "Camille", "content": "Tu parles à peine mandarin avec lui hein ? Ça serait con de glisser sur ça."},
+          {"sender": "Moi", "content": "Il est franco-suisse-chinois. Mon mandarin restera dans ma poche."}
+        ]
+      },
+      {
+        "type": "sectionTitle",
+        "content": "21:00"
+      },
+      {
+        "type": "sms",
+        "conversation": "maman",
+        "messages": [
+          {"sender": "Maman", "content": "Tu as un rendez-vous important demain ?"},
+          {"sender": "Moi", "content": "Comment tu sais ?"},
+          {"sender": "Maman", "content": "Tu n'as pas chanté en cuisinant. C'est mon baromètre depuis que tu as 8 ans."},
+          {"sender": "Moi", "content": "Juste un truc administratif. T'inquiète pas."},
+          {"sender": "Maman", "content": "Je m'inquiéterai jamais pour toi sur ces choses-là. Tu es trop préparée."}
+        ]
+      }
+    ],
+    "choice": {
+      "prompt": "Le dernier détail avant demain ?",
+      "options": [
+        {"text": "Je révise mon dossier une dernière fois", "argent": 0, "mood": 0, "reputation": 1},
+        {"text": "Je dors comme une masse, je laisse l'instinct", "argent": 0, "mood": 1, "reputation": 0},
+        {"text": "Je relis les lettres que j'ai écrites à mon père cette année (rituel)", "argent": 0, "mood": 2, "reputation": 0}
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "date": "Jeudi 9 juin",
+    "location": "Tour Heng, 47e étage",
+    "time": "10:47",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Tailleur. Cheveux relevés. Marche calme. La moquette du 47e absorbe les pas — j'avais oublié que la richesse, c'est aussi du silence.\n\nL'assistante me dévisage. Je dévisage le mur. Le mur gagne.\n\nTristan me reçoit."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "Mademoiselle Marchand. Vous avez recollé ma carte."},
+          {"sender": "Moi", "content": "Je suis là pour un prêt. Dix-huit mille euros. Remboursement sur dix ans, taux légal, échéancier mensuel. Je veux un contrat notarié."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Il pose son stylo."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "Pourquoi pas un don ?"},
+          {"sender": "Moi", "content": "Parce que je ne suis pas un pourboire. Je vous l'ai déjà dit."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Il me regarde. Vraiment. Pour la première fois depuis que je suis entrée. Ses yeux sont plus clairs que ce que je pensais. Gris-vert. Maman dirait que c'est l'œil de quelqu'un qui a appris à mentir tôt."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "J'ai mieux qu'un prêt. Une proposition. Trois mois."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Et là il sort un dossier que sa secrétaire a préparé avant que j'arrive.\n\n**Avant. Que. J'arrive.**\n\nDonc il savait que je viendrais."
+      }
+    ],
+    "choice": {
+      "prompt": "Sa proposition de fausse fiancée pendant 3 mois pour 30 000€ ?",
+      "options": [
+        {"text": "J'accepte mais j'ajoute des clauses (pas de baisers, pas de mensonges sur maman, fraises).", "argent": 30000, "mood": -2, "reputation": 5, "unlocks": ["tristan_sms", "tristan"]},
+        {"text": "Je refuse et je pars.", "argent": 0, "mood": 3, "reputation": -2},
+        {"text": "Je négocie le montant à la hausse (40 000€).", "argent": 35000, "mood": -3, "reputation": 6, "unlocks": ["tristan_sms", "tristan"]}
+      ]
+    },
+    "triggers": [
+      {"type": "unlockConversation", "payload": {"conversation": "tristan"}}
+    ]
+  }
+]
