@@ -15,17 +15,20 @@ Drama romantique mobile, 112 jours / 16 semaines / 5 fins. Voir `ROADMAP.md` pou
 Le scaffolding `android/` et `ios/` n'est pas commité (à régénérer en local avec Flutter installé). Étapes :
 
 ```bash
-# 1. Régénérer les dossiers de plateformes
+# 0. Se placer à la racine du repo cloné (dossier qui contient pubspec.yaml)
+cd ~/path/vers/drama
+
+# 1. Régénérer les dossiers de plateformes dans ce dossier (le "." final = ici)
 flutter create --org com.contrejour --project-name contre_jour --platforms=android,ios .
 
 # 2. Installer les dépendances
 flutter pub get
 
-# 3. Lancer
+# 3. Lancer (sélectionne un device : simulateur iOS, device Android, etc.)
 flutter run
 ```
 
-`flutter create` ne touchera pas aux fichiers existants (`lib/`, `assets/`, `pubspec.yaml`, `test/`). Il ne créera que les dossiers de plateforme manquants.
+Le `.` final de `flutter create` cible le dossier courant : il faut donc impérativement avoir fait le `cd` au préalable. `flutter create` ne touchera pas aux fichiers existants (`lib/`, `assets/`, `pubspec.yaml`, `test/`, `ROADMAP.md`). Il ne créera que les dossiers de plateforme manquants.
 
 ## Tests
 
