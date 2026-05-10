@@ -18,6 +18,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.1
 
 flutter:
   uses-material-design: true
@@ -26,3 +27,18 @@ flutter:
     - assets/data/shop_catalog.json
     - assets/data/investments.json
     - assets/data/insta_seed.json
+
+flutter_launcher_icons:
+  image_path: "assets/icon/icon.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  min_sdk_android: 23
+  adaptive_icon_background: "#FBF7EF"
+  adaptive_icon_foreground: "assets/icon/icon.png"
+  web:
+    generate: false
+  windows:
+    generate: false
+  macos:
+    generate: false
