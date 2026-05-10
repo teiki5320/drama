@@ -88,16 +88,75 @@ class PostCard extends StatelessWidget {
             child: _ReactionRow(post: post),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
-            child: Text(
-              post.caption,
-              style: GoogleFonts.inter(
-                fontSize: 13.5,
-                color: AppColors.textPrimary,
-                height: 1.4,
+            padding: const EdgeInsets.fromLTRB(14, 0, 14, 4),
+            child: RichText(
+              text: TextSpan(
+                style: GoogleFonts.inter(
+                  fontSize: 13.5,
+                  color: AppColors.textPrimary,
+                  height: 1.4,
+                ),
+                children: [
+                  TextSpan(
+                    text: post.author.replaceAll('@', ''),
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13.5,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const TextSpan(text: '  '),
+                  TextSpan(text: post.caption),
+                ],
               ),
             ),
           ),
+          if (post.topComments.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final c in post.topComments.take(2))
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 2),
+                      child: RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.inter(
+                            fontSize: 12.5,
+                            color: AppColors.textPrimary,
+                            height: 1.4,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: c.author.replaceAll('@', ''),
+                              style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12.5,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            const TextSpan(text: '  '),
+                            TextSpan(text: c.content),
+                          ],
+                        ),
+                      ),
+                    ),
+                  if (post.commentsCount > post.topComments.length)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        'Voir les ${post.commentsCount - post.topComments.length} autres commentaires',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 12),
         ],
       ),
     );

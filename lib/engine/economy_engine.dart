@@ -196,6 +196,8 @@ class EconomyEngine {
 
     var newPosts = state.generatedInstaPosts;
     if (item.generatesInstaPost) {
+      final commentsCount =
+          _seededComments(state.followers, state.currentDay, item.id);
       final post = InstaPost(
         id: 'shen_${item.id}_j${state.currentDay}',
         author: '@shen_y',
@@ -203,8 +205,8 @@ class EconomyEngine {
         emoji: item.instaPostEmoji ?? item.emoji,
         caption: item.instaPostCaption ?? item.name,
         likes: _seededLikes(state.followers, state.currentDay, item.id),
-        commentsCount:
-            _seededComments(state.followers, state.currentDay, item.id),
+        commentsCount: commentsCount,
+        topComments: _seededTopComments(item.id, commentsCount),
       );
       newPosts = [...state.generatedInstaPosts, post];
     }
@@ -371,5 +373,30 @@ class EconomyEngine {
   int _seededComments(int followers, int day, String itemId) {
     final rng = Random(day * 7 + itemId.hashCode);
     return 1 + rng.nextInt(8);
+  }
+
+  List<InstaComment> _seededTopComments(String itemId, int commentsCount) {
+    if (commentsCount == 0) return const [];
+    // Camille comments on every shop-generated post — best friend, always there.
+    // Cycle through a small pool of canonical reactions, picked by id hash for
+    // determinism.
+    final camillePool = <String>[
+      'OUI ENFIN tu te fais plaisir 🤍',
+      "tu vas me faire pleurer là, t'as bien mérité",
+      "je viens voir ça ce soir, j'apporte le thé",
+      "la photo est canon, t'es canon",
+      'ça vaut tous les croissants du monde',
+    ];
+    final idx = itemId.hashCode.abs() % camillePool.length;
+    final out = <InstaComment>[
+      InstaComment(author: '@camille_rx', content: camillePool[idx]),
+    ];
+    if (commentsCount > 1) {
+      out.add(const InstaComment(
+        author: '@elise_ladroit',
+        content: 'tellement contente pour toi 🥺',
+      ));
+    }
+    return out;
   }
 }
