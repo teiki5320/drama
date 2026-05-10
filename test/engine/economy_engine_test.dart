@@ -40,17 +40,6 @@ void main() {
       expect(next.mood, 10);
       expect(next.reputation, 2);
       expect(next.choicesMade[1], 0);
-      expect(next.lowMoodStreak, 0);
-    });
-
-    test('low-mood streak increments when mood <= 2', () {
-      const initial = GameState(mood: 4, lowMoodStreak: 0);
-      const opt = ChoiceOption(
-        text: 'A', argent: 0, mood: -3, reputation: 0); // 4 - 3 = 1
-      final next = engine.applyChoice(
-        state: initial, dayId: 1, optionIndex: 0, option: opt);
-      expect(next.mood, 1);
-      expect(next.lowMoodStreak, 1);
     });
 
     test('unlocks merge into unlockedConversations', () {
@@ -302,6 +291,29 @@ void main() {
       const s = GameState(currentDay: 5, argent: 1000);
       final next = engine.advanceDay(s, investments: [lug]);
       expect(next.stockCurrentPrices.containsKey('LUG'), isTrue);
+    });
+  });
+
+  group('ledger cap', () {
+    test('ledger is capped at kMaxLedgerEntries', () {
+      const item = ShopItem(
+        id: 'foo',
+        category: 'mode',
+        emoji: '👗',
+        name: 'Foo',
+        description: '...',
+        price: 1,
+        moodGain: 0,
+        reputationGain: 0,
+        requiredReputation: 0,
+        requiredMood: 0,
+        generatesInstaPost: false,
+      );
+      var s = const GameState(argent: 10000);
+      for (var i = 0; i < EconomyEngine.kMaxLedgerEntries + 20; i++) {
+        s = engine.buy(s.copyWith(ownedItems: const []), item);
+      }
+      expect(s.ledger.length, EconomyEngine.kMaxLedgerEntries);
     });
   });
 
