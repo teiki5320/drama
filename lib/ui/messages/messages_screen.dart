@@ -29,7 +29,7 @@ class MessagesScreen extends ConsumerWidget {
     // Skip raw scene flags ("tristan_sms", "scene_dimanche", …) that aren't
     // real conversations; show only ones we know how to render.
     final convos = state.unlockedConversations
-        .where(_displayNames.containsKey)
+        .where((id) => _displayNames.containsKey(id))
         .toList(growable: false);
 
     return Scaffold(
