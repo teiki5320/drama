@@ -15,8 +15,12 @@ Format final attendu (livré dans `assets/photos/`) :
 
 ## 1. Portraits casting (`assets/photos/characters/`)
 
-Personnages présents en J1-J7. Les fiches profils Insta s'affichent dès
-qu'un perso a son photoAsset en place.
+**Tous les portraits ci-dessous sont nécessaires dès J1.** La stories row
+Insta affiche chaque perso dont `appearsAtDay <= currentDay` (cf.
+`lib/models/character.dart`) — Madame Heng, Tante Mei et Hélène ont
+`appearsAtDay = null` donc s'affichent **dès le premier jour**, même si
+elles n'apparaissent pas encore dans la narration. Sans portrait, le rond
+de story tombe sur le fallback emoji.
 
 | Fichier final | Perso | Direction artistique |
 |---|---|---|
@@ -24,9 +28,30 @@ qu'un perso a son photoAsset en place.
 | `helene_marchand.jpg` | **Hélène Marchand**, 50 ans | Française, cheveux châtain mi-longs grisonnants, traits doux, légère fatigue. Pull crème, fond clair (pourrait être lit d'hôpital très flouté). Sourit à peine, les yeux disent qu'elle s'excuse. |
 | `camille_rx.jpg` | **Camille Roux**, 24 ans | Française, énergique, sourire en coin, **croissant à la main**. Look étudiante en droit version cool — chemise + pull noué. Lumière café parisien, fond bokeh. |
 | `t_heng.jpg` | **Tristan Heng**, 29 ans | Sino-français (mère française), 1m85, costume noir taillé, chemise blanche sans cravate, **yeux gris-vert clairs**. Visage glacial, mâchoire nette. Fond bureau de standing flou. Aucun sourire. |
+| `heng_lihua.jpg` | **Madame Heng**, 58 ans | Chinoise, élégante, chignon impeccable, perles discrètes, blouse en soie crème, regard direct sans sourire. Fond appartement bourgeois flou (boiseries sombres). Posture droite, "matriarche". |
+| `mei_fujian.jpg` | **Tante Mei**, 60 ans | Chinoise, cheveux gris tirés, peau marquée par le soleil, polaire ou pull en laine épaisse, sourire franc. Fond extérieur Fujian flou (verdure, mur en briques). Dignité simple, paysanne. |
 
-> Madame Heng, Vincent, Tante Mei, Hélène posée n'apparaissent pas avant
-> la semaine 2-3. Tu peux générer leurs portraits plus tard.
+### Optionnels mais conseillés
+
+| Fichier final | Perso | Direction artistique |
+|---|---|---|
+| `vincent_h.jpg` | **Vincent Heng**, 31 ans | Sino-français, costume sur-mesure, sourire commercial trop parfait, montre signée bien visible. Cheveux gominés. Le contraste exact de Tristan : tout en surface. **Visible dès J14** dans la stories row, donc à anticiper. |
+
+> Wenbo (le père) n'apparaît jamais — pas de portrait Insta. Il existe
+> uniquement à travers les lettres et photos d'archive (à traiter dans
+> `scenes/` plus tard, semaine 13+).
+
+---
+
+## 1bis. Personnages secondaires des scènes J1-J7
+
+Pas dans `characters/` (pas de fiche profil Insta), mais utiles pour
+illustrer une scène narrative.
+
+| Fichier suggéré | Perso | Détails |
+|---|---|---|
+| `scenes/J02_dr_aubin.jpg` | **Dr Aubin**, néphrologue | Homme 50-55 ans, lunettes en écaille, blouse blanche, stylo posé, expression bienveillante mais lourde. Bureau d'hôpital, fenêtre nord. Photo en plan moyen depuis le siège du patient. |
+| `scenes/J07_assistante_heng.jpg` | **Assistante de Tristan** | Femme 30 ans, tailleur sombre, casque téléphone, fond moquette épaisse + plante zen, regard professionnel un peu condescendant. (Optionnel — peut être suggérée par un détail seulement.) |
 
 ---
 
@@ -105,15 +130,25 @@ Pour chaque scène, j'ajouterai un `NarrativeBlock` de type `image` dans
 
 ## Total semaine 1
 
-- **4 portraits** (Shen, Hélène, Camille, Tristan)
-- **5 lieux** (studio, avenue Montaigne, Tenon, café Hanami, Tour Heng)
-- **5 scènes spécifiques** (carte déchirée, Tenon chambre + pivoines,
-  calculs, carte recollée, tailleur, dossier prêt)
+- **6 portraits Insta** (Shen, Hélène, Camille, Tristan, Madame Heng,
+  Tante Mei) — tous indispensables dès J1 pour la stories row.
+- **1 portrait optionnel** : Vincent (devient nécessaire à J14).
+- **2 portraits scène** (Dr Aubin J2, assistante Heng J7).
+- **5 lieux** (studio, avenue Montaigne, Tenon, café Hanami, Tour Heng).
+- **5 scènes spécifiques** (carte déchirée J1, pivoines J2, calculs J3,
+  carte recollée + plan remboursement J5, tailleur miroir J6, dossier
+  prêt J7).
 
-Soit **14 photos** au total pour rendre J1-J7 visuellement habillé.
+Soit **17 photos minimum** (6 portraits + 5 lieux + 5 scènes + Dr Aubin),
+**20 si on inclut Vincent + assistante + une réserve**.
 
 Suggestion d'ordre de priorité si tu veux échelonner :
-1. Les 4 portraits (débloque les fiches profils Insta + avatars Messages).
-2. Les 3 lieux les plus impactants : `J01_studio_matin`,
-   `J02_tenon_chambre`, `J07_tour_heng_47e`.
-3. Le reste (collision, café, calculs, tailleur, dossier) — habillage.
+
+1. **Lot 1 — débloquer Insta dès J1** : les 6 portraits Insta. Sans ça la
+   stories row affiche un emoji à la place de la photo.
+2. **Lot 2 — habillage des 3 jours iconiques** : `J01_studio_matin`,
+   `J02_tenon_chambre` (avec pivoines), `J07_tour_heng_47e`.
+3. **Lot 3 — détails narratifs** : carte déchirée J1, calculs J3, carte
+   recollée J5, tailleur J6, dossier J7, Dr Aubin J2.
+4. **Lot 4 — anticipation** : Vincent (pour J14+), café Hanami J4,
+   avenue Montaigne J1, assistante Heng J7.
