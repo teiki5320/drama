@@ -12,6 +12,65 @@
 
 ---
 
+## ÉTAT D'AVANCEMENT — handoff pour la prochaine session
+
+**Dernière session : mai 2026.** Si tu es une nouvelle conversation Claude qui reprend ce repo, lis cette section avant tout.
+
+### Identité de l'app (App Store Connect)
+- **Nom App Store** : `Drama` (pas "À Contre-Jour" — ça reste le titre narratif dans le code/docs et c'est le `description` du pubspec)
+- **Bundle ID** : `com.teiki5320.drama`
+- **Dart package name** (pubspec) : `contre_jour` (NE PAS RENOMMER, `package:contre_jour/...` est utilisé partout)
+- **Cible** : iOS via TestFlight (Android prévu mais non testé)
+- **Versions sémantiques** vivent dans `pubspec.yaml` ; `MARKETING_VERSION` et `CURRENT_PROJECT_VERSION` du Xcode project sont liés à `$(FLUTTER_BUILD_NAME)` / `$(FLUTTER_BUILD_NUMBER)` — donc `pubspec.yaml: version: X.Y.Z+N` est la source de vérité
+
+### Pipeline build / livraison
+- **Xcode Cloud** est configuré pour build sur push à `main` uniquement (workflow "iOS Build & TestFlight")
+- `ios/ci_scripts/ci_post_clone.sh` : install Flutter SDK stable, `flutter pub get`, **`dart run flutter_launcher_icons`** (régénère l'icône depuis `assets/icon/icon.png`), `pod install`
+- À chaque merge sur main, Xcode Cloud déclenche un build → upload auto vers TestFlight (Internal Testing group "Dev")
+- **App Privacy** : "We do not collect data" (déjà rempli)
+- Conformité chiffrement : `ITSAppUsesNonExemptEncryption = false` dans `Info.plist`, plus de prompt par build
+
+### Push : règles à connaître impérativement
+- **Le sandbox Claude ne peut PAS pousser direct sur `main`** (proxy local renvoie 403). Workflow obligatoire :
+    1. `git checkout -b claude/<topic>` puis push de la branche (ça marche)
+    2. `mcp__github__create_pull_request` (base=main, head=claude/topic)
+    3. `mcp__github__merge_pull_request` (squash merge)
+- **Pour les fichiers texte uniquement**, on peut court-circuiter avec `mcp__github__create_or_update_file` qui écrit direct sur main via l'API GitHub. Utilisé pour les bumps de pubspec.
+- **Pour les fichiers binaires** (PNG icônes, etc.) : passer obligatoirement par git+branche+PR, l'API contents accepte mal le binaire dans les outils MCP exposés.
+- **L'utilisateur** lui pousse direct sur main depuis Working Copy (iPad) ou son Mac sans souci, c'est uniquement le sandbox qui est bridé.
+
+### État du contenu narratif (au $(date 'mai 2026'))
+- **Scénario encodé** : J1 → J14 dans `assets/data/scenario.json` (14/112 jours)
+- **Catalogues complets** : `shop_catalog.json` (27 items), `investments.json` (5 actions), `insta_seed.json` (8 posts)
+- **Scènes canoniques rédigées dans le ROADMAP** mais pas encore atteintes en gameplay : J23 (dispute des fraises), J46 (phrase Madame Heng), J69 (Hélène lit la lettre), J102 (312ème lettre), J109 (le parc)
+- **Branches narratives à coder** :
+    - Burn-out (mood ≤ 2 sur 3 jours) — pas implémenté
+    - Deuil (deadline maman J45 ratée) — pas implémenté ; pour la v1, rediriger vers épilogue 10.3 directement
+    - Cadeaux spontanés aux paliers mood 6/7/8/9 — pas implémenté
+- **Trading bourse** : tickers déclarés mais pas de UI achat/vente, pas de tick journalier, pas des triggers J35/J52/J76/J88 — à coder
+
+### État de l'UI (refonte mai 2026)
+- **Sidebar verticale gauche** (84 dp) au lieu d'un bottom tab bar : stats compactes en haut (J+, € kilo-formaté, 😊, ⭐), 4 nav (CARNET / BANQUE / INSTA / INVIT.), engrenage en bas pour reset partie
+- `lib/providers/ui_provider.dart` : `selectedTabProvider` (StateProvider Riverpod) pilote l'onglet actif
+- `lib/core/big_title.dart` : titre serif Crimson Pro qui remplace les AppBar Material partout
+- Pills custom pour sous-onglets Banque (Compte / Investissement / Achats), souligné orange, démarrage par défaut sur **Achats**
+- Cartes Achats avec carte "RÉCOMPENSES" pastel en tête, pills catégories avec emoji, grid responsive
+- Posts Insta dans des conteneurs blancs avec image en dégradé pastel teinté par auteur (Camille = pêche, Tristan = bleu acier, etc.)
+- Tuiles Messages avec rond avatar teinté par perso
+
+### Modèle de données — extension récente
+- **`ChoiceOption.setsFlags: List<String>?`** (champ optionnel). Permet à un choix narratif de poser un flag du `GameState`. Utilisé actuellement pour `isMomTreatmentPaid` (J8 option A : -18 000 € + flag posé). À étendre pour de futurs flags (`hasReadFatherDossier`, etc.) si besoin.
+- `EconomyEngine.applyChoice` honore `setsFlags`, et le test `test/engine/economy_engine_test.dart` couvre la branche.
+
+### Suite logique de travail
+1. Encoder **J15 → J21** (semaine 3 — premières fissures, Tristan suit Shen à l'hôpital, Camille dit ses 4 vérités à Tristan).
+2. Implémenter le système d'investissement (UI achat/vente + tick journalier ±2% + triggers narratifs J35/J52/J76/J88).
+3. Encoder **J22 → J42** (Acte 2 complet, scène canonique J23 fraises).
+4. Branches alternatives (burn-out + deuil) avec jours alternatifs.
+5. Continuer le scénario par lots de 7-14 jours.
+
+---
+
 ## TABLE DES MATIÈRES
 
 1. **PITCH & CONCEPT**
