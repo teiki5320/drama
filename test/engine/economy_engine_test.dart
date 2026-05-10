@@ -1,6 +1,7 @@
 import 'package:contre_jour/engine/economy_engine.dart';
 import 'package:contre_jour/models/choice.dart';
 import 'package:contre_jour/models/game_state.dart';
+import 'package:contre_jour/models/investment.dart';
 import 'package:contre_jour/models/shop_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -138,6 +139,146 @@ void main() {
       expect(after.mood, 6);
       expect(after.reputation, 1);
       expect(after.ownedItems, contains('foo'));
+    });
+
+    test('generates an Insta post when generatesInstaPost is true', () {
+      const item = ShopItem(
+        id: 'tesla',
+        category: 'vehicule',
+        emoji: '⚡',
+        name: 'Tesla',
+        description: '...',
+        price: 100,
+        moodGain: 0,
+        reputationGain: 0,
+        requiredReputation: 0,
+        requiredMood: 0,
+        generatesInstaPost: true,
+        instaPostCaption: 'Silent ride ⚡',
+        instaPostEmoji: '⚡',
+      );
+      const s = GameState(argent: 1000, currentDay: 12);
+      final after = engine.buy(s, item);
+      expect(after.generatedInstaPosts, hasLength(1));
+      expect(after.generatedInstaPosts.first.author, '@shen_y');
+      expect(after.generatedInstaPosts.first.day, 12);
+      expect(after.generatedInstaPosts.first.caption, 'Silent ride ⚡');
+    });
+  });
+
+  group('investments', () {
+    const lug = Investment(
+      ticker: 'LUG',
+      name: 'Lu Group',
+      sector: 'Immo',
+      price: 100,
+      description: '...',
+    );
+
+    test('buyStock: deducts cash, sets qty + avg cost', () {
+      const s = GameState(argent: 1000);
+      final after = engine.buyStock(s, lug, 5);
+      expect(after.argent, 500);
+      expect(after.stockHoldings['LUG'], 5);
+      expect(after.stockAvgCost['LUG'], 100);
+    });
+
+    test('buyStock: weighted avg cost when adding to position', () {
+      // First buy 5 @ 100
+      var s = engine.buyStock(const GameState(argent: 1000), lug, 5);
+      // Override price to 200, then buy 5 more
+      s = s.copyWith(stockCurrentPrices: {'LUG': 200});
+      s = engine.buyStock(s.copyWith(argent: 2000), lug, 5);
+      expect(s.stockHoldings['LUG'], 10);
+      expect(s.stockAvgCost['LUG'], 150); // (100*5 + 200*5) / 10
+    });
+
+    test('sellStock: full sell removes position', () {
+      var s = engine.buyStock(const GameState(argent: 1000), lug, 5);
+      s = engine.sellStock(s, lug, 5);
+      expect(s.stockHoldings.containsKey('LUG'), isFalse);
+      expect(s.stockAvgCost.containsKey('LUG'), isFalse);
+    });
+
+    test('sellStock: partial sell keeps avg cost', () {
+      var s = engine.buyStock(const GameState(argent: 1000), lug, 5);
+      s = engine.sellStock(s, lug, 2);
+      expect(s.stockHoldings['LUG'], 3);
+      expect(s.stockAvgCost['LUG'], 100);
+    });
+
+    test('canBuyStock: locked before unlockedAtDay', () {
+      const heng = Investment(
+        ticker: 'HENG',
+        name: 'Heng',
+        sector: 'Hotel',
+        price: 200,
+        description: '',
+        unlockedAtDay: 10,
+      );
+      const s = GameState(currentDay: 5, argent: 10000);
+      final c = engine.canBuyStock(s, heng, 1);
+      expect(c.ok, isFalse);
+    });
+
+    test('scriptedDelta returns ROADMAP §4.8 triggers', () {
+      expect(EconomyEngine.scriptedDelta(35, 'HENG'), 0.12);
+      expect(EconomyEngine.scriptedDelta(52, 'HENG'), -0.18);
+      expect(EconomyEngine.scriptedDelta(76, 'HAN'), 0.35);
+      expect(EconomyEngine.scriptedDelta(98, 'NCB'), -0.22);
+      expect(EconomyEngine.scriptedDelta(50, 'LUG'), isNull);
+    });
+
+    test('tickPrices applies trigger on the right day', () {
+      const heng = Investment(
+        ticker: 'HENG',
+        name: 'Heng',
+        sector: 'Hotel',
+        price: 200,
+        description: '',
+      );
+      final ticked = engine.tickPrices(
+        previousPrices: const {'HENG': 200},
+        investments: [heng],
+        day: 35,
+      );
+      // 200 * (1 + ±2%) * 1.12 → between ~219 and ~228
+      expect(ticked['HENG']!, greaterThan(218));
+      expect(ticked['HENG']!, lessThan(229));
+    });
+
+    test('tickPrices is deterministic per (day, ticker)', () {
+      const heng = Investment(
+        ticker: 'HENG',
+        name: 'Heng',
+        sector: 'Hotel',
+        price: 200,
+        description: '',
+      );
+      final a = engine.tickPrices(
+        previousPrices: const {'HENG': 200},
+        investments: [heng],
+        day: 7,
+      );
+      final b = engine.tickPrices(
+        previousPrices: const {'HENG': 200},
+        investments: [heng],
+        day: 7,
+      );
+      expect(a['HENG'], b['HENG']);
+    });
+
+    test('advanceDay applies tick when investments are passed', () {
+      const lug = Investment(
+        ticker: 'LUG',
+        name: 'Lu',
+        sector: 's',
+        price: 100,
+        description: '',
+      );
+      const s = GameState(currentDay: 5, argent: 1000);
+      final next = engine.advanceDay(s, investments: [lug]);
+      expect(next.stockCurrentPrices.containsKey('LUG'), isTrue);
     });
   });
 }

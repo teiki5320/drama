@@ -1,7 +1,7 @@
 import 'choice.dart';
 import 'sms_message.dart';
 
-enum NarrativeBlockType { prose, sms, sectionTitle }
+enum NarrativeBlockType { prose, sms, sectionTitle, image }
 
 NarrativeBlockType _blockTypeFromString(String s) {
   switch (s) {
@@ -11,6 +11,8 @@ NarrativeBlockType _blockTypeFromString(String s) {
       return NarrativeBlockType.sms;
     case 'sectionTitle':
       return NarrativeBlockType.sectionTitle;
+    case 'image':
+      return NarrativeBlockType.image;
     default:
       throw FormatException('Unknown NarrativeBlockType: $s');
   }
@@ -24,6 +26,8 @@ String _blockTypeToString(NarrativeBlockType t) {
       return 'sms';
     case NarrativeBlockType.sectionTitle:
       return 'sectionTitle';
+    case NarrativeBlockType.image:
+      return 'image';
   }
 }
 
@@ -32,12 +36,14 @@ class NarrativeBlock {
   final String? content;
   final String? conversation;
   final List<SmsMessage>? messages;
+  final String? imageAsset;
 
   const NarrativeBlock({
     required this.type,
     this.content,
     this.conversation,
     this.messages,
+    this.imageAsset,
   });
 
   factory NarrativeBlock.fromJson(Map<String, dynamic> json) => NarrativeBlock(
@@ -47,6 +53,7 @@ class NarrativeBlock {
         messages: (json['messages'] as List<dynamic>?)
             ?.map((e) => SmsMessage.fromJson(e as Map<String, dynamic>))
             .toList(growable: false),
+        imageAsset: json['imageAsset'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,6 +62,7 @@ class NarrativeBlock {
         if (conversation != null) 'conversation': conversation,
         if (messages != null)
           'messages': messages!.map((e) => e.toJson()).toList(),
+        if (imageAsset != null) 'imageAsset': imageAsset,
       };
 }
 

@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import '../models/choice.dart';
 import '../models/game_state.dart';
+import '../models/insta_post.dart';
+import '../models/investment.dart';
 import '../models/shop_item.dart';
 import 'ending_calculator.dart';
 
@@ -73,11 +77,11 @@ class EconomyEngine {
   /// Tick of the daily simulation: passive income, then advance the day.
   /// Should be called *after* applyChoice when the player presses "Jour
   /// suivant".
-  GameState advanceDay(GameState state) {
+  GameState advanceDay(GameState state, {List<Investment>? investments}) {
     final next = state.currentDay + 1;
     final income = passiveIncome(state.followers);
 
-    final advanced = state.copyWith(
+    var advanced = state.copyWith(
       currentDay: next,
       argent: state.argent + income,
     );
@@ -87,10 +91,21 @@ class EconomyEngine {
     if (!advanced.isMomTreatmentPaid &&
         advanced.argent >= kMomTreatmentCost &&
         advanced.currentDay <= kMomDeadlineDay + 1) {
-      return advanced.copyWith(
+      advanced = advanced.copyWith(
         isMomTreatmentPaid: true,
         argent: advanced.argent - kMomTreatmentCost,
         mood: (advanced.mood + 2).clamp(0, 10),
+      );
+    }
+
+    // Apply daily ±2% noise + scripted triggers (§4.8) on the new day.
+    if (investments != null && investments.isNotEmpty) {
+      advanced = advanced.copyWith(
+        stockCurrentPrices: tickPrices(
+          previousPrices: advanced.stockCurrentPrices,
+          investments: investments,
+          day: advanced.currentDay,
+        ),
       );
     }
 
@@ -128,12 +143,29 @@ class EconomyEngine {
     final newOwned = List<String>.from(state.ownedItems)..add(item.id);
     final newRep = (state.reputation + item.reputationGain)
         .clamp(0, 1 << 30);
+
+    var newPosts = state.generatedInstaPosts;
+    if (item.generatesInstaPost) {
+      final post = InstaPost(
+        id: 'shen_${item.id}_j${state.currentDay}',
+        author: '@shen_y',
+        day: state.currentDay,
+        emoji: item.instaPostEmoji ?? item.emoji,
+        caption: item.instaPostCaption ?? item.name,
+        likes: _seededLikes(state.followers, state.currentDay, item.id),
+        commentsCount:
+            _seededComments(state.followers, state.currentDay, item.id),
+      );
+      newPosts = [...state.generatedInstaPosts, post];
+    }
+
     return state.copyWith(
       argent: state.argent - item.price,
       mood: (state.mood + item.moodGain).clamp(0, 10),
       reputation: newRep,
       followers: followersFromReputation(newRep),
       ownedItems: newOwned,
+      generatedInstaPosts: newPosts,
     );
   }
 
@@ -143,5 +175,123 @@ class EconomyEngine {
     if (followers >= 25000) return 'influence locale';
     if (followers >= 10000) return 'communauté';
     return 'petite tribu';
+  }
+
+  // --- Investments ----------------------------------------------------------
+
+  /// Current price for a ticker: state override (after ticks/triggers) if
+  /// present, otherwise the base price from the catalog.
+  double currentPrice(GameState state, Investment inv) {
+    return state.stockCurrentPrices[inv.ticker] ?? inv.price;
+  }
+
+  ({bool ok, String? reason}) canBuyStock(
+      GameState state, Investment inv, int qty) {
+    if (qty <= 0) return (ok: false, reason: 'Quantité invalide');
+    if (inv.unlockedAtDay != null && state.currentDay < inv.unlockedAtDay!) {
+      return (ok: false, reason: 'Disponible J${inv.unlockedAtDay}');
+    }
+    final price = currentPrice(state, inv);
+    final cost = (price * qty).round();
+    if (state.argent < cost) return (ok: false, reason: 'Trop cher');
+    return (ok: true, reason: null);
+  }
+
+  GameState buyStock(GameState state, Investment inv, int qty) {
+    final price = currentPrice(state, inv);
+    final cost = (price * qty).round();
+
+    final prevQty = state.stockHoldings[inv.ticker] ?? 0;
+    final prevAvg = state.stockAvgCost[inv.ticker] ?? 0.0;
+    final newQty = prevQty + qty;
+    final newAvg =
+        ((prevAvg * prevQty) + (price * qty)) / newQty;
+
+    final newHoldings = Map<String, int>.from(state.stockHoldings)
+      ..[inv.ticker] = newQty;
+    final newAvgCost = Map<String, double>.from(state.stockAvgCost)
+      ..[inv.ticker] = newAvg;
+
+    return state.copyWith(
+      argent: state.argent - cost,
+      stockHoldings: newHoldings,
+      stockAvgCost: newAvgCost,
+    );
+  }
+
+  ({bool ok, String? reason}) canSellStock(
+      GameState state, String ticker, int qty) {
+    final owned = state.stockHoldings[ticker] ?? 0;
+    if (qty <= 0) return (ok: false, reason: 'Quantité invalide');
+    if (owned < qty) return (ok: false, reason: 'Quantité insuffisante');
+    return (ok: true, reason: null);
+  }
+
+  GameState sellStock(GameState state, Investment inv, int qty) {
+    final price = currentPrice(state, inv);
+    final proceeds = (price * qty).round();
+
+    final prevQty = state.stockHoldings[inv.ticker] ?? 0;
+    final newQty = prevQty - qty;
+
+    final newHoldings = Map<String, int>.from(state.stockHoldings);
+    final newAvgCost = Map<String, double>.from(state.stockAvgCost);
+    if (newQty <= 0) {
+      newHoldings.remove(inv.ticker);
+      newAvgCost.remove(inv.ticker);
+    } else {
+      newHoldings[inv.ticker] = newQty;
+      // avg cost unchanged on partial sell
+    }
+
+    return state.copyWith(
+      argent: state.argent + proceeds,
+      stockHoldings: newHoldings,
+      stockAvgCost: newAvgCost,
+    );
+  }
+
+  /// Returns the new currentPrices map after one day's tick: ±2% deterministic
+  /// noise (seeded by day so the same day produces the same prices on reload),
+  /// then any scripted trigger from §4.8 stacked on top.
+  Map<String, double> tickPrices({
+    required Map<String, double> previousPrices,
+    required List<Investment> investments,
+    required int day,
+  }) {
+    final out = <String, double>{};
+    for (final inv in investments) {
+      final base = previousPrices[inv.ticker] ?? inv.price;
+      final rng = Random(day * 1000 + inv.ticker.hashCode);
+      final noise = (rng.nextDouble() * 4 - 2) / 100; // -2% .. +2%
+      var next = base * (1 + noise);
+      final trig = scriptedDelta(day, inv.ticker);
+      if (trig != null) next = next * (1 + trig);
+      // Floor at 1€ to avoid runaway zeros.
+      out[inv.ticker] = next < 1 ? 1 : double.parse(next.toStringAsFixed(2));
+    }
+    return out;
+  }
+
+  /// ROADMAP §4.8 narrative triggers on top of the ±2% daily noise.
+  static double? scriptedDelta(int day, String ticker) {
+    if (day == 35 && ticker == 'HENG') return 0.12;
+    if (day == 52 && ticker == 'HENG') return -0.18;
+    if (day == 76 && ticker == 'HAN') return 0.35;
+    if (day == 98 && ticker == 'NCB') return -0.22;
+    return null;
+  }
+
+  // Cosmetic numbers for generated insta posts. Deterministic per day+id so the
+  // same post always shows the same counts.
+  int _seededLikes(int followers, int day, String itemId) {
+    final rng = Random(day * 31 + itemId.hashCode);
+    final base = (followers * 0.07).round();
+    return base + rng.nextInt(40);
+  }
+
+  int _seededComments(int followers, int day, String itemId) {
+    final rng = Random(day * 7 + itemId.hashCode);
+    return 1 + rng.nextInt(8);
   }
 }

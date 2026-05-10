@@ -69,6 +69,7 @@ class _DayBody extends ConsumerWidget {
             child: ChoiceCard(
               choice: day.choice,
               disabled: hasChosen,
+              selectedIndex: state.choicesMade[day.id],
               onPicked: (i, opt) async {
                 await controller.chooseOption(
                   dayId: day.id,

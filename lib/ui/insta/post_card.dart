@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/colors.dart';
+import '../../models/character.dart';
 import '../../models/insta_post.dart';
-
-const _authorTints = <String, List<Color>>{
-  '@camille_rx': [Color(0xFFFCE6D8), Color(0xFFFAD9C2)],
-  '@heng_lihua': [Color(0xFFE7E1D2), Color(0xFFD9D0BD)],
-  '@t_heng': [Color(0xFFD7DEE5), Color(0xFFBFC9D4)],
-  '@vincent.h': [Color(0xFFEBD8E0), Color(0xFFDFC4CE)],
-  '@mei_fujian': [Color(0xFFE0E7D7), Color(0xFFCCD6BC)],
-};
+import 'character_profile.dart';
 
 class PostCard extends StatelessWidget {
   const PostCard({super.key, required this.post});
@@ -19,8 +13,16 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tint = _authorTints[post.author] ??
-        const [Color(0xFFEFE7D6), Color(0xFFE3D9C2)];
+    final character = characterByHandle(post.author);
+    final tint = character?.tint ?? const Color(0xFFEFE7D6);
+    final tintEnd = _darken(tint, 0.10);
+
+    void openProfile() {
+      if (character == null) return;
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => CharacterProfileScreen(character: character),
+      ));
+    }
 
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 0, 20, 14),
@@ -33,61 +35,60 @@ class PostCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 12, 14, 8),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 14,
-                  backgroundColor:
-                      AppColors.accentOrange.withValues(alpha: 0.18),
-                  child: Text(
-                    post.author.isNotEmpty ? post.author[1].toUpperCase() : '?',
-                    style: const TextStyle(
-                      color: AppColors.accentOrange,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12,
+          InkWell(
+            onTap: openProfile,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 8),
+              child: Row(
+                children: [
+                  _AvatarChip(character: character, tint: tint),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        character?.displayName ?? post.author,
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13.5,
+                        ),
+                      ),
+                      Text(
+                        post.author,
+                        style: GoogleFonts.inter(
+                          fontSize: 11.5,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Text(
+                    'J${post.day}',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: AppColors.textSecondary,
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  post.author,
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13.5,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  'J${post.day}',
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           AspectRatio(
             aspectRatio: 1.6,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: tint,
-                ),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                post.emoji,
-                style: const TextStyle(fontSize: 64),
-              ),
+            child: _PostImage(
+              imageAsset: post.imageAsset,
+              fallbackEmoji: post.emoji,
+              tintStart: tint,
+              tintEnd: tintEnd,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
+            padding: const EdgeInsets.fromLTRB(14, 10, 14, 6),
+            child: _ReactionRow(post: post),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
             child: Text(
               post.caption,
               style: GoogleFonts.inter(
@@ -101,4 +102,122 @@ class PostCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _AvatarChip extends StatelessWidget {
+  const _AvatarChip({required this.character, required this.tint});
+  final Character? character;
+  final Color tint;
+
+  @override
+  Widget build(BuildContext context) {
+    final fallbackEmoji = character?.emoji ?? '?';
+    final photo = character?.photoAsset;
+    return Container(
+      width: 36,
+      height: 36,
+      decoration: BoxDecoration(
+        color: tint,
+        shape: BoxShape.circle,
+      ),
+      clipBehavior: Clip.antiAlias,
+      alignment: Alignment.center,
+      child: photo == null
+          ? Text(fallbackEmoji, style: const TextStyle(fontSize: 18))
+          : Image.asset(
+              photo,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) =>
+                  Text(fallbackEmoji, style: const TextStyle(fontSize: 18)),
+            ),
+    );
+  }
+}
+
+class _PostImage extends StatelessWidget {
+  const _PostImage({
+    required this.imageAsset,
+    required this.fallbackEmoji,
+    required this.tintStart,
+    required this.tintEnd,
+  });
+
+  final String? imageAsset;
+  final String fallbackEmoji;
+  final Color tintStart;
+  final Color tintEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    final fallback = Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [tintStart, tintEnd],
+        ),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        fallbackEmoji,
+        style: const TextStyle(fontSize: 64),
+      ),
+    );
+    if (imageAsset == null) return fallback;
+    return Image.asset(
+      imageAsset!,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => fallback,
+    );
+  }
+}
+
+class _ReactionRow extends StatelessWidget {
+  const _ReactionRow({required this.post});
+  final InstaPost post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Icon(Icons.favorite_border,
+            size: 18, color: AppColors.textPrimary),
+        const SizedBox(width: 6),
+        Text(
+          _formatCount(post.likes),
+          style: GoogleFonts.inter(
+            fontSize: 12.5,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(width: 14),
+        const Icon(Icons.mode_comment_outlined,
+            size: 17, color: AppColors.textPrimary),
+        const SizedBox(width: 6),
+        Text(
+          '${post.commentsCount}',
+          style: GoogleFonts.inter(
+            fontSize: 12.5,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const Spacer(),
+        const Icon(Icons.bookmark_border,
+            size: 18, color: AppColors.textSecondary),
+      ],
+    );
+  }
+
+  static String _formatCount(int v) {
+    if (v >= 1000000) return '${(v / 1000000).toStringAsFixed(1)} M';
+    if (v >= 1000) return '${(v / 1000).toStringAsFixed(1)} k';
+    return '$v';
+  }
+}
+
+Color _darken(Color c, double amount) {
+  final hsl = HSLColor.fromColor(c);
+  return hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0)).toColor();
 }
