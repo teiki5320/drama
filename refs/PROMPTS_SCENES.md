@@ -11,6 +11,13 @@ cohérente avec le ton du jour (Belleville pluvieux = froid / gris ;
 Tour Heng = laqué noir / dorure ; hôpital = bleu institutionnel ;
 village Fujian = ocre).
 
+**Refs perso** : pour chaque scène, la liste des portraits à charger
+dans ton outil de génération (OpenArt "character reference",
+Midjourney `--cref`, etc.). Quand un perso apparaît même partiellement
+(silhouette, main, profil flou), passer sa fiche en référence garantit
+la cohérence visuelle d'un scène à l'autre. Si aucun perso n'est
+visible (scène d'objet ou d'environnement), c'est précisé.
+
 **Suffixe commun** :
 ```
 Cinematic editorial photograph, natural lighting, slight film grain,
@@ -22,7 +29,8 @@ no people in foreground if subject is environmental, 16:10 framing.
 
 ## J1 — La collision (avenue Montaigne, 08:17)
 
-Fichier final : `assets/photos/scenes/J01_collision.png`
+**Refs perso** : aucun — scène d'environnement, on ne voit que des fragments anonymes (vélo + bas de costume).
+**Fichier final** : `assets/photos/scenes/J01_collision.png`
 
 ```
 Cinematic photograph from a low ground-level angle on a wet Paris
@@ -45,13 +53,15 @@ Légende dans le scénario : *Avenue Montaigne, 08:17. Le bowl coûte 38 €.*
 
 ## J2 — Dr Aubin *(déjà fournie ✅)*
 
-Fichier final : `assets/photos/scenes/J02_dr_aubin.png`
+**Refs perso** : Dr Aubin (perso de scène, pas de fiche profil — voir `refs/scenes/personnages_secondaires/J02_dr_aubin.png`).
+**Fichier final** : `assets/photos/scenes/J02_dr_aubin.png`
 
 ---
 
 ## J3 — Calculs (studio Belleville, après-midi)
 
-Fichier final : `assets/photos/scenes/J03_calculs.png`
+**Refs perso** : aucun — scène d'objet en plongée.
+**Fichier final** : `assets/photos/scenes/J03_calculs.png`
 
 ```
 Overhead cinematic photograph of a small wooden kitchen table in a
@@ -71,7 +81,9 @@ Légende suggérée : *Trois fois la même réponse.*
 
 ## J4 — Café Hanami (avec Camille, 14:02)
 
-Fichier final : `assets/photos/scenes/J04_cafe_hanami.png`
+**Refs perso** :
+- `refs/characters/camille_rx.png` — Camille (main visible posée sur le casebook, pas de visage frontal)
+**Fichier final** : `assets/photos/scenes/J04_cafe_hanami.png`
 
 ```
 Cinematic photograph inside a small franco-japanese café near a Paris
@@ -91,7 +103,8 @@ Légende : *Camille pose son croissant. Mauvais signe.*
 
 ## J5 — La carte recollée + plan (studio, 23:15)
 
-Fichier final : `assets/photos/scenes/J05_carte_recollee.png`
+**Refs perso** : aucun — scène d'objet en plongée.
+**Fichier final** : `assets/photos/scenes/J05_carte_recollee.png`
 
 ```
 Overhead cinematic photograph on a wooden table in a small Belleville
@@ -112,7 +125,9 @@ Légende : *Je serai sa débitrice. Pas sa charité.*
 
 ## J6 — Tailleur miroir (studio, 19:00)
 
-Fichier final : `assets/photos/scenes/J06_tailleur_miroir.png`
+**Refs perso** :
+- `refs/characters/shen_y.jpeg` — Shen (épaule/bras dans le miroir, pas de visage frontal)
+**Fichier final** : `assets/photos/scenes/J06_tailleur_miroir.png`
 
 ```
 Cinematic photograph in a small Belleville studio bedroom, evening
@@ -132,7 +147,9 @@ Légende : *Pas plus belle. Plus coupée.*
 
 ## J7 — Tour Heng, 47e étage (10:47)
 
-Fichier final : `assets/photos/scenes/J07_tour_heng_47e.png`
+**Refs perso** :
+- `refs/characters/t_heng.png` — Tristan (silhouette de dos en contre-jour, costume)
+**Fichier final** : `assets/photos/scenes/J07_tour_heng_47e.png`
 
 ```
 Cinematic interior photograph of a corner executive office on the
@@ -154,7 +171,8 @@ Légende : *47e étage. La moquette absorbe les pas.*
 
 ## J8 — Le contrat notarié (cabinet, 11:30)
 
-Fichier final : `assets/photos/scenes/J08_contrat_notarie.png`
+**Refs perso** : aucun visage — scène d'objet en plongée (le stylo Montblanc et la marginalia sont les sujets).
+**Fichier final** : `assets/photos/scenes/J08_contrat_notarie.png`
 
 ```
 Overhead cinematic photograph of a polished mahogany notary's desk,
@@ -175,7 +193,8 @@ Légende : *Article 7, alinéa b : droit aux fraises.*
 
 ## J9 — Valise sur grand lit (appartement Heng, 17:20)
 
-Fichier final : `assets/photos/scenes/J09_valise_grand_lit.png`
+**Refs perso** : aucun — scène d'environnement, pas de personnage dans le cadre.
+**Fichier final** : `assets/photos/scenes/J09_valise_grand_lit.png`
 
 ```
 Cinematic wide photograph of a vast white minimalist Parisian luxury
@@ -196,7 +215,8 @@ Légende : *Une valise au milieu de 350 m².*
 
 ## J10 — Cuisine Heng, fraises (08:00)
 
-Fichier final : `assets/photos/scenes/J10_cuisine_fraises.png`
+**Refs perso** : aucun — scène d'objet en plongée (les fraises, le clin d'œil au contrat J8).
+**Fichier final** : `assets/photos/scenes/J10_cuisine_fraises.png`
 
 ```
 Close-up cinematic photograph in a sleek minimalist Parisian luxury
@@ -216,7 +236,9 @@ Légende : *Trois fraises. Article 7 b, en pratique.*
 
 ## J11 — Visite à maman, studio Belleville (19:00)
 
-Fichier final : `assets/photos/scenes/J11_visite_maman.png`
+**Refs perso** :
+- `refs/characters/helene_marchand.png` — Hélène (silhouette douce, profil flou, demi-sourire)
+**Fichier final** : `assets/photos/scenes/J11_visite_maman.png`
 
 ```
 Cinematic intimate photograph of a small Belleville studio at early
@@ -237,7 +259,8 @@ Légende : *Maman lève la tête. Elle ne pose pas la question.*
 
 ## J12 — Appartement Heng, midi (12:01)
 
-Fichier final : `assets/photos/scenes/J12_dejeuner_heng.png`
+**Refs perso** : aucun — scène d'environnement, les chaises vides suggèrent les présences sans les montrer.
+**Fichier final** : `assets/photos/scenes/J12_dejeuner_heng.png`
 
 ```
 Cinematic wide photograph of a Parisian luxe apartment dining area,
@@ -257,7 +280,10 @@ Légende : *Treize chaises. Deux occupées.*
 
 ## J13 — Appartement Heng, soir avec Camille au téléphone (18:30)
 
-Fichier final : `assets/photos/scenes/J13_camille_telephone.png`
+**Refs perso** :
+- `refs/characters/shen_y.jpeg` — Shen (main + bras visibles, pas de visage)
+- `refs/characters/camille_rx.png` — Camille (juste pour le contact "Camille ❤️" affiché à l'écran de l'iPhone)
+**Fichier final** : `assets/photos/scenes/J13_camille_telephone.png`
 
 ```
 Cinematic close-up photograph of a young woman's hand holding an
@@ -276,7 +302,10 @@ Légende : *Vingt-trois minutes de respiration.*
 
 ## J14 — Thé Madame Heng (dîner familial, 20:30)
 
-Fichier final : `assets/photos/scenes/J14_the_madame_heng.png`
+**Refs perso** :
+- `refs/characters/heng_lihua.png` — Madame Heng (mains seulement dans le cadre, bracelet argent)
+- `refs/characters/shen_y.jpeg` — Shen (mains seulement)
+**Fichier final** : `assets/photos/scenes/J14_the_madame_heng.png`
 
 ```
 Cinematic close-up cinematic photograph of two pairs of hands
