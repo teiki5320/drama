@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/colors.dart';
+import '../../core/formatters.dart';
 import '../../engine/economy_engine.dart';
 import '../../models/ledger_entry.dart';
 import '../../providers/catalogs_provider.dart';
@@ -47,10 +48,11 @@ class CompteTab extends ConsumerWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                '${s.argent} €',
+                formatMoney(s.argent),
                 style: GoogleFonts.crimsonPro(
-                  fontSize: 44,
+                  fontSize: 52,
                   fontWeight: FontWeight.w700,
+                  letterSpacing: -0.5,
                 ),
               ),
             ],
@@ -62,14 +64,14 @@ class CompteTab extends ConsumerWidget {
             Expanded(
               child: _StatCard(
                 label: 'Portefeuille',
-                value: '${portfolioValue.round()} €',
+                value: formatMoney(portfolioValue.round()),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: _StatCard(
                 label: 'PNL latente',
-                value: pnl >= 0 ? '+$pnl €' : '$pnl €',
+                value: formatMoneySigned(pnl),
                 valueColor: pnl > 0
                     ? AppColors.positive
                     : (pnl < 0 ? AppColors.negative : null),
@@ -80,7 +82,7 @@ class CompteTab extends ConsumerWidget {
         const SizedBox(height: 12),
         _StatCard(
           label: 'Patrimoine',
-          value: '$patrimoine €',
+          value: formatMoney(patrimoine),
         ),
         const SizedBox(height: 24),
         _StatCard(
@@ -191,7 +193,7 @@ class _LedgerRow extends StatelessWidget {
                 ),
                 const SizedBox(height: 1),
                 Text(
-                  'J${entry.day}',
+                  '${formatGameDateShort(entry.day)} · ${_timeFor(entry.kind)}',
                   style: GoogleFonts.inter(
                     fontSize: 11,
                     color: AppColors.textSecondary,
@@ -201,7 +203,7 @@ class _LedgerRow extends StatelessWidget {
             ),
           ),
           Text(
-            '$sign${entry.amount} €',
+            '$sign${formatMoney(entry.amount.abs())}',
             style: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: FontWeight.w700,
@@ -260,4 +262,22 @@ class _StatCard extends StatelessWidget {
 
 extension _Iter<T> on Iterable<T> {
   T? get firstOrNull => isEmpty ? null : first;
+}
+
+String _timeFor(LedgerEntryKind kind) {
+  switch (kind) {
+    case LedgerEntryKind.passiveIncome:
+      return '08:14';
+    case LedgerEntryKind.shopPurchase:
+      return '14:30';
+    case LedgerEntryKind.stockBuy:
+      return '10:47';
+    case LedgerEntryKind.stockSell:
+      return '16:02';
+    case LedgerEntryKind.momTreatment:
+      return '11:30';
+    case LedgerEntryKind.choiceExpense:
+    case LedgerEntryKind.choiceIncome:
+      return '20:00';
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/colors.dart';
+import '../../core/formatters.dart';
 import '../../engine/economy_engine.dart';
 import '../../models/game_state.dart';
 import '../../models/investment.dart';
@@ -28,9 +29,29 @@ class InvestissementTab extends ConsumerWidget {
           return u == null || state.currentDay >= u;
         }).toList(growable: false);
 
+        // Compute portfolio value + day variation (latest tick - previous tick)
+        var portfolioValue = 0.0;
+        var dayDelta = 0.0;
+        state.stockHoldings.forEach((ticker, qty) {
+          final inv = all.where((i) => i.ticker == ticker).firstOrNull;
+          if (inv == null) return;
+          final hist = state.stockPriceHistory[ticker] ?? const <double>[];
+          final price = engine.currentPrice(state, inv);
+          portfolioValue += price * qty;
+          if (hist.length >= 2) {
+            dayDelta += (hist.last - hist[hist.length - 2]) * qty;
+          }
+        });
+
         return ListView(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
           children: [
+            _MarketHeader(
+              day: state.currentDay,
+              portfolioValue: portfolioValue.round(),
+              dayDelta: dayDelta.round(),
+            ),
+            const SizedBox(height: 16),
             if (state.stockHoldings.isNotEmpty) ...[
               const _SectionHeader(label: 'Tes positions'),
               const SizedBox(height: 8),
@@ -52,6 +73,89 @@ class InvestissementTab extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _MarketHeader extends StatelessWidget {
+  const _MarketHeader({
+    required this.day,
+    required this.portfolioValue,
+    required this.dayDelta,
+  });
+
+  final int day;
+  final int portfolioValue;
+  final int dayDelta;
+
+  @override
+  Widget build(BuildContext context) {
+    final deltaColor = dayDelta > 0
+        ? AppColors.positive
+        : (dayDelta < 0 ? AppColors.negative : AppColors.textSecondary);
+    final deltaPct = portfolioValue > 0
+        ? (dayDelta / (portfolioValue - dayDelta)) * 100
+        : 0.0;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFFAE0CC), Color(0xFFFCEBC9)],
+        ),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'BOURSE DE PARIS · ${formatGameDate(day).toUpperCase()}',
+            style: GoogleFonts.inter(
+              fontSize: 10.5,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.8,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            formatMoney(portfolioValue),
+            style: GoogleFonts.crimsonPro(
+              fontSize: 36,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.3,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Row(
+            children: [
+              Icon(
+                dayDelta >= 0 ? Icons.arrow_upward : Icons.arrow_downward,
+                size: 14,
+                color: deltaColor,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                '${dayDelta >= 0 ? '+' : ''}${formatMoney(dayDelta.abs())} (${deltaPct >= 0 ? '+' : ''}${deltaPct.toStringAsFixed(2)} %)',
+                style: GoogleFonts.inter(
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w600,
+                  color: deltaColor,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                '· sur la journée',
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -274,6 +378,8 @@ class _InvestmentRow extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(
             inv.description,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.inter(
               fontSize: 12.5,
               color: AppColors.textPrimary,
