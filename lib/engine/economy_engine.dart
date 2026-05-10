@@ -18,6 +18,12 @@ class EconomyEngine {
   static const int kFinalDay = 112;
   static const int kMaxPriceHistory = 60;
 
+  /// Dernier jour pour lequel le scénario contient une entrée. Au-delà,
+  /// `advanceDay` clamp au lieu d'incrémenter — évite que le compteur
+  /// monte vers 112 dans le vide. À mettre à jour quand on étend le
+  /// scénario au-delà de la semaine 2.
+  static const int kMaxStoryDay = 14;
+
   /// Daily passive income from followers. Cf. ROADMAP §4.3.
   int passiveIncome(int followers) {
     if (followers >= 50000) return 200;
@@ -71,7 +77,7 @@ class EconomyEngine {
         kind: option.argent > 0
             ? LedgerEntryKind.choiceIncome
             : LedgerEntryKind.choiceExpense,
-        label: _truncate(option.text, 48),
+        label: option.ledgerLabel ?? _truncate(option.text, 48),
         amount: option.argent,
       ));
     }
@@ -98,6 +104,11 @@ class EconomyEngine {
   /// Should be called *after* applyChoice when the player presses "Jour
   /// suivant".
   GameState advanceDay(GameState state, {List<Investment>? investments}) {
+    // Plafond fin d'épisode : on autorise un seul cran après le dernier
+    // jour scénarisé pour basculer sur l'écran "À suivre", puis on bloque.
+    if (state.currentDay > kMaxStoryDay) {
+      return state;
+    }
     final next = state.currentDay + 1;
     final income = passiveIncome(state.followers);
 
@@ -183,6 +194,13 @@ class EconomyEngine {
       newWealth.removeRange(0, newWealth.length - kMaxPriceHistory);
     }
     advanced = advanced.copyWith(wealthHistory: newWealth);
+
+    // Branche deuil §4.6 : si la deadline maman est passée et le
+    // traitement n'a jamais été payé, on bascule directement sur l'ending
+    // tragique sans attendre J112.
+    if (advanced.currentDay > kMomDeadlineDay && !advanced.isMomTreatmentPaid) {
+      return advanced.copyWith(ending: 'le_deuil_et_la_route');
+    }
 
     // Auto-compute final ending on the last day.
     if (advanced.currentDay >= kFinalDay) {

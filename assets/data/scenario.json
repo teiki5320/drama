@@ -80,6 +80,11 @@
       {
         "type": "prose",
         "content": "Il me tend une carte de visite. *Tristan Heng — Heng International — Directeur Europe.* Je la déchire devant lui et je laisse tomber les morceaux dans la flaque.\n\nJe repars en boitant avec mon vélo cassé sur l'épaule."
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J01_collision.png",
+        "content": "Avenue Montaigne, 08:17. Le bowl coûte 38 €."
       }
     ],
     "choice": {
@@ -169,7 +174,7 @@
         },
         {
           "text": "Chercher un troisième job",
-          "argent": 100,
+          "argent": 400,
           "mood": -2,
           "reputation": 0
         },
@@ -312,7 +317,7 @@
         {
           "text": "Note vocale dans mon téléphone, je ferai au feeling",
           "argent": 0,
-          "mood": 0,
+          "mood": 1,
           "reputation": 0
         },
         {
@@ -385,6 +390,11 @@
             "content": "Je m'inquiéterai jamais pour toi sur ces choses-là. Tu es trop préparée."
           }
         ]
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J06_tailleur_miroir.png",
+        "content": "Pas plus belle. Plus coupée."
       }
     ],
     "choice": {
@@ -470,6 +480,11 @@
       {
         "type": "prose",
         "content": "Et là il sort un dossier que sa secrétaire a préparé avant que j'arrive.\n\n**Avant. Que. J'arrive.**\n\nDonc il savait que je viendrais."
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J07_tour_heng_47e.png",
+        "content": "Tour Heng, 47e étage. La moquette absorbe les pas."
       }
     ],
     "choice": {
@@ -483,7 +498,8 @@
           "unlocks": [
             "tristan_sms",
             "tristan"
-          ]
+          ],
+          "ledgerLabel": "Contrat Heng (3 mois)"
         },
         {
           "text": "Je refuse et je pars.",
@@ -499,7 +515,8 @@
           "unlocks": [
             "tristan_sms",
             "tristan"
-          ]
+          ],
+          "ledgerLabel": "Contrat Heng négocié"
         }
       ]
     },
@@ -551,19 +568,21 @@
           "reputation": 1,
           "setsFlags": [
             "isMomTreatmentPaid"
-          ]
+          ],
+          "ledgerLabel": "Versement Tenon"
         },
         {
           "text": "Je garde tout en attendant, je verse étalé.",
           "argent": 0,
-          "mood": 0,
+          "mood": -1,
           "reputation": 0
         },
         {
           "text": "Je rembourse mes dettes (loyer, plateforme) puis le reste à l'hôpital.",
           "argent": -800,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "ledgerLabel": "Loyer + plateforme"
         }
       ]
     }
@@ -641,6 +660,11 @@
             "content": "Je sais pas."
           }
         ]
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J09_valise_grand_lit.png",
+        "content": "Une valise au milieu de 350 m²."
       }
     ],
     "choice": {
@@ -661,8 +685,8 @@
         {
           "text": "Je garde ma valise faite, prête à partir si ça tourne mal.",
           "argent": 0,
-          "mood": 0,
-          "reputation": 1
+          "mood": -1,
+          "reputation": 0
         }
       ]
     }
@@ -835,7 +859,7 @@
         {
           "text": "Je promets de l'appeler dimanche pour de vrai.",
           "argent": 0,
-          "mood": 0,
+          "mood": -1,
           "reputation": 0
         }
       ]
@@ -1126,6 +1150,11 @@
       {
         "type": "prose",
         "content": "Elle a dit *ma fille*. En français. Ce n'est pas anodin."
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J14_the_madame_heng.png",
+        "content": "Le thé Long Jing première récolte. « Ma fille. »"
       }
     ],
     "choice": {
