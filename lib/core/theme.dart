@@ -74,7 +74,7 @@ ThemeData buildAppTheme() {
       type: BottomNavigationBarType.fixed,
       showUnselectedLabels: true,
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: AppColors.cardBg,
       elevation: 0,
       shape: RoundedRectangleBorder(
