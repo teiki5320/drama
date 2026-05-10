@@ -12,6 +12,9 @@ echo "=== flutter pub get ==="
 cd $CI_PRIMARY_REPOSITORY_PATH
 flutter pub get
 
+echo "=== Generate launcher icons ==="
+dart run flutter_launcher_icons
+
 echo "=== pod install ==="
 cd $CI_PRIMARY_REPOSITORY_PATH/ios
 pod install
