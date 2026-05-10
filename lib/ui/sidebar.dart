@@ -61,9 +61,11 @@ class Sidebar extends ConsumerWidget {
             label: 'INVIT.',
             selected: selected == 3,
             badgeCount: unread,
-            onTap: () {
+            onTap: () async {
               ref.read(selectedTabProvider.notifier).state = 3;
-              ref.read(gameStateProvider.notifier).markMessagesSeen();
+              await ref
+                  .read(gameStateProvider.notifier)
+                  .markMessagesSeen();
             },
           ),
           const Spacer(),

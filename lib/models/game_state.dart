@@ -16,10 +16,8 @@ class GameState {
   final List<int> wealthHistory;
   final List<String> ownedItems;
   final Map<int, int> choicesMade;
-  final int lowMoodStreak;
   final bool isMomTreatmentPaid;
   final List<String> unlockedConversations;
-  final List<String> seenInstaPosts;
   final List<InstaPost> generatedInstaPosts;
   final List<LedgerEntry> ledger;
   final List<String> seenMessageThreads;
@@ -38,10 +36,8 @@ class GameState {
     this.wealthHistory = const [],
     this.ownedItems = const [],
     this.choicesMade = const {},
-    this.lowMoodStreak = 0,
     this.isMomTreatmentPaid = false,
     this.unlockedConversations = const ['maman', 'camille'],
-    this.seenInstaPosts = const [],
     this.generatedInstaPosts = const [],
     this.ledger = const [],
     this.seenMessageThreads = const [],
@@ -61,10 +57,8 @@ class GameState {
     List<int>? wealthHistory,
     List<String>? ownedItems,
     Map<int, int>? choicesMade,
-    int? lowMoodStreak,
     bool? isMomTreatmentPaid,
     List<String>? unlockedConversations,
-    List<String>? seenInstaPosts,
     List<InstaPost>? generatedInstaPosts,
     List<LedgerEntry>? ledger,
     List<String>? seenMessageThreads,
@@ -83,11 +77,9 @@ class GameState {
       wealthHistory: wealthHistory ?? this.wealthHistory,
       ownedItems: ownedItems ?? this.ownedItems,
       choicesMade: choicesMade ?? this.choicesMade,
-      lowMoodStreak: lowMoodStreak ?? this.lowMoodStreak,
       isMomTreatmentPaid: isMomTreatmentPaid ?? this.isMomTreatmentPaid,
       unlockedConversations:
           unlockedConversations ?? this.unlockedConversations,
-      seenInstaPosts: seenInstaPosts ?? this.seenInstaPosts,
       generatedInstaPosts: generatedInstaPosts ?? this.generatedInstaPosts,
       ledger: ledger ?? this.ledger,
       seenMessageThreads: seenMessageThreads ?? this.seenMessageThreads,
@@ -109,10 +101,8 @@ class GameState {
         'ownedItems': ownedItems,
         'choicesMade':
             choicesMade.map((k, v) => MapEntry(k.toString(), v)),
-        'lowMoodStreak': lowMoodStreak,
         'isMomTreatmentPaid': isMomTreatmentPaid,
         'unlockedConversations': unlockedConversations,
-        'seenInstaPosts': seenInstaPosts,
         'generatedInstaPosts':
             generatedInstaPosts.map((e) => e.toJson()).toList(),
         'ledger': ledger.map((e) => e.toJson()).toList(),
@@ -147,15 +137,11 @@ class GameState {
         choicesMade: ((json['choicesMade'] as Map?) ?? const {}).map(
           (k, v) => MapEntry(int.parse(k.toString()), (v as num).toInt()),
         ),
-        lowMoodStreak: (json['lowMoodStreak'] as num?)?.toInt() ?? 0,
         isMomTreatmentPaid: (json['isMomTreatmentPaid'] as bool?) ?? false,
         unlockedConversations:
             ((json['unlockedConversations'] as List?) ?? const [])
                 .map((e) => e.toString())
                 .toList(growable: false),
-        seenInstaPosts: ((json['seenInstaPosts'] as List?) ?? const [])
-            .map((e) => e.toString())
-            .toList(growable: false),
         generatedInstaPosts:
             ((json['generatedInstaPosts'] as List?) ?? const [])
                 .map((e) => InstaPost.fromJson(e as Map<String, dynamic>))

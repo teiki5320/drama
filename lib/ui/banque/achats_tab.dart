@@ -279,8 +279,9 @@ class _ShopCard extends ConsumerWidget {
               ok: check.ok,
               reason: check.reason,
               price: item.price,
-              onPressed: () =>
-                  ref.read(gameStateProvider.notifier).buyItem(item),
+              onPressed: () async {
+                await ref.read(gameStateProvider.notifier).buyItem(item);
+              },
             ),
           ),
         ],

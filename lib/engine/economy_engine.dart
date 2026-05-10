@@ -24,6 +24,16 @@ class EconomyEngine {
   /// scénario au-delà de la semaine 2.
   static const int kMaxStoryDay = 14;
 
+  /// Plafond du journal de transactions (Banque > Compte > Mouvements).
+  /// On ne garde que les N plus récentes pour éviter que la sauvegarde
+  /// gonfle sans limite sur une partie longue.
+  static const int kMaxLedgerEntries = 80;
+
+  static List<LedgerEntry> _capLedger(List<LedgerEntry> ledger) {
+    if (ledger.length <= kMaxLedgerEntries) return ledger;
+    return ledger.sublist(ledger.length - kMaxLedgerEntries);
+  }
+
   /// Daily passive income from followers. Cf. ROADMAP §4.3.
   int passiveIncome(int followers) {
     if (followers >= 50000) return 200;
@@ -52,8 +62,6 @@ class EconomyEngine {
     final newReputation = (state.reputation + option.reputation)
         .clamp(0, 1 << 30); // no negative reputation
     final newArgent = state.argent + option.argent;
-
-    final newStreak = newMood <= 2 ? state.lowMoodStreak + 1 : 0;
 
     final mergedChoices = Map<int, int>.from(state.choicesMade)
       ..[dayId] = optionIndex;
@@ -87,11 +95,10 @@ class EconomyEngine {
       mood: newMood,
       reputation: newReputation,
       followers: followersFromReputation(newReputation),
-      lowMoodStreak: newStreak,
       choicesMade: mergedChoices,
       unlockedConversations: mergedConvos,
       isMomTreatmentPaid: newIsMomPaid,
-      ledger: ledger,
+      ledger: _capLedger(ledger),
     );
   }
 
@@ -125,7 +132,7 @@ class EconomyEngine {
     var advanced = state.copyWith(
       currentDay: next,
       argent: state.argent + income,
-      ledger: ledger,
+      ledger: _capLedger(ledger),
     );
 
     // Check the "deadline maman" : if argent reaches 18 000€ before J45 and
@@ -144,7 +151,7 @@ class EconomyEngine {
         isMomTreatmentPaid: true,
         argent: advanced.argent - kMomTreatmentCost,
         mood: (advanced.mood + 2).clamp(0, 10),
-        ledger: updatedLedger,
+        ledger: _capLedger(updatedLedger),
       );
     }
 
@@ -269,7 +276,7 @@ class EconomyEngine {
       followers: followersFromReputation(newRep),
       ownedItems: newOwned,
       generatedInstaPosts: newPosts,
-      ledger: ledger,
+      ledger: _capLedger(ledger),
     );
   }
 
@@ -328,7 +335,7 @@ class EconomyEngine {
       argent: state.argent - cost,
       stockHoldings: newHoldings,
       stockAvgCost: newAvgCost,
-      ledger: ledger,
+      ledger: _capLedger(ledger),
     );
   }
 
@@ -369,7 +376,7 @@ class EconomyEngine {
       argent: state.argent + proceeds,
       stockHoldings: newHoldings,
       stockAvgCost: newAvgCost,
-      ledger: ledger,
+      ledger: _capLedger(ledger),
     );
   }
 
