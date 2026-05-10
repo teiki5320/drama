@@ -15,7 +15,7 @@ class BanqueScreen extends StatefulWidget {
 }
 
 class _BanqueScreenState extends State<BanqueScreen> {
-  int _sub = 2; // start on "Achats" — most useful tab
+  int _sub = 0; // start on COMPTE — c'est la home banque maintenant
 
   static const _labels = ['COMPTE', 'INVESTISSEMENT', 'ACHATS'];
 
