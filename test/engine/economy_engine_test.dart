@@ -225,8 +225,22 @@ void main() {
       expect(EconomyEngine.scriptedDelta(35, 'HENG'), 0.12);
       expect(EconomyEngine.scriptedDelta(52, 'HENG'), -0.18);
       expect(EconomyEngine.scriptedDelta(76, 'HAN'), 0.35);
-      expect(EconomyEngine.scriptedDelta(98, 'NCB'), -0.22);
-      expect(EconomyEngine.scriptedDelta(50, 'LUG'), isNull);
+      expect(EconomyEngine.scriptedDelta(98, 'BDE'), -0.22);
+      expect(EconomyEngine.scriptedDelta(50, 'LSTR'), isNull);
+    });
+
+    test('advanceDay tracks price history capped at kMaxPriceHistory', () {
+      const lug = Investment(
+        ticker: 'LUG', name: 'Lu', sector: 's', price: 100, description: '',
+      );
+      var s = const GameState(currentDay: 1, argent: 1000);
+      for (var i = 0; i < EconomyEngine.kMaxPriceHistory + 5; i++) {
+        s = engine.advanceDay(s, investments: [lug]);
+      }
+      expect(s.stockPriceHistory['LUG']!.length,
+          EconomyEngine.kMaxPriceHistory);
+      expect(s.stockPriceHistory['LUG']!.last,
+          s.stockCurrentPrices['LUG']);
     });
 
     test('tickPrices applies trigger on the right day', () {

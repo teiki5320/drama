@@ -1,7 +1,11 @@
 [
-  {"ticker":"LUG","name":"Lu Group","sector":"Immobilier / Tech","price":139,"description":"Conglomérat de NeoCity. Le siège est dans la Tour Lu. Action solide, croissance steady.","unlockedAtDay":null},
-  {"ticker":"NCT","name":"NeoCity Tower Holdings","sector":"Immobilier","price":88,"description":"Gestionnaire des tours du quartier financier. 40% de leurs contrats viennent de Lu Group, donc corrélé.","unlockedAtDay":null},
-  {"ticker":"NCB","name":"NeoCity Bank","sector":"Banque","price":69,"description":"Banque commerciale historique. Stable, peu de croissance, dividende régulier.","unlockedAtDay":null},
-  {"ticker":"HENG","name":"Heng International","sector":"Hôtellerie","price":220,"description":"Le groupe de Tristan. Volatile, dépend des contrats asiatiques.","unlockedAtDay":10},
-  {"ticker":"HAN","name":"Hanami Café Co.","sector":"Food & Beverage","price":12,"description":"Chaîne de cafés artisanaux. Action pas chère. Opportunité ou piège — selon comment tu lis le secteur.","unlockedAtDay":null}
+  {"ticker":"HENG","name":"Heng International","sector":"Hôtellerie luxe","price":220,"description":"Le groupe de Tristan. Volatile, dépend des contrats asiatiques.","unlockedAtDay":10},
+  {"ticker":"HAN","name":"Hanami Café Co.","sector":"Food & Beverage","price":12,"description":"Chaîne de cafés artisanaux franco-japonaise. Action pas chère. Opportunité ou piège — selon comment tu lis le secteur.","unlockedAtDay":null},
+  {"ticker":"LSTR","name":"Maison Lestrange","sector":"Couture","price":184,"description":"Maison de couture parisienne familiale. Stable, dividende régulier, bouge sur les défilés.","unlockedAtDay":null},
+  {"ticker":"VTV","name":"Vétiver Paris","sector":"Maroquinerie","price":312,"description":"Maroquinerie de luxe, listes d'attente sur les sacs phares. Volatile suivant les saisons.","unlockedAtDay":null},
+  {"ticker":"AUR","name":"Laboratoires Aurore","sector":"Cosmétique","price":74,"description":"Cosmétique français, fortement exporté en Asie. Croissance steady, sensible aux tensions commerciales.","unlockedAtDay":null},
+  {"ticker":"FHM","name":"Foncière Haussmann","sector":"Immobilier prime Paris","price":96,"description":"Foncière sur le triangle d'or. Anti-cyclique, sensible aux taux. Le portefeuille de bureaux pèse.","unlockedAtDay":null},
+  {"ticker":"BDE","name":"Banque de l'Étoile","sector":"Banque privée","price":58,"description":"Banque privée familiale parisienne. Sage, dividende, peu de croissance. Très exposée aux scandales.","unlockedAtDay":null},
+  {"ticker":"MIST","name":"Mistral Cloud","sector":"Tech / IA","price":41,"description":"SaaS souverain, contrats publics français, pari long terme. Volatile, sensible aux annonces réglementaires.","unlockedAtDay":null},
+  {"ticker":"EVS","name":"Énergie Verte SA","sector":"Renouvelable","price":29,"description":"Parcs éoliens et solaires en France et au Maghreb. Tendance haussière mais coups de vent en bourse.","unlockedAtDay":null}
 ]

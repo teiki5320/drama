@@ -11,6 +11,7 @@ class GameState {
   final Map<String, int> stockHoldings;
   final Map<String, double> stockAvgCost;
   final Map<String, double> stockCurrentPrices;
+  final Map<String, List<double>> stockPriceHistory;
   final List<String> ownedItems;
   final Map<int, int> choicesMade;
   final int lowMoodStreak;
@@ -29,6 +30,7 @@ class GameState {
     this.stockHoldings = const {},
     this.stockAvgCost = const {},
     this.stockCurrentPrices = const {},
+    this.stockPriceHistory = const {},
     this.ownedItems = const [],
     this.choicesMade = const {},
     this.lowMoodStreak = 0,
@@ -48,6 +50,7 @@ class GameState {
     Map<String, int>? stockHoldings,
     Map<String, double>? stockAvgCost,
     Map<String, double>? stockCurrentPrices,
+    Map<String, List<double>>? stockPriceHistory,
     List<String>? ownedItems,
     Map<int, int>? choicesMade,
     int? lowMoodStreak,
@@ -66,6 +69,7 @@ class GameState {
       stockHoldings: stockHoldings ?? this.stockHoldings,
       stockAvgCost: stockAvgCost ?? this.stockAvgCost,
       stockCurrentPrices: stockCurrentPrices ?? this.stockCurrentPrices,
+      stockPriceHistory: stockPriceHistory ?? this.stockPriceHistory,
       ownedItems: ownedItems ?? this.ownedItems,
       choicesMade: choicesMade ?? this.choicesMade,
       lowMoodStreak: lowMoodStreak ?? this.lowMoodStreak,
@@ -87,6 +91,7 @@ class GameState {
         'stockHoldings': stockHoldings,
         'stockAvgCost': stockAvgCost,
         'stockCurrentPrices': stockCurrentPrices,
+        'stockPriceHistory': stockPriceHistory,
         'ownedItems': ownedItems,
         'choicesMade':
             choicesMade.map((k, v) => MapEntry(k.toString(), v)),
@@ -111,6 +116,12 @@ class GameState {
             .map((k, v) => MapEntry(k.toString(), (v as num).toDouble())),
         stockCurrentPrices: ((json['stockCurrentPrices'] as Map?) ?? const {})
             .map((k, v) => MapEntry(k.toString(), (v as num).toDouble())),
+        stockPriceHistory: ((json['stockPriceHistory'] as Map?) ?? const {}).map(
+          (k, v) => MapEntry(
+            k.toString(),
+            (v as List).map((e) => (e as num).toDouble()).toList(growable: false),
+          ),
+        ),
         ownedItems: ((json['ownedItems'] as List?) ?? const [])
             .map((e) => e.toString())
             .toList(growable: false),
