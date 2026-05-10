@@ -41,7 +41,7 @@ const kCharacters = <Character>[
     handle: '@camille_rx',
     displayName: 'Camille Roux',
     emoji: '🥐',
-    photoAsset: 'assets/photos/characters/camille_rx.jpg',
+    photoAsset: 'assets/photos/characters/camille_rx.png',
     tint: Color(0xFFFCE6D8),
     role: 'Meilleure amie',
     bio:
@@ -64,7 +64,7 @@ const kCharacters = <Character>[
     handle: '@vincent.h',
     displayName: 'Vincent Heng',
     emoji: '🥂',
-    photoAsset: 'assets/photos/characters/vincent_h.jpg',
+    photoAsset: 'assets/photos/characters/vincent_h.png',
     tint: Color(0xFFEBD8E0),
     role: 'Le frère',
     bio:
@@ -76,7 +76,7 @@ const kCharacters = <Character>[
     handle: '@heng_lihua',
     displayName: 'Madame Heng',
     emoji: '🍵',
-    photoAsset: 'assets/photos/characters/heng_lihua.jpg',
+    photoAsset: 'assets/photos/characters/heng_lihua.png',
     tint: Color(0xFFE7E1D2),
     role: 'La mère de Tristan',
     bio:
