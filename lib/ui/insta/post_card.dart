@@ -186,6 +186,7 @@ class _AvatarChip extends StatelessWidget {
           : Image.asset(
               photo,
               fit: BoxFit.cover,
+              cacheWidth: 192,
               errorBuilder: (_, __, ___) =>
                   Text(fallbackEmoji, style: const TextStyle(fontSize: 18)),
             ),
@@ -226,6 +227,7 @@ class _PostImage extends StatelessWidget {
     return Image.asset(
       imageAsset!,
       fit: BoxFit.cover,
+      cacheWidth: 600,
       errorBuilder: (_, __, ___) => fallback,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../core/colors.dart';
 import '../../models/choice.dart';
@@ -39,8 +40,12 @@ class ChoiceCard extends StatelessWidget {
             option: choice.options[i],
             selected: selectedIndex == i,
             dimmed: selectedIndex != null && selectedIndex != i,
-            onTap:
-                disabled ? null : () => onPicked(i, choice.options[i]),
+            onTap: disabled
+                ? null
+                : () {
+                    HapticFeedback.selectionClick();
+                    onPicked(i, choice.options[i]);
+                  },
           ),
           const SizedBox(height: 8),
         ],

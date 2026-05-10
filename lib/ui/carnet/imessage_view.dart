@@ -192,6 +192,7 @@ class _Avatar extends StatelessWidget {
           : Image.asset(
               contact.photoAsset!,
               fit: BoxFit.cover,
+              cacheWidth: 192,
               errorBuilder: (_, __, ___) => fallback,
             ),
     );
@@ -243,6 +244,7 @@ class _BubbleThread extends StatelessWidget {
         child: Image.asset(
           m.imageAsset!,
           fit: BoxFit.cover,
+          cacheWidth: 600,
           errorBuilder: (_, __, ___) => Container(
             width: 200,
             height: 140,

@@ -157,6 +157,7 @@ class _ShenProfileChip extends StatelessWidget {
                   : Image.asset(
                       shen.photoAsset!,
                       fit: BoxFit.cover,
+                      cacheWidth: 192,
                       errorBuilder: (_, __, ___) => Text(
                         'S',
                         style: GoogleFonts.crimsonPro(
@@ -248,6 +249,7 @@ class _Story extends StatelessWidget {
                       : Image.asset(
                           character.photoAsset!,
                           fit: BoxFit.cover,
+                          cacheWidth: 192,
                           errorBuilder: (_, __, ___) => Text(
                             character.emoji,
                             style: const TextStyle(fontSize: 24),

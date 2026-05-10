@@ -99,6 +99,7 @@ class _ProfileHero extends StatelessWidget {
                 : Image.asset(
                     character.photoAsset!,
                     fit: BoxFit.cover,
+                    cacheWidth: 360,
                     errorBuilder: (_, __, ___) => Center(
                       child: Text(character.emoji,
                           style: const TextStyle(fontSize: 56)),
@@ -211,6 +212,7 @@ class _PostThumb extends StatelessWidget {
           : Image.asset(
               post.imageAsset!,
               fit: BoxFit.cover,
+              cacheWidth: 300,
               errorBuilder: (_, __, ___) =>
                   Text(post.emoji, style: const TextStyle(fontSize: 32)),
             ),
