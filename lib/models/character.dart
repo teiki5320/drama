@@ -30,7 +30,7 @@ const kCharacters = <Character>[
     handle: '@shen_y',
     displayName: 'Shen Marchand',
     emoji: '🌿',
-    photoAsset: 'assets/photos/characters/shen_y.jpg',
+    photoAsset: 'assets/photos/characters/shen_y.png',
     tint: Color(0xFFFAE0CC),
     role: 'Toi',
     bio:
@@ -52,7 +52,7 @@ const kCharacters = <Character>[
     handle: '@t_heng',
     displayName: 'Tristan Heng',
     emoji: '🧊',
-    photoAsset: 'assets/photos/characters/t_heng.jpg',
+    photoAsset: 'assets/photos/characters/t_heng.png',
     tint: Color(0xFFD7DEE5),
     role: 'Lui',
     bio:
@@ -87,7 +87,7 @@ const kCharacters = <Character>[
     handle: '@mei_fujian',
     displayName: 'Tante Mei',
     emoji: '🌿',
-    photoAsset: 'assets/photos/characters/mei_fujian.jpg',
+    photoAsset: 'assets/photos/characters/mei_fujian.png',
     tint: Color(0xFFE0E7D7),
     role: 'Cousine du père',
     bio:
@@ -98,7 +98,7 @@ const kCharacters = <Character>[
     handle: '@helene_marchand',
     displayName: 'Hélène Marchand',
     emoji: '👩',
-    photoAsset: 'assets/photos/characters/helene_marchand.jpg',
+    photoAsset: 'assets/photos/characters/helene_marchand.png',
     tint: Color(0xFFFCE6D8),
     role: 'Maman',
     bio:
