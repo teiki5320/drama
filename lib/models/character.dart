@@ -30,7 +30,7 @@ const kCharacters = <Character>[
     handle: '@shen_y',
     displayName: 'Shen Marchand',
     emoji: '🌿',
-    photoAsset: 'assets/photos/characters/shen_y.png',
+    photoAsset: 'assets/photos/characters/shen_y.jpeg',
     tint: Color(0xFFFAE0CC),
     role: 'Toi',
     bio:
