@@ -1,0 +1,201 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../core/colors.dart';
+import '../providers/game_state_provider.dart';
+import '../providers/ui_provider.dart';
+
+/// Left rail: stats chips at top, nav buttons below, gear at the bottom.
+/// Width is fixed at 84 dp — works on iPhone (just) and looks clean on iPad.
+class Sidebar extends ConsumerWidget {
+  const Sidebar({super.key});
+
+  static const double width = 84;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = ref.watch(gameStateProvider);
+    final selected = ref.watch(selectedTabProvider);
+
+    return Container(
+      width: width,
+      color: const Color(0xFFF3EEDF),
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + 8,
+        bottom: MediaQuery.of(context).padding.bottom + 8,
+      ),
+      child: Column(
+        children: [
+          _StatChip(label: 'J${s.currentDay}', accent: AppColors.accentOrange),
+          const SizedBox(height: 8),
+          _StatChip(label: _formatMoney(s.argent)),
+          const SizedBox(height: 8),
+          _StatChip(label: '${s.mood}/10', emoji: '😊'),
+          const SizedBox(height: 8),
+          _StatChip(label: '${s.reputation}', emoji: '⭐'),
+          const Spacer(),
+          _NavItem(
+            icon: Icons.menu_book,
+            label: 'CARNET',
+            selected: selected == 0,
+            onTap: () => ref.read(selectedTabProvider.notifier).state = 0,
+          ),
+          _NavItem(
+            icon: Icons.account_balance,
+            label: 'BANQUE',
+            selected: selected == 1,
+            onTap: () => ref.read(selectedTabProvider.notifier).state = 1,
+          ),
+          _NavItem(
+            icon: Icons.photo_library,
+            label: 'INSTA',
+            selected: selected == 2,
+            onTap: () => ref.read(selectedTabProvider.notifier).state = 2,
+          ),
+          _NavItem(
+            icon: Icons.chat_bubble,
+            label: 'INVIT.',
+            selected: selected == 3,
+            onTap: () => ref.read(selectedTabProvider.notifier).state = 3,
+          ),
+          const Spacer(),
+          IconButton(
+            icon: const Icon(Icons.settings, color: AppColors.textSecondary),
+            tooltip: 'Réglages',
+            onPressed: () => _openSettings(context, ref),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static String _formatMoney(int v) {
+    if (v >= 1000000) return '${(v / 1000000).toStringAsFixed(1)}M€';
+    if (v >= 1000) return '${(v / 1000).toStringAsFixed(1)}k€';
+    return '$v€';
+  }
+
+  Future<void> _openSettings(BuildContext context, WidgetRef ref) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Réglages'),
+        content: const Text(
+          'Recommencer la partie ? La progression actuelle sera perdue.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: TextButton.styleFrom(foregroundColor: AppColors.negative),
+            child: const Text('Recommencer'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await ref.read(gameStateProvider.notifier).reset();
+      ref.read(selectedTabProvider.notifier).state = 0;
+    }
+  }
+}
+
+class _StatChip extends StatelessWidget {
+  const _StatChip({required this.label, this.emoji, this.accent});
+
+  final String label;
+  final String? emoji;
+  final Color? accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final isAccent = accent != null;
+    return Container(
+      width: 64,
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+      decoration: BoxDecoration(
+        color: isAccent
+            ? accent!.withValues(alpha: 0.16)
+            : Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: isAccent
+              ? accent!.withValues(alpha: 0.4)
+              : const Color(0x141A1A1A),
+        ),
+      ),
+      child: Column(
+        children: [
+          if (emoji != null)
+            Text(emoji!, style: const TextStyle(fontSize: 14))
+          else if (isAccent)
+            Icon(Icons.menu_book, size: 14, color: accent),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: isAccent ? accent : AppColors.textPrimary,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NavItem extends StatelessWidget {
+  const _NavItem({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = selected ? AppColors.accentOrange : AppColors.textSecondary;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        decoration: BoxDecoration(
+          color: selected
+              ? AppColors.accentOrange.withValues(alpha: 0.14)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 22),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 9.5,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.4,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

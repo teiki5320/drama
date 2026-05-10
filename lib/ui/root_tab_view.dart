@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/ui_provider.dart';
 import 'banque/banque_screen.dart';
 import 'carnet/carnet_screen.dart';
 import 'insta/insta_screen.dart';
 import 'messages/messages_screen.dart';
+import 'sidebar.dart';
 
-class RootTabView extends ConsumerStatefulWidget {
+class RootTabView extends ConsumerWidget {
   const RootTabView({super.key});
-
-  @override
-  ConsumerState<RootTabView> createState() => _RootTabViewState();
-}
-
-class _RootTabViewState extends ConsumerState<RootTabView> {
-  int _index = 0;
 
   static const _tabs = <Widget>[
     CarnetScreen(),
@@ -24,34 +19,20 @@ class _RootTabViewState extends ConsumerState<RootTabView> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final index = ref.watch(selectedTabProvider);
     return Scaffold(
-      body: IndexedStack(index: _index, children: _tabs),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _index,
-        onTap: (i) => setState(() => _index = i),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book_outlined),
-            activeIcon: Icon(Icons.menu_book),
-            label: 'Carnet',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_outlined),
-            activeIcon: Icon(Icons.account_balance),
-            label: 'Banque',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library_outlined),
-            activeIcon: Icon(Icons.photo_library),
-            label: 'Insta',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            activeIcon: Icon(Icons.chat_bubble),
-            label: 'Messages',
-          ),
-        ],
+      body: SafeArea(
+        bottom: false,
+        child: Row(
+          children: [
+            const Sidebar(),
+            const VerticalDivider(width: 0.5, thickness: 0.5),
+            Expanded(
+              child: IndexedStack(index: index, children: _tabs),
+            ),
+          ],
+        ),
       ),
     );
   }
