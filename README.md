@@ -36,6 +36,24 @@ Le `.` final de `flutter create` cible le dossier courant : il faut donc impéra
 flutter test
 ```
 
+## Icône d'app
+
+L'icône source est `assets/icon/icon.png` (1024×1024, sans alpha). C'est un placeholder typographique (caractère 逆 en orange chaud sur papier crème). Pour la remplacer par un design final : exporter un PNG 1024×1024 sans transparence et écraser ce fichier.
+
+Pour régénérer l'icône placeholder à partir du script Python (utile si on veut bidouiller la couleur ou le caractère) :
+
+```bash
+python3 tools/generate_icon.py
+```
+
+Pour propager l'icône vers toutes les tailles iOS + Android (à refaire à chaque modification du fichier source) :
+
+```bash
+flutter pub run flutter_launcher_icons
+```
+
+Cette commande lit la config `flutter_launcher_icons` du `pubspec.yaml` et écrit dans `ios/Runner/Assets.xcassets/AppIcon.appiconset/` et `android/app/src/main/res/mipmap-*/`.
+
 ## Structure (extrait)
 
 ```
