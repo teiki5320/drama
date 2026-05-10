@@ -25,6 +25,7 @@ class ChoiceOption {
   final List<String>? unlocks;
   final List<String>? setsFlags;
   final String? triggersScene;
+  final String? ledgerLabel;
 
   const ChoiceOption({
     required this.text,
@@ -34,6 +35,7 @@ class ChoiceOption {
     this.unlocks,
     this.setsFlags,
     this.triggersScene,
+    this.ledgerLabel,
   });
 
   factory ChoiceOption.fromJson(Map<String, dynamic> json) => ChoiceOption(
@@ -48,6 +50,7 @@ class ChoiceOption {
             ?.map((e) => e as String)
             .toList(growable: false),
         triggersScene: json['triggersScene'] as String?,
+        ledgerLabel: json['ledgerLabel'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,5 +61,6 @@ class ChoiceOption {
         if (unlocks != null) 'unlocks': unlocks,
         if (setsFlags != null) 'setsFlags': setsFlags,
         if (triggersScene != null) 'triggersScene': triggersScene,
+        if (ledgerLabel != null) 'ledgerLabel': ledgerLabel,
       };
 }
