@@ -7,6 +7,7 @@ import '../core/colors.dart';
 import '../providers/game_state_provider.dart';
 import '../providers/ui_provider.dart';
 import 'settings_sheet.dart';
+import 'stat_popups.dart';
 
 /// Left rail: stats chips at top, nav buttons below, gear at the bottom.
 /// Width is fixed at 84 dp — works on iPhone (just) and looks clean on iPad.
@@ -32,27 +33,39 @@ class Sidebar extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          Tooltip(
-            message: 'Jour ${s.currentDay} sur 112',
-            child: _StatChip(
-              label: 'J${s.currentDay}',
-              accent: AppColors.accentOrange,
-            ),
+          _StatChip(
+            label: 'J${s.currentDay}',
+            accent: AppColors.accentOrange,
+            onTap: () {
+              HapticFeedback.selectionClick();
+              showDayStatPopup(context, s.currentDay);
+            },
           ),
           const SizedBox(height: 8),
-          Tooltip(
-            message: 'Argent en banque',
-            child: _StatChip(label: _formatMoney(s.argent)),
+          _StatChip(
+            label: _formatMoney(s.argent),
+            onTap: () {
+              HapticFeedback.selectionClick();
+              showArgentStatPopup(context, s.argent);
+            },
           ),
           const SizedBox(height: 8),
-          Tooltip(
-            message: 'Humeur de Shen (0-10)',
-            child: _StatChip(label: '${s.mood}/10', emoji: '😊'),
+          _StatChip(
+            label: '${s.mood}/10',
+            emoji: '😊',
+            onTap: () {
+              HapticFeedback.selectionClick();
+              showMoodStatPopup(context, s.mood);
+            },
           ),
           const SizedBox(height: 8),
-          Tooltip(
-            message: '${s.reputation} ★ · ${s.followers} abonnés',
-            child: _StatChip(label: '${s.reputation}', emoji: '⭐'),
+          _StatChip(
+            label: '${s.reputation}',
+            emoji: '⭐',
+            onTap: () {
+              HapticFeedback.selectionClick();
+              showReputationStatPopup(context, s.reputation, s.followers);
+            },
           ),
           const Spacer(),
           _NavItem(
@@ -123,16 +136,22 @@ class Sidebar extends ConsumerWidget {
 }
 
 class _StatChip extends StatelessWidget {
-  const _StatChip({required this.label, this.emoji, this.accent});
+  const _StatChip({
+    required this.label,
+    this.emoji,
+    this.accent,
+    this.onTap,
+  });
 
   final String label;
   final String? emoji;
   final Color? accent;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final isAccent = accent != null;
-    return Container(
+    final chip = Container(
       width: 64,
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
       decoration: BoxDecoration(
@@ -166,6 +185,12 @@ class _StatChip extends StatelessWidget {
           ),
         ],
       ),
+    );
+    if (onTap == null) return chip;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: chip,
     );
   }
 }
