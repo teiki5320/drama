@@ -13,6 +13,7 @@ class GameState {
   final Map<String, double> stockAvgCost;
   final Map<String, double> stockCurrentPrices;
   final Map<String, List<double>> stockPriceHistory;
+  final List<int> wealthHistory;
   final List<String> ownedItems;
   final Map<int, int> choicesMade;
   final int lowMoodStreak;
@@ -34,6 +35,7 @@ class GameState {
     this.stockAvgCost = const {},
     this.stockCurrentPrices = const {},
     this.stockPriceHistory = const {},
+    this.wealthHistory = const [],
     this.ownedItems = const [],
     this.choicesMade = const {},
     this.lowMoodStreak = 0,
@@ -56,6 +58,7 @@ class GameState {
     Map<String, double>? stockAvgCost,
     Map<String, double>? stockCurrentPrices,
     Map<String, List<double>>? stockPriceHistory,
+    List<int>? wealthHistory,
     List<String>? ownedItems,
     Map<int, int>? choicesMade,
     int? lowMoodStreak,
@@ -77,6 +80,7 @@ class GameState {
       stockAvgCost: stockAvgCost ?? this.stockAvgCost,
       stockCurrentPrices: stockCurrentPrices ?? this.stockCurrentPrices,
       stockPriceHistory: stockPriceHistory ?? this.stockPriceHistory,
+      wealthHistory: wealthHistory ?? this.wealthHistory,
       ownedItems: ownedItems ?? this.ownedItems,
       choicesMade: choicesMade ?? this.choicesMade,
       lowMoodStreak: lowMoodStreak ?? this.lowMoodStreak,
@@ -101,6 +105,7 @@ class GameState {
         'stockAvgCost': stockAvgCost,
         'stockCurrentPrices': stockCurrentPrices,
         'stockPriceHistory': stockPriceHistory,
+        'wealthHistory': wealthHistory,
         'ownedItems': ownedItems,
         'choicesMade':
             choicesMade.map((k, v) => MapEntry(k.toString(), v)),
@@ -133,6 +138,9 @@ class GameState {
             (v as List).map((e) => (e as num).toDouble()).toList(growable: false),
           ),
         ),
+        wealthHistory: ((json['wealthHistory'] as List?) ?? const [])
+            .map((e) => (e as num).toInt())
+            .toList(growable: false),
         ownedItems: ((json['ownedItems'] as List?) ?? const [])
             .map((e) => e.toString())
             .toList(growable: false),

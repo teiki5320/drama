@@ -159,6 +159,31 @@ class EconomyEngine {
       );
     }
 
+    // Snapshot du patrimoine total (argent + portefeuille) à la fin du tick.
+    var portfolio = 0.0;
+    if (investments != null) {
+      advanced.stockHoldings.forEach((ticker, qty) {
+        final price = advanced.stockCurrentPrices[ticker] ??
+            investments.firstWhere(
+              (i) => i.ticker == ticker,
+              orElse: () => Investment(
+                ticker: ticker,
+                name: '',
+                sector: '',
+                price: 0,
+                description: '',
+              ),
+            ).price.toDouble();
+        portfolio += price * qty;
+      });
+    }
+    final wealthSnapshot = advanced.argent + portfolio.round();
+    final newWealth = [...advanced.wealthHistory, wealthSnapshot];
+    if (newWealth.length > kMaxPriceHistory) {
+      newWealth.removeRange(0, newWealth.length - kMaxPriceHistory);
+    }
+    advanced = advanced.copyWith(wealthHistory: newWealth);
+
     // Auto-compute final ending on the last day.
     if (advanced.currentDay >= kFinalDay) {
       return advanced.copyWith(ending: computeEnding(advanced));

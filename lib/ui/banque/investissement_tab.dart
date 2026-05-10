@@ -28,8 +28,11 @@ class InvestissementTab extends ConsumerWidget {
           final u = i.unlockedAtDay;
           return u == null || state.currentDay >= u;
         }).toList(growable: false);
+        final locked = all.where((i) {
+          final u = i.unlockedAtDay;
+          return u != null && state.currentDay < u;
+        }).toList(growable: false);
 
-        // Compute portfolio value + day variation (latest tick - previous tick)
         var portfolioValue = 0.0;
         var dayDelta = 0.0;
         state.stockHoldings.forEach((ticker, qty) {
@@ -43,39 +46,70 @@ class InvestissementTab extends ConsumerWidget {
           }
         });
 
+        final positions = state.stockHoldings.entries.toList()
+          ..sort((a, b) => b.value.compareTo(a.value));
+
         return ListView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
           children: [
             _MarketHeader(
               day: state.currentDay,
               portfolioValue: portfolioValue.round(),
               dayDelta: dayDelta.round(),
             ),
-            const SizedBox(height: 16),
-            if (state.stockHoldings.isNotEmpty) ...[
-              const _SectionHeader(label: 'Tes positions'),
-              const SizedBox(height: 8),
-              for (final entry in state.stockHoldings.entries)
-                _PositionCard(
-                  ticker: entry.key,
-                  qty: entry.value,
-                  avgCost: state.stockAvgCost[entry.key] ?? 0.0,
-                  inv: all.where((i) => i.ticker == entry.key).firstOrNull,
-                  state: state,
-                  engine: engine,
-                ),
-              const SizedBox(height: 16),
+            const SizedBox(height: 14),
+            if (positions.isNotEmpty) ...[
+              const _SectionLabel('TES POSITIONS'),
+              const SizedBox(height: 6),
+              _RowsCard(
+                children: [
+                  for (final entry in positions)
+                    _PositionRow(
+                      ticker: entry.key,
+                      qty: entry.value,
+                      avgCost: state.stockAvgCost[entry.key] ?? 0.0,
+                      inv: all.where((i) => i.ticker == entry.key).firstOrNull,
+                      state: state,
+                      engine: engine,
+                    ),
+                ],
+              ),
+              const SizedBox(height: 14),
             ],
-            const _SectionHeader(label: 'Entreprises'),
-            const SizedBox(height: 8),
-            for (final inv in unlocked)
-              _InvestmentRow(inv: inv, state: state, engine: engine),
+            const _SectionLabel('MARCHÉ'),
+            const SizedBox(height: 6),
+            _RowsCard(
+              children: [
+                for (final inv in unlocked)
+                  if (!state.stockHoldings.containsKey(inv.ticker))
+                    _InvestmentRow(
+                      inv: inv,
+                      state: state,
+                      engine: engine,
+                    ),
+              ],
+            ),
+            if (locked.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              const _SectionLabel('À VENIR'),
+              const SizedBox(height: 6),
+              _RowsCard(
+                children: [
+                  for (final inv in locked)
+                    _LockedRow(inv: inv),
+                ],
+              ),
+            ],
           ],
         );
       },
     );
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────
+// MARKET HEADER
+// ─────────────────────────────────────────────────────────────────────
 
 class _MarketHeader extends StatelessWidget {
   const _MarketHeader({
@@ -90,69 +124,100 @@ class _MarketHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deltaColor = dayDelta > 0
-        ? AppColors.positive
-        : (dayDelta < 0 ? AppColors.negative : AppColors.textSecondary);
-    final deltaPct = portfolioValue > 0
+    final positive = dayDelta >= 0;
+    final deltaColor = dayDelta == 0
+        ? AppColors.textSecondary
+        : (positive ? AppColors.positive : AppColors.negative);
+    final deltaPct = portfolioValue > 0 && (portfolioValue - dayDelta) > 0
         ? (dayDelta / (portfolioValue - dayDelta)) * 100
         : 0.0;
     return Container(
-      padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [Color(0xFFFAE0CC), Color(0xFFFCEBC9)],
         ),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'BOURSE DE PARIS · ${formatGameDate(day).toUpperCase()}',
-            style: GoogleFonts.inter(
-              fontSize: 10.5,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.8,
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            formatMoney(portfolioValue),
-            style: GoogleFonts.crimsonPro(
-              fontSize: 36,
-              fontWeight: FontWeight.w700,
-              letterSpacing: -0.3,
-            ),
-          ),
-          const SizedBox(height: 2),
           Row(
             children: [
-              Icon(
-                dayDelta >= 0 ? Icons.arrow_upward : Icons.arrow_downward,
-                size: 14,
-                color: deltaColor,
-              ),
-              const SizedBox(width: 4),
               Text(
-                '${dayDelta >= 0 ? '+' : ''}${formatMoney(dayDelta.abs())} (${deltaPct >= 0 ? '+' : ''}${deltaPct.toStringAsFixed(2)} %)',
+                'PORTEFEUILLE',
                 style: GoogleFonts.inter(
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w600,
-                  color: deltaColor,
-                ),
-              ),
-              const SizedBox(width: 6),
-              Text(
-                '· sur la journée',
-                style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.0,
                   color: AppColors.textSecondary,
                 ),
               ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.6),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  'BOURSE DE PARIS',
+                  style: GoogleFonts.inter(
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.6,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
             ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            formatMoney(portfolioValue),
+            style: GoogleFonts.crimsonPro(
+              fontSize: 44,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.5,
+              height: 1.05,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: deltaColor.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  dayDelta == 0
+                      ? Icons.remove
+                      : (positive
+                          ? Icons.arrow_upward
+                          : Icons.arrow_downward),
+                  size: 12,
+                  color: deltaColor,
+                ),
+                const SizedBox(width: 3),
+                Text(
+                  dayDelta == 0
+                      ? 'stable · 24h'
+                      : '${formatMoneySigned(dayDelta)} (${positive ? '+' : ''}${deltaPct.toStringAsFixed(2)} %) · 24h',
+                  style: GoogleFonts.inter(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w700,
+                    color: deltaColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -160,24 +225,65 @@ class _MarketHeader extends StatelessWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({required this.label});
+// ─────────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────────
+
+class _SectionLabel extends StatelessWidget {
+  const _SectionLabel(this.label);
   final String label;
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: GoogleFonts.crimsonPro(
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
+    return Padding(
+      padding: const EdgeInsets.only(left: 4),
+      child: Text(
+        label,
+        style: GoogleFonts.inter(
+          fontSize: 10.5,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.0,
+          color: AppColors.textSecondary,
+        ),
       ),
     );
   }
 }
 
-class _PositionCard extends ConsumerWidget {
-  const _PositionCard({
+class _RowsCard extends StatelessWidget {
+  const _RowsCard({required this.children});
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    if (children.isEmpty) return const SizedBox.shrink();
+    final withDividers = <Widget>[];
+    for (var i = 0; i < children.length; i++) {
+      withDividers.add(children[i]);
+      if (i < children.length - 1) {
+        withDividers.add(
+          const Divider(height: 1, indent: 14, color: Color(0x0F1A1A1A)),
+        );
+      }
+    }
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.cardBg,
+        border: Border.all(color: const Color(0x141A1A1A)),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(children: withDividers),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// POSITION ROW (dense)
+// ─────────────────────────────────────────────────────────────────────
+
+class _PositionRow extends ConsumerWidget {
+  const _PositionRow({
     required this.ticker,
     required this.qty,
     required this.avgCost,
@@ -196,103 +302,129 @@ class _PositionCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (inv == null) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 8),
+      return Padding(
         padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-        decoration: BoxDecoration(
-          color: AppColors.cardBg,
-          border: Border.all(color: const Color(0x141A1A1A)),
-          borderRadius: BorderRadius.circular(16),
+        child: Text(
+          '$ticker · $qty actions',
+          style: GoogleFonts.inter(fontSize: 13),
         ),
-        child: Text('$ticker · $qty actions',
-            style: GoogleFonts.inter(fontSize: 13.5)),
       );
     }
     final price = engine.currentPrice(state, inv!);
     final value = (price * qty).round();
     final cost = (avgCost * qty).round();
     final pnl = value - cost;
-    final pnlColor =
-        pnl > 0 ? AppColors.positive : (pnl < 0 ? AppColors.negative : AppColors.textSecondary);
-    final history = state.stockPriceHistory[ticker] ?? const <double>[];
+    final pnlColor = pnl > 0
+        ? AppColors.positive
+        : (pnl < 0 ? AppColors.negative : AppColors.textSecondary);
+    final history = state.stockPriceHistory[inv!.ticker] ?? const <double>[];
+    final dayDelta = history.length >= 2
+        ? history.last - history[history.length - 2]
+        : 0.0;
+    final dayPct = history.length >= 2 && history[history.length - 2] > 0
+        ? (dayDelta / history[history.length - 2]) * 100
+        : 0.0;
+    final dayColor = dayDelta > 0
+        ? AppColors.positive
+        : (dayDelta < 0 ? AppColors.negative : AppColors.textSecondary);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: AppColors.cardBg,
-        border: Border.all(color: const Color(0x141A1A1A)),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ticker,
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
-                      ),
+    return InkWell(
+      onTap: () => _showTradeSheet(context, ref: ref, inv: inv!, isBuy: false),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+        child: Row(
+          children: [
+            // Left: ticker + name
+            SizedBox(
+              width: 100,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ticker,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                      color: AppColors.textPrimary,
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '$qty actions @ ${avgCost.toStringAsFixed(0)} € · maintenant ${price.toStringAsFixed(0)} €',
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: AppColors.textSecondary,
-                      ),
+                  ),
+                  Text(
+                    '$qty × ${avgCost.toStringAsFixed(0)} €',
+                    style: GoogleFonts.inter(
+                      fontSize: 10.5,
+                      color: AppColors.textSecondary,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Sparkline(values: history, width: 70),
-              const SizedBox(width: 10),
-              Column(
+            ),
+            // Sparkline
+            Expanded(
+              child: Center(
+                child: Sparkline(values: history, width: 80),
+              ),
+            ),
+            // Right: price + day var, pnl badge under
+            SizedBox(
+              width: 96,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '$value €',
+                    formatMoney(value),
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
                     ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        dayDelta == 0
+                            ? Icons.remove
+                            : (dayDelta > 0
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward),
+                        size: 10,
+                        color: dayColor,
+                      ),
+                      const SizedBox(width: 2),
+                      Text(
+                        '${dayPct >= 0 ? '+' : ''}${dayPct.toStringAsFixed(1)} %',
+                        style: GoogleFonts.inter(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w700,
+                          color: dayColor,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    pnl >= 0 ? '+$pnl €' : '$pnl €',
+                    pnl >= 0 ? '+${formatMoney(pnl)}' : formatMoney(pnl),
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w700,
                       color: pnlColor,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(width: 10),
-              _SmallButton(
-                label: 'Vendre',
-                color: AppColors.negative,
-                onTap: () => _showTradeSheet(
-                  context,
-                  ref: ref,
-                  inv: inv!,
-                  isBuy: false,
-                ),
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────
+// INVESTMENT ROW (watchlist)
+// ─────────────────────────────────────────────────────────────────────
 
 class _InvestmentRow extends ConsumerWidget {
   const _InvestmentRow({
@@ -308,109 +440,153 @@ class _InvestmentRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final current = engine.currentPrice(state, inv);
-    final variationPct = (current - inv.price) / inv.price * 100;
-    final varColor = variationPct > 0.05
-        ? AppColors.positive
-        : (variationPct < -0.05 ? AppColors.negative : AppColors.textSecondary);
-    final canBuy = engine.canBuyStock(state, inv, 1);
     final history = state.stockPriceHistory[inv.ticker] ?? const <double>[];
+    final dayDelta = history.length >= 2
+        ? history.last - history[history.length - 2]
+        : 0.0;
+    final dayPct = history.length >= 2 && history[history.length - 2] > 0
+        ? (dayDelta / history[history.length - 2]) * 100
+        : 0.0;
+    final dayColor = dayDelta > 0
+        ? AppColors.positive
+        : (dayDelta < 0 ? AppColors.negative : AppColors.textSecondary);
+    final canBuy = engine.canBuyStock(state, inv, 1);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: AppColors.cardBg,
-        border: Border.all(color: const Color(0x141A1A1A)),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${inv.ticker} · ${inv.name}',
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                      ),
+    return InkWell(
+      onTap: canBuy.ok
+          ? () => _showTradeSheet(context, ref: ref, inv: inv, isBuy: true)
+          : null,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+        child: Row(
+          children: [
+            // Left: ticker + sector
+            SizedBox(
+              width: 100,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    inv.ticker,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                      color: AppColors.textPrimary,
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      inv.sector,
-                      style: GoogleFonts.inter(
-                        fontSize: 11.5,
-                        color: AppColors.textSecondary,
-                      ),
+                  ),
+                  Text(
+                    inv.sector,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.inter(
+                      fontSize: 10.5,
+                      color: AppColors.textSecondary,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Sparkline(values: history, width: 70),
-              const SizedBox(width: 10),
-              Column(
+            ),
+            // Sparkline
+            Expanded(
+              child: Center(
+                child: Sparkline(values: history, width: 80),
+              ),
+            ),
+            // Right: price + day var
+            SizedBox(
+              width: 96,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     '${current.toStringAsFixed(0)} €',
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
                     ),
                   ),
-                  Text(
-                    '${variationPct >= 0 ? '+' : ''}${variationPct.toStringAsFixed(1)}%',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11.5,
-                      color: varColor,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        dayDelta == 0
+                            ? Icons.remove
+                            : (dayDelta > 0
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward),
+                        size: 10,
+                        color: dayColor,
+                      ),
+                      const SizedBox(width: 2),
+                      Text(
+                        '${dayPct >= 0 ? '+' : ''}${dayPct.toStringAsFixed(1)} %',
+                        style: GoogleFonts.inter(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w700,
+                          color: dayColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            inv.description,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.inter(
-              fontSize: 12.5,
-              color: AppColors.textPrimary,
-              height: 1.45,
             ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              _SmallButton(
-                label: 'Acheter',
-                color: AppColors.accentOrange,
-                disabled: !canBuy.ok,
-                onTap: () => _showTradeSheet(
-                  context,
-                  ref: ref,
-                  inv: inv,
-                  isBuy: true,
-                ),
-              ),
-              if (!canBuy.ok) ...[
-                const SizedBox(width: 8),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LockedRow extends StatelessWidget {
+  const _LockedRow({required this.inv});
+  final Investment inv;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 100,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  canBuy.reason ?? '',
+                  inv.ticker,
                   style: GoogleFonts.inter(
-                    fontSize: 11.5,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.5,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                Text(
+                  inv.sector,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.inter(
+                    fontSize: 10.5,
                     color: AppColors.textSecondary,
                   ),
                 ),
               ],
-            ],
+            ),
+          ),
+          const Spacer(),
+          Icon(Icons.lock_outline, size: 16, color: AppColors.textSecondary),
+          const SizedBox(width: 6),
+          Text(
+            'J${inv.unlockedAtDay}',
+            style: GoogleFonts.inter(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textSecondary,
+            ),
           ),
         ],
       ),
@@ -418,44 +594,9 @@ class _InvestmentRow extends ConsumerWidget {
   }
 }
 
-class _SmallButton extends StatelessWidget {
-  const _SmallButton({
-    required this.label,
-    required this.color,
-    required this.onTap,
-    this.disabled = false,
-  });
-
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-  final bool disabled;
-
-  @override
-  Widget build(BuildContext context) {
-    final bg = disabled ? const Color(0xFFEAE6DD) : color;
-    final fg = disabled ? AppColors.textSecondary : Colors.white;
-    return InkWell(
-      onTap: disabled ? null : onTap,
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          label,
-          style: GoogleFonts.inter(
-            fontSize: 12.5,
-            fontWeight: FontWeight.w700,
-            color: fg,
-          ),
-        ),
-      ),
-    );
-  }
-}
+// ─────────────────────────────────────────────────────────────────────
+// TRADE SHEET (bottom sheet)
+// ─────────────────────────────────────────────────────────────────────
 
 void _showTradeSheet(
   BuildContext context, {
@@ -468,15 +609,15 @@ void _showTradeSheet(
     backgroundColor: AppColors.paperCream,
     isScrollControlled: true,
     showDragHandle: true,
-    builder: (ctx) => _TradeSheet(inv: inv, isBuy: isBuy),
+    builder: (ctx) => _TradeSheet(inv: inv, initialIsBuy: isBuy),
   );
 }
 
 class _TradeSheet extends ConsumerStatefulWidget {
-  const _TradeSheet({required this.inv, required this.isBuy});
+  const _TradeSheet({required this.inv, required this.initialIsBuy});
 
   final Investment inv;
-  final bool isBuy;
+  final bool initialIsBuy;
 
   @override
   ConsumerState<_TradeSheet> createState() => _TradeSheetState();
@@ -484,6 +625,7 @@ class _TradeSheet extends ConsumerStatefulWidget {
 
 class _TradeSheetState extends ConsumerState<_TradeSheet> {
   int _qty = 1;
+  late bool _isBuy = widget.initialIsBuy;
 
   @override
   Widget build(BuildContext context) {
@@ -491,10 +633,12 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
     final engine = ref.watch(economyEngineProvider);
     final price = engine.currentPrice(state, widget.inv);
     final total = (price * _qty).round();
-    final maxQty = widget.isBuy
+    final hasPosition =
+        (state.stockHoldings[widget.inv.ticker] ?? 0) > 0;
+    final maxQty = _isBuy
         ? (state.argent ~/ price).clamp(0, 9999)
         : (state.stockHoldings[widget.inv.ticker] ?? 0);
-    final canTrade = widget.isBuy
+    final canTrade = _isBuy
         ? engine.canBuyStock(state, widget.inv, _qty)
         : engine.canSellStock(state, widget.inv.ticker, _qty);
     final history =
@@ -504,7 +648,7 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
     return Padding(
       padding: EdgeInsets.fromLTRB(
         20,
-        8,
+        4,
         20,
         20 + MediaQuery.of(context).viewInsets.bottom,
       ),
@@ -512,24 +656,81 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '${widget.isBuy ? 'Acheter' : 'Vendre'} ${widget.inv.ticker}',
-            style: GoogleFonts.crimsonPro(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-            ),
+          Row(
+            children: [
+              Text(
+                widget.inv.ticker,
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.6,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  widget.inv.name,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ),
+              Text(
+                '${price.toStringAsFixed(0)} €',
+                style: GoogleFonts.crimsonPro(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
-            '${widget.inv.name} · ${price.toStringAsFixed(0)} €/action',
+            widget.inv.description,
             style: GoogleFonts.inter(
-              fontSize: 13,
-              color: AppColors.textSecondary,
+              fontSize: 12.5,
+              color: AppColors.textPrimary,
+              height: 1.4,
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           StockChart(values: history, avgCost: avgCost),
-          const SizedBox(height: 18),
+          const SizedBox(height: 12),
+          // Buy/Sell switch (sell only available if position)
+          if (hasPosition)
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFFEFE9D8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.all(3),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _SegmentBtn(
+                      label: 'Acheter',
+                      selected: _isBuy,
+                      onTap: () => setState(() {
+                        _isBuy = true;
+                        _qty = 1;
+                      }),
+                    ),
+                  ),
+                  Expanded(
+                    child: _SegmentBtn(
+                      label: 'Vendre',
+                      selected: !_isBuy,
+                      onTap: () => setState(() {
+                        _isBuy = false;
+                        _qty = 1;
+                      }),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          if (hasPosition) const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -561,7 +762,7 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -569,7 +770,7 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
                   style: GoogleFonts.inter(
                       fontSize: 14, color: AppColors.textSecondary)),
               Text(
-                '$total €',
+                formatMoney(total),
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
@@ -577,12 +778,12 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 14),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: widget.isBuy
+                backgroundColor: _isBuy
                     ? AppColors.accentOrange
                     : AppColors.negative,
                 foregroundColor: Colors.white,
@@ -595,7 +796,7 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
                   ? null
                   : () async {
                       final ctrl = ref.read(gameStateProvider.notifier);
-                      if (widget.isBuy) {
+                      if (_isBuy) {
                         await ctrl.buyStock(widget.inv, _qty);
                       } else {
                         await ctrl.sellStock(widget.inv, _qty);
@@ -604,7 +805,9 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
                     },
               child: Text(
                 canTrade.ok
-                    ? (widget.isBuy ? 'Confirmer l\'achat' : 'Confirmer la vente')
+                    ? (_isBuy
+                        ? 'Confirmer l\'achat'
+                        : 'Confirmer la vente')
                     : (canTrade.reason ?? '—'),
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w700,
@@ -614,6 +817,44 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SegmentBtn extends StatelessWidget {
+  const _SegmentBtn({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: selected ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: selected
+                ? AppColors.textPrimary
+                : AppColors.textSecondary,
+          ),
+        ),
       ),
     );
   }
