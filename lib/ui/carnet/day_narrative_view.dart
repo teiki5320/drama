@@ -119,6 +119,7 @@ class _NarrativeImage extends StatelessWidget {
             child: Image.asset(
               imageAsset!,
               fit: BoxFit.cover,
+              cacheWidth: 800,
               errorBuilder: (_, __, ___) => fallback,
             ),
           );

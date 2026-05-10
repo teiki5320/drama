@@ -1,20 +1,31 @@
-// Smoke test : monter ContreJourApp et vérifier que la sidebar se charge.
+// Smoke test : monter ContreJourApp et vérifier qu'il s'affiche sans
+// crash. Au premier lancement on tombe sur l'onboarding (Bienvenue). Si
+// le flag hasSeenOnboarding est posé, on tombe direct sur la sidebar.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:contre_jour/main.dart';
 
 void main() {
-  testWidgets('App boots and shows sidebar nav', (WidgetTester tester) async {
+  testWidgets('First launch shows the onboarding welcome page',
+      (WidgetTester tester) async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
     await tester.pumpWidget(const ProviderScope(child: ContreJourApp()));
-    // Un pump pour déclencher les providers async, sans attendre les
-    // futures (pas de I/O réel en test — les FutureProvider de scenario
-    // resteront en loading state).
-    await tester.pump();
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Bienvenue'), findsOneWidget);
+    expect(find.text('Commencer le drama'), findsOneWidget);
+  });
 
-    // La sidebar gauche contient les 4 labels en uppercase.
+  testWidgets('Returning launch shows the sidebar nav',
+      (WidgetTester tester) async {
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'hasSeenOnboarding_v1': true,
+    });
+    await tester.pumpWidget(const ProviderScope(child: ContreJourApp()));
+    await tester.pumpAndSettle();
     expect(find.text('CARNET'), findsOneWidget);
     expect(find.text('BANQUE'), findsOneWidget);
     expect(find.text('INSTA'), findsOneWidget);

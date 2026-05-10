@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -89,7 +90,10 @@ class _DayBody extends ConsumerWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => controller.nextDay(),
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    controller.nextDay();
+                  },
                   child: const Text('Jour suivant'),
                 ),
               ),

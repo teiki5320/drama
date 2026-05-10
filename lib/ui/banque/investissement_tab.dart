@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -795,6 +796,7 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
               onPressed: !canTrade.ok
                   ? null
                   : () async {
+                      HapticFeedback.lightImpact();
                       final ctrl = ref.read(gameStateProvider.notifier);
                       if (_isBuy) {
                         await ctrl.buyStock(widget.inv, _qty);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -280,6 +281,7 @@ class _ShopCard extends ConsumerWidget {
               reason: check.reason,
               price: item.price,
               onPressed: () async {
+                HapticFeedback.lightImpact();
                 await ref.read(gameStateProvider.notifier).buyItem(item);
               },
             ),

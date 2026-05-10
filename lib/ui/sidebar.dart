@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../core/colors.dart';
 import '../providers/game_state_provider.dart';
 import '../providers/ui_provider.dart';
+import 'settings_sheet.dart';
 
 /// Left rail: stats chips at top, nav buttons below, gear at the bottom.
 /// Width is fixed at 84 dp — works on iPhone (just) and looks clean on iPad.
@@ -30,31 +32,55 @@ class Sidebar extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          _StatChip(label: 'J${s.currentDay}', accent: AppColors.accentOrange),
+          Tooltip(
+            message: 'Jour ${s.currentDay} sur 112',
+            child: _StatChip(
+              label: 'J${s.currentDay}',
+              accent: AppColors.accentOrange,
+            ),
+          ),
           const SizedBox(height: 8),
-          _StatChip(label: _formatMoney(s.argent)),
+          Tooltip(
+            message: 'Argent en banque',
+            child: _StatChip(label: _formatMoney(s.argent)),
+          ),
           const SizedBox(height: 8),
-          _StatChip(label: '${s.mood}/10', emoji: '😊'),
+          Tooltip(
+            message: 'Humeur de Shen (0-10)',
+            child: _StatChip(label: '${s.mood}/10', emoji: '😊'),
+          ),
           const SizedBox(height: 8),
-          _StatChip(label: '${s.reputation}', emoji: '⭐'),
+          Tooltip(
+            message: '${s.reputation} ★ · ${s.followers} abonnés',
+            child: _StatChip(label: '${s.reputation}', emoji: '⭐'),
+          ),
           const Spacer(),
           _NavItem(
             icon: Icons.menu_book,
             label: 'CARNET',
             selected: selected == 0,
-            onTap: () => ref.read(selectedTabProvider.notifier).state = 0,
+            onTap: () {
+              HapticFeedback.selectionClick();
+              ref.read(selectedTabProvider.notifier).state = 0;
+            },
           ),
           _NavItem(
             icon: Icons.account_balance,
             label: 'BANQUE',
             selected: selected == 1,
-            onTap: () => ref.read(selectedTabProvider.notifier).state = 1,
+            onTap: () {
+              HapticFeedback.selectionClick();
+              ref.read(selectedTabProvider.notifier).state = 1;
+            },
           ),
           _NavItem(
             icon: Icons.photo_library,
             label: 'INSTA',
             selected: selected == 2,
-            onTap: () => ref.read(selectedTabProvider.notifier).state = 2,
+            onTap: () {
+              HapticFeedback.selectionClick();
+              ref.read(selectedTabProvider.notifier).state = 2;
+            },
           ),
           _NavItem(
             icon: Icons.chat_bubble,
@@ -62,6 +88,7 @@ class Sidebar extends ConsumerWidget {
             selected: selected == 3,
             badgeCount: unread,
             onTap: () async {
+              HapticFeedback.selectionClick();
               ref.read(selectedTabProvider.notifier).state = 3;
               await ref
                   .read(gameStateProvider.notifier)
@@ -72,7 +99,16 @@ class Sidebar extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.settings, color: AppColors.textSecondary),
             tooltip: 'Réglages',
-            onPressed: () => _openSettings(context, ref),
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              showModalBottomSheet<void>(
+                context: context,
+                backgroundColor: AppColors.paperCream,
+                isScrollControlled: true,
+                showDragHandle: false,
+                builder: (_) => const SettingsSheet(),
+              );
+            },
           ),
         ],
       ),
@@ -83,33 +119,6 @@ class Sidebar extends ConsumerWidget {
     if (v >= 1000000) return '${(v / 1000000).toStringAsFixed(1)}M€';
     if (v >= 1000) return '${(v / 1000).toStringAsFixed(1)}k€';
     return '$v€';
-  }
-
-  Future<void> _openSettings(BuildContext context, WidgetRef ref) async {
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Réglages'),
-        content: const Text(
-          'Recommencer la partie ? La progression actuelle sera perdue.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.negative),
-            child: const Text('Recommencer'),
-          ),
-        ],
-      ),
-    );
-    if (ok == true) {
-      await ref.read(gameStateProvider.notifier).reset();
-      ref.read(selectedTabProvider.notifier).state = 0;
-    }
   }
 }
 
