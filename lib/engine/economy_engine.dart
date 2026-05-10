@@ -62,6 +62,8 @@ class EconomyEngine {
     final newReputation = (state.reputation + option.reputation)
         .clamp(0, 1 << 30); // no negative reputation
     final newArgent = state.argent + option.argent;
+    final newFollowers = followersFromReputation(newReputation);
+    final followersDelta = newFollowers - state.followers;
 
     final mergedChoices = Map<int, int>.from(state.choicesMade)
       ..[dayId] = optionIndex;
@@ -94,7 +96,9 @@ class EconomyEngine {
       argent: newArgent,
       mood: newMood,
       reputation: newReputation,
-      followers: followersFromReputation(newReputation),
+      followers: newFollowers,
+      followersDeltaToday:
+          state.followersDeltaToday + followersDelta,
       choicesMade: mergedChoices,
       unlockedConversations: mergedConvos,
       isMomTreatmentPaid: newIsMomPaid,
@@ -132,6 +136,7 @@ class EconomyEngine {
     var advanced = state.copyWith(
       currentDay: next,
       argent: state.argent + income,
+      followersDeltaToday: 0, // reset au passage à un nouveau jour
       ledger: _capLedger(ledger),
     );
 
