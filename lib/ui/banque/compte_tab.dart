@@ -8,6 +8,7 @@ import '../../engine/economy_engine.dart';
 import '../../models/ledger_entry.dart';
 import '../../providers/catalogs_provider.dart';
 import '../../providers/game_state_provider.dart';
+import 'stock_chart.dart';
 
 class CompteTab extends ConsumerWidget {
   const CompteTab({super.key});
@@ -33,135 +34,563 @@ class CompteTab extends ConsumerWidget {
     final pnl = (portfolioValue - portfolioCost).round();
     final patrimoine = s.argent + portfolioValue.round();
 
+    final hist = s.wealthHistory;
+    final wealthDelta = hist.length >= 2 ? hist.last - hist[hist.length - 2] : 0;
+    final wealthDeltaPct = hist.length >= 2 && hist[hist.length - 2] > 0
+        ? wealthDelta / hist[hist.length - 2] * 100
+        : 0.0;
+
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
       children: [
-        Center(
-          child: Column(
+        _HeroCompte(
+          argent: s.argent,
+          patrimoine: patrimoine,
+          delta: wealthDelta,
+          deltaPct: wealthDeltaPct,
+          day: s.currentDay,
+        ),
+        const SizedBox(height: 14),
+        _WealthChartCard(history: hist.map((e) => e.toDouble()).toList()),
+        const SizedBox(height: 14),
+        _StatGrid(
+          liquide: s.argent,
+          portefeuille: portfolioValue.round(),
+          pnl: pnl,
+          revenusJour: engine.passiveIncome(s.followers),
+          followers: s.followers,
+          tagline: engine.instaTagline(s.followers),
+        ),
+        const SizedBox(height: 14),
+        _MomDeadlineCard(
+          paid: s.isMomTreatmentPaid,
+          argent: s.argent,
+          currentDay: s.currentDay,
+        ),
+        const SizedBox(height: 14),
+        _MovementsCard(entries: s.ledger),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// HERO
+// ─────────────────────────────────────────────────────────────────────
+
+class _HeroCompte extends StatelessWidget {
+  const _HeroCompte({
+    required this.argent,
+    required this.patrimoine,
+    required this.delta,
+    required this.deltaPct,
+    required this.day,
+  });
+
+  final int argent;
+  final int patrimoine;
+  final int delta;
+  final double deltaPct;
+  final int day;
+
+  @override
+  Widget build(BuildContext context) {
+    final positive = delta >= 0;
+    final deltaColor = delta == 0
+        ? AppColors.textSecondary
+        : (positive ? AppColors.positive : AppColors.negative);
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFFAE0CC), Color(0xFFFCEBC9)],
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
               Text(
-                'Compte courant',
+                'COMPTE COURANT',
                 style: GoogleFonts.inter(
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.0,
                   color: AppColors.textSecondary,
-                  fontSize: 13,
                 ),
               ),
-              const SizedBox(height: 6),
-              Text(
-                formatMoney(s.argent),
-                style: GoogleFonts.crimsonPro(
-                  fontSize: 52,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.5,
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.6),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  formatGameDate(day).toUpperCase(),
+                  style: GoogleFonts.inter(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
             ],
           ),
-        ),
-        const SizedBox(height: 24),
+          const SizedBox(height: 4),
+          Text(
+            formatMoney(argent),
+            style: GoogleFonts.crimsonPro(
+              fontSize: 56,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -1.0,
+              height: 1.05,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: deltaColor.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      delta == 0
+                          ? Icons.remove
+                          : (positive
+                              ? Icons.arrow_upward
+                              : Icons.arrow_downward),
+                      size: 12,
+                      color: deltaColor,
+                    ),
+                    const SizedBox(width: 3),
+                    Text(
+                      delta == 0
+                          ? '0 € · 24h'
+                          : '${formatMoneySigned(delta)} (${positive ? '+' : ''}${deltaPct.toStringAsFixed(2)} %)',
+                      style: GoogleFonts.inter(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        color: deltaColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Patrimoine ${formatMoney(patrimoine)}',
+                style: GoogleFonts.inter(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// CHART
+// ─────────────────────────────────────────────────────────────────────
+
+class _WealthChartCard extends StatelessWidget {
+  const _WealthChartCard({required this.history});
+  final List<double> history;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+      decoration: BoxDecoration(
+        color: AppColors.cardBg,
+        border: Border.all(color: const Color(0x141A1A1A)),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'ÉVOLUTION DU PATRIMOINE',
+            style: GoogleFonts.inter(
+              fontSize: 10.5,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.0,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 10),
+          StockChart(values: history, height: 130),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// STAT GRID
+// ─────────────────────────────────────────────────────────────────────
+
+class _StatGrid extends StatelessWidget {
+  const _StatGrid({
+    required this.liquide,
+    required this.portefeuille,
+    required this.pnl,
+    required this.revenusJour,
+    required this.followers,
+    required this.tagline,
+  });
+
+  final int liquide;
+  final int portefeuille;
+  final int pnl;
+  final int revenusJour;
+  final int followers;
+  final String tagline;
+
+  @override
+  Widget build(BuildContext context) {
+    final pnlColor = pnl > 0
+        ? AppColors.positive
+        : (pnl < 0 ? AppColors.negative : null);
+    return Column(
+      children: [
         Row(
           children: [
             Expanded(
-              child: _StatCard(
-                label: 'Portefeuille',
-                value: formatMoney(portfolioValue.round()),
+              child: _MiniStat(
+                label: 'Liquidités',
+                value: formatMoney(liquide),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             Expanded(
-              child: _StatCard(
-                label: 'PNL latente',
-                value: formatMoneySigned(pnl),
-                valueColor: pnl > 0
-                    ? AppColors.positive
-                    : (pnl < 0 ? AppColors.negative : null),
+              child: _MiniStat(
+                label: 'Bourse',
+                value: formatMoney(portefeuille),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        _StatCard(
-          label: 'Patrimoine',
-          value: formatMoney(patrimoine),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: _MiniStat(
+                label: 'PnL latente',
+                value: formatMoneySigned(pnl),
+                valueColor: pnlColor,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: _MiniStat(
+                label: 'Partenariats',
+                value: '${formatMoney(revenusJour)}/jour',
+                hint: '$followers abonnés · $tagline',
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 24),
-        _StatCard(
-          label: 'Followers',
-          value:
-              '${s.followers} · « ${engine.instaTagline(s.followers)} »',
-        ),
-        const SizedBox(height: 8),
-        _StatCard(
-          label: 'Revenus passifs',
-          value: '${engine.passiveIncome(s.followers)} €/jour',
-        ),
-        const SizedBox(height: 24),
-        _StatCard(
-          label: 'Traitement maman',
-          value: s.isMomTreatmentPaid
-              ? '✅ Payé (-${EconomyEngine.kMomTreatmentCost} €)'
-              : '⏳ ${EconomyEngine.kMomTreatmentCost} € avant J${EconomyEngine.kMomDeadlineDay}',
-        ),
-        const SizedBox(height: 24),
-        _LedgerSection(entries: s.ledger),
       ],
     );
   }
 }
 
-class _LedgerSection extends StatelessWidget {
-  const _LedgerSection({required this.entries});
+class _MiniStat extends StatelessWidget {
+  const _MiniStat({
+    required this.label,
+    required this.value,
+    this.valueColor,
+    this.hint,
+  });
+  final String label;
+  final String value;
+  final Color? valueColor;
+  final String? hint;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: AppColors.cardBg,
+        border: Border.all(color: const Color(0x141A1A1A)),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label.toUpperCase(),
+            style: GoogleFonts.inter(
+              fontSize: 9.5,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.7,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: valueColor ?? AppColors.textPrimary,
+            ),
+          ),
+          if (hint != null) ...[
+            const SizedBox(height: 2),
+            Text(
+              hint!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.inter(
+                fontSize: 10.5,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// MOM DEADLINE
+// ─────────────────────────────────────────────────────────────────────
+
+class _MomDeadlineCard extends StatelessWidget {
+  const _MomDeadlineCard({
+    required this.paid,
+    required this.argent,
+    required this.currentDay,
+  });
+
+  final bool paid;
+  final int argent;
+  final int currentDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final cost = EconomyEngine.kMomTreatmentCost;
+    final deadline = EconomyEngine.kMomDeadlineDay;
+    final progress = (argent / cost).clamp(0.0, 1.0);
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+      decoration: BoxDecoration(
+        color: paid
+            ? AppColors.positive.withValues(alpha: 0.06)
+            : AppColors.cardBg,
+        border: Border.all(
+          color: paid
+              ? AppColors.positive.withValues(alpha: 0.4)
+              : const Color(0x141A1A1A),
+        ),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('🏥', style: TextStyle(fontSize: 18)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Traitement de Maman',
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              if (paid)
+                Text(
+                  'Payé ✓',
+                  style: GoogleFonts.inter(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.positive,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            paid
+                ? 'Hôpital Tenon · ${formatMoney(cost)} versés.'
+                : '${formatMoney(cost)} à réunir avant ${formatGameDate(deadline)}.',
+            style: GoogleFonts.inter(
+              fontSize: 12.5,
+              color: AppColors.textSecondary,
+              height: 1.4,
+            ),
+          ),
+          if (!paid) ...[
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 6,
+                backgroundColor: const Color(0xFFEAE6DD),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  progress >= 1.0
+                      ? AppColors.positive
+                      : AppColors.accentOrange,
+                ),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Row(
+              children: [
+                Text(
+                  '${(progress * 100).toStringAsFixed(0)} %',
+                  style: GoogleFonts.inter(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'J$currentDay / J$deadline',
+                  style: GoogleFonts.inter(
+                    fontSize: 11.5,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// MOVEMENTS
+// ─────────────────────────────────────────────────────────────────────
+
+class _MovementsCard extends StatelessWidget {
+  const _MovementsCard({required this.entries});
   final List<LedgerEntry> entries;
 
   @override
   Widget build(BuildContext context) {
-    if (entries.isEmpty) return const SizedBox.shrink();
-    final last = entries.reversed.take(15).toList(growable: false);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 8),
-          child: Text(
-            'DERNIERS MOUVEMENTS',
-            style: GoogleFonts.inter(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.8,
-              color: AppColors.textSecondary,
+    if (entries.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+        decoration: BoxDecoration(
+          color: AppColors.cardBg,
+          border: Border.all(color: const Color(0x141A1A1A)),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'MOUVEMENTS',
+              style: GoogleFonts.inter(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.0,
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Aucun mouvement encore.',
+              style: GoogleFonts.inter(
+                fontSize: 12.5,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    final last = entries.reversed.take(8).toList(growable: false);
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.cardBg,
+        border: Border.all(color: const Color(0x141A1A1A)),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
+            child: Row(
+              children: [
+                Text(
+                  'MOUVEMENTS',
+                  style: GoogleFonts.inter(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '${entries.length} au total',
+                  style: GoogleFonts.inter(
+                    fontSize: 10.5,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.cardBg,
-            border: Border.all(color: const Color(0x141A1A1A)),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            children: [
-              for (var i = 0; i < last.length; i++) ...[
-                _LedgerRow(entry: last[i]),
-                if (i < last.length - 1)
-                  const Divider(height: 1, color: Color(0x141A1A1A)),
-              ],
-            ],
-          ),
-        ),
-      ],
+          const Divider(height: 1, color: Color(0x141A1A1A)),
+          for (var i = 0; i < last.length; i++) ...[
+            _MovementRow(entry: last[i]),
+            if (i < last.length - 1)
+              const Divider(
+                height: 1,
+                indent: 56,
+                color: Color(0x0F1A1A1A),
+              ),
+          ],
+        ],
+      ),
     );
   }
 }
 
-class _LedgerRow extends StatelessWidget {
-  const _LedgerRow({required this.entry});
+class _MovementRow extends StatelessWidget {
+  const _MovementRow({required this.entry});
   final LedgerEntry entry;
 
   @override
   Widget build(BuildContext context) {
     final positive = entry.amount > 0;
     final color = positive ? AppColors.positive : AppColors.negative;
-    final sign = positive ? '+' : '';
+    final sign = positive ? '+' : '-';
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
       child: Row(
@@ -169,12 +598,13 @@ class _LedgerRow extends StatelessWidget {
           Container(
             width: 32,
             height: 32,
-            decoration: const BoxDecoration(
-              color: Color(0xFFF3EEDF),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF3EEDF),
               shape: BoxShape.circle,
+              border: Border.all(color: const Color(0x0F1A1A1A)),
             ),
             alignment: Alignment.center,
-            child: Text(entry.emoji, style: const TextStyle(fontSize: 16)),
+            child: Text(entry.emoji, style: const TextStyle(fontSize: 14)),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -184,7 +614,7 @@ class _LedgerRow extends StatelessWidget {
                 Text(
                   entry.label,
                   style: GoogleFonts.inter(
-                    fontSize: 13.5,
+                    fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
@@ -195,7 +625,7 @@ class _LedgerRow extends StatelessWidget {
                 Text(
                   '${formatGameDateShort(entry.day)} · ${_timeFor(entry.kind)}',
                   style: GoogleFonts.inter(
-                    fontSize: 11,
+                    fontSize: 10.5,
                     color: AppColors.textSecondary,
                   ),
                 ),
@@ -205,53 +635,9 @@ class _LedgerRow extends StatelessWidget {
           Text(
             '$sign${formatMoney(entry.amount.abs())}',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: 13.5,
               fontWeight: FontWeight.w700,
               color: color,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  const _StatCard({
-    required this.label,
-    required this.value,
-    this.valueColor,
-  });
-  final String label;
-  final String value;
-  final Color? valueColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-      decoration: BoxDecoration(
-        color: AppColors.cardBg,
-        border: Border.all(color: const Color(0x141A1A1A)),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: GoogleFonts.inter(
-              color: AppColors.textSecondary,
-              fontSize: 12,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: valueColor ?? AppColors.textPrimary,
             ),
           ),
         ],
