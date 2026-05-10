@@ -275,5 +275,351 @@
     "triggers": [
       {"type": "unlockConversation", "payload": {"conversation": "tristan"}}
     ]
+  },
+  {
+    "id": 8,
+    "date": "Vendredi 10 juin",
+    "location": "Cabinet notarial, Paris",
+    "time": "11:30",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Quatorze pages. Quatorze pages pour décrire trois mois de mensonge encadré par un papier signé.\n\nLe notaire — un type chauve qui sourit poliment comme s'il faisait ce genre de contrat tous les jours, et peut-être que oui — fait défiler les clauses.\n\nArticle 14. *« Aucun contact physique non public ne sera exigé entre les parties. »*\n\nJe prends son stylo. J'écris en marge, à la main : *« Pas de baisers. Pas de mensonges sur ma mère malade. Droit de manger des fraises devant lui même s'il est allergique. »*\n\nTristan me regarde. Le notaire fait semblant de ne rien voir."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Notaire", "content": "Vous signez avec ça ?"},
+          {"sender": "Moi", "content": "Je signe avec ça."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Il signe. En serrant les dents.\n\nLe virement est programmé pour J+3. 30 000€. Le traitement de maman est dans le sac."
+      }
+    ],
+    "choice": {
+      "prompt": "Quelle est ma première dépense ?",
+      "options": [
+        {"text": "Premier versement direct à l'hôpital.", "argent": -18000, "mood": 3, "reputation": 1, "setsFlags": ["isMomTreatmentPaid"]},
+        {"text": "Je garde tout en attendant, je verse étalé.", "argent": 0, "mood": 0, "reputation": 0},
+        {"text": "Je rembourse mes dettes (loyer, plateforme) puis le reste à l'hôpital.", "argent": -800, "mood": 1, "reputation": 0}
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "date": "Samedi 11 juin",
+    "location": "Appartement Heng, 8ème",
+    "time": "17:20",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "350 m². J'ai compté.\n\nIl y a une cuisine qu'on dirait sortie d'un magazine japonais et un salon où le canapé seul vaut probablement plus que tout ce que je possède. Les murs sont gris ardoise. Le sol est en chêne fumé. Il y a une bibliothèque qui occupe un mur entier et qui ne contient que des livres en chinois ou en allemand.\n\nTristan me montre ma chambre. La mienne. Pas la nôtre. Bien."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "J'ai libéré la moitié de la penderie. Vous pouvez utiliser la salle de bain attenante. Je dormirai dans le bureau."},
+          {"sender": "Moi", "content": "Vous avez un bureau dans cet appartement ? En plus du bureau du 47e ?"},
+          {"sender": "Tristan", "content": "Oui."},
+          {"sender": "Moi", "content": "Évidemment."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Je pose ma valise sur le lit. Une seule valise. Je la regarde longtemps. Elle a l'air toute petite."
+      },
+      {
+        "type": "sms",
+        "conversation": "camille",
+        "messages": [
+          {"sender": "Camille", "content": "Alors ? T'es dans le palace ?"},
+          {"sender": "Moi", "content": "C'est plus grand que mon ancien lycée."},
+          {"sender": "Camille", "content": "Photo."},
+          {"sender": "Moi", "content": "Non."},
+          {"sender": "Camille", "content": "SHEN. PHOTO."},
+          {"sender": "Moi", "content": "Plus tard. Faut que je m'installe."},
+          {"sender": "Camille", "content": "Tu vas survivre ?"},
+          {"sender": "Moi", "content": "Je sais pas."}
+        ]
+      }
+    ],
+    "choice": {
+      "prompt": "Comment j'occupe le territoire ?",
+      "options": [
+        {"text": "Je range discrètement, je ne touche à rien.", "argent": 0, "mood": -1, "reputation": 0},
+        {"text": "Je sors mes livres, ma plante, je m'impose dans l'espace.", "argent": 0, "mood": 1, "reputation": 0},
+        {"text": "Je garde ma valise faite, prête à partir si ça tourne mal.", "argent": 0, "mood": 0, "reputation": 1}
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "date": "Dimanche 12 juin",
+    "location": "Cuisine Heng",
+    "time": "08:00",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Premier petit-déjeuner. Il porte un pull noir et il a les cheveux mouillés. Il prépare un café qui sent fort. Je n'ose pas lui dire que je ne bois pas de café, parce que ça aurait l'air d'un caprice de fausse fiancée."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "Thé ?"},
+          {"sender": "Moi", "content": "Oui, merci."},
+          {"sender": "Tristan", "content": "Quel thé ?"},
+          {"sender": "Moi", "content": "Celui que vous voulez."},
+          {"sender": "Tristan", "content": "Ce n'est pas une réponse."},
+          {"sender": "Moi", "content": "Long Jing s'il y en a."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Il se retourne lentement."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "Vous connaissez le Long Jing."},
+          {"sender": "Moi", "content": "Ma mère m'a élevée avec."},
+          {"sender": "Tristan", "content": "Votre mère est française."},
+          {"sender": "Moi", "content": "Ma mère lit Duras et boit du thé chinois. Elle n'aime pas qu'on la résume."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Il fait le thé. En silence. Il le fait bien — il chauffe la théière d'abord, il rince les feuilles, il jette la première eau. Mon arrière-grand-mère aurait approuvé."
+      }
+    ],
+    "choice": {
+      "prompt": "Comment j'occupe le silence ?",
+      "options": [
+        {"text": "Je lis le journal qu'il a posé sur la table.", "argent": 0, "mood": 0, "reputation": 1},
+        {"text": "Je tente la conversation : « Vous êtes allé à Hangzhou ? »", "argent": 0, "mood": 1, "reputation": 0},
+        {"text": "Je file dans ma chambre, j'évite l'inconfort.", "argent": 0, "mood": -1, "reputation": -1}
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "date": "Lundi 13 juin",
+    "location": "Studio Belleville (visite à maman)",
+    "time": "19:00",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "J'ai préparé l'histoire avec Camille pendant deux jours. Je suis « stagiaire dans une équipe de paysagistes à Vincennes ». L'équipe travaille sur « des potagers pédagogiques pour des écoles ». Le chef s'appelle « Lao Chen », c'est un Sino-français de 60 ans. Camille a même créé un faux compte LinkedIn au cas où maman vérifie.\n\nMaman vérifie jamais. Maman fait confiance.\n\nMaman me regarde longuement quand j'arrive. Elle a un châle gris sur les épaules. Elle me dit :"
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Maman", "content": "Tu as l'air différent."},
+          {"sender": "Moi", "content": "J'ai dormi."},
+          {"sender": "Maman", "content": "Tu as l'air d'avoir dormi dans un endroit chaud."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Je me détourne pour faire le thé."
+      },
+      {
+        "type": "sectionTitle",
+        "content": "Le soir"
+      },
+      {
+        "type": "sms",
+        "conversation": "maman",
+        "messages": [
+          {"sender": "Maman", "content": "Premier jour de stage. Comment ça s'est passé ?"},
+          {"sender": "Moi", "content": "Bien."},
+          {"sender": "Maman", "content": "« Bien ». Tu écris « bien » depuis trois jours. Donne-moi un détail."}
+        ]
+      }
+    ],
+    "choice": {
+      "prompt": "Quel détail je donne ?",
+      "options": [
+        {"text": "Un détail vrai (Tristan a fait du thé Long Jing comme grand-mère).", "argent": 0, "mood": 1, "reputation": 0},
+        {"text": "Un détail menteur (Lao Chen a parlé de la pluie).", "argent": 0, "mood": -2, "reputation": 1},
+        {"text": "Je promets de l'appeler dimanche pour de vrai.", "argent": 0, "mood": 0, "reputation": 0}
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "date": "Mardi 14 juin",
+    "location": "Appartement Heng",
+    "time": "12:01",
+    "narrative": [
+      {
+        "type": "sms",
+        "conversation": "maman",
+        "messages": [
+          {"sender": "Maman", "content": "Premier jour de stage. Comment ça s'est passé ?"},
+          {"sender": "Moi", "content": "Bien."},
+          {"sender": "Maman", "content": "« Bien ». Tu écris « bien » depuis trois jours. Donne-moi un détail."},
+          {"sender": "Moi", "content": "Tiens. La courge du potager a doublé en deux jours. Lao Chen dit que c'est l'humidité."},
+          {"sender": "Maman", "content": "On respire avec toi, dans la maison. T'oublies pas ça."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Je regarde l'écran longtemps. La courge n'existe pas. Lao Chen non plus. Le stage non plus.\n\nJe lui mens depuis douze jours et chaque mensonge en appelle un autre. Le pire c'est qu'elle me croit. Le pire c'est aussi qu'elle ne me croit peut-être pas, mais qu'elle joue le jeu.\n\nTristan entre dans la cuisine pendant que je tape la réponse. Il voit l'écran. Il ne dit rien. Il se sert un verre d'eau et il sort.\n\nPlus tard, en passant devant ma chambre, il dit :"
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "Si vous avez besoin que quelqu'un confirme votre histoire à votre mère, dites-le-moi. J'ai un assistant qui peut jouer Lao Chen au téléphone."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Je le déteste pour cette gentillesse-là. Non parce qu'elle est moche. Parce qu'elle tombe trop juste."
+      }
+    ],
+    "choice": {
+      "prompt": "Comment je réagis à sa proposition ?",
+      "options": [
+        {"text": "Je refuse fermement (je ne mêle personne à mes mensonges).", "argent": 0, "mood": 1, "reputation": 0},
+        {"text": "Je garde l'option en réserve sans répondre.", "argent": 0, "mood": 0, "reputation": 1},
+        {"text": "J'accepte (Lao Chen aura une voix grave et un accent du Sichuan).", "argent": 0, "mood": -2, "reputation": 1}
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "date": "Mercredi 15 juin",
+    "location": "Appartement Heng",
+    "time": "18:30",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Tristan me parle dans le couloir, à mi-voix, comme si c'était une mauvaise nouvelle."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "Ma tante organise un dîner samedi. Elle a tenu à vous voir."},
+          {"sender": "Moi", "content": "Madame Heng ?"},
+          {"sender": "Tristan", "content": "Elle-même."},
+          {"sender": "Moi", "content": "C'est obligatoire ?"},
+          {"sender": "Tristan", "content": "Disons qu'elle l'a énoncé comme une invitation, mais que c'en est un ordre."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Je rigole malgré moi. Il me regarde, surpris. C'est probablement le premier rire que je lâche dans cet appartement."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Tristan", "content": "Qu'est-ce qui vous fait rire ?"},
+          {"sender": "Moi", "content": "Que vous ayez peur de votre tante."},
+          {"sender": "Tristan", "content": "Tout le monde a peur de ma tante."},
+          {"sender": "Moi", "content": "Y compris vous ?"},
+          {"sender": "Tristan", "content": "Y compris moi. Surtout moi."}
+        ]
+      },
+      {
+        "type": "sms",
+        "conversation": "camille",
+        "messages": [
+          {"sender": "Moi", "content": "Dîner avec la matriarche samedi."},
+          {"sender": "Camille", "content": "OH MON DIEU."},
+          {"sender": "Moi", "content": "Robe ?"},
+          {"sender": "Camille", "content": "Mauvaise question. La vraie c'est : QUEL THÉ ?"},
+          {"sender": "Moi", "content": "?"},
+          {"sender": "Camille", "content": "Si elle te sert un thé et que tu fais une remarque dessus, tu gagnes ou tu perds. Étudie. Vite."}
+        ]
+      }
+    ],
+    "choice": {
+      "prompt": "Comment je prépare le dîner ?",
+      "options": [
+        {"text": "Je révise les thés chinois pendant 4h sur YouTube.", "argent": 0, "mood": -1, "reputation": 2},
+        {"text": "Je m'en remets à mes souvenirs de grand-mère.", "argent": 0, "mood": 1, "reputation": 1},
+        {"text": "Je n'étudie pas, je veux être moi-même.", "argent": 0, "mood": 0, "reputation": 0}
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "date": "Samedi 18 juin",
+    "location": "Appartement Heng (dîner familial)",
+    "time": "20:30",
+    "narrative": [
+      {
+        "type": "prose",
+        "content": "Madame Heng porte un qipao bleu marine. Elle a 58 ans et le port d'une femme qui a déjà gagné des batailles que je ne connaîtrai jamais. Elle me tend la main. Je la prends."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Madame Heng", "content": "Mademoiselle Marchand. Tristan m'a beaucoup parlé de vous."},
+          {"sender": "Moi", "content": "Très peu, je le crains."},
+          {"sender": "Madame Heng", "content": "C'est pour ça qu'il m'a beaucoup parlé."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Le dîner. Six personnes autour de la table — Madame Heng, Tristan, son cousin Adrien, sa femme Léa, une cousine d'Asie qui ne parle pas français, et moi.\n\nOn sert le thé. Madame Heng me regarde porter la tasse à mes lèvres."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Madame Heng", "content": "Long Jing ? Belle initiative."},
+          {"sender": "Moi", "content": "C'est de la première récolte ?"},
+          {"sender": "Madame Heng", "content": "Je l'espère. C'est ce qu'a dit le marchand."},
+          {"sender": "Moi", "content": "Je crois que c'est de la deuxième."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Silence à table. Madame Heng repose sa tasse."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Madame Heng", "content": "Vraiment ?"},
+          {"sender": "Moi", "content": "L'amertume arrive trop tôt. La première récolte est plus douce sur la fin."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Elle me regarde longuement. Vraiment longuement."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {"sender": "Madame Heng", "content": "Tu as raison, ma fille. Je vais avoir une conversation avec mon marchand demain."}
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Elle a dit *ma fille*. En français. Ce n'est pas anodin."
+      }
+    ],
+    "choice": {
+      "prompt": "Comment je continue la soirée ?",
+      "options": [
+        {"text": "Je reste discrète, je laisse l'effet retomber.", "argent": 0, "mood": 1, "reputation": 2},
+        {"text": "Je continue à participer naturellement (anecdote sur grand-mère).", "argent": 0, "mood": 2, "reputation": 3},
+        {"text": "Je m'éclipse aux toilettes pour reprendre mon souffle.", "argent": 0, "mood": -1, "reputation": 1}
+      ]
+    }
   }
 ]

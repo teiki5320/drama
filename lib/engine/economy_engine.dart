@@ -53,6 +53,11 @@ class EconomyEngine {
             ...option.unlocks!,
           }.toList(growable: false);
 
+    final flagsToSet = option.setsFlags ?? const <String>[];
+    final newIsMomPaid = flagsToSet.contains('isMomTreatmentPaid')
+        ? true
+        : state.isMomTreatmentPaid;
+
     return state.copyWith(
       argent: newArgent,
       mood: newMood,
@@ -61,6 +66,7 @@ class EconomyEngine {
       lowMoodStreak: newStreak,
       choicesMade: mergedChoices,
       unlockedConversations: mergedConvos,
+      isMomTreatmentPaid: newIsMomPaid,
     );
   }
 
