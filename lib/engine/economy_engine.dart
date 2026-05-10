@@ -15,6 +15,7 @@ class EconomyEngine {
   static const int kMomTreatmentCost = 18000;
   static const int kMomDeadlineDay = 45;
   static const int kFinalDay = 112;
+  static const int kMaxPriceHistory = 60;
 
   /// Daily passive income from followers. Cf. ROADMAP §4.3.
   int passiveIncome(int followers) {
@@ -100,12 +101,23 @@ class EconomyEngine {
 
     // Apply daily ±2% noise + scripted triggers (§4.8) on the new day.
     if (investments != null && investments.isNotEmpty) {
+      final newPrices = tickPrices(
+        previousPrices: advanced.stockCurrentPrices,
+        investments: investments,
+        day: advanced.currentDay,
+      );
+      final newHistory = <String, List<double>>{};
+      for (final inv in investments) {
+        final prev = advanced.stockPriceHistory[inv.ticker] ?? const <double>[];
+        final next = [...prev, newPrices[inv.ticker]!];
+        if (next.length > kMaxPriceHistory) {
+          next.removeRange(0, next.length - kMaxPriceHistory);
+        }
+        newHistory[inv.ticker] = next;
+      }
       advanced = advanced.copyWith(
-        stockCurrentPrices: tickPrices(
-          previousPrices: advanced.stockCurrentPrices,
-          investments: investments,
-          day: advanced.currentDay,
-        ),
+        stockCurrentPrices: newPrices,
+        stockPriceHistory: newHistory,
       );
     }
 
@@ -274,11 +286,12 @@ class EconomyEngine {
   }
 
   /// ROADMAP §4.8 narrative triggers on top of the ±2% daily noise.
+  /// J98 BDE = ancien NCB renommé après refonte du catalogue.
   static double? scriptedDelta(int day, String ticker) {
     if (day == 35 && ticker == 'HENG') return 0.12;
     if (day == 52 && ticker == 'HENG') return -0.18;
     if (day == 76 && ticker == 'HAN') return 0.35;
-    if (day == 98 && ticker == 'NCB') return -0.22;
+    if (day == 98 && ticker == 'BDE') return -0.22;
     return null;
   }
 

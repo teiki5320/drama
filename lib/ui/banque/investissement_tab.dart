@@ -8,6 +8,7 @@ import '../../models/game_state.dart';
 import '../../models/investment.dart';
 import '../../providers/catalogs_provider.dart';
 import '../../providers/game_state_provider.dart';
+import 'stock_chart.dart';
 
 class InvestissementTab extends ConsumerWidget {
   const InvestissementTab({super.key});
@@ -109,6 +110,7 @@ class _PositionCard extends ConsumerWidget {
     final pnl = value - cost;
     final pnlColor =
         pnl > 0 ? AppColors.positive : (pnl < 0 ? AppColors.negative : AppColors.textSecondary);
+    final history = state.stockPriceHistory[ticker] ?? const <double>[];
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -146,6 +148,8 @@ class _PositionCard extends ConsumerWidget {
                   ],
                 ),
               ),
+              Sparkline(values: history, width: 70),
+              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -205,6 +209,7 @@ class _InvestmentRow extends ConsumerWidget {
         ? AppColors.positive
         : (variationPct < -0.05 ? AppColors.negative : AppColors.textSecondary);
     final canBuy = engine.canBuyStock(state, inv, 1);
+    final history = state.stockPriceHistory[inv.ticker] ?? const <double>[];
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -242,6 +247,8 @@ class _InvestmentRow extends ConsumerWidget {
                   ],
                 ),
               ),
+              Sparkline(values: history, width: 70),
+              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -384,6 +391,9 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
     final canTrade = widget.isBuy
         ? engine.canBuyStock(state, widget.inv, _qty)
         : engine.canSellStock(state, widget.inv.ticker, _qty);
+    final history =
+        state.stockPriceHistory[widget.inv.ticker] ?? const <double>[];
+    final avgCost = state.stockAvgCost[widget.inv.ticker];
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -411,6 +421,8 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
               color: AppColors.textSecondary,
             ),
           ),
+          const SizedBox(height: 14),
+          StockChart(values: history, avgCost: avgCost),
           const SizedBox(height: 18),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
