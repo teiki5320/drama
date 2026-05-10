@@ -26,7 +26,11 @@ class MessagesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(gameStateProvider);
-    final convos = state.unlockedConversations;
+    // Skip raw scene flags ("tristan_sms", "scene_dimanche", …) that aren't
+    // real conversations; show only ones we know how to render.
+    final convos = state.unlockedConversations
+        .where(_displayNames.containsKey)
+        .toList(growable: false);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Messages')),

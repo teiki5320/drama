@@ -67,6 +67,22 @@ void main() {
       expect(next.unlockedConversations, contains('maman'));
       expect(next.unlockedConversations, contains('camille'));
     });
+
+    test('setsFlags can flip isMomTreatmentPaid (J8 option A)', () {
+      const initial = GameState(argent: 30000, mood: 5);
+      const opt = ChoiceOption(
+        text: 'Premier versement direct à l\'hôpital.',
+        argent: -18000,
+        mood: 3,
+        reputation: 1,
+        setsFlags: ['isMomTreatmentPaid'],
+      );
+      final next = engine.applyChoice(
+          state: initial, dayId: 8, optionIndex: 0, option: opt);
+      expect(next.argent, 12000);
+      expect(next.mood, 8);
+      expect(next.isMomTreatmentPaid, isTrue);
+    });
   });
 
   group('advanceDay', () {

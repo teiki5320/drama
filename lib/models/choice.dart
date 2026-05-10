@@ -23,6 +23,7 @@ class ChoiceOption {
   final int mood;
   final int reputation;
   final List<String>? unlocks;
+  final List<String>? setsFlags;
   final String? triggersScene;
 
   const ChoiceOption({
@@ -31,6 +32,7 @@ class ChoiceOption {
     required this.mood,
     required this.reputation,
     this.unlocks,
+    this.setsFlags,
     this.triggersScene,
   });
 
@@ -42,6 +44,9 @@ class ChoiceOption {
         unlocks: (json['unlocks'] as List<dynamic>?)
             ?.map((e) => e as String)
             .toList(growable: false),
+        setsFlags: (json['setsFlags'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList(growable: false),
         triggersScene: json['triggersScene'] as String?,
       );
 
@@ -51,6 +56,7 @@ class ChoiceOption {
         'mood': mood,
         'reputation': reputation,
         if (unlocks != null) 'unlocks': unlocks,
+        if (setsFlags != null) 'setsFlags': setsFlags,
         if (triggersScene != null) 'triggersScene': triggersScene,
       };
 }
