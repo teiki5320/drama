@@ -162,7 +162,8 @@ class _DeltasRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 12,
+      spacing: 6,
+      runSpacing: 6,
       children: [
         _DeltaChip(emoji: '💰', value: option.argent, suffix: '€'),
         _DeltaChip(emoji: '😊', value: option.mood),
@@ -180,24 +181,31 @@ class _DeltaChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (value == 0) {
-      return Text(
-        '$emoji 0$suffix',
-        style: const TextStyle(
-          fontSize: 12,
-          color: AppColors.textSecondary,
-        ),
-      );
-    }
+    final isZero = value == 0;
     final positive = value > 0;
-    final color = positive ? AppColors.positive : AppColors.negative;
+    final fg = isZero
+        ? AppColors.textSecondary
+        : (positive ? AppColors.positive : AppColors.negative);
+    final bg = isZero
+        ? const Color(0xFFEFE9D8)
+        : (positive
+            ? AppColors.positive.withValues(alpha: 0.10)
+            : AppColors.negative.withValues(alpha: 0.10));
     final sign = positive ? '+' : '';
-    return Text(
-      '$emoji $sign$value$suffix',
-      style: TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w600,
-        color: color,
+    final text = isZero ? '$emoji 0$suffix' : '$emoji $sign$value$suffix';
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+          color: fg,
+        ),
       ),
     );
   }

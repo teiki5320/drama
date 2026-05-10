@@ -258,7 +258,7 @@ class _Story extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              character.handle.replaceAll('@', ''),
+              character.handle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.inter(

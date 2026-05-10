@@ -17,6 +17,9 @@ class Sidebar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(gameStateProvider);
     final selected = ref.watch(selectedTabProvider);
+    final unread = s.unlockedConversations
+        .where((c) => !s.seenMessageThreads.contains(c))
+        .length;
 
     return Container(
       width: width,
@@ -57,7 +60,11 @@ class Sidebar extends ConsumerWidget {
             icon: Icons.chat_bubble,
             label: 'INVIT.',
             selected: selected == 3,
-            onTap: () => ref.read(selectedTabProvider.notifier).state = 3,
+            badgeCount: unread,
+            onTap: () {
+              ref.read(selectedTabProvider.notifier).state = 3;
+              ref.read(gameStateProvider.notifier).markMessagesSeen();
+            },
           ),
           const Spacer(),
           IconButton(
@@ -158,12 +165,14 @@ class _NavItem extends StatelessWidget {
     required this.label,
     required this.selected,
     required this.onTap,
+    this.badgeCount = 0,
   });
 
   final IconData icon;
   final String label;
   final bool selected;
   final VoidCallback onTap;
+  final int badgeCount;
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +191,35 @@ class _NavItem extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Icon(icon, color: color, size: 22),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(icon, color: color, size: 22),
+                if (badgeCount > 0)
+                  Positioned(
+                    right: -8,
+                    top: -6,
+                    child: Container(
+                      constraints: const BoxConstraints(minWidth: 16),
+                      height: 16,
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.negative,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '$badgeCount',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
             const SizedBox(height: 3),
             Text(
               label,

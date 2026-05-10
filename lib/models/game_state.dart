@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'insta_post.dart';
+import 'ledger_entry.dart';
 
 class GameState {
   final int currentDay;
@@ -19,6 +20,8 @@ class GameState {
   final List<String> unlockedConversations;
   final List<String> seenInstaPosts;
   final List<InstaPost> generatedInstaPosts;
+  final List<LedgerEntry> ledger;
+  final List<String> seenMessageThreads;
   final String? ending;
 
   const GameState({
@@ -38,6 +41,8 @@ class GameState {
     this.unlockedConversations = const ['maman', 'camille'],
     this.seenInstaPosts = const [],
     this.generatedInstaPosts = const [],
+    this.ledger = const [],
+    this.seenMessageThreads = const [],
     this.ending,
   });
 
@@ -58,6 +63,8 @@ class GameState {
     List<String>? unlockedConversations,
     List<String>? seenInstaPosts,
     List<InstaPost>? generatedInstaPosts,
+    List<LedgerEntry>? ledger,
+    List<String>? seenMessageThreads,
     String? ending,
   }) {
     return GameState(
@@ -78,6 +85,8 @@ class GameState {
           unlockedConversations ?? this.unlockedConversations,
       seenInstaPosts: seenInstaPosts ?? this.seenInstaPosts,
       generatedInstaPosts: generatedInstaPosts ?? this.generatedInstaPosts,
+      ledger: ledger ?? this.ledger,
+      seenMessageThreads: seenMessageThreads ?? this.seenMessageThreads,
       ending: ending ?? this.ending,
     );
   }
@@ -101,6 +110,8 @@ class GameState {
         'seenInstaPosts': seenInstaPosts,
         'generatedInstaPosts':
             generatedInstaPosts.map((e) => e.toJson()).toList(),
+        'ledger': ledger.map((e) => e.toJson()).toList(),
+        'seenMessageThreads': seenMessageThreads,
         'ending': ending,
       };
 
@@ -141,6 +152,12 @@ class GameState {
             ((json['generatedInstaPosts'] as List?) ?? const [])
                 .map((e) => InstaPost.fromJson(e as Map<String, dynamic>))
                 .toList(growable: false),
+        ledger: ((json['ledger'] as List?) ?? const [])
+            .map((e) => LedgerEntry.fromJson(e as Map<String, dynamic>))
+            .toList(growable: false),
+        seenMessageThreads: ((json['seenMessageThreads'] as List?) ?? const [])
+            .map((e) => e.toString())
+            .toList(growable: false),
         ending: json['ending'] as String?,
       );
 
