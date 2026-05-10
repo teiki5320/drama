@@ -55,6 +55,7 @@ class InstaScreen extends ConsumerWidget {
                           const EdgeInsets.fromLTRB(20, 4, 20, 14),
                       child: _ShenProfileChip(
                         followers: state.followers,
+                        delta: state.followersDeltaToday,
                         tagline: engine.instaTagline(state.followers),
                         shen: shen,
                       ),
@@ -104,11 +105,13 @@ class InstaScreen extends ConsumerWidget {
 class _ShenProfileChip extends StatelessWidget {
   const _ShenProfileChip({
     required this.followers,
+    required this.delta,
     required this.tagline,
     required this.shen,
   });
 
   final int followers;
+  final int delta;
   final String tagline;
   final Character shen;
 
@@ -173,12 +176,44 @@ class _ShenProfileChip extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '@shen_y',
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        '@shen_y',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      if (delta > 0) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color:
+                                AppColors.positive.withValues(alpha: 0.16),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.arrow_upward,
+                                  size: 10, color: AppColors.positive),
+                              const SizedBox(width: 2),
+                              Text(
+                                _formatDelta(delta),
+                                style: GoogleFonts.inter(
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.positive,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 2),
                   Text(
@@ -274,4 +309,9 @@ class _Story extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatDelta(int delta) {
+  if (delta >= 1000) return '+${(delta / 1000).toStringAsFixed(0)}k';
+  return '+$delta';
 }

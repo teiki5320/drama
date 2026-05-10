@@ -171,6 +171,60 @@ class _EpisodeEndView extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           _RecapCard(state: state, daysPlayed: daysPlayed),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  icon: const Icon(Icons.menu_book_outlined, size: 18),
+                  label: const Text('Relire le journal'),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const _PastDaysListScreen(),
+                    ));
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.textPrimary,
+                    side: const BorderSide(color: Color(0x141A1A1A)),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: OutlinedButton.icon(
+                  icon: const Icon(Icons.share_outlined, size: 18),
+                  label: const Text('Copier mon récap'),
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    final summary = _buildSummary(state);
+                    Clipboard.setData(ClipboardData(text: summary));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text(
+                            'Récap copié dans le presse-papier'),
+                        backgroundColor: AppColors.textPrimary,
+                        behavior: SnackBarBehavior.floating,
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.textPrimary,
+                    side: const BorderSide(color: Color(0x141A1A1A)),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 16),
           Text(
             'PROCHAINEMENT',
@@ -290,12 +344,13 @@ class _RecapCard extends StatelessWidget {
   }
 }
 
-class _EndingView extends StatelessWidget {
+class _EndingView extends ConsumerWidget {
   const _EndingView({required this.endingId});
   final String endingId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(gameStateProvider);
     final meta = kEndings[endingId];
     return Padding(
       padding: const EdgeInsets.all(28),
@@ -321,6 +376,36 @@ class _EndingView extends StatelessWidget {
                 height: 1.55,
               ),
             ),
+            const SizedBox(height: 28),
+            OutlinedButton.icon(
+              icon: const Icon(Icons.share_outlined, size: 18),
+              label: const Text('Copier mon résumé'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                final endingTitle = meta?.title ?? endingId;
+                final body =
+                    '${_buildSummary(state)}\n\nFin : $endingTitle';
+                Clipboard.setData(ClipboardData(text: body));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:
+                        const Text('Résumé copié dans le presse-papier'),
+                    backgroundColor: AppColors.textPrimary,
+                    behavior: SnackBarBehavior.floating,
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.textPrimary,
+                side: const BorderSide(color: Color(0x141A1A1A)),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 18, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -330,4 +415,217 @@ class _EndingView extends StatelessWidget {
 
 extension _Iter<T> on Iterable<T> {
   T? get firstOrNull => isEmpty ? null : first;
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// PAST DAYS — relire le journal
+// ─────────────────────────────────────────────────────────────────────
+
+class _PastDaysListScreen extends ConsumerWidget {
+  const _PastDaysListScreen();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(gameStateProvider);
+    final scenario = ref.watch(scenarioProvider);
+
+    return Scaffold(
+      backgroundColor: AppColors.paperCream,
+      appBar: AppBar(
+        title: Text(
+          'Journal',
+          style: GoogleFonts.crimsonPro(
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        backgroundColor: AppColors.paperCream,
+        foregroundColor: AppColors.textPrimary,
+        elevation: 0,
+      ),
+      body: scenario.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text('Erreur : $e')),
+        data: (days) {
+          final played = days
+              .where((d) => state.choicesMade.containsKey(d.id))
+              .toList();
+          if (played.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Text(
+                  'Tu n\'as encore joué aucun jour complet.',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ),
+            );
+          }
+          return ListView.separated(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            itemCount: played.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 8),
+            itemBuilder: (context, i) {
+              final d = played[i];
+              final chosenIdx = state.choicesMade[d.id]!;
+              final chosen = d.choice.options[chosenIdx];
+              return InkWell(
+                borderRadius: BorderRadius.circular(14),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => _PastDayView(day: d),
+                )),
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.cardBg,
+                    border: Border.all(color: const Color(0x141A1A1A)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.accentOrange
+                              .withValues(alpha: 0.14),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          'J${d.id}',
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 13,
+                            color: AppColors.accentOrange,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              d.location,
+                              style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '${d.date} · ${d.time}',
+                              style: GoogleFonts.inter(
+                                fontSize: 11.5,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '↳ ${_truncate(chosen.text, 70)}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: AppColors.textPrimary,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.chevron_right,
+                          color: AppColors.textSecondary),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  static String _truncate(String s, int max) {
+    if (s.length <= max) return s;
+    return '${s.substring(0, max - 1)}…';
+  }
+}
+
+class _PastDayView extends ConsumerWidget {
+  const _PastDayView({required this.day});
+  final DayEntry day;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(gameStateProvider);
+    final selectedIdx = state.choicesMade[day.id];
+
+    return Scaffold(
+      backgroundColor: AppColors.paperCream,
+      appBar: AppBar(
+        title: Text(
+          'Jour ${day.id}',
+          style: GoogleFonts.crimsonPro(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        backgroundColor: AppColors.paperCream,
+        foregroundColor: AppColors.textPrimary,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BigTitle(
+              'Jour ${day.id}',
+              subtitle: '${day.date} · ${day.location} · ${day.time}',
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+              child: DayNarrativeView(day: day),
+            ),
+            const SizedBox(height: 18),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ChoiceCard(
+                choice: day.choice,
+                disabled: true,
+                selectedIndex: selectedIdx,
+                onPicked: (_, __) {},
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// SUMMARY → clipboard
+// ─────────────────────────────────────────────────────────────────────
+
+String _buildSummary(GameState s) {
+  final daysPlayed = s.choicesMade.length;
+  final lines = <String>[
+    'À Contre-Jour · récap épisode 1',
+    '',
+    'Jours joués : $daysPlayed / ${EconomyEngine.kMaxStoryDay}',
+    'Argent : ${formatMoney(s.argent)}',
+    'Mood : ${s.mood} / 10',
+    'Réputation : ★ ${s.reputation} · ${s.followers} abonnés',
+    'Contrat Heng : ${s.unlockedConversations.contains('tristan') ? 'signé' : 'refusé'}',
+    'Traitement maman : ${s.isMomTreatmentPaid ? 'payé' : 'pas encore'}',
+  ];
+  return lines.join('\n');
 }

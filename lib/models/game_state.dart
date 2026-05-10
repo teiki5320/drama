@@ -21,6 +21,7 @@ class GameState {
   final List<InstaPost> generatedInstaPosts;
   final List<LedgerEntry> ledger;
   final List<String> seenMessageThreads;
+  final int followersDeltaToday;
   final String? ending;
 
   const GameState({
@@ -41,6 +42,7 @@ class GameState {
     this.generatedInstaPosts = const [],
     this.ledger = const [],
     this.seenMessageThreads = const [],
+    this.followersDeltaToday = 0,
     this.ending,
   });
 
@@ -62,6 +64,7 @@ class GameState {
     List<InstaPost>? generatedInstaPosts,
     List<LedgerEntry>? ledger,
     List<String>? seenMessageThreads,
+    int? followersDeltaToday,
     String? ending,
   }) {
     return GameState(
@@ -83,6 +86,8 @@ class GameState {
       generatedInstaPosts: generatedInstaPosts ?? this.generatedInstaPosts,
       ledger: ledger ?? this.ledger,
       seenMessageThreads: seenMessageThreads ?? this.seenMessageThreads,
+      followersDeltaToday:
+          followersDeltaToday ?? this.followersDeltaToday,
       ending: ending ?? this.ending,
     );
   }
@@ -107,6 +112,7 @@ class GameState {
             generatedInstaPosts.map((e) => e.toJson()).toList(),
         'ledger': ledger.map((e) => e.toJson()).toList(),
         'seenMessageThreads': seenMessageThreads,
+        'followersDeltaToday': followersDeltaToday,
         'ending': ending,
       };
 
@@ -152,6 +158,8 @@ class GameState {
         seenMessageThreads: ((json['seenMessageThreads'] as List?) ?? const [])
             .map((e) => e.toString())
             .toList(growable: false),
+        followersDeltaToday:
+            (json['followersDeltaToday'] as num?)?.toInt() ?? 0,
         ending: json['ending'] as String?,
       );
 
