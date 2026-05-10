@@ -76,6 +76,17 @@ class GameStateController extends StateNotifier<GameState> {
     await _persist();
   }
 
+  Future<void> markMessagesSeen() async {
+    if (state.unlockedConversations.every(
+        (c) => state.seenMessageThreads.contains(c))) {
+      return;
+    }
+    state = state.copyWith(
+      seenMessageThreads: List<String>.from(state.unlockedConversations),
+    );
+    await _persist();
+  }
+
   Future<void> reset() async {
     state = const GameState();
     await _repo.reset();

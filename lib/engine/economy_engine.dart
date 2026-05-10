@@ -4,6 +4,7 @@ import '../models/choice.dart';
 import '../models/game_state.dart';
 import '../models/insta_post.dart';
 import '../models/investment.dart';
+import '../models/ledger_entry.dart';
 import '../models/shop_item.dart';
 import 'ending_calculator.dart';
 
@@ -63,6 +64,18 @@ class EconomyEngine {
         ? true
         : state.isMomTreatmentPaid;
 
+    final ledger = List<LedgerEntry>.from(state.ledger);
+    if (option.argent != 0) {
+      ledger.add(LedgerEntry(
+        day: dayId,
+        kind: option.argent > 0
+            ? LedgerEntryKind.choiceIncome
+            : LedgerEntryKind.choiceExpense,
+        label: _truncate(option.text, 48),
+        amount: option.argent,
+      ));
+    }
+
     return state.copyWith(
       argent: newArgent,
       mood: newMood,
@@ -72,7 +85,13 @@ class EconomyEngine {
       choicesMade: mergedChoices,
       unlockedConversations: mergedConvos,
       isMomTreatmentPaid: newIsMomPaid,
+      ledger: ledger,
     );
+  }
+
+  static String _truncate(String s, int max) {
+    if (s.length <= max) return s;
+    return '${s.substring(0, max - 1)}…';
   }
 
   /// Tick of the daily simulation: passive income, then advance the day.
@@ -82,9 +101,20 @@ class EconomyEngine {
     final next = state.currentDay + 1;
     final income = passiveIncome(state.followers);
 
+    final ledger = List<LedgerEntry>.from(state.ledger);
+    if (income > 0) {
+      ledger.add(LedgerEntry(
+        day: next,
+        kind: LedgerEntryKind.passiveIncome,
+        label: 'Partenariats Insta',
+        amount: income,
+      ));
+    }
+
     var advanced = state.copyWith(
       currentDay: next,
       argent: state.argent + income,
+      ledger: ledger,
     );
 
     // Check the "deadline maman" : if argent reaches 18 000€ before J45 and
@@ -92,10 +122,18 @@ class EconomyEngine {
     if (!advanced.isMomTreatmentPaid &&
         advanced.argent >= kMomTreatmentCost &&
         advanced.currentDay <= kMomDeadlineDay + 1) {
+      final updatedLedger = List<LedgerEntry>.from(advanced.ledger)
+        ..add(LedgerEntry(
+          day: advanced.currentDay,
+          kind: LedgerEntryKind.momTreatment,
+          label: 'Traitement maman (Tenon)',
+          amount: -kMomTreatmentCost,
+        ));
       advanced = advanced.copyWith(
         isMomTreatmentPaid: true,
         argent: advanced.argent - kMomTreatmentCost,
         mood: (advanced.mood + 2).clamp(0, 10),
+        ledger: updatedLedger,
       );
     }
 
@@ -171,6 +209,14 @@ class EconomyEngine {
       newPosts = [...state.generatedInstaPosts, post];
     }
 
+    final ledger = List<LedgerEntry>.from(state.ledger)
+      ..add(LedgerEntry(
+        day: state.currentDay,
+        kind: LedgerEntryKind.shopPurchase,
+        label: '${item.emoji} ${item.name}',
+        amount: -item.price,
+      ));
+
     return state.copyWith(
       argent: state.argent - item.price,
       mood: (state.mood + item.moodGain).clamp(0, 10),
@@ -178,6 +224,7 @@ class EconomyEngine {
       followers: followersFromReputation(newRep),
       ownedItems: newOwned,
       generatedInstaPosts: newPosts,
+      ledger: ledger,
     );
   }
 
@@ -224,10 +271,19 @@ class EconomyEngine {
     final newAvgCost = Map<String, double>.from(state.stockAvgCost)
       ..[inv.ticker] = newAvg;
 
+    final ledger = List<LedgerEntry>.from(state.ledger)
+      ..add(LedgerEntry(
+        day: state.currentDay,
+        kind: LedgerEntryKind.stockBuy,
+        label: 'Achat $qty × ${inv.ticker}',
+        amount: -cost,
+      ));
+
     return state.copyWith(
       argent: state.argent - cost,
       stockHoldings: newHoldings,
       stockAvgCost: newAvgCost,
+      ledger: ledger,
     );
   }
 
@@ -256,10 +312,19 @@ class EconomyEngine {
       // avg cost unchanged on partial sell
     }
 
+    final ledger = List<LedgerEntry>.from(state.ledger)
+      ..add(LedgerEntry(
+        day: state.currentDay,
+        kind: LedgerEntryKind.stockSell,
+        label: 'Vente $qty × ${inv.ticker}',
+        amount: proceeds,
+      ));
+
     return state.copyWith(
       argent: state.argent + proceeds,
       stockHoldings: newHoldings,
       stockAvgCost: newAvgCost,
+      ledger: ledger,
     );
   }
 

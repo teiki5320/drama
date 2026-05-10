@@ -141,6 +141,15 @@ void main() {
       expect(after.ownedItems, contains('foo'));
     });
 
+    test('shop buy appends a ledger entry', () {
+      const s = GameState(argent: 500, currentDay: 6);
+      final after = engine.buy(s, item);
+      expect(after.ledger, hasLength(1));
+      expect(after.ledger.first.amount, -200);
+      expect(after.ledger.first.day, 6);
+      expect(after.ledger.first.label, contains('Foo'));
+    });
+
     test('generates an Insta post when generatesInstaPost is true', () {
       const item = ShopItem(
         id: 'tesla',
