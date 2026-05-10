@@ -10,13 +10,25 @@ import '../../models/game_state.dart';
 import '../../models/investment.dart';
 import '../../providers/catalogs_provider.dart';
 import '../../providers/game_state_provider.dart';
+import 'market_news.dart';
 import 'stock_chart.dart';
+import 'stock_detail_screen.dart';
 
-class InvestissementTab extends ConsumerWidget {
+enum _SortMode { all, gainers, losers, volatile }
+
+class InvestissementTab extends ConsumerStatefulWidget {
   const InvestissementTab({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<InvestissementTab> createState() =>
+      _InvestissementTabState();
+}
+
+class _InvestissementTabState extends ConsumerState<InvestissementTab> {
+  _SortMode _sort = _SortMode.all;
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(gameStateProvider);
     final engine = ref.watch(economyEngineProvider);
     final async = ref.watch(investmentsProvider);
@@ -36,6 +48,8 @@ class InvestissementTab extends ConsumerWidget {
 
         var portfolioValue = 0.0;
         var dayDelta = 0.0;
+        var marketDeltaPctSum = 0.0;
+        var marketDeltaPctCount = 0;
         state.stockHoldings.forEach((ticker, qty) {
           final inv = all.where((i) => i.ticker == ticker).firstOrNull;
           if (inv == null) return;
@@ -46,9 +60,48 @@ class InvestissementTab extends ConsumerWidget {
             dayDelta += (hist.last - hist[hist.length - 2]) * qty;
           }
         });
+        // Calcul de la perf moyenne du marché parisien (jour)
+        for (final inv in all) {
+          final hist = state.stockPriceHistory[inv.ticker] ?? const <double>[];
+          if (hist.length >= 2) {
+            final p = hist[hist.length - 2];
+            if (p > 0) {
+              marketDeltaPctSum += (hist.last - p) / p * 100;
+              marketDeltaPctCount++;
+            }
+          }
+        }
+        final marketDeltaPct = marketDeltaPctCount == 0
+            ? 0.0
+            : marketDeltaPctSum / marketDeltaPctCount;
 
         final positions = state.stockHoldings.entries.toList()
           ..sort((a, b) => b.value.compareTo(a.value));
+
+        // Filtrer + trier le marché selon _sort
+        final marketEntries = unlocked
+            .where((i) => !state.stockHoldings.containsKey(i.ticker))
+            .toList();
+        marketEntries.sort((a, b) {
+          final pa = _dayPctFor(state, a);
+          final pb = _dayPctFor(state, b);
+          switch (_sort) {
+            case _SortMode.all:
+              return a.ticker.compareTo(b.ticker);
+            case _SortMode.gainers:
+              return pb.compareTo(pa);
+            case _SortMode.losers:
+              return pa.compareTo(pb);
+            case _SortMode.volatile:
+              final ra = computeRisk(
+                  state.stockPriceHistory[a.ticker] ?? const <double>[]);
+              final rb = computeRisk(
+                  state.stockPriceHistory[b.ticker] ?? const <double>[]);
+              return rb.index.compareTo(ra.index);
+          }
+        });
+
+        final activeNews = activeNewsForDay(state.currentDay);
 
         return ListView(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
@@ -57,8 +110,13 @@ class InvestissementTab extends ConsumerWidget {
               day: state.currentDay,
               portfolioValue: portfolioValue.round(),
               dayDelta: dayDelta.round(),
+              marketDeltaPct: marketDeltaPct,
             ),
             const SizedBox(height: 14),
+            if (activeNews != null) ...[
+              MarketNewsBanner(news: activeNews),
+              const SizedBox(height: 14),
+            ],
             if (positions.isNotEmpty) ...[
               const _SectionLabel('TES POSITIONS'),
               const SizedBox(height: 6),
@@ -77,17 +135,28 @@ class InvestissementTab extends ConsumerWidget {
               ),
               const SizedBox(height: 14),
             ],
-            const _SectionLabel('MARCHÉ'),
+            Row(
+              children: [
+                const _SectionLabel('MARCHÉ'),
+                const Spacer(),
+                _SortPill(label: 'Tous', selected: _sort == _SortMode.all, onTap: () => setState(() => _sort = _SortMode.all)),
+                const SizedBox(width: 4),
+                _SortPill(label: '↑', selected: _sort == _SortMode.gainers, onTap: () => setState(() => _sort = _SortMode.gainers)),
+                const SizedBox(width: 4),
+                _SortPill(label: '↓', selected: _sort == _SortMode.losers, onTap: () => setState(() => _sort = _SortMode.losers)),
+                const SizedBox(width: 4),
+                _SortPill(label: '⚡', selected: _sort == _SortMode.volatile, onTap: () => setState(() => _sort = _SortMode.volatile)),
+              ],
+            ),
             const SizedBox(height: 6),
             _RowsCard(
               children: [
-                for (final inv in unlocked)
-                  if (!state.stockHoldings.containsKey(inv.ticker))
-                    _InvestmentRow(
-                      inv: inv,
-                      state: state,
-                      engine: engine,
-                    ),
+                for (final inv in marketEntries)
+                  _InvestmentRow(
+                    inv: inv,
+                    state: state,
+                    engine: engine,
+                  ),
               ],
             ),
             if (locked.isNotEmpty) ...[
@@ -117,11 +186,13 @@ class _MarketHeader extends StatelessWidget {
     required this.day,
     required this.portfolioValue,
     required this.dayDelta,
+    required this.marketDeltaPct,
   });
 
   final int day;
   final int portfolioValue;
   final int dayDelta;
+  final double marketDeltaPct;
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +289,14 @@ class _MarketHeader extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Marché parisien ${marketDeltaPct >= 0 ? '+' : ''}${marketDeltaPct.toStringAsFixed(2)} %',
+            style: GoogleFonts.inter(
+              fontSize: 10.5,
+              color: AppColors.textSecondary,
             ),
           ),
         ],
@@ -330,7 +409,7 @@ class _PositionRow extends ConsumerWidget {
         : (dayDelta < 0 ? AppColors.negative : AppColors.textSecondary);
 
     return InkWell(
-      onTap: () => _showTradeSheet(context, ref: ref, inv: inv!, isBuy: false),
+      onTap: () => _openStockDetail(context, ref, inv!),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
         child: Row(
@@ -341,14 +420,20 @@ class _PositionRow extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    ticker,
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.5,
-                      color: AppColors.textPrimary,
-                    ),
+                  Row(
+                    children: [
+                      _RiskDot(history: history),
+                      const SizedBox(width: 4),
+                      Text(
+                        ticker,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ],
                   ),
                   Text(
                     '$qty × ${avgCost.toStringAsFixed(0)} €',
@@ -455,7 +540,7 @@ class _InvestmentRow extends ConsumerWidget {
 
     return InkWell(
       onTap: canBuy.ok
-          ? () => _showTradeSheet(context, ref: ref, inv: inv, isBuy: true)
+          ? () => _openStockDetail(context, ref, inv)
           : null,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
@@ -467,14 +552,20 @@ class _InvestmentRow extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    inv.ticker,
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.5,
-                      color: AppColors.textPrimary,
-                    ),
+                  Row(
+                    children: [
+                      _RiskDot(history: history),
+                      const SizedBox(width: 4),
+                      Text(
+                        inv.ticker,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ],
                   ),
                   Text(
                     inv.sector,
@@ -893,4 +984,81 @@ class _StepperButton extends StatelessWidget {
 
 extension _Iter<T> on Iterable<T> {
   T? get firstOrNull => isEmpty ? null : first;
+}
+
+double _dayPctFor(GameState state, Investment inv) {
+  final hist = state.stockPriceHistory[inv.ticker] ?? const <double>[];
+  if (hist.length < 2) return 0.0;
+  final prev = hist[hist.length - 2];
+  if (prev <= 0) return 0.0;
+  return (hist.last - prev) / prev * 100;
+}
+
+void _openStockDetail(BuildContext context, WidgetRef ref, Investment inv) {
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (_) => StockDetailScreen(
+      inv: inv,
+      onTrade: (ctx, isBuy) {
+        Navigator.of(ctx).pop();
+        _showTradeSheet(context, ref: ref, inv: inv, isBuy: isBuy);
+      },
+    ),
+  ));
+}
+
+class _RiskDot extends StatelessWidget {
+  const _RiskDot({required this.history});
+  final List<double> history;
+
+  @override
+  Widget build(BuildContext context) {
+    final meta = riskMeta(computeRisk(history));
+    return Tooltip(
+      message: meta.label,
+      child: Container(
+        width: 7,
+        height: 7,
+        decoration: BoxDecoration(
+          color: meta.color,
+          shape: BoxShape.circle,
+        ),
+      ),
+    );
+  }
+}
+
+class _SortPill extends StatelessWidget {
+  const _SortPill({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        constraints: const BoxConstraints(minWidth: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.accentOrange : const Color(0xFFEFE9D8),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 10.5,
+            fontWeight: FontWeight.w700,
+            color: selected ? Colors.white : AppColors.textSecondary,
+          ),
+        ),
+      ),
+    );
+  }
 }

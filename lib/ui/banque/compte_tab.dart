@@ -8,6 +8,9 @@ import '../../engine/economy_engine.dart';
 import '../../models/ledger_entry.dart';
 import '../../providers/catalogs_provider.dart';
 import '../../providers/game_state_provider.dart';
+import 'all_movements_screen.dart';
+import 'movement_detail_dialog.dart';
+import 'spending_breakdown.dart';
 import 'stock_chart.dart';
 
 class CompteTab extends ConsumerWidget {
@@ -62,6 +65,9 @@ class CompteTab extends ConsumerWidget {
           tagline: engine.instaTagline(s.followers),
         ),
         const SizedBox(height: 14),
+        SpendingBreakdown(entries: s.ledger),
+        if (s.ledger.any((e) => e.amount < 0))
+          const SizedBox(height: 14),
         _MomDeadlineCard(
           paid: s.isMomTreatmentPaid,
           argent: s.argent,
@@ -211,9 +217,24 @@ class _HeroCompte extends StatelessWidget {
 // CHART
 // ─────────────────────────────────────────────────────────────────────
 
-class _WealthChartCard extends StatelessWidget {
+class _WealthChartCard extends StatefulWidget {
   const _WealthChartCard({required this.history});
   final List<double> history;
+
+  @override
+  State<_WealthChartCard> createState() => _WealthChartCardState();
+}
+
+class _WealthChartCardState extends State<_WealthChartCard> {
+  int _windowDays = 30; // -1 = all, 7, 30
+
+  List<double> get _windowed {
+    if (_windowDays < 0 || widget.history.length <= _windowDays) {
+      return widget.history;
+    }
+    return widget.history
+        .sublist(widget.history.length - _windowDays);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,18 +248,75 @@ class _WealthChartCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'ÉVOLUTION DU PATRIMOINE',
-            style: GoogleFonts.inter(
-              fontSize: 10.5,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.0,
-              color: AppColors.textSecondary,
-            ),
+          Row(
+            children: [
+              Text(
+                'ÉVOLUTION DU PATRIMOINE',
+                style: GoogleFonts.inter(
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.0,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              const Spacer(),
+              _TimeframePill(
+                label: '7j',
+                selected: _windowDays == 7,
+                onTap: () => setState(() => _windowDays = 7),
+              ),
+              const SizedBox(width: 4),
+              _TimeframePill(
+                label: '30j',
+                selected: _windowDays == 30,
+                onTap: () => setState(() => _windowDays = 30),
+              ),
+              const SizedBox(width: 4),
+              _TimeframePill(
+                label: 'Tout',
+                selected: _windowDays < 0,
+                onTap: () => setState(() => _windowDays = -1),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
-          StockChart(values: history, height: 130),
+          StockChart(values: _windowed, height: 130),
         ],
+      ),
+    );
+  }
+}
+
+class _TimeframePill extends StatelessWidget {
+  const _TimeframePill({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(
+          color:
+              selected ? AppColors.accentOrange : const Color(0xFFEFE9D8),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 10.5,
+            fontWeight: FontWeight.w700,
+            color: selected ? Colors.white : AppColors.textSecondary,
+          ),
+        ),
       ),
     );
   }
@@ -395,18 +473,29 @@ class _MomDeadlineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cost = EconomyEngine.kMomTreatmentCost;
     final deadline = EconomyEngine.kMomDeadlineDay;
+    final daysLeft = deadline - currentDay;
     final progress = (argent / cost).clamp(0.0, 1.0);
+
+    // Intensité progressive : neutre avant J30, jaune J30-41, rouge J42+
+    final urgent = !paid && daysLeft <= 3 && daysLeft >= 0;
+    final warning = !paid && daysLeft <= 15 && daysLeft > 3;
+    final tint = paid
+        ? AppColors.positive
+        : (urgent
+            ? AppColors.negative
+            : (warning ? const Color(0xFFD4A437) : null));
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
       decoration: BoxDecoration(
-        color: paid
-            ? AppColors.positive.withValues(alpha: 0.06)
-            : AppColors.cardBg,
+        color: tint == null
+            ? AppColors.cardBg
+            : tint.withValues(alpha: 0.06),
         border: Border.all(
-          color: paid
-              ? AppColors.positive.withValues(alpha: 0.4)
-              : const Color(0x141A1A1A),
+          color: tint == null
+              ? const Color(0x141A1A1A)
+              : tint.withValues(alpha: 0.45),
+          width: urgent ? 1.5 : 1,
         ),
         borderRadius: BorderRadius.circular(16),
       ),
@@ -415,14 +504,20 @@ class _MomDeadlineCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('🏥', style: TextStyle(fontSize: 18)),
+              Text(
+                urgent ? '🚨' : '🏥',
+                style: const TextStyle(fontSize: 18),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Traitement de Maman',
+                  urgent
+                      ? 'URGENT — Traitement de Maman'
+                      : 'Traitement de Maman',
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
+                    color: urgent ? AppColors.negative : null,
                   ),
                 ),
               ),
@@ -441,10 +536,13 @@ class _MomDeadlineCard extends StatelessWidget {
           Text(
             paid
                 ? 'Hôpital Tenon · ${formatMoney(cost)} versés.'
-                : '${formatMoney(cost)} à réunir avant ${formatGameDate(deadline)}.',
+                : daysLeft >= 0
+                    ? '${formatMoney(cost)} à réunir avant ${formatGameDate(deadline)} · il te reste $daysLeft jour${daysLeft == 1 ? '' : 's'}.'
+                    : 'Deadline dépassée.',
             style: GoogleFonts.inter(
               fontSize: 12.5,
-              color: AppColors.textSecondary,
+              color: tint ?? AppColors.textSecondary,
+              fontWeight: urgent ? FontWeight.w700 : FontWeight.w400,
               height: 1.4,
             ),
           ),
@@ -454,12 +552,12 @@ class _MomDeadlineCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
                 value: progress,
-                minHeight: 6,
+                minHeight: urgent ? 8 : 6,
                 backgroundColor: const Color(0xFFEAE6DD),
                 valueColor: AlwaysStoppedAnimation<Color>(
                   progress >= 1.0
                       ? AppColors.positive
-                      : AppColors.accentOrange,
+                      : (tint ?? AppColors.accentOrange),
                 ),
               ),
             ),
@@ -475,7 +573,7 @@ class _MomDeadlineCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  'J$currentDay / J$deadline',
+                  '${formatMoney(argent.clamp(0, cost))} / ${formatMoney(cost)}',
                   style: GoogleFonts.inter(
                     fontSize: 11.5,
                     color: AppColors.textSecondary,
@@ -576,6 +674,31 @@ class _MovementsCard extends StatelessWidget {
                 color: Color(0x0F1A1A1A),
               ),
           ],
+          if (entries.length > last.length) ...[
+            const Divider(height: 1, color: Color(0x141A1A1A)),
+            Builder(
+              builder: (ctx) => InkWell(
+                onTap: () => Navigator.of(ctx).push(
+                  MaterialPageRoute(
+                    builder: (_) => const AllMovementsScreen(),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Center(
+                    child: Text(
+                      'Voir tous les mouvements (${entries.length}) →',
+                      style: GoogleFonts.inter(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.accentOrange,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -591,56 +714,60 @@ class _MovementRow extends StatelessWidget {
     final positive = entry.amount > 0;
     final color = positive ? AppColors.positive : AppColors.negative;
     final sign = positive ? '+' : '-';
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
-      child: Row(
-        children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: const Color(0xFFF3EEDF),
-              shape: BoxShape.circle,
-              border: Border.all(color: const Color(0x0F1A1A1A)),
+    return InkWell(
+      onTap: () => showMovementDetailDialog(context, entry),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+        child: Row(
+          children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF3EEDF),
+                shape: BoxShape.circle,
+                border: Border.all(color: const Color(0x0F1A1A1A)),
+              ),
+              alignment: Alignment.center,
+              child: Text(entry.emoji,
+                  style: const TextStyle(fontSize: 14)),
             ),
-            alignment: Alignment.center,
-            child: Text(entry.emoji, style: const TextStyle(fontSize: 14)),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  entry.label,
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    entry.label,
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 1),
-                Text(
-                  '${formatGameDateShort(entry.day)} · ${_timeFor(entry.kind)}',
-                  style: GoogleFonts.inter(
-                    fontSize: 10.5,
-                    color: AppColors.textSecondary,
+                  const SizedBox(height: 1),
+                  Text(
+                    '${formatGameDateShort(entry.day)} · ${_timeFor(entry.kind)}',
+                    style: GoogleFonts.inter(
+                      fontSize: 10.5,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Text(
-            '$sign${formatMoney(entry.amount.abs())}',
-            style: GoogleFonts.inter(
-              fontSize: 13.5,
-              fontWeight: FontWeight.w700,
-              color: color,
+            Text(
+              '$sign${formatMoney(entry.amount.abs())}',
+              style: GoogleFonts.inter(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w700,
+                color: color,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
