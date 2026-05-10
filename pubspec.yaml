@@ -27,6 +27,9 @@ flutter:
     - assets/data/shop_catalog.json
     - assets/data/investments.json
     - assets/data/insta_seed.json
+    - assets/photos/characters/
+    - assets/photos/posts/
+    - assets/photos/scenes/
 
 flutter_launcher_icons:
   image_path: "assets/icon/icon.png"

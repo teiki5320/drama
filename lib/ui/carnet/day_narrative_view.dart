@@ -25,6 +25,12 @@ class DayNarrativeView extends StatelessWidget {
         case NarrativeBlockType.sms:
           blocks.add(_SmsCluster(messages: b.messages ?? const []));
           break;
+        case NarrativeBlockType.image:
+          blocks.add(_NarrativeImage(
+            imageAsset: b.imageAsset,
+            caption: b.content,
+          ));
+          break;
       }
       blocks.add(const SizedBox(height: 14));
     }
@@ -93,6 +99,67 @@ class _SmsCluster extends StatelessWidget {
           for (final m in messages) SmsBubble(message: m),
         ],
       ),
+    );
+  }
+}
+
+class _NarrativeImage extends StatelessWidget {
+  const _NarrativeImage({required this.imageAsset, required this.caption});
+
+  final String? imageAsset;
+  final String? caption;
+
+  @override
+  Widget build(BuildContext context) {
+    final fallback = Container(
+      height: 200,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFFF3EEDF),
+            Color(0xFFE3D9C2),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      alignment: Alignment.center,
+      child: Icon(
+        Icons.image_outlined,
+        size: 42,
+        color: AppColors.textSecondary.withValues(alpha: 0.5),
+      ),
+    );
+
+    final image = imageAsset == null
+        ? fallback
+        : ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.asset(
+              imageAsset!,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => fallback,
+            ),
+          );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        image,
+        if (caption != null && caption!.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Text(
+            caption!,
+            style: GoogleFonts.inter(
+              fontStyle: FontStyle.italic,
+              fontSize: 12.5,
+              color: AppColors.textSecondary,
+              height: 1.4,
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

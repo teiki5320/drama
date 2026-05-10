@@ -4,6 +4,9 @@ class InstaPost {
   final int day;
   final String emoji;
   final String caption;
+  final String? imageAsset;
+  final int likes;
+  final int commentsCount;
 
   const InstaPost({
     required this.id,
@@ -11,6 +14,9 @@ class InstaPost {
     required this.day,
     required this.emoji,
     required this.caption,
+    this.imageAsset,
+    this.likes = 0,
+    this.commentsCount = 0,
   });
 
   factory InstaPost.fromJson(Map<String, dynamic> json) => InstaPost(
@@ -19,6 +25,9 @@ class InstaPost {
         day: (json['day'] as num).toInt(),
         emoji: json['emoji'] as String,
         caption: json['caption'] as String,
+        imageAsset: json['imageAsset'] as String?,
+        likes: (json['likes'] as num?)?.toInt() ?? 0,
+        commentsCount: (json['commentsCount'] as num?)?.toInt() ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -27,5 +36,8 @@ class InstaPost {
         'day': day,
         'emoji': emoji,
         'caption': caption,
+        if (imageAsset != null) 'imageAsset': imageAsset,
+        'likes': likes,
+        'commentsCount': commentsCount,
       };
 }

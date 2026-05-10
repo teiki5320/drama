@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'insta_post.dart';
+
 class GameState {
   final int currentDay;
   final int argent;
@@ -7,12 +9,15 @@ class GameState {
   final int reputation;
   final int followers;
   final Map<String, int> stockHoldings;
+  final Map<String, double> stockAvgCost;
+  final Map<String, double> stockCurrentPrices;
   final List<String> ownedItems;
   final Map<int, int> choicesMade;
   final int lowMoodStreak;
   final bool isMomTreatmentPaid;
   final List<String> unlockedConversations;
   final List<String> seenInstaPosts;
+  final List<InstaPost> generatedInstaPosts;
   final String? ending;
 
   const GameState({
@@ -22,12 +27,15 @@ class GameState {
     this.reputation = 0,
     this.followers = 712,
     this.stockHoldings = const {},
+    this.stockAvgCost = const {},
+    this.stockCurrentPrices = const {},
     this.ownedItems = const [],
     this.choicesMade = const {},
     this.lowMoodStreak = 0,
     this.isMomTreatmentPaid = false,
     this.unlockedConversations = const ['maman', 'camille'],
     this.seenInstaPosts = const [],
+    this.generatedInstaPosts = const [],
     this.ending,
   });
 
@@ -38,12 +46,15 @@ class GameState {
     int? reputation,
     int? followers,
     Map<String, int>? stockHoldings,
+    Map<String, double>? stockAvgCost,
+    Map<String, double>? stockCurrentPrices,
     List<String>? ownedItems,
     Map<int, int>? choicesMade,
     int? lowMoodStreak,
     bool? isMomTreatmentPaid,
     List<String>? unlockedConversations,
     List<String>? seenInstaPosts,
+    List<InstaPost>? generatedInstaPosts,
     String? ending,
   }) {
     return GameState(
@@ -53,6 +64,8 @@ class GameState {
       reputation: reputation ?? this.reputation,
       followers: followers ?? this.followers,
       stockHoldings: stockHoldings ?? this.stockHoldings,
+      stockAvgCost: stockAvgCost ?? this.stockAvgCost,
+      stockCurrentPrices: stockCurrentPrices ?? this.stockCurrentPrices,
       ownedItems: ownedItems ?? this.ownedItems,
       choicesMade: choicesMade ?? this.choicesMade,
       lowMoodStreak: lowMoodStreak ?? this.lowMoodStreak,
@@ -60,6 +73,7 @@ class GameState {
       unlockedConversations:
           unlockedConversations ?? this.unlockedConversations,
       seenInstaPosts: seenInstaPosts ?? this.seenInstaPosts,
+      generatedInstaPosts: generatedInstaPosts ?? this.generatedInstaPosts,
       ending: ending ?? this.ending,
     );
   }
@@ -71,6 +85,8 @@ class GameState {
         'reputation': reputation,
         'followers': followers,
         'stockHoldings': stockHoldings,
+        'stockAvgCost': stockAvgCost,
+        'stockCurrentPrices': stockCurrentPrices,
         'ownedItems': ownedItems,
         'choicesMade':
             choicesMade.map((k, v) => MapEntry(k.toString(), v)),
@@ -78,6 +94,8 @@ class GameState {
         'isMomTreatmentPaid': isMomTreatmentPaid,
         'unlockedConversations': unlockedConversations,
         'seenInstaPosts': seenInstaPosts,
+        'generatedInstaPosts':
+            generatedInstaPosts.map((e) => e.toJson()).toList(),
         'ending': ending,
       };
 
@@ -89,6 +107,10 @@ class GameState {
         followers: (json['followers'] as num?)?.toInt() ?? 712,
         stockHoldings: ((json['stockHoldings'] as Map?) ?? const {})
             .map((k, v) => MapEntry(k.toString(), (v as num).toInt())),
+        stockAvgCost: ((json['stockAvgCost'] as Map?) ?? const {})
+            .map((k, v) => MapEntry(k.toString(), (v as num).toDouble())),
+        stockCurrentPrices: ((json['stockCurrentPrices'] as Map?) ?? const {})
+            .map((k, v) => MapEntry(k.toString(), (v as num).toDouble())),
         ownedItems: ((json['ownedItems'] as List?) ?? const [])
             .map((e) => e.toString())
             .toList(growable: false),
@@ -104,6 +126,10 @@ class GameState {
         seenInstaPosts: ((json['seenInstaPosts'] as List?) ?? const [])
             .map((e) => e.toString())
             .toList(growable: false),
+        generatedInstaPosts:
+            ((json['generatedInstaPosts'] as List?) ?? const [])
+                .map((e) => InstaPost.fromJson(e as Map<String, dynamic>))
+                .toList(growable: false),
         ending: json['ending'] as String?,
       );
 

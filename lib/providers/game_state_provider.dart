@@ -4,7 +4,9 @@ import '../data/game_state_repository.dart';
 import '../engine/economy_engine.dart';
 import '../models/choice.dart';
 import '../models/game_state.dart';
+import '../models/investment.dart';
 import '../models/shop_item.dart';
+import 'catalogs_provider.dart';
 
 final gameStateRepositoryProvider =
     Provider<GameStateRepository>((ref) => GameStateRepository());
@@ -13,12 +15,14 @@ final economyEngineProvider =
     Provider<EconomyEngine>((ref) => const EconomyEngine());
 
 class GameStateController extends StateNotifier<GameState> {
-  GameStateController(this._repo, this._engine) : super(const GameState()) {
+  GameStateController(this._repo, this._engine, this._ref)
+      : super(const GameState()) {
     _restore();
   }
 
   final GameStateRepository _repo;
   final EconomyEngine _engine;
+  final Ref _ref;
 
   Future<void> _restore() async {
     final loaded = await _repo.load();
@@ -45,7 +49,9 @@ class GameStateController extends StateNotifier<GameState> {
   }
 
   Future<void> nextDay() async {
-    state = _engine.advanceDay(state);
+    final List<Investment> invs =
+        await _ref.read(investmentsProvider.future);
+    state = _engine.advanceDay(state, investments: invs);
     await _persist();
   }
 
@@ -53,6 +59,20 @@ class GameStateController extends StateNotifier<GameState> {
     final check = _engine.canBuy(state, item);
     if (!check.ok) return;
     state = _engine.buy(state, item);
+    await _persist();
+  }
+
+  Future<void> buyStock(Investment inv, int qty) async {
+    final check = _engine.canBuyStock(state, inv, qty);
+    if (!check.ok) return;
+    state = _engine.buyStock(state, inv, qty);
+    await _persist();
+  }
+
+  Future<void> sellStock(Investment inv, int qty) async {
+    final check = _engine.canSellStock(state, inv.ticker, qty);
+    if (!check.ok) return;
+    state = _engine.sellStock(state, inv, qty);
     await _persist();
   }
 
@@ -67,5 +87,6 @@ final gameStateProvider =
   return GameStateController(
     ref.watch(gameStateRepositoryProvider),
     ref.watch(economyEngineProvider),
+    ref,
   );
 });

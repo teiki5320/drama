@@ -13,20 +13,23 @@ class CompteTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(gameStateProvider);
+    final engine = ref.watch(economyEngineProvider);
     final investments = ref.watch(investmentsProvider);
 
-    final portfolioValue = investments.maybeWhen(
-      data: (list) {
-        var sum = 0.0;
-        s.stockHoldings.forEach((ticker, qty) {
-          final inv = list.where((i) => i.ticker == ticker).firstOrNull;
-          if (inv != null) sum += inv.price * qty;
-        });
-        return sum;
-      },
-      orElse: () => 0.0,
-    );
-    final patrimoine = s.argent + portfolioValue;
+    var portfolioValue = 0.0;
+    var portfolioCost = 0.0;
+    investments.whenData((list) {
+      s.stockHoldings.forEach((ticker, qty) {
+        final inv = list.where((i) => i.ticker == ticker).firstOrNull;
+        if (inv == null) return;
+        final price = engine.currentPrice(s, inv);
+        portfolioValue += price * qty;
+        final avg = s.stockAvgCost[ticker] ?? 0.0;
+        portfolioCost += avg * qty;
+      });
+    });
+    final pnl = (portfolioValue - portfolioCost).round();
+    final patrimoine = s.argent + portfolioValue.round();
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
@@ -64,21 +67,30 @@ class CompteTab extends ConsumerWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _StatCard(
-                label: 'Patrimoine',
-                value: '${patrimoine.round()} €',
+                label: 'PNL latente',
+                value: pnl >= 0 ? '+$pnl €' : '$pnl €',
+                valueColor: pnl > 0
+                    ? AppColors.positive
+                    : (pnl < 0 ? AppColors.negative : null),
               ),
             ),
           ],
         ),
+        const SizedBox(height: 12),
+        _StatCard(
+          label: 'Patrimoine',
+          value: '$patrimoine €',
+        ),
         const SizedBox(height: 24),
         _StatCard(
           label: 'Followers',
-          value: '${s.followers} · « ${const EconomyEngine().instaTagline(s.followers)} »',
+          value:
+              '${s.followers} · « ${engine.instaTagline(s.followers)} »',
         ),
         const SizedBox(height: 8),
         _StatCard(
           label: 'Revenus passifs',
-          value: '${const EconomyEngine().passiveIncome(s.followers)} €/jour',
+          value: '${engine.passiveIncome(s.followers)} €/jour',
         ),
         const SizedBox(height: 24),
         _StatCard(
@@ -93,9 +105,14 @@ class CompteTab extends ConsumerWidget {
 }
 
 class _StatCard extends StatelessWidget {
-  const _StatCard({required this.label, required this.value});
+  const _StatCard({
+    required this.label,
+    required this.value,
+    this.valueColor,
+  });
   final String label;
   final String value;
+  final Color? valueColor;
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +139,7 @@ class _StatCard extends StatelessWidget {
             style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: valueColor ?? AppColors.textPrimary,
             ),
           ),
         ],
