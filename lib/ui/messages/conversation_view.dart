@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/colors.dart';
 import '../../models/day_entry.dart';
 import '../../models/sms_message.dart';
 import '../../providers/game_state_provider.dart';
 import '../../providers/scenario_provider.dart';
-import '../carnet/sms_bubble.dart';
+import '../carnet/imessage_view.dart';
 
 /// Displays every SMS block addressed to a given conversation up to and
 /// including the current day. Inline-only blocks (`_inline`) are skipped.
@@ -25,7 +26,13 @@ class ConversationView extends ConsumerWidget {
     final state = ref.watch(gameStateProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      backgroundColor: AppColors.paperCream,
+      appBar: AppBar(
+        title: Text(title),
+        backgroundColor: AppColors.paperCream,
+        foregroundColor: AppColors.textPrimary,
+        elevation: 0,
+      ),
       body: scenario.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, st) => Center(child: Text('Erreur : $e')),
@@ -53,9 +60,12 @@ class ConversationView extends ConsumerWidget {
           }
 
           return ListView(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 24),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
             children: [
-              for (final m in messages) SmsBubble(message: m),
+              IMessageView(
+                conversationId: conversationId,
+                messages: messages,
+              ),
             ],
           );
         },

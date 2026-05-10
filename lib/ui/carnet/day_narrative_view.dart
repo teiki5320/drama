@@ -3,8 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/colors.dart';
 import '../../models/day_entry.dart';
-import '../../models/sms_message.dart';
-import 'sms_bubble.dart';
+import 'imessage_view.dart';
 
 class DayNarrativeView extends StatelessWidget {
   const DayNarrativeView({super.key, required this.day});
@@ -23,7 +22,10 @@ class DayNarrativeView extends StatelessWidget {
           blocks.add(_SectionTitle(text: b.content ?? ''));
           break;
         case NarrativeBlockType.sms:
-          blocks.add(_SmsCluster(messages: b.messages ?? const []));
+          blocks.add(IMessageView(
+            conversationId: b.conversation,
+            messages: b.messages ?? const [],
+          ));
           break;
         case NarrativeBlockType.image:
           blocks.add(_NarrativeImage(
@@ -80,28 +82,6 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-class _SmsCluster extends StatelessWidget {
-  const _SmsCluster({required this.messages});
-  final List<SmsMessage> messages;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFF3EEDF),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0x141A1A1A)),
-      ),
-      padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (final m in messages) SmsBubble(message: m),
-        ],
-      ),
-    );
-  }
-}
 
 class _NarrativeImage extends StatelessWidget {
   const _NarrativeImage({required this.imageAsset, required this.caption});
