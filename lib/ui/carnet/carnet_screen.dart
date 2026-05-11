@@ -54,17 +54,60 @@ class CarnetScreen extends ConsumerWidget {
   }
 }
 
-class _DayBody extends ConsumerWidget {
+class _DayBody extends ConsumerStatefulWidget {
   const _DayBody({required this.day});
   final DayEntry day;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DayBody> createState() => _DayBodyState();
+}
+
+class _DayBodyState extends ConsumerState<_DayBody> {
+  final ScrollController _scrollCtrl = ScrollController();
+  bool _scrolledToChoice = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollCtrl.addListener(_onScroll);
+    // Si tout tient déjà à l'écran (carte de choix visible d'emblée),
+    // on autorise le décompte tout de suite. Sinon on attend que le
+    // joueur ait scrollé pour montrer qu'il a lu et qu'il est devant
+    // sa décision.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (!_scrollCtrl.hasClients) return;
+      if (_scrollCtrl.position.maxScrollExtent <= 1) {
+        setState(() => _scrolledToChoice = true);
+      }
+    });
+  }
+
+  void _onScroll() {
+    if (_scrolledToChoice) return;
+    final pos = _scrollCtrl.position;
+    if (pos.maxScrollExtent <= 0) return;
+    final progress = pos.pixels / pos.maxScrollExtent;
+    if (progress >= 0.55) {
+      setState(() => _scrolledToChoice = true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final day = widget.day;
     final controller = ref.read(gameStateProvider.notifier);
     final state = ref.watch(gameStateProvider);
     final hasChosen = state.choicesMade.containsKey(day.id);
 
     return SingleChildScrollView(
+      controller: _scrollCtrl,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,6 +128,7 @@ class _DayBody extends ConsumerWidget {
               choice: day.choice,
               disabled: hasChosen,
               selectedIndex: state.choicesMade[day.id],
+              autoStartTimer: _scrolledToChoice,
               onPicked: (i, opt) async {
                 await controller.chooseOption(
                   dayId: day.id,
