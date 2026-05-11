@@ -47,6 +47,12 @@ class ChoiceOption {
   final String? triggersScene;
   final String? ledgerLabel;
 
+  /// Bref retour narratif joué juste après que le joueur choisit cette
+  /// option (1-2 lignes pour un jour intérieur, 4-6 pour un jour
+  /// climactique). Voix Shen, présent du carnet. Affiché en italique
+  /// Crimson Pro sous les options, avant le bouton "Jour suivant".
+  final String? aftermath;
+
   const ChoiceOption({
     required this.text,
     required this.argent,
@@ -56,6 +62,7 @@ class ChoiceOption {
     this.setsFlags,
     this.triggersScene,
     this.ledgerLabel,
+    this.aftermath,
   });
 
   factory ChoiceOption.fromJson(Map<String, dynamic> json) => ChoiceOption(
@@ -71,6 +78,7 @@ class ChoiceOption {
             .toList(growable: false),
         triggersScene: json['triggersScene'] as String?,
         ledgerLabel: json['ledgerLabel'] as String?,
+        aftermath: json['aftermath'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -82,5 +90,6 @@ class ChoiceOption {
         if (setsFlags != null) 'setsFlags': setsFlags,
         if (triggersScene != null) 'triggersScene': triggersScene,
         if (ledgerLabel != null) 'ledgerLabel': ledgerLabel,
+        if (aftermath != null) 'aftermath': aftermath,
       };
 }

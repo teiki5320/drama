@@ -152,20 +152,23 @@
           "text": "« Je l'ai humilié. C'était jouissif. »",
           "argent": 0,
           "mood": -2,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "Camille a ri. Trop fort. Le serveur s'est retourné. Plus tard dans la nuit, dans son lit, je me suis dit : « Tu as humilié un type qui ne te connaît pas, à qui tu vas devoir demander 18 000 euros dans trois semaines. » Le mot « jouissif » m'a brûlé au réveil."
         },
         {
           "text": "« Je crois que j'ai été conne. »",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Camille m'a regardée comme on regarde un patient. Elle a dit « non » trois fois, doucement. Je l'ai crue à la troisième. C'est ça les amies : elles te mentent jusqu'à ce que tu mentes mieux toi-même."
         },
         {
           "text": "« J'ai gardé sa carte. » (mensonge)",
           "argent": 0,
           "mood": 0,
           "reputation": 0,
-          "triggersScene": "carte_recollee"
+          "triggersScene": "carte_recollee",
+          "aftermath": "J'ai dit ça en regardant ailleurs. Camille a hoché la tête, n'a pas insisté. Elle savait. J'ai senti la carte dans ma poche arrière — quatre morceaux — chaque fois que je me suis assise pendant l'heure suivante."
         }
       ]
     }
@@ -197,19 +200,22 @@
           "text": "Pleurer dans les toilettes du rez-de-chaussée",
           "argent": 0,
           "mood": -2,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Trois minutes. J'ai compté. Une infirmière a frappé. J'ai dit « pardon » alors que c'était mon corps qui pleurait, pas moi. Je suis sortie le visage encore humide. La caissière de la cafét' m'a souri comme on sourit aux veuves."
         },
         {
           "text": "Sortir un carnet et faire un tableau Excel mental",
           "argent": 0,
           "mood": 0,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "Colonne 1 : argent disponible. Colonne 2 : argent manquant. Colonne 3 : temps restant. Le résultat de la colonne 2 ne tenait pas dans la case. Je l'ai écrit deux fois, plus petit, pour voir s'il rétrécissait."
         },
         {
           "text": "Appeler Camille immédiatement",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Elle a décroché à la deuxième sonnerie. Je n'ai pas pu parler. Elle a dit « je sors du métro, j'arrive ». Elle est arrivée vingt-deux minutes plus tard. Pendant ces vingt-deux minutes, j'ai regardé un homme manger un sandwich. Je crois que c'est ça, attendre."
         }
       ]
     }
@@ -251,20 +257,23 @@
           "text": "Demander un crédit conso (refusé d'avance mais essayer)",
           "argent": -50,
           "mood": -1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Le conseiller a tapé mon nom dans son écran. Il n'a même pas levé les yeux. « Je vois que vous avez deux mois de loyer en retard. » Il a cliqué une fois. C'était fini. 50 € de frais de dossier prélevés malgré tout."
         },
         {
           "text": "Chercher un troisième job",
           "argent": 400,
           "mood": -2,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Trois soirs au comptoir d'un sushi sans pause. Le patron m'a dit « tu es polie pour une française », ce qui était sa façon de payer en plus de l'argent. 400 € en cash dans une enveloppe en papier kraft. J'ai dormi quatre heures par nuit."
         },
         {
           "text": "Recoller la carte de Tristan Heng",
           "argent": 0,
           "mood": -1,
           "reputation": 1,
-          "triggersScene": "tentation"
+          "triggersScene": "tentation",
+          "aftermath": "Quatre morceaux de bristol. Ruban adhésif derrière. Le « T » de Tristan a refusé de se réaligner, j'ai recommencé deux fois. Quand j'ai fini, je l'ai glissée dans la page 47 de mon Code Civil. La 47. Comme l'étage."
         }
       ]
     }
@@ -367,19 +376,22 @@
           "reputation": 2,
           "unlocks": [
             "tristan_phone"
-          ]
+          ],
+          "aftermath": "Sa secrétaire a répondu en trois langues. J'ai dit la mienne. Elle a noté mon nom, m'a rappelée à 14h12. Rendez-vous jeudi. Quand j'ai raccroché, mes mains tremblaient comme après un examen. Sauf que là, je n'avais rien révisé."
         },
         {
           "text": "Non. Je trouve une autre solution.",
           "argent": 0,
           "mood": 0,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "J'ai éteint le téléphone. Je l'ai posé sur la pile de Code Civil. J'ai regardé l'écran noir pendant longtemps. Pas de fierté, pas de soulagement. Juste un vide où aurait dû tenir un plan."
         },
         {
           "text": "J'attends une semaine pour décider.",
           "argent": 0,
           "mood": -1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "J'ai écrit « lundi prochain » sur un Post-it. Je l'ai collé sur le miroir de la salle de bain. Tous les matins de cette semaine, en me brossant les dents, j'allais voir si j'avais changé d'avis. Tous les soirs aussi."
         }
       ]
     }
@@ -421,19 +433,22 @@
           "text": "Tableur Excel propre, dossier imprimé chez Camille",
           "argent": -10,
           "mood": 1,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "Camille m'a laissée utiliser son imprimante. 23 pages. Elle a relié au massicot du cabinet. Elle a dit « tu sais, tu as l'air d'une vraie ». J'ai répondu « justement, ça m'inquiète ». 10 € de toner que je devais à son père."
         },
         {
           "text": "Note vocale dans mon téléphone, je ferai au feeling",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "J'ai enregistré 4 minutes dans le métro entre Belleville et République. À la réécoute, j'ai entendu un mec qui mendiait en fond. Je l'avais pas vu sur le moment. C'était un bon présage ou un mauvais, je n'ai pas su."
         },
         {
           "text": "Je n'apporte rien, je veux voir comment il réagit",
           "argent": 0,
           "mood": -2,
-          "reputation": 2
+          "reputation": 2,
+          "aftermath": "J'ai mis une chemise, un jean propre, des Stan Smith. Aucun papier, aucun chiffre dans la tête. Dans l'ascenseur du 47e, j'ai cru que j'allais vomir. Je me suis dit : « si je vomis maintenant, je rentre à Belleville à pied. » Je n'ai pas vomi."
         }
       ]
     }
@@ -517,19 +532,22 @@
           "text": "Je révise mon dossier une dernière fois",
           "argent": 0,
           "mood": 0,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "Onze fois. Onze fois j'ai relu la dernière page. À la onzième, j'ai trouvé une faute de frappe que je n'avais pas vue. J'ai corrigé au stylo bleu. C'était la seule chose que je contrôlais ce soir-là."
         },
         {
           "text": "Je dors comme une masse, je laisse l'instinct",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Je me suis couchée à 21h. J'ai rêvé d'un ascenseur qui ne s'arrêtait à aucun étage. Au réveil, à 6h, je me sentais reposée et déplacée, comme si on m'avait posée dans la mauvaise chambre."
         },
         {
           "text": "Je relis les lettres que j'ai écrites à mon père cette année (rituel)",
           "argent": 0,
           "mood": -2,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Quatorze lettres en un an. Je les ai relues dans l'ordre. À la onzième j'avais écrit : « Papa, parfois je voudrais signer n'importe quoi pour qu'on n'en parle plus. » Je ne me souvenais pas de l'avoir écrite. J'ai senti que c'était déjà décidé."
         }
       ]
     }
@@ -626,24 +644,27 @@
             "tristan_sms",
             "tristan"
           ],
-          "ledgerLabel": "Contrat Heng (3 mois)"
+          "ledgerLabel": "Contrat Heng (3 mois)",
+          "aftermath": "Tristan a hoché la tête une fois. Sans sourire. Il a fait glisser le dossier vers moi, page de signature ouverte. Comme s'il avait toujours su que je dirais oui. Et qu'il me respectait un peu moins pour ça. Mon stylo a fui sur la troisième signature. Il en a passé un autre. J'ai signé avec l'encre de Tristan."
         },
         {
           "text": "Je refuse. Je trouverai 18 000 € autrement.",
           "argent": 0,
           "mood": 3,
-          "reputation": -2
+          "reputation": -2,
+          "aftermath": "Tristan a regardé sa montre sans la regarder. « Je comprends. » Il n'a rien ajouté. J'ai pris l'ascenseur seule. Dans la cabine, j'ai compté ce qui me manquait : 18 000 €. J'avais 47 € en banque. Au rez-de-chaussée, j'ai souri à la réceptionniste comme si j'avais gagné."
         },
         {
-          "text": "Je négocie : 35 000 € au lieu de 30 000 €.",
-          "argent": 35000,
+          "text": "Je tente 35 000 € au lieu de 30 000 €.",
+          "argent": 20000,
           "mood": -3,
-          "reputation": 6,
+          "reputation": 3,
           "unlocks": [
             "tristan_sms",
             "tristan"
           ],
-          "ledgerLabel": "Contrat Heng négocié"
+          "ledgerLabel": "Contrat Heng (revu à la baisse)",
+          "aftermath": "J'ai dit le chiffre comme si je l'avais répété toute ma vie. « Trente-cinq mille. » Tristan n'a pas cligné. Il a refermé le contrat doucement, comme on referme un dossier de patient. Il a fait un signe à son assistant — une porte s'est ouverte, le café a refroidi. Quand il a rouvert le dossier, la page n'était plus la même. « Vingt mille. Plafond ferme. Vous m'avez fait perdre cinq minutes. » J'ai compté. Vingt mille, c'était encore assez pour le premier versement et trois mois. J'ai signé sans relever la tête."
         }
       ]
     },
@@ -705,20 +726,23 @@
           "setsFlags": [
             "isMomTreatmentPaid"
           ],
-          "ledgerLabel": "Versement Tenon"
+          "ledgerLabel": "Versement Tenon",
+          "aftermath": "La caisse de Tenon m'a remis un reçu format A4. 18 000 € — Mme Marchand H. — règlement intégral protocole. Je l'ai plié en quatre dans mon sac, puis en huit, puis je l'ai sorti pour vérifier qu'il existait toujours. Maman n'a rien remarqué. Tant mieux."
         },
         {
           "text": "Je garde tout en attendant, je verse étalé.",
           "argent": 0,
           "mood": -2,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "L'argent est resté sur mon compte. Toute la journée j'ai senti le solde dans mon dos comme un secret tiède. Le soir, j'ai vérifié l'app trois fois. Le chiffre n'avait pas bougé. Maman non plus."
         },
         {
           "text": "Je rembourse mes dettes (loyer, plateforme) puis le reste à l'hôpital.",
           "argent": -800,
           "mood": 1,
           "reputation": 0,
-          "ledgerLabel": "Loyer + plateforme"
+          "ledgerLabel": "Loyer + plateforme",
+          "aftermath": "Loyer en retard, plateforme bloquée, abonnement métro. 800 € en quinze minutes. Le reste à Tenon en fin d'après-midi. J'avais soldé deux pans de ma vie. Je me suis sentie propre et sale en même temps."
         }
       ]
     }
@@ -818,19 +842,22 @@
           "text": "Je range discrètement, je ne touche à rien.",
           "argent": 0,
           "mood": -1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "J'ai déplacé un coussin de trois centimètres. Je l'ai remis. Trois centimètres dans l'autre sens. Personne ne s'en apercevrait. C'était précisément le but."
         },
         {
           "text": "Je sors mes livres, ma plante, je m'impose dans l'espace.",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Mon ficus sur la console en marbre. Mon Code Civil sur la table basse. Quand Tristan est rentré, il a regardé la plante deux secondes de trop, puis il a dit « bonsoir » comme si rien. J'avais gagné un round. Personne ne savait que c'était un round."
         },
         {
           "text": "Je garde ma valise faite, prête à partir si ça tourne mal.",
           "argent": 0,
           "mood": -2,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Roulettes alignées contre le mur. Étiquette « Heng — 8 rue de Berri » que je n'avais pas voulu coller. Chaque soir je vérifiais que la fermeture était bien fermée. Je dormais en pyjama. Comme à l'hôtel."
         }
       ]
     }
@@ -922,19 +949,22 @@
           "text": "Je lis le journal qu'il a posé sur la table.",
           "argent": 0,
           "mood": 0,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "Le Figaro éco, plié à la page 7. J'ai lu l'article sur les fusions sino-européennes en posant les yeux sur chaque mot sans en retenir un. Tristan a dit « tiens, ça vous intéresse ? » Je n'ai pas répondu. C'était la seule façon de ne pas mentir."
         },
         {
           "text": "Je tente la conversation : « Vous êtes allé à Hangzhou ? »",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Il a levé la tête. Pour la première fois il m'a regardée plus de deux secondes. « Trois fois. » Il a parlé du thé Long Jing, des collines, d'une femme qu'on appelait grand-mère sans qu'elle le soit. Je n'ai rien dit en mandarin. Il n'a pas su que je comprenais."
         },
         {
           "text": "Je file dans ma chambre, j'évite l'inconfort.",
           "argent": 0,
           "mood": -2,
-          "reputation": -1
+          "reputation": -1,
+          "aftermath": "J'ai fermé la porte tout doucement. Je l'ai entendue claquer plus fort que prévu. Tristan n'a pas réagi. Au bout d'une heure j'ai eu faim. Je suis sortie. La table était débarrassée. J'ai mangé un yaourt debout devant le frigo, comme une voleuse."
         }
       ]
     }
@@ -1016,19 +1046,22 @@
           "text": "Un détail vrai (Tristan a fait du thé Long Jing comme grand-mère).",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Maman a eu un sourire que je ne connaissais pas. Un sourire de jeune femme. Elle a dit « ah » très bas. Elle a pris ma main sans me regarder. C'était la première fois depuis trois semaines qu'elle me prenait la main avant que je ne lui tende la mienne."
         },
         {
           "text": "Un détail menteur (Lao Chen a parlé de la pluie).",
           "argent": 0,
           "mood": -2,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "J'ai vu Maman noter mentalement. Lao Chen, pluie. Elle a souri. C'était la première fois qu'elle souriait depuis trois semaines. J'ai détesté ce sourire plus que sa douleur d'avant. Le mensonge marchait trop bien. C'est ça qui faisait peur."
         },
         {
           "text": "Je promets de l'appeler dimanche pour de vrai.",
           "argent": 0,
           "mood": -1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Maman a dit « d'accord » sans y croire. Le dimanche suivant, je n'ai pas appelé. J'ai inventé une réunion, puis un trajet, puis je n'ai rien inventé du tout. À 23h, elle m'a envoyé un texto : « bonne nuit ma chérie ». Trois mots. Ce qu'il fallait pour me coucher en m'excusant à voix basse."
         }
       ]
     }
@@ -1096,19 +1129,22 @@
           "text": "Je refuse fermement (je ne mêle personne à mes mensonges).",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "J'ai dit « non » trois fois en une phrase. Le coloc de Camille — Léo, je crois — a ri et a dit « ok ok, t'énerves pas ». J'avais l'air d'une qui en cache une. C'était exactement ce que j'étais."
         },
         {
           "text": "Je garde l'option en réserve sans répondre.",
           "argent": 0,
           "mood": 0,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "« Je vous redis. » Je n'ai jamais redit. Je crois que c'est pire que d'avoir dit oui ou non. La porte reste entrouverte, ça fait des courants d'air dans la tête."
         },
         {
           "text": "J'accepte (Lao Chen aura une voix grave et un accent du Sichuan).",
           "argent": 0,
           "mood": -2,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "Léo s'est entraîné à dire « ma fille » avec un accent qu'il n'avait pas. C'était presque crédible. Quand il m'a envoyé l'enregistrement de la note vocale-test, j'ai eu peur que Maman raccroche. J'ai eu encore plus peur qu'elle ne raccroche pas."
         }
       ]
     }
@@ -1226,19 +1262,22 @@
           "text": "Oui. Je joue cartes sur table dès la première phrase.",
           "argent": 0,
           "mood": -2,
-          "reputation": 2
+          "reputation": 2,
+          "aftermath": "J'ai écrit la phrase d'ouverture à la main, en caractères, deux fois. Je l'ai apprise par cœur dans l'ordre et à l'envers. Je me suis couchée en répétant 你好 jusqu'à ne plus l'entendre. C'était comme préparer un saut d'un toit dont je n'avais pas mesuré la hauteur."
         },
         {
           "text": "Non. Je joue la naïve, je laisse Madame Heng croire qu'elle me teste.",
           "argent": 0,
           "mood": 0,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "J'ai sorti mes mots du tiroir un par un — bonjour, merci, pardon — et je les ai posés à côté du lit pour ne pas me tromper. Madame Heng croirait qu'elle me testait. Je la laisserais croire. C'était sale. C'était stratégique. Ça revenait au même."
         },
         {
           "text": "Je verrai sur le moment. Je laisse l'instinct décider.",
           "argent": 0,
           "mood": 1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "J'ai éteint la lumière à 22h. Je n'ai pris aucune décision. C'est peut-être ça, l'instinct : refuser de choisir et appeler ça de l'élégance."
         }
       ]
     }
@@ -1378,19 +1417,22 @@
           "text": "Je reste à table, je joue normale. Je creuserai demain matin avec Tristan.",
           "argent": 0,
           "mood": -2,
-          "reputation": 1
+          "reputation": 1,
+          "aftermath": "J'ai souri tout le reste du repas. Vincent racontait Phuket. Tristan m'a regardée deux fois, je n'ai pas tenu son regard. Madame Heng a parlé d'un dimanche de 1996 sans le dater. Je me suis dit : demain matin. Avec Tristan. Mais je savais déjà que demain matin serait trop tard pour avoir l'air spontanée."
         },
         {
           "text": "Je m'éclipse aux toilettes. Je regarde mon visage dans le miroir et j'essaie de comprendre.",
           "argent": 0,
           "mood": -1,
-          "reputation": 0
+          "reputation": 0,
+          "aftermath": "Marbre noir, robinet en laiton. Je me suis regardée. Mes yeux étaient plus calmes que je ne croyais. Ça m'a effrayée. Je suis restée trois minutes. Quand je suis revenue, Madame Heng versait le thé. Personne n'avait remarqué mon absence. Ça aussi, ça faisait peur."
         },
         {
           "text": "Je demande à Madame Heng en mandarin : « Comment connaissez-vous ma mère ? »",
           "argent": 0,
           "mood": -3,
-          "reputation": 4
+          "reputation": 4,
+          "aftermath": "Le silence a duré le temps qu'un grain de thé tombe au fond de la tasse. Tristan a posé sa main sur la nappe — pas sur la mienne, sur la nappe. Madame Heng m'a regardée comme on regarde une fille qu'on attendait depuis longtemps. Elle a répondu en mandarin parfait : « Depuis 1996. Asseyez-vous, Shen Yan, je vous attendais. » Ma chaise est restée à un mètre cinquante de la table jusqu'à ce que je m'y rassoie."
         }
       ]
     }

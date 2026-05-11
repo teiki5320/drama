@@ -145,7 +145,111 @@ class _ChoiceCardState extends State<ChoiceCard>
           ),
           const SizedBox(height: 8),
         ],
+        if (widget.selectedIndex != null &&
+            widget.choice.options[widget.selectedIndex!].aftermath != null) ...[
+          const SizedBox(height: 6),
+          _Aftermath(
+            key: ValueKey('aftermath-${widget.choice.prompt}-${widget.selectedIndex}'),
+            text: widget.choice.options[widget.selectedIndex!].aftermath!,
+          ),
+        ],
       ],
+    );
+  }
+}
+
+class _Aftermath extends StatefulWidget {
+  const _Aftermath({super.key, required this.text});
+  final String text;
+
+  @override
+  State<_Aftermath> createState() => _AftermathState();
+}
+
+class _AftermathState extends State<_Aftermath>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<double> _opacity;
+  late final Animation<Offset> _slide;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 520),
+    );
+    _opacity = CurvedAnimation(parent: _ctrl, curve: Curves.easeOut);
+    _slide = Tween<Offset>(
+      begin: const Offset(0, 0.06),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic));
+    // Court délai pour laisser le tile d'option finir sa transition
+    // de surbrillance avant que le retour ne se déplie.
+    Future.delayed(const Duration(milliseconds: 180), () {
+      if (mounted) _ctrl.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: SlideTransition(
+        position: _slide,
+        child: Container(
+          width: double.infinity,
+          margin: const EdgeInsets.only(top: 6),
+          padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFAE0CC).withValues(alpha: 0.35),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppColors.accentOrange.withValues(alpha: 0.18),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.edit_outlined,
+                    size: 13,
+                    color: AppColors.accentOrange.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'CE QUE J\'AI ÉCRIT APRÈS',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.1,
+                      color: AppColors.accentOrange.withValues(alpha: 0.85),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                widget.text,
+                style: GoogleFonts.crimsonPro(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  height: 1.45,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
