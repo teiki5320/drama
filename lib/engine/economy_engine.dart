@@ -29,9 +29,56 @@ class EconomyEngine {
   /// gonfle sans limite sur une partie longue.
   static const int kMaxLedgerEntries = 80;
 
+  /// Nombre de jours d'historique synthétique à fabriquer au premier
+  /// lancement, pour que les sparklines aient déjà du contenu et que le
+  /// graphique du patrimoine ne soit pas vide à J1.
+  static const int kBootstrapHistoryDays = 30;
+
   static List<LedgerEntry> _capLedger(List<LedgerEntry> ledger) {
     if (ledger.length <= kMaxLedgerEntries) return ledger;
     return ledger.sublist(ledger.length - kMaxLedgerEntries);
+  }
+
+  /// Au premier lancement (ou après reset), si l'historique des prix
+  /// est vide, on fabrique un passé synthétique de
+  /// `kBootstrapHistoryDays` jours pour chaque action. Les cours
+  /// drift de ±2% par jour, déterministe par ticker (seed = hash), et
+  /// se terminent **exactement** sur le prix du catalogue.
+  ///
+  /// On seed aussi `wealthHistory` à plat (le joueur n'a pas trade
+  /// avant J1) — juste pour que le graphique du Compte ne soit pas
+  /// désespérément vide.
+  GameState bootstrapHistory(GameState state, List<Investment> investments) {
+    if (state.stockPriceHistory.isNotEmpty) return state;
+
+    final newPriceHistory = <String, List<double>>{};
+    final newCurrentPrices = <String, double>{};
+    for (final inv in investments) {
+      final rng = Random(inv.ticker.hashCode);
+      final prices = <double>[inv.price.toDouble()];
+      for (var i = 0; i < kBootstrapHistoryDays - 1; i++) {
+        final noise = (rng.nextDouble() * 4 - 2) / 100; // -2% .. +2%
+        // On remonte le temps : price[i-1] = price[i] / (1 + noise)
+        final earlier = prices.first / (1 + noise);
+        prices.insert(0, double.parse(earlier.toStringAsFixed(2)));
+      }
+      newPriceHistory[inv.ticker] = prices;
+      newCurrentPrices[inv.ticker] = prices.last;
+    }
+
+    // wealthHistory : kBootstrapHistoryDays copies de l'argent courant
+    // (pas de variations puisque rien n'a été tradé).
+    final newWealthHistory = List<int>.filled(
+      kBootstrapHistoryDays,
+      state.argent,
+      growable: true,
+    );
+
+    return state.copyWith(
+      stockPriceHistory: newPriceHistory,
+      stockCurrentPrices: newCurrentPrices,
+      wealthHistory: newWealthHistory,
+    );
   }
 
   /// Daily passive income from followers. Cf. ROADMAP §4.3.

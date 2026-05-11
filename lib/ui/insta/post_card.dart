@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/colors.dart';
+import '../../core/formatters.dart';
 import '../../models/character.dart';
 import '../../models/insta_post.dart';
 import 'character_profile.dart';
@@ -64,7 +65,7 @@ class PostCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    'J${post.day}',
+                    formatGameDateShort(post.day),
                     style: GoogleFonts.inter(
                       fontSize: 11,
                       color: AppColors.textSecondary,

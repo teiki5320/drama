@@ -27,6 +27,14 @@ class GameStateController extends StateNotifier<GameState> {
   Future<void> _restore() async {
     final loaded = await _repo.load();
     if (loaded != null) state = loaded;
+    // Bootstrap : si l'historique des prix est vide (premier lancement
+    // ou reset), on génère un passé synthétique pour que les sparklines
+    // et le graphique du patrimoine ne soient pas vides à J1.
+    if (state.stockPriceHistory.isEmpty) {
+      final invs = await _ref.read(investmentsProvider.future);
+      state = _engine.bootstrapHistory(state, invs);
+      await _persist();
+    }
   }
 
   Future<void> _persist() => _repo.save(state);
@@ -90,6 +98,10 @@ class GameStateController extends StateNotifier<GameState> {
   Future<void> reset() async {
     state = const GameState();
     await _repo.reset();
+    // Rebootstrap synthetic history pour la nouvelle partie.
+    final invs = await _ref.read(investmentsProvider.future);
+    state = _engine.bootstrapHistory(state, invs);
+    await _persist();
   }
 }
 
