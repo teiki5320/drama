@@ -11,22 +11,23 @@ donc affiché dans l'app.
 | **J3** | Calculs sur le carnet | ✅ Fournie | `assets/photos/scenes/J03_calculs.png` |
 | **J4** | Café Hanami avec Camille | ✅ Fournie | `assets/photos/scenes/J04_cafe_hanami.png` |
 | **J5** | Carte recollée + plan | ✅ Fournie | `assets/photos/scenes/J05_carte_recollee.png` |
-| **J6** | Tailleur miroir | ❌ Manquante | — |
-| **J7** | Tour Heng 47e étage | ❌ Manquante | — |
+| **J6** | Tailleur miroir | ✅ Fournie | `assets/photos/scenes/J06_tailleur_miroir.jpeg` |
+| **J7** | Tour Heng 47e étage | ✅ Fournie | `assets/photos/scenes/J07_tour_heng_47e.png` |
 | **J8** | Contrat notarié | ✅ Fournie | `assets/photos/scenes/J08_contrat_notarie.png` |
 | **J9** | Valise sur grand lit | ✅ Fournie | `assets/photos/scenes/J09_valise_grand_lit.png` |
 | **J10** | Cuisine Heng, fraises | ✅ Fournie | `assets/photos/scenes/J10_cuisine_fraises.png` |
 | **J11** | Visite à Maman | ✅ Fournie | `assets/photos/scenes/J11_visite_maman.png` |
 | **J12** | Déjeuner appartement Heng | ✅ Fournie | `assets/photos/scenes/J12_dejeuner_heng.png` |
 | **J13** | Téléphone Camille | ✅ Fournie | `assets/photos/scenes/J13_camille_telephone.png` |
-| **J14** | Thé Madame Heng | ❌ Manquante | — |
+| **J14** | Thé Madame Heng | ✅ Fournie | `assets/photos/scenes/J14_the_madame_heng.png` |
 
-**Total : 11 / 14 scènes en place. 3 manquantes** : J6, J7, J14.
+**Total : 14 / 14 scènes en place. ✅ Tout est livré.**
 
 ## Variantes archivées
 
 - `refs/archive/J03_calculs_variante.png` — autre angle du même setup (table carrée vs ronde).
 - `refs/archive/J05_carte_recollee_variante.png` — autre angle avec MacBook tableur + assiette par-dessus la carte.
+- `refs/archive/J06_tailleur_miroir_variante.png` — autre cadrage, plus serré, du même setup miroir + tailleur.
 
 À ressortir si on change d'avis sur le visuel principal.
 
