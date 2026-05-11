@@ -4,13 +4,13 @@ import '../models/game_state.dart';
 /// lentre_deux. Cf. ROADMAP §4.7.
 String computeEnding(GameState s) {
   if (!s.isMomTreatmentPaid) return 'le_deuil_et_la_route';
-  if (s.argent >= 30000 && s.mood >= 7 && s.reputation >= 10) {
+  if (s.argent >= 30000 && s.mood >= 70 && s.reputation >= 10) {
     return 'a_parts_egales';
   }
-  if (s.argent >= 30000 && s.mood < 5 && s.reputation >= 15) {
+  if (s.argent >= 30000 && s.mood < 50 && s.reputation >= 15) {
     return 'la_cage_doree';
   }
-  if (s.mood >= 8 && s.reputation <= 5) return 'belleville';
+  if (s.mood >= 80 && s.reputation <= 5) return 'belleville';
   return 'lentre_deux';
 }
 

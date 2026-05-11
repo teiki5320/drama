@@ -116,18 +116,18 @@ void showArgentStatPopup(BuildContext context, int argent) {
 }
 
 void showMoodStatPopup(BuildContext context, int mood) {
-  final color = mood >= 6
+  final color = mood >= 60
       ? AppColors.positive
-      : (mood <= 2 ? AppColors.negative : AppColors.accentOrange);
+      : (mood <= 20 ? AppColors.negative : AppColors.accentOrange);
   showDialog<void>(
     context: context,
     builder: (_) => _StatPopup(
       emoji: '😊',
       title: 'MOOD',
-      bigValue: '$mood / 10',
+      bigValue: '$mood / 100',
       bigValueColor: color,
       body:
-          'L\'humeur de Shen, de 0 à 10. À 2 ou moins, des choix vertueux se ferment. À 6+, elle accède aux items "mode" et "voyage". Repas, sommeil, petits plaisirs font remonter.',
+          'L\'humeur de Shen, de 0 à 100. Chaque palier de 10 ouvre potentiellement une catégorie d\'achats : 30 bouffe, 40 déco, 50 tech, 60 mode, 70 bijoux, 80 voyage, 90 mécénat. Les choix journaliers la font bouger doucement.',
     ),
   );
 }

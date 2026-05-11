@@ -12,14 +12,16 @@ import '../../providers/game_state_provider.dart';
 const _categoryLabels = <String, ({String label, String emoji})>{
   'all': (label: 'Tout', emoji: '🛍️'),
   'vehicule': (label: 'Véhicule', emoji: '🛵'),
-  'mode': (label: 'Mode', emoji: '👗'),
   'immobilier': (label: 'Immobilier', emoji: '🏠'),
   'art': (label: 'Art', emoji: '🎨'),
   'beaute': (label: 'Beauté', emoji: '🌸'),
-  'voyage': (label: 'Voyage', emoji: '✈️'),
-  'tech': (label: 'Tech', emoji: '📱'),
+  'bouffe': (label: 'Bouffe', emoji: '🍽️'),
   'deco': (label: 'Déco', emoji: '🌿'),
+  'tech': (label: 'Tech', emoji: '📱'),
+  'mode': (label: 'Mode', emoji: '👗'),
   'bijoux': (label: 'Bijoux', emoji: '💎'),
+  'voyage': (label: 'Voyage', emoji: '✈️'),
+  'mecenat': (label: 'Mécénat', emoji: '⚖️'),
 };
 
 class AchatsTab extends ConsumerStatefulWidget {

@@ -149,9 +149,9 @@ class _RulesSheet extends StatelessWidget {
   static const _rules = <_Rule>[
     _Rule(
       icon: '😊',
-      title: 'Mood (0–10)',
+      title: 'Mood (0–100)',
       body:
-          'L\'humeur de Shen. Si elle tombe à 2 ou moins pendant plusieurs jours, attention : des choix vertueux peuvent se fermer. Repas, petits plaisirs, sommeil font remonter le mood.',
+          'L\'humeur de Shen. Tous les 10 points, une catégorie d\'achats s\'ouvre (bouffe à 30, déco à 40, tech à 50, mode à 60, bijoux à 70, voyage à 80, mécénat à 90). Si elle retombe sous le seuil, la catégorie redevient grisée. Les choix journaliers font bouger doucement.',
     ),
     _Rule(
       icon: '⭐',

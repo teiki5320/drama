@@ -368,7 +368,7 @@ class _RecapCard extends StatelessWidget {
     final lines = <(String, String)>[
       ('Jours joués', '$daysPlayed / ${EconomyEngine.kMaxStoryDay}'),
       ('Argent en banque', formatMoney(state.argent)),
-      ('Mood', '${state.mood} / 10'),
+      ('Mood', '${state.mood} / 100'),
       ('Réputation', '★ ${state.reputation}'),
       ('Followers', '${state.followers}'),
       ('Contrat Heng',

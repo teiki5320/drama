@@ -51,7 +51,7 @@ class Sidebar extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           _StatChip(
-            label: '${s.mood}/10',
+            label: '${s.mood}/100',
             emoji: '😊',
             onTap: () {
               HapticFeedback.selectionClick();
