@@ -82,6 +82,10 @@
         "content": "Il me tend une carte de visite, deux doigts en pince, comme on tend l'addition.\n\n*Tristan Heng — Heng International — Directeur Europe.*\n\nJe la prends. Je la regarde. Je la déchire devant lui — un coup, deux coups, quatre morceaux. Je laisse tomber les bouts dans la flaque, l'açaí et la pluie qui s'en occupent.\n\nJe repars en boitant avec mon vélo cassé sur l'épaule. Je ne me retourne pas. Si je me retournais, il verrait que je tremble."
       },
       {
+        "type": "prose",
+        "content": "Je passe par le 8e exprès en rentrant. Plus longtemps. Pas pour y aller. Pour pouvoir y penser.\n\n*Heng International — Directeur Europe.* Trois mots qui veulent dire : il a une assistante qui filtre. Trois mots que je ne devrais pas avoir retenus.\n\nCamille m'attend ce soir au studio. Elle va me demander tout. Et je vais devoir choisir ce que je raconte."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J01_collision.png",
         "content": "Avenue Montaigne, 08:17. Le bowl coûte 38 €."
@@ -120,7 +124,11 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Le néphrologue veut me parler en privé. Quand un médecin veut te parler en privé à 6h30 du matin, c'est jamais pour te dire que ça va.\n\nLe Dr Aubin a un visage que j'aime bien. Il porte des lunettes en écaille et il prend toujours le temps. Il pose son stylo avant de parler — c'est quelqu'un qui ne lit pas à haute voix une fiche, c'est quelqu'un qui réfléchit.\n\n— Madame Marchand, votre mère a besoin d'un traitement de seconde ligne. C'est un protocole hors AMM, donc non remboursé.\n— Combien ?\n— Dix-huit mille euros sur six mois.\n\nJe n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a 2 384 € et c'est déjà un miracle de fin de mois.\n\nJe ressors. Le hall sent l'eau de Javel et le café froid. Je m'assois sur un banc et je calcule trois fois. Trois fois la même réponse."
+        "content": "Le néphrologue veut me parler en privé. Quand un médecin veut te parler en privé à 6h30 du matin, c'est jamais pour te dire que ça va.\n\nLe Dr Aubin a un visage que j'aime bien. Il porte des lunettes en écaille et il prend toujours le temps. Il pose son stylo avant de parler — c'est quelqu'un qui ne lit pas à haute voix une fiche, c'est quelqu'un qui réfléchit.\n\n— Madame Marchand, votre mère a besoin d'un traitement de seconde ligne. C'est un protocole hors AMM, donc non remboursé.\n— Combien ?\n— Dix-huit mille euros sur six mois. Et je dois insister sur un point — il faut commencer dans les six semaines, pas plus. Au-delà, la fenêtre se ferme.\n\nSix semaines. Quarante-deux jours. Le compteur démarre maintenant.\n\nJe n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a 2 384 € et c'est déjà un miracle de fin de mois.\n\nJe ressors. Le hall sent l'eau de Javel et le café froid. Je m'assois sur un banc et je calcule trois fois. Trois fois la même réponse."
+      },
+      {
+        "type": "prose",
+        "content": "Une infirmière passe avec un gobelet. Elle s'arrête. Elle me regarde, hésite, puis elle s'assoit à côté.\n\n— Vous êtes la fille de Madame Marchand.\n\nJe hoche la tête.\n\n— Elle est ici depuis trois ans. Je la connais bien. Elle ne dit jamais ce qu'elle a vraiment, vous savez. Pas même au médecin. Faites attention à ce qu'elle vous dit.\n\nElle se lève avant que je puisse répondre. Elle me presse l'épaule en partant.\n\nMaman ne dit pas tout. Maman ne dit pas tout."
       },
       {
         "type": "image",
@@ -161,6 +169,20 @@
       {
         "type": "prose",
         "content": "Calculs. Calculs. Calculs.\n\nSi je double les livraisons : +400 €/mois. Si je prends un troisième service de nuit : +600 €/mois mais je ne dors plus. Total potentiel sur six mois : 6 000 €. Manque : 12 000 €.\n\nJ'ai appelé la banque. Pas de prêt sans garant. Mon père français — celui de mon nom, Antoine Marchand, parti quand j'avais 6 ans — ne sera jamais garant de quoi que ce soit, on ne s'est pas vus depuis dix-huit ans.\n\nMaman regarde un film français des années 80 dans le canapé. Catherine Deneuve sourit. Maman sourit aussi. Elle ne sait rien."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {
+            "sender": "Banque",
+            "content": "Mademoiselle Marchand, suite à l'étude de votre dossier, votre demande de crédit personnel est refusée. Vous n'avez pas de garant éligible et vos revenus sont jugés insuffisants. Cordialement."
+          }
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "J'ai aussi appelé l'aide sociale. Une voix fatiguée m'a dit : « Six mois minimum pour un dossier. Vous pouvez prendre rendez-vous. »\n\nSix mois. Maman a six semaines.\n\nJe raccroche. Je regarde par la fenêtre du studio. La pluie n'arrête pas. J'ouvre le tiroir de la table. La carte de Tristan Heng est là, en quatre morceaux, ramenée de la flaque hier soir. Je ne sais même plus à quel moment je l'ai ramassée."
       },
       {
         "type": "image",
@@ -272,6 +294,10 @@
         ]
       },
       {
+        "type": "prose",
+        "content": "Camille sort son téléphone. Elle googlise Heng International.\n\n— Tiens. Écoute ça. *Le directeur des opérations européennes Vincent Heng quitte le groupe dans des conditions houleuses, été dernier. Procès en cours.* Y'a un frère apparemment. Plus vieux. Méfie-toi de lui.\n\nElle me regarde par-dessus son écran.\n\n— Pas de Tristan. De son frère."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J04_cafe_hanami.png",
         "content": "Camille pose son croissant. Mauvais signe."
@@ -313,6 +339,20 @@
       {
         "type": "prose",
         "content": "La carte est recollée. Le scotch a légèrement jauni le carton. Le numéro forme une diagonale parce que j'ai mal aligné les morceaux. J'ai mis une assiette dessus pour qu'elle reste plate.\n\nMaman dort. La pluie tombe contre la fenêtre. C'est le moment où je suis la plus seule de la journée, et c'est aussi le moment où je m'aime le plus. Curieux.\n\nJe relis les SMS de Camille. *« Ça veut dire oui mais avec dignité. »* Elle a raison. Si j'y vais, c'est avec un dossier. Pas en quémandeuse.\n\nJ'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {
+            "sender": "Numéro inconnu",
+            "content": "Mademoiselle Marchand. Tristan ne vous a pas raconté la dernière. Renseignez-vous avant de signer demain."
+          }
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "23h17. Numéro inconnu. Je relis trois fois. Je ne réponds pas.\n\n*Avant de signer demain.* Donc cet inconnu sait que je vais voir Tristan. Donc l'information circule déjà. Donc je ne suis déjà plus seule dans ma propre histoire.\n\nJe pose le téléphone face contre la table. Je continue mon Excel."
       },
       {
         "type": "image",
@@ -407,6 +447,10 @@
         ]
       },
       {
+        "type": "prose",
+        "content": "Avant qu'elle parte, je lui pose la question que je n'ai jamais posée.\n\n— Camille. Ta mère. Elle est où en ce moment ?\n\nElle range les épingles dans le tailleur. Elle ne lève pas les yeux.\n\n— Une autre fois. Concentre-toi sur demain.\n\nElle prend son sac. Elle m'embrasse sur le front, vite, comme on embrasse quelqu'un avant un examen.\n\n— Tu vas casser la baraque. Et si tu casses pas, tu sors. T'as toujours le droit de sortir."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J06_tailleur_miroir.jpeg",
         "content": "Pas plus belle. Plus coupée."
@@ -498,6 +542,10 @@
       },
       {
         "type": "prose",
+        "content": "Pendant qu'il finit sa phrase, son téléphone vibre sur le bureau. Il regarde l'écran. Il serre la mâchoire une seconde, à peine.\n\nSur l'écran je lis : *Vincent*.\n\nIl ne décroche pas. Il retourne le téléphone face contre la table.\n\n— Excusez-moi. Vous disiez ?\n\nJe n'ai rien dit. Mais maintenant je sais qu'il a un frère qui s'appelle Vincent. Et que Vincent appelle au moment précis où Tristan est en train de me proposer ce contrat."
+      },
+      {
+        "type": "prose",
         "content": "Le silence dure. La pluie sur la baie vitrée du 47e. Quelque part dans Paris, Maman regarde un film de Catherine Deneuve sans savoir qu'on est en train de discuter sa vie.\n\nTrois mois. Aucun baiser. Aucun mensonge sur Maman. Trente mille euros.\n\nMa main droite serre l'accoudoir du fauteuil. Je sens mes ongles dans le cuir."
       },
       {
@@ -557,6 +605,10 @@
       {
         "type": "prose",
         "content": "Quatorze pages. Quatorze pages pour décrire trois mois de mensonge encadré par un papier signé.\n\nLe notaire — un type chauve qui sourit poliment comme s'il faisait ce genre de contrat tous les jours, et peut-être que oui — fait défiler les clauses.\n\nArticle 14. *« Aucun contact physique non public ne sera exigé entre les parties. »*\n\nJe prends son stylo. J'écris en marge, à la main : *« Pas de baisers. Pas de mensonges sur ma mère malade. Droit de manger des fraises devant lui même s'il est allergique. »*\n\nTristan me regarde. Le notaire fait semblant de ne rien voir."
+      },
+      {
+        "type": "prose",
+        "content": "Le notaire est asiatique. Costume gris foncé, lunettes en titane, mains soignées. Il parle un français parfait, sans accent.\n\n— Maître Heng-Liu. Enchanté, Mademoiselle Marchand.\n\nHeng-Liu. Je ne pose pas la question. Je signe. Je signe trois fois, paraphe en bas de chaque page. Je signe en sachant que je viens de mettre mon nom dans un cabinet qui n'est pas neutre. Tristan ne m'a pas dit que son notaire portait son nom de famille. Évidemment qu'il ne me l'a pas dit."
       },
       {
         "type": "sms",
@@ -686,6 +738,10 @@
         ]
       },
       {
+        "type": "prose",
+        "content": "Je cherche un cintre dans la penderie. Je tire trop fort sur l'étagère du haut. Une boîte en bois descend, tombe sur la moquette en faisant un bruit qu'elle n'aurait pas dû faire.\n\nJe l'ouvre par réflexe. Une seconde. Je n'aurais pas dû.\n\nUne photo, format polaroid : Tristan, plus jeune, peut-être 26 ans. À côté de lui, une jeune femme asiatique. Ils sont sur une terrasse, peut-être à Hong Kong. Elle rit. Lui ne rit pas mais il la regarde — et là, dans cette photo, son visage n'est pas le visage que je connais.\n\nSous la photo, une carte de visite. Au dos, écrit à la main, encre noire :\n\n*Pour Mei. Trois mois aussi. — T.*\n\nJe remets exactement comme c'était. Je referme la boîte. Je remonte l'étagère.\n\nJe ne suis pas la première. Je ne suis pas la première. Je ne suis pas la première."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J09_valise_grand_lit.png",
         "content": "Une valise au milieu de 350 m²."
@@ -786,6 +842,10 @@
         "content": "Il fait le thé. En silence. Il le fait bien — il chauffe la théière d'abord, il rince les feuilles, il jette la première eau. Mon arrière-grand-mère aurait approuvé."
       },
       {
+        "type": "prose",
+        "content": "Tristan entre dans la cuisine sans me voir. Il pose un petit bol blanc devant moi. Trois fraises. Une coupée en deux.\n\n— Article 7, alinéa b. Vous y avez droit. Pas moi.\n\nIl se sert un café noir et il s'éloigne. Il ne sourit pas. Mais il a posé les fraises dans MON bol, pas dans le sien. Il les a achetées hier au marché — j'ai vu le ticket ce matin sur la table.\n\nJe mange une fraise devant lui. Lentement. Il fait semblant de lire le journal. Mais il regarde, je le sais, sans me regarder."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J10_cuisine_fraises.png",
         "content": "Trois fraises. Article 7 b, en pratique."
@@ -868,6 +928,10 @@
             "content": "« Bien. » Tu écris « bien » depuis trois jours. Donne-moi un détail."
           }
         ]
+      },
+      {
+        "type": "prose",
+        "content": "Quand je m'apprête à partir, Maman me retient sur le pas de la porte. Elle a son châle gris, sa voix de quand elle parle de choses sérieuses sans en avoir l'air.\n\n— Lao Chen. J'ai cherché.\n\nJe me fige.\n\n— Y'a 47 Lao Chen sur LinkedIn. Tu en es sûre, ma fille ?\n\nElle ne pose pas la vraie question. Elle laisse l'espace. Elle me regarde et ne me regarde pas en même temps. Comme avant, à l'école, quand elle savait que j'avais menti sur une note et qu'elle attendait que je me reprenne toute seule.\n\nMaman sait. Maman ne dit rien.\n\nJe l'embrasse trop fort. Je sors. Je marche jusqu'au métro Couronnes en pleurant à demi, en frottant mes yeux comme s'il pleuvait."
       },
       {
         "type": "image",
@@ -1076,30 +1140,34 @@
         ]
       },
       {
+        "type": "prose",
+        "content": "Plus tard dans la soirée, le téléphone de Tristan sonne dans le salon. Il décroche. Il parle.\n\nIl parle en mandarin.\n\nJe suis dans la cuisine. Je tiens un verre d'eau dans la main. Je ne bouge plus. Madame Heng au téléphone. Tristan répond, calme : « 是的，姑姑。她会来。我会带她。 » *Oui, ma tante. Elle viendra. Je l'amènerai.*\n\nPuis Madame Heng dit quelque chose que Tristan répète, doucement, comme une instruction dont il prend note : « 我想看看她有没有听懂的能力。 » *Je veux voir si elle a la capacité de comprendre.*\n\nJe comprends chaque mot. J'ai parlé mandarin avec ma mère pendant 18 ans. Je l'ai appris seule sur YouTube et dans les restaurants du 13e. Personne ne le sait, à part Camille.\n\nJe pose le verre d'eau sans bruit. Je remonte dans ma chambre.\n\nMadame Heng veut me tester. Demain, samedi, au dîner. Elle me parlera en mandarin pour voir si je rougis. Si je tressaille. Si je trahis.\n\nTrois options pour moi maintenant. Et il faut que je décide cette nuit."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J13_camille_telephone.png",
         "content": "Vingt-trois minutes de respiration."
       }
     ],
     "choice": {
-      "prompt": "Comment je prépare le dîner ?",
+      "prompt": "Demain, je révèle mon mandarin ?",
       "options": [
         {
-          "text": "Je révise les thés chinois pendant 4h sur YouTube.",
+          "text": "Oui. Je joue cartes sur table dès la première phrase.",
           "argent": 0,
           "mood": -1,
           "reputation": 2
         },
         {
-          "text": "Je m'en remets à mes souvenirs de grand-mère.",
+          "text": "Non. Je joue la naïve, je laisse Madame Heng croire qu'elle me teste.",
           "argent": 0,
-          "mood": 1,
+          "mood": 0,
           "reputation": 1
         },
         {
-          "text": "Je n'étudie pas, je veux être moi-même.",
+          "text": "Je verrai sur le moment. Je laisse l'instinct décider.",
           "argent": 0,
-          "mood": 0,
+          "mood": 1,
           "reputation": 0
         }
       ]
@@ -1135,7 +1203,29 @@
       },
       {
         "type": "prose",
-        "content": "Le dîner. Six personnes autour de la table — Madame Heng, Tristan, son cousin Adrien, sa femme Léa, une cousine d'Asie qui ne parle pas français, et moi.\n\nOn sert le thé. Madame Heng me regarde porter la tasse à mes lèvres."
+        "content": "Le dîner. Sept personnes autour de la table — Madame Heng en bout, Tristan à sa droite, son cousin Adrien, sa femme Léa, une cousine d'Asie qui ne parle pas français, Vincent qui arrive en retard avec un quart d'heure de retard et un sourire qui n'a pas encore atterri sur ses yeux, et moi.\n\nOn sert le thé. Madame Heng me regarde porter la tasse à mes lèvres."
+      },
+      {
+        "type": "sms",
+        "conversation": "_inline",
+        "messages": [
+          {
+            "sender": "Vincent",
+            "content": "Vous étiez à Hong Kong en mars, Mademoiselle Marchand ? J'ai une étrange impression de déjà-vu."
+          },
+          {
+            "sender": "Moi",
+            "content": "Non. Je n'ai jamais quitté la France."
+          },
+          {
+            "sender": "Vincent",
+            "content": "Étrange. Vous me rappelez quelqu'un."
+          }
+        ]
+      },
+      {
+        "type": "prose",
+        "content": "Tristan repose son verre. Doucement. Trop doucement.\n\nMadame Heng ne dit rien mais elle a entendu. Elle sert le thé. Le thé Long Jing première récolte. Elle me regarde le porter à mes lèvres."
       },
       {
         "type": "sms",
@@ -1196,31 +1286,35 @@
         "content": "Elle a dit *ma fille*. En français. Ce n'est pas anodin."
       },
       {
+        "type": "prose",
+        "content": "Madame Heng pose sa main sur la mienne. Sa main est fraîche, plus légère que je ne l'aurais cru. Elle me regarde. Elle ne sourit pas vraiment. Elle dit, en français :\n\n— Tu as les yeux de ta mère.\n\nJe m'arrête de respirer.\n\nJe n'ai jamais parlé de ma mère ce soir. Je n'ai jamais montré une photo. Tristan ne sait même pas comment elle s'appelle. Personne autour de cette table ne devrait connaître Hélène Marchand.\n\nMadame Heng retire sa main. Elle reprend une fraise. Elle ne me regarde plus.\n\nLe dîner continue. Vincent rit à une blague d'Adrien. Léa demande des nouvelles d'une amie commune. Tristan me regarde une seconde. Lui aussi a entendu.\n\nJe n'entends plus rien. Je tiens ma tasse. Je serre.\n\nTu as les yeux de ta mère.\n\nComment elle sait."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J14_the_madame_heng.png",
         "content": "Le thé Long Jing première récolte. « Ma fille. »"
       }
     ],
     "choice": {
-      "prompt": "Comment je continue la soirée ?",
+      "prompt": "Comment je termine la soirée ?",
       "options": [
         {
-          "text": "Je reste discrète, je laisse l'effet retomber.",
+          "text": "Je reste à table, je joue normale. Je creuserai demain matin avec Tristan.",
           "argent": 0,
-          "mood": 1,
-          "reputation": 2
+          "mood": -2,
+          "reputation": 1
         },
         {
-          "text": "Je continue à participer naturellement (anecdote sur grand-mère).",
-          "argent": 0,
-          "mood": 2,
-          "reputation": 3
-        },
-        {
-          "text": "Je m'éclipse aux toilettes pour reprendre mon souffle.",
+          "text": "Je m'éclipse aux toilettes. Je regarde mon visage dans le miroir et j'essaie de comprendre.",
           "argent": 0,
           "mood": -1,
-          "reputation": 1
+          "reputation": 0
+        },
+        {
+          "text": "Je demande à Madame Heng en mandarin : « Comment connaissez-vous ma mère ? »",
+          "argent": 0,
+          "mood": -3,
+          "reputation": 4
         }
       ]
     }
