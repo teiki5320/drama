@@ -11,11 +11,11 @@
       },
       {
         "type": "prose",
-        "content": "Donc voilà. Carnet. Stylo bic vert parce que je n'ai pas trouvé le noir.\n\nMaman a passé une mauvaise nuit. Je l'ai entendue tousser à 4h. J'ai fait semblant de dormir parce que si elle sait que je l'ai entendue, elle va s'excuser. Maman s'excuse de tomber malade. C'est insupportable."
+        "content": "Donc voilà. Carnet. Stylo bic vert parce que je n'ai pas trouvé le noir.\n\n**Maman a passé une mauvaise nuit**. Je l'ai entendue tousser à 4h. J'ai fait semblant de dormir parce que si elle sait que je l'ai entendue, elle va s'excuser. **Maman s'excuse de tomber malade**. C'est insupportable."
       },
       {
         "type": "prose",
-        "content": "Je pars livrer dans dix minutes. Vélo, pluie, le 8e encore. Les riches commandent leur petit-déj à 8h pile, c'est mathématique."
+        "content": "Je pars livrer dans dix minutes. Vélo, pluie, le **8e** encore. Les riches commandent leur petit-déj à 8h pile, c'est mathématique."
       },
       {
         "type": "sceneBreak",
@@ -127,7 +127,7 @@
       },
       {
         "type": "prose",
-        "content": "Le sac de livraison s'éventre comme un fruit trop mûr. Le bowl se renverse en direct, l'açaí s'étale en traînée violette sur le bitume mouillé, le smoothie rejoint la pluie. Trente-huit euros que la plateforme va me retenir sur la prochaine paie. Je ferme les yeux. C'est le seul endroit où je peux pleurer sans que ça compte."
+        "content": "Le sac de livraison s'éventre comme un fruit trop mûr. Le bowl se renverse en direct, l'açaí s'étale en traînée violette sur le bitume mouillé, le smoothie rejoint la pluie. **Trente-huit euros** que la plateforme va me retenir sur la prochaine paie. Je ferme les yeux. C'est le seul endroit où je peux pleurer sans que ça compte."
       },
       {
         "type": "prose",
@@ -135,7 +135,7 @@
       },
       {
         "type": "prose",
-        "content": "L'homme qui sort de la berline a un costume qui coûte plus que mon loyer annuel. Il regarde sa montre. Il regarde la rue. Il regarde son rétroviseur. Il regarde tout sauf moi. Quand il finit par baisser les yeux, c'est avec l'expression de quelqu'un qui calcule combien ça va lui coûter."
+        "content": "L'homme qui sort de la berline a un costume qui coûte **plus que mon loyer annuel**. Il regarde sa montre. Il regarde la rue. Il regarde son rétroviseur. **Il regarde tout sauf moi.** Quand il finit par baisser les yeux, c'est avec l'expression de quelqu'un qui calcule combien ça va lui coûter."
       },
       {
         "type": "sms",
@@ -161,11 +161,11 @@
       },
       {
         "type": "prose",
-        "content": "Il me tend une carte de visite, deux doigts en pince, comme on tend l'addition.\n\n*Tristan Heng — Heng International — Directeur Europe.*\n\nJe la prends. Je la regarde. Je la déchire devant lui — un coup, deux coups, quatre morceaux. Je laisse tomber les bouts dans la flaque, l'açaí et la pluie qui s'en occupent.\n\nJe repars en boitant avec mon vélo cassé sur l'épaule. Je ne me retourne pas. Si je me retournais, il verrait que je tremble."
+        "content": "Il me tend une carte de visite, deux doigts en pince, comme on tend l'addition.\n\n*Tristan Heng — **Heng International** — Directeur Europe.*\n\nJe la prends. Je la regarde. Je la déchire devant lui — un coup, deux coups, quatre morceaux. Je laisse tomber les bouts dans la flaque, l'açaí et la pluie qui s'en occupent.\n\nJe repars en boitant avec mon vélo cassé sur l'épaule. Je ne me retourne pas. Si je me retournais, il verrait que je tremble."
       },
       {
         "type": "prose",
-        "content": "Je passe par le 8e exprès en rentrant. Plus longtemps. Pas pour y aller. Pour pouvoir y penser.\n\n*Heng International — Directeur Europe.* Trois mots qui veulent dire : il a **une assistante qui filtre**. Trois mots que je ne devrais pas avoir retenus.\n\nCamille m'attend ce soir au studio. Elle va me demander tout. Et je vais devoir choisir ce que je raconte."
+        "content": "Je passe par le 8e **exprès** en rentrant. Plus longtemps. Pas pour y aller. Pour pouvoir y penser.\n\n*Heng International — Directeur Europe.* Trois mots qui veulent dire : il a **une assistante qui filtre**. Trois mots que je ne devrais pas avoir retenus.\n\nCamille m'attend ce soir au studio. Elle va me demander tout. Et je vais devoir choisir ce que je raconte."
       },
       {
         "type": "quote",
@@ -225,11 +225,11 @@
       },
       {
         "type": "prose",
-        "content": "Le Dr Aubin a un visage que j'aime bien. Lunettes en écaille, le temps qu'il faut. Il pose son stylo avant de parler. Il ne lit pas une fiche. Il réfléchit."
+        "content": "Le **Dr Aubin** a un visage que j'aime bien. Lunettes en écaille, le temps qu'il faut. Il pose son stylo avant de parler. Il ne lit pas une fiche. Il réfléchit."
       },
       {
         "type": "prose",
-        "content": "— Madame Marchand, votre mère a besoin d'un traitement de seconde ligne. C'est un protocole hors AMM, donc non remboursé.\n— Combien ?\n— Dix-huit mille euros sur six mois. Et je dois insister sur un point — il faut commencer dans les six semaines, pas plus. Au-delà, la fenêtre se ferme."
+        "content": "— **Madame Marchand**, votre mère a besoin d'un **traitement de seconde ligne**. C'est un protocole **hors AMM**, donc non remboursé.\n— Combien ?\n— **Dix-huit mille euros** sur six mois. Et je dois insister sur un point — il faut commencer dans les **six semaines, pas plus**. Au-delà, **la fenêtre se ferme**."
       },
       {
         "type": "beat",
@@ -237,7 +237,7 @@
       },
       {
         "type": "prose",
-        "content": "Je n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a 2 384 € et c'est déjà un miracle de fin de mois."
+        "content": "Je n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a **2 384 €** et c'est déjà **un miracle de fin de mois**."
       },
       {
         "type": "image",
@@ -254,7 +254,7 @@
       },
       {
         "type": "prose",
-        "content": "Une infirmière passe avec un gobelet. Elle s'arrête. Elle me regarde, hésite, puis elle s'assoit à côté.\n\n— Vous êtes la fille de Madame Marchand.\n\nJe hoche la tête.\n\n— Elle est ici depuis trois ans. Je la connais bien. Elle ne dit jamais ce qu'elle a vraiment, vous savez. Pas même au médecin. Faites attention à ce qu'elle vous dit.\n\nElle se lève avant que je puisse répondre. Elle me presse l'épaule en partant."
+        "content": "Une infirmière passe avec un gobelet. Elle s'arrête. Elle me regarde, hésite, puis elle s'assoit à côté.\n\n— Vous êtes la fille de **Madame Marchand**.\n\nJe hoche la tête.\n\n— Elle est ici depuis trois ans. Je la connais bien. Elle ne dit jamais ce qu'elle a vraiment, vous savez. Pas même au médecin. **Faites attention à ce qu'elle vous dit**.\n\nElle se lève avant que je puisse répondre. Elle me presse l'épaule en partant."
       },
       {
         "type": "beat",
@@ -308,7 +308,7 @@
       },
       {
         "type": "prose",
-        "content": "Total potentiel sur six mois : 6 000 €. Manque : 12 000 €."
+        "content": "Total potentiel sur six mois : **6 000 €**. Manque : **12 000 €**."
       },
       {
         "type": "sms",
@@ -322,11 +322,11 @@
       },
       {
         "type": "prose",
-        "content": "J'ai aussi appelé l'aide sociale. Une voix fatiguée m'a dit : « Six mois minimum pour un dossier. Vous pouvez prendre rendez-vous. »"
+        "content": "J'ai aussi appelé l'aide sociale. Une voix fatiguée m'a dit : « **Six mois minimum** pour un dossier. Vous pouvez prendre rendez-vous. »"
       },
       {
         "type": "beat",
-        "content": "Six mois. Maman a six semaines."
+        "content": "Six mois. **Maman a six semaines**."
       },
       {
         "type": "prose",
@@ -454,7 +454,7 @@
       },
       {
         "type": "prose",
-        "content": "Camille sort son téléphone. Elle googlise Heng International.\n\n— Tiens. Écoute ça. *Le directeur des opérations européennes Vincent Heng quitte le groupe dans des conditions houleuses, été dernier. Procès en cours.* Y'a un frère apparemment. Plus vieux. Méfie-toi de lui.\n\nElle me regarde par-dessus son écran.\n\n— Pas de Tristan. De son frère."
+        "content": "Camille sort son téléphone. Elle googlise **Heng International**.\n\n— Tiens. Écoute ça. *Le directeur des opérations européennes **Vincent Heng** quitte le groupe dans des **conditions houleuses**, été dernier. Procès en cours.* Y'a un frère apparemment. Plus vieux. Méfie-toi de lui.\n\nElle me regarde par-dessus son écran.\n\n— Pas de Tristan. De son frère."
       },
       {
         "type": "marginalia",
@@ -520,7 +520,7 @@
       },
       {
         "type": "innerThought",
-        "content": "J'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
+        "content": "J'ouvre mon vieux MacBook Air. J'écris un **plan de remboursement sur dix ans**. Taux légal. Échéancier mensuel. Je veux un **contrat notarié**. **Je serai sa débitrice, pas sa charité**."
       },
       {
         "type": "stickyNote",
@@ -538,7 +538,7 @@
       },
       {
         "type": "prose",
-        "content": "23h17. Numéro inconnu. Je relis trois fois. Je ne réponds pas."
+        "content": "23h17. **Numéro inconnu**. Je relis trois fois. Je ne réponds pas."
       },
       {
         "type": "innerThought",
@@ -589,7 +589,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Camille est là. Elle a apporté un tailleur noir. *« Il était à ma mère, il devrait te tomber comme un gant. Non — comme une armure. »*\n\nJe l'enfile. Le miroir me dit quelqu'un d'autre. Pas plus belle, pas moins. Juste plus coupée. Plus tranchante."
+        "content": "Camille est là. Elle a apporté un **tailleur noir**. *« Il était à ma mère, il devrait te tomber comme un gant. Non — **comme une armure**. »*\n\nJe l'enfile. Le miroir me dit quelqu'un d'autre. Pas plus belle, pas moins. Juste plus coupée. Plus tranchante."
       },
       {
         "type": "sms",
@@ -704,7 +704,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Tailleur. Cheveux relevés. Marche calme. La moquette du 47e absorbe les pas — j'avais oublié que la richesse, c'est aussi du silence.\n\nL'assistante me dévisage. Je dévisage le mur. Le mur gagne.\n\nTristan me reçoit."
+        "content": "Tailleur. Cheveux relevés. Marche calme. La moquette du 47e absorbe les pas — j'avais oublié que **la richesse, c'est aussi du silence**.\n\nL'assistante me dévisage. Je dévisage le mur. Le mur gagne.\n\nTristan me reçoit."
       },
       {
         "type": "sms",
@@ -758,7 +758,7 @@
       },
       {
         "type": "prose",
-        "content": "— Trois mois. Vous emménagez chez moi rue de Berri, vous m'accompagnez aux dîners de famille et aux galas. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne."
+        "content": "— **Trois mois.** Vous emménagez chez moi **rue de Berri**, vous m'accompagnez aux **dîners de famille et aux galas**. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne."
       },
       {
         "type": "prose",
@@ -766,7 +766,7 @@
       },
       {
         "type": "prose",
-        "content": "— Vous touchez trente mille euros. Virement en deux fois. Contrat notarié signé demain matin pour vous protéger."
+        "content": "— Vous touchez **trente mille euros**. **Virement en deux fois**. Contrat notarié signé demain matin pour vous protéger."
       },
       {
         "type": "beat",
@@ -774,7 +774,7 @@
       },
       {
         "type": "prose",
-        "content": "— En échange : aucune relation physique. Aucune. C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne."
+        "content": "— En échange : **aucune relation physique**. **Aucune.** C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne."
       },
       {
         "type": "prose",
@@ -782,7 +782,7 @@
       },
       {
         "type": "prose",
-        "content": "— Et un dernier point. Article 7, alinéa b. Je suis allergique aux fraises. Vous y aurez droit, pas moi. C'est une plaisanterie."
+        "content": "— Et un dernier point. **Article 7, alinéa b**. Je suis **allergique aux fraises**. Vous y aurez droit, pas moi. C'est une plaisanterie."
       },
       {
         "type": "prose",
@@ -794,7 +794,7 @@
       },
       {
         "type": "prose",
-        "content": "Le silence dure. La pluie sur la baie vitrée du 47e. Quelque part dans Paris, Maman regarde un film de Catherine Deneuve sans savoir qu'on est en train de discuter sa vie.\n\nTrois mois. Aucun baiser. Aucun mensonge sur Maman. Trente mille euros.\n\nMa main droite serre l'accoudoir du fauteuil. Je sens mes ongles dans le cuir."
+        "content": "Le silence dure. La pluie sur la baie vitrée du 47e. Quelque part dans Paris, Maman regarde un film de Catherine Deneuve sans savoir qu'on est en train de discuter sa vie.\n\n**Trois mois.** Aucun baiser. Aucun mensonge sur Maman. Trente mille euros.\n\nMa main droite serre l'accoudoir du fauteuil. Je sens mes ongles dans le cuir."
       },
       {
         "type": "beat",
@@ -874,7 +874,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Quatorze pages. Quatorze pages pour décrire trois mois de mensonge encadré par un papier signé."
+        "content": "**Quatorze pages**. **Quatorze pages** pour décrire **trois mois de mensonge** encadré par un papier signé."
       },
       {
         "type": "prose",
@@ -882,7 +882,7 @@
       },
       {
         "type": "prose",
-        "content": "Article 14. *« Aucun contact physique non public ne sera exigé entre les parties. »*"
+        "content": "**Article 14**. *« Aucun contact physique non public ne sera exigé entre les parties. »*"
       },
       {
         "type": "prose",
@@ -912,7 +912,7 @@
       },
       {
         "type": "prose",
-        "content": "Il signe. En serrant les dents.\n\nLe virement est immédiat, valeur jour. 30 000 € qui tombent sur mon compte avant que je quitte l'étude. Le traitement de Maman est dans le sac."
+        "content": "Il signe. En serrant les dents.\n\nLe **virement est immédiat**, valeur jour. **30 000 €** qui tombent sur mon compte avant que je quitte l'étude. Le traitement de Maman est dans le sac."
       },
       {
         "type": "image",
@@ -964,7 +964,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "350 m². J'ai compté.\n\nIl y a une cuisine qu'on dirait sortie d'un magazine japonais et un salon où le canapé seul vaut probablement plus que tout ce que je possède. Les murs sont gris ardoise. Le sol est en chêne fumé. Il y a une bibliothèque qui occupe un mur entier et qui ne contient que des livres en chinois ou en allemand.\n\nTristan me montre ma chambre. La mienne. Pas la nôtre. Bien."
+        "content": "**350 m²**. J'ai compté.\n\nIl y a une cuisine qu'on dirait sortie d'un magazine japonais et un salon où le canapé seul vaut probablement plus que tout ce que je possède. Les murs sont gris ardoise. Le sol est en chêne fumé. Il y a une bibliothèque qui occupe un mur entier et qui ne contient que des livres en chinois ou en allemand.\n\nTristan me montre ma chambre. La mienne. Pas la nôtre. Bien."
       },
       {
         "type": "sms",
@@ -990,7 +990,7 @@
       },
       {
         "type": "prose",
-        "content": "Je pose ma valise sur le lit. Une seule valise. Je la regarde longtemps. Elle a l'air toute petite."
+        "content": "Je pose ma valise sur le lit. **Une seule valise**. Je la regarde longtemps. Elle a l'air toute petite."
       },
       {
         "type": "stickyNote",
@@ -1036,7 +1036,7 @@
       },
       {
         "type": "prose",
-        "content": "Je cherche un cintre dans la penderie. Je tire trop fort sur l'étagère du haut. Une boîte en bois descend, tombe sur la moquette en faisant un bruit qu'elle n'aurait pas dû faire."
+        "content": "Je cherche un cintre dans la penderie. Je tire trop fort sur l'étagère du haut. Une **boîte en bois** descend, tombe sur la moquette en faisant un bruit qu'elle n'aurait pas dû faire."
       },
       {
         "type": "prose",
@@ -1044,7 +1044,7 @@
       },
       {
         "type": "prose",
-        "content": "Une photo, format polaroid : Tristan, plus jeune, peut-être 26 ans. À côté de lui, une jeune femme asiatique. Ils sont sur une terrasse, peut-être à Hong Kong. Elle rit. Lui ne rit pas mais il la regarde — et là, dans cette photo, son visage n'est pas le visage que je connais."
+        "content": "Une photo, format polaroid : Tristan, plus jeune, peut-être 26 ans. À côté de lui, une jeune femme asiatique. Ils sont sur une terrasse, peut-être à **Hong Kong**. Elle rit. Lui ne rit pas mais il la regarde — et là, dans cette photo, son visage n'est pas le visage que je connais."
       },
       {
         "type": "prose",
@@ -1171,11 +1171,11 @@
       },
       {
         "type": "prose",
-        "content": "Tristan entre dans la cuisine sans me voir. Il pose un petit bol blanc devant moi. Trois fraises. Une coupée en deux."
+        "content": "Tristan entre dans la cuisine sans me voir. Il pose un petit bol blanc devant moi. **Trois fraises**. Une coupée en deux."
       },
       {
         "type": "prose",
-        "content": "— Article 7, alinéa b. Vous y avez droit. Pas moi."
+        "content": "— **Article 7, alinéa b**. Vous y avez droit. Pas moi."
       },
       {
         "type": "prose",
@@ -1234,7 +1234,7 @@
       },
       {
         "type": "prose",
-        "content": "J'ai préparé l'histoire avec Camille pendant deux jours. Je suis « stagiaire dans une équipe de paysagistes à Vincennes ». L'équipe travaille sur « des potagers pédagogiques pour des écoles ». Le chef s'appelle « Lao Chen », c'est un sino-français de 60 ans. Camille a même créé un faux compte LinkedIn au cas où Maman vérifierait.\n\nMaman vérifie jamais. Maman fait confiance.\n\nMaman me regarde longuement quand j'arrive. Elle a un châle gris sur les épaules. Elle me dit :"
+        "content": "J'ai préparé l'histoire avec Camille pendant deux jours. Je suis « **stagiaire** dans une équipe de **paysagistes à Vincennes** ». L'équipe travaille sur « des potagers pédagogiques pour des écoles ». Le chef s'appelle « **Lao Chen** », c'est un sino-français de 60 ans. Camille a même créé un faux compte LinkedIn au cas où Maman vérifierait.\n\nMaman vérifie jamais. Maman fait confiance.\n\nMaman me regarde longuement quand j'arrive. Elle a un châle gris sur les épaules. Elle me dit :"
       },
       {
         "type": "sms",
@@ -1286,7 +1286,7 @@
       },
       {
         "type": "prose",
-        "content": "— Lao Chen. J'ai cherché.\n\nJe me fige.\n\n— Y'a 47 Lao Chen sur LinkedIn. Tu en es sûre, ma fille ?"
+        "content": "— **Lao Chen**. J'ai cherché.\n\nJe me fige.\n\n— Y'a 47 **Lao Chen** sur LinkedIn. Tu en es sûre, ma fille ?"
       },
       {
         "type": "prose",
@@ -1369,7 +1369,7 @@
       },
       {
         "type": "innerThought",
-        "content": "Je lui mens depuis sept jours et chaque mensonge en appelle un autre. Le pire c'est qu'elle me croit. Le pire c'est aussi qu'elle ne me croit peut-être pas, mais qu'elle joue le jeu."
+        "content": "Je lui mens depuis **sept jours** et **chaque mensonge en appelle un autre**. Le pire c'est qu'**elle me croit**. Le pire c'est aussi qu'elle ne me croit peut-être pas, mais qu'**elle joue le jeu**."
       },
       {
         "type": "stickyNote",
@@ -1532,19 +1532,19 @@
       },
       {
         "type": "beat",
-        "content": "Il parle en mandarin."
+        "content": "Il parle **en mandarin**."
       },
       {
         "type": "prose",
-        "content": "Je suis dans la cuisine. Je tiens un verre d'eau dans la main. Je ne bouge plus. Madame Heng au téléphone. Tristan répond, calme : « 是的，妈妈。她会来。我会带她。 » *Oui, maman. Elle viendra. Je l'amènerai.*"
+        "content": "Je suis dans la cuisine. Je tiens un verre d'eau dans la main. Je ne bouge plus. **Madame Heng** au téléphone. Tristan répond, calme : « 是的，妈妈。她会来。我会带她。 » *Oui, maman. Elle viendra. Je l'amènerai.*"
       },
       {
         "type": "prose",
-        "content": "Puis Madame Heng dit quelque chose que Tristan répète, doucement, comme une instruction dont il prend note : « 我想看看她有没有听懂的能力。 » *Je veux voir si elle a la capacité de comprendre.*"
+        "content": "Puis **Madame Heng** dit quelque chose que Tristan répète, doucement, comme une instruction dont il prend note : « 我想看看她有没有听懂的能力。 » *Je veux voir **si elle a la capacité de comprendre**.*"
       },
       {
         "type": "prose",
-        "content": "Je comprends chaque mot. J'ai parlé mandarin avec ma mère pendant 18 ans. Je l'ai appris seule sur YouTube et dans les restaurants du 13e. Personne ne le sait, à part Camille."
+        "content": "Je comprends chaque mot. J'ai parlé mandarin avec ma mère pendant **18 ans**. Je l'ai appris seule sur YouTube et dans les restaurants du 13e. Personne ne le sait, à part Camille."
       },
       {
         "type": "prose",
@@ -1552,7 +1552,7 @@
       },
       {
         "type": "innerThought",
-        "content": "Madame Heng veut me tester. Demain, samedi, au dîner. Elle me parlera en mandarin pour voir si je rougis. Si je tressaille. Si je trahis.\n\nTrois options pour moi maintenant. Et il faut que je décide cette nuit."
+        "content": "**Madame Heng** veut me tester. Demain, samedi, au dîner. Elle me parlera **en mandarin** pour voir si je rougis. Si je tressaille. Si je trahis.\n\nTrois options pour moi maintenant. Et il faut que je décide cette nuit."
       },
       {
         "type": "stickyNote",
@@ -1603,7 +1603,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Madame Heng porte un qipao bleu marine. Elle a 58 ans et le port d'une femme qui a déjà gagné des batailles que je ne connaîtrai jamais. Elle me tend la main. Je la prends."
+        "content": "Madame Heng porte un **qipao bleu marine**. Elle a **58 ans** et le port d'une femme qui a déjà gagné des batailles que je ne connaîtrai jamais. Elle me tend la main. Je la prends."
       },
       {
         "type": "sms",
@@ -1625,7 +1625,7 @@
       },
       {
         "type": "prose",
-        "content": "Le dîner. Sept personnes autour de la table — Madame Heng en bout, Tristan à sa droite, son cousin Adrien, sa femme Léa, une cousine d'Asie qui ne parle pas français, Vincent qui arrive en retard avec un quart d'heure de retard et un sourire qui n'a pas encore atterri sur ses yeux, et moi.\n\nOn sert le thé. Madame Heng me regarde porter la tasse à mes lèvres."
+        "content": "Le dîner. **Sept personnes autour de la table** — Madame Heng en bout, Tristan à sa droite, son cousin Adrien, sa femme Léa, une cousine d'Asie qui ne parle pas français, Vincent qui arrive en retard avec un quart d'heure de retard et un sourire qui n'a pas encore atterri sur ses yeux, et moi.\n\nOn sert le thé. Madame Heng me regarde porter la tasse à mes lèvres."
       },
       {
         "type": "sms",
@@ -1721,7 +1721,7 @@
       },
       {
         "type": "prose",
-        "content": "Je n'ai jamais parlé de ma mère ce soir. Je n'ai jamais montré une photo. Tristan ne sait même pas comment elle s'appelle. Personne autour de cette table ne devrait connaître Hélène Marchand."
+        "content": "Je n'ai jamais parlé de ma mère ce soir. Je n'ai jamais montré une photo. Tristan ne sait même pas comment elle s'appelle. Personne autour de cette table ne devrait connaître **Hélène Marchand**."
       },
       {
         "type": "prose",
@@ -1791,7 +1791,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Je me suis réveillée à sept heures dans des draps en lin lavé trois fois. La fenêtre donnait sur une cour pavée et un platane. À Belleville, le matin commence avec le bruit des poubelles. Ici, le matin commence sans bruit. Le silence avait un coût que je ne savais pas encore mesurer."
+        "content": "Je me suis réveillée à sept heures dans des **draps en lin** lavé trois fois. La fenêtre donnait sur une cour pavée et un platane. À Belleville, le matin commence avec le bruit des poubelles. Ici, le matin commence sans bruit. Le silence avait un coût que je ne savais pas encore mesurer."
       },
       {
         "type": "prose",
@@ -1880,7 +1880,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Maman m'a ouvert en peignoir. Elle ne portait plus son alliance — elle dit que ses doigts ont maigri, c'est faux, elle l'a rangée dans la boîte en bois sur la cheminée. Elle m'a serrée trop fort. J'ai compté trois secondes de trop. Elle a senti que je sentais le citron d'un savon qui n'était pas le nôtre."
+        "content": "Maman m'a ouvert en peignoir. Elle ne portait plus son alliance — elle dit que ses doigts ont maigri, c'est faux, elle l'a rangée dans la boîte en bois sur la cheminée. Elle m'a serrée trop fort. J'ai compté trois secondes de trop. Elle a senti que je sentais le citron d'**un savon qui n'était pas le nôtre**."
       },
       {
         "type": "prose",
@@ -1938,7 +1938,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Madame Heng est arrivée hier soir. Je ne l'ai pas vue monter. À minuit, ses chaussures étaient dans l'entrée — des escarpins en cuir noir, taille trente-six et demi, trois cents euros au moins. Elle dort à l'étage. Tristan m'a dit « ma mère prend le thé à seize heures. Elle aimerait que vous descendiez. »"
+        "content": "**Madame Heng** est arrivée hier soir. Je ne l'ai pas vue monter. À minuit, ses chaussures étaient dans l'entrée — des escarpins en cuir noir, taille trente-six et demi, trois cents euros au moins. Elle dort à l'étage. Tristan m'a dit « ma mère prend le thé à seize heures. Elle aimerait que vous descendiez. »"
       },
       {
         "type": "image",
@@ -1947,7 +1947,7 @@
       },
       {
         "type": "prose",
-        "content": "Quand je suis descendue, Tristan n'était plus là. Madame Heng était assise sur le canapé, dos droit, les mains à plat sur les cuisses. Elle a fait un geste vers la chaise en face d'elle. Sa robe était en soie cream. Son bracelet de jade faisait un son très bas quand elle remuait le poignet. Elle a versé. Elle a parlé en français, soigné, sans accent. « Vous prenez le thé comme votre mère ? Faible et long ? »"
+        "content": "Quand je suis descendue, Tristan n'était plus là. **Madame Heng** était assise sur le canapé, dos droit, les mains à plat sur les cuisses. Elle a fait un geste vers la chaise en face d'elle. Sa robe était en soie cream. Son bracelet de jade faisait un son très bas quand elle remuait le poignet. Elle a versé. Elle a parlé en français, soigné, sans accent. « Vous prenez le thé comme votre mère ? Faible et long ? »"
       },
       {
         "type": "quote",
@@ -1994,11 +1994,11 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Quatrième jour chez les Heng. Maman m'a dit qu'elle avait bien dormi cette nuit pour la première fois depuis trois semaines, et qu'elle ne savait pas pourquoi. Moi, je savais. Madame Heng a fait passer un mot par Tristan ce matin : « Elle aura ses pivoines blanches mercredi. » Pas signé. Pas négociable."
+        "content": "**Quatrième jour chez les Heng**. Maman m'a dit qu'elle avait bien dormi cette nuit pour la première fois depuis trois semaines, et qu'elle ne savait pas pourquoi. Moi, je savais. Madame Heng a fait passer un mot par Tristan ce matin : « Elle aura ses **pivoines blanches mercredi**. » Pas signé. Pas négociable."
       },
       {
         "type": "prose",
-        "content": "Maman a sorti l'album photo. Celui de la cheminée, sépia, couverture rouge. Elle a tourné les pages en silence jusqu'à une photo de groupe, 1996, dix personnes devant un mur à Belleville. Elle a posé son doigt sur une femme que je ne connaissais pas. « Tu lui ressembles, parfois. » C'était Madame Heng à trente-deux ans. Maman a refermé l'album avant que je puisse parler."
+        "content": "Maman a sorti l'album photo. Celui de la cheminée, sépia, couverture rouge. Elle a tourné les pages en silence jusqu'à une photo de groupe, **1996**, dix personnes devant un mur à Belleville. Elle a posé son doigt sur une femme que je ne connaissais pas. « Tu lui ressembles, parfois. » C'était Madame Heng à **trente-deux ans**. Maman a refermé l'album avant que je puisse parler."
       },
       {
         "type": "beat",
@@ -2109,7 +2109,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Madame Heng a annoncé au dîner qu'elle rentrait à Hangzhou vendredi matin et qu'elle voulait un dernier dîner samedi soir avant son vol. « Avec Tristan et Shen Yan. Pas Vincent. » Personne n'a osé demander pourquoi pas Vincent. Tristan a hoché la tête. J'ai hoché la tête. C'était le dîner qui déciderait."
+        "content": "Madame Heng a annoncé au dîner qu'elle rentrait à **Hangzhou vendredi matin** et qu'elle voulait un dernier **dîner samedi soir** avant son vol. « Avec Tristan et Shen Yan. Pas Vincent. » Personne n'a osé demander pourquoi pas Vincent. Tristan a hoché la tête. J'ai hoché la tête. C'était le dîner qui déciderait."
       },
       {
         "type": "prose",
@@ -2161,7 +2161,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Treize chaises autour d'une table en noyer pour quatre personnes. Tristan à ma droite. Madame Heng en bout de table. À ma gauche, une chaise vide avec un couvert complet. « C'était la place de mon mari. Je laisse toujours son couvert. » Personne n'a commenté."
+        "content": "**Treize chaises** autour d'une table en noyer pour quatre personnes. Tristan à ma droite. Madame Heng en bout de table. À ma gauche, une chaise vide avec un couvert complet. « C'était la place de mon mari. Je laisse toujours son couvert. » Personne n'a commenté."
       },
       {
         "type": "prose",
@@ -2177,7 +2177,7 @@
       },
       {
         "type": "prose",
-        "content": "Au thé, Madame Heng a versé pour les trois. Long Jing première récolte. Elle a regardé sa tasse, puis la mienne. Elle a parlé en mandarin parfait, pas plus haut qu'un souffle : 你母亲叫什么名字。Quel est le nom de ta mère."
+        "content": "Au thé, Madame Heng a versé pour les trois. **Long Jing première récolte**. Elle a regardé sa tasse, puis la mienne. Elle a parlé en mandarin parfait, pas plus haut qu'un souffle : 你母亲叫什么名字。Quel est le nom de ta mère."
       },
       {
         "type": "image",
