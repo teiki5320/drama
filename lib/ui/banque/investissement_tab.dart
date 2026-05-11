@@ -823,37 +823,74 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
               ),
             ),
           if (hasPosition) const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
             children: [
-              _StepperButton(
-                icon: Icons.remove,
-                onTap: _qty > 1 ? () => setState(() => _qty--) : null,
+              Text(
+                '$_qty',
+                style: GoogleFonts.crimsonPro(
+                  fontSize: 42,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-              Column(
-                children: [
-                  Text(
-                    '$_qty',
-                    style: GoogleFonts.crimsonPro(
-                      fontSize: 38,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    'actions · max $maxQty',
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-              _StepperButton(
-                icon: Icons.add,
-                onTap: _qty < maxQty ? () => setState(() => _qty++) : null,
+              Text(
+                'actions · max $maxQty',
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
           ),
+          const SizedBox(height: 10),
+          if (maxQty == 0)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(
+                _isBuy ? 'Cash insuffisant.' : 'Aucune action à vendre.',
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            )
+          else if (maxQty == 1)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(
+                _isBuy ? 'Une seule action atteignable.' : 'Une seule action en portefeuille.',
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            )
+          else
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: AppColors.accentOrange,
+                inactiveTrackColor: const Color(0xFFE3D9C2),
+                thumbColor: AppColors.accentOrange,
+                overlayColor:
+                    AppColors.accentOrange.withValues(alpha: 0.18),
+                trackHeight: 4,
+                thumbShape:
+                    const RoundSliderThumbShape(enabledThumbRadius: 12),
+              ),
+              child: Slider(
+                value: _qty.clamp(1, maxQty).toDouble(),
+                min: 1,
+                max: maxQty.toDouble(),
+                divisions: maxQty - 1,
+                label: '$_qty',
+                onChanged: (v) {
+                  final next = v.round();
+                  if (next != _qty) {
+                    setState(() => _qty = next);
+                    HapticFeedback.selectionClick();
+                  }
+                },
+              ),
+            ),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
