@@ -70,10 +70,30 @@ class _DayBodyState extends ConsumerState<_DayBody> {
   void initState() {
     super.initState();
     _scrollCtrl.addListener(_onScroll);
-    // Si tout tient déjà à l'écran (carte de choix visible d'emblée),
-    // on autorise le décompte tout de suite. Sinon on attend que le
-    // joueur ait scrollé pour montrer qu'il a lu et qu'il est devant
-    // sa décision.
+    _checkContentFits();
+  }
+
+  @override
+  void didUpdateWidget(covariant _DayBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Changement de jour (id ou branche) → on remonte tout en haut
+    // et on remet le verrou du timer climactique. Sinon le scroll
+    // reste au bas du jour précédent et le joueur tombe sur la fin
+    // du nouveau jour.
+    final dayChanged = oldWidget.day.id != widget.day.id ||
+        oldWidget.day.branch != widget.day.branch;
+    if (dayChanged) {
+      _scrolledToChoice = false;
+      if (_scrollCtrl.hasClients) {
+        _scrollCtrl.jumpTo(0);
+      }
+      _checkContentFits();
+    }
+  }
+
+  void _checkContentFits() {
+    // Si tout tient déjà à l'écran après layout, on autorise le
+    // décompte tout de suite.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       if (!_scrollCtrl.hasClients) return;
