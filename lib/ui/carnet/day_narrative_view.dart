@@ -45,6 +45,21 @@ class DayNarrativeView extends StatelessWidget {
         case NarrativeBlockType.sceneBreak:
           child = _SceneBreak(text: b.content ?? '');
           break;
+        case NarrativeBlockType.innerThought:
+          child = _InnerThought(text: b.content ?? '');
+          break;
+        case NarrativeBlockType.stickyNote:
+          child = _StickyNote(text: b.content ?? '');
+          break;
+        case NarrativeBlockType.list:
+          child = _BulletList(text: b.content ?? '');
+          break;
+        case NarrativeBlockType.marginalia:
+          child = _Marginalia(text: b.content ?? '');
+          break;
+        case NarrativeBlockType.dayFooter:
+          child = _DayFooter(text: b.content ?? '');
+          break;
       }
       blocks.add(_FadeInUp(
         key: ValueKey('day-${day.id}-block-$i'),
@@ -332,6 +347,219 @@ class _SceneBreak extends StatelessWidget {
             ),
           ),
           divider,
+        ],
+      ),
+    );
+  }
+}
+
+/// Pensée intérieure de Shen, distincte de ce qu'elle "écrit" dans le
+/// carnet. Italique Crimson Pro légèrement décalé à droite, fond très
+/// pâle, comme une voix off entre deux paragraphes officiels.
+class _InnerThought extends StatelessWidget {
+  const _InnerThought({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left: 18, right: 8, top: 4, bottom: 4),
+      padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFAE0CC).withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(10),
+        border: Border(
+          left: BorderSide(
+            color: AppColors.accentOrange.withValues(alpha: 0.5),
+            width: 2.5,
+          ),
+        ),
+      ),
+      child: Text(
+        text,
+        style: GoogleFonts.crimsonPro(
+          fontSize: 15.5,
+          fontStyle: FontStyle.italic,
+          color: AppColors.textPrimary,
+          height: 1.55,
+          letterSpacing: 0.1,
+        ),
+      ),
+    );
+  }
+}
+
+/// Post-it Shen : note crue, liste, rappel. Fond crème jaune, légère
+/// rotation, ombre douce. Crimson Pro, comme tracée au stylo.
+class _StickyNote extends StatelessWidget {
+  const _StickyNote({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      angle: -0.018,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+        padding: const EdgeInsets.fromLTRB(18, 14, 18, 16),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFF2C4),
+          borderRadius: BorderRadius.circular(4),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.10),
+              blurRadius: 6,
+              offset: const Offset(2, 4),
+            ),
+          ],
+        ),
+        child: Text(
+          text,
+          style: GoogleFonts.crimsonPro(
+            fontSize: 16,
+            color: AppColors.textPrimary,
+            height: 1.4,
+            letterSpacing: 0.1,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Liste à puces : une ligne par item, contenu séparé par `\n`.
+/// Indentation, puce orange, items rendus en Crimson Pro.
+class _BulletList extends StatelessWidget {
+  const _BulletList({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = text
+        .split('\n')
+        .map((s) => s.trim())
+        .where((s) => s.isNotEmpty)
+        .toList();
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final item in items)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 6, left: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, right: 10),
+                    child: Container(
+                      width: 5,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: AppColors.accentOrange.withValues(alpha: 0.7),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      item,
+                      style: GoogleFonts.crimsonPro(
+                        fontSize: 16,
+                        color: AppColors.textPrimary,
+                        height: 1.45,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Annotation marginale : commentaire après-coup de Shen, comme une
+/// note ajoutée en relisant. Aligné à droite, plus petit, gris, avec
+/// un fin tiret de séparation à gauche. Donne le sentiment du carnet
+/// repris à un autre moment.
+class _Marginalia extends StatelessWidget {
+  const _Marginalia({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 2, bottom: 2, right: 4),
+      child: Row(
+        children: [
+          const Spacer(),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 280),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 16,
+                  height: 1.5,
+                  margin: const EdgeInsets.only(top: 10, right: 8),
+                  color: AppColors.textSecondary.withValues(alpha: 0.4),
+                ),
+                Flexible(
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.right,
+                    style: GoogleFonts.crimsonPro(
+                      fontSize: 12.5,
+                      fontStyle: FontStyle.italic,
+                      color: AppColors.textSecondary,
+                      height: 1.45,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Pied de page d'un jour : ligne fine, heure, courte phrase de clôture.
+/// Marque visuellement la fin de l'entrée du carnet avant que la
+/// ChoiceCard ne prenne le relais. Évite la rupture brutale narratif
+/// → décision.
+class _DayFooter extends StatelessWidget {
+  const _DayFooter({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18, bottom: 8),
+      child: Column(
+        children: [
+          Container(
+            width: 60,
+            height: 1,
+            color: AppColors.textSecondary.withValues(alpha: 0.25),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.crimsonPro(
+              fontSize: 13,
+              fontStyle: FontStyle.italic,
+              color: AppColors.textSecondary,
+              letterSpacing: 0.3,
+              height: 1.5,
+            ),
+          ),
         ],
       ),
     );

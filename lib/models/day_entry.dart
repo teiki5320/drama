@@ -1,7 +1,20 @@
 import 'choice.dart';
 import 'sms_message.dart';
 
-enum NarrativeBlockType { prose, sms, sectionTitle, image, quote, beat, sceneBreak }
+enum NarrativeBlockType {
+  prose,
+  sms,
+  sectionTitle,
+  image,
+  quote,
+  beat,
+  sceneBreak,
+  innerThought,
+  stickyNote,
+  list,
+  marginalia,
+  dayFooter,
+}
 
 NarrativeBlockType _blockTypeFromString(String s) {
   switch (s) {
@@ -19,6 +32,16 @@ NarrativeBlockType _blockTypeFromString(String s) {
       return NarrativeBlockType.beat;
     case 'sceneBreak':
       return NarrativeBlockType.sceneBreak;
+    case 'innerThought':
+      return NarrativeBlockType.innerThought;
+    case 'stickyNote':
+      return NarrativeBlockType.stickyNote;
+    case 'list':
+      return NarrativeBlockType.list;
+    case 'marginalia':
+      return NarrativeBlockType.marginalia;
+    case 'dayFooter':
+      return NarrativeBlockType.dayFooter;
     default:
       throw FormatException('Unknown NarrativeBlockType: $s');
   }
@@ -40,6 +63,16 @@ String _blockTypeToString(NarrativeBlockType t) {
       return 'beat';
     case NarrativeBlockType.sceneBreak:
       return 'sceneBreak';
+    case NarrativeBlockType.innerThought:
+      return 'innerThought';
+    case NarrativeBlockType.stickyNote:
+      return 'stickyNote';
+    case NarrativeBlockType.list:
+      return 'list';
+    case NarrativeBlockType.marginalia:
+      return 'marginalia';
+    case NarrativeBlockType.dayFooter:
+      return 'dayFooter';
   }
 }
 

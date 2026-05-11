@@ -143,6 +143,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J01_collision.png",
         "content": "Avenue Montaigne, 08:17. Le bowl coûte 38 €."
+      },
+      {
+        "type": "dayFooter",
+        "content": "23:42 — Studio. Carte recollée sur l'étagère. Demain je travaille."
       }
     ],
     "choice": {
@@ -260,7 +264,15 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Calculs. Calculs. Calculs.\n\nSi je double les livraisons : +400 €/mois. Si je prends un troisième service de nuit : +600 €/mois mais je ne dors plus. Total potentiel sur six mois : 6 000 €. Manque : 12 000 €.\n\nJ'ai appelé la banque. Pas de prêt sans garant. Mon père français — celui de mon nom, Antoine Marchand, parti quand j'avais 6 ans — ne sera jamais garant de quoi que ce soit, on ne s'est pas vus depuis dix-huit ans.\n\nMaman regarde un film français des années 80 dans le canapé. Catherine Deneuve sourit. Maman sourit aussi. Elle ne sait rien."
+        "content": "Calculs. Calculs. Calculs."
+      },
+      {
+        "type": "list",
+        "content": "Doubler les livraisons : +400 €/mois\nTroisième service de nuit : +600 €/mois mais je ne dors plus\nVendre le piano de Maman : 1 200 € à 1 800 €. Hors de question."
+      },
+      {
+        "type": "prose",
+        "content": "Total potentiel sur six mois : 6 000 €. Manque : 12 000 €."
       },
       {
         "type": "sms",
@@ -397,6 +409,10 @@
         "content": "Camille sort son téléphone. Elle googlise Heng International.\n\n— Tiens. Écoute ça. *Le directeur des opérations européennes Vincent Heng quitte le groupe dans des conditions houleuses, été dernier. Procès en cours.* Y'a un frère apparemment. Plus vieux. Méfie-toi de lui.\n\nElle me regarde par-dessus son écran.\n\n— Pas de Tristan. De son frère."
       },
       {
+        "type": "marginalia",
+        "content": "(en relisant : elle avait raison dès la première phrase.)"
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J04_cafe_hanami.png",
         "content": "Camille pose son croissant. Mauvais signe."
@@ -454,7 +470,11 @@
       },
       {
         "type": "prose",
-        "content": "23h17. Numéro inconnu. Je relis trois fois. Je ne réponds pas.\n\n*Avant de signer demain.* Donc cet inconnu sait que je vais voir Tristan. Donc l'information circule déjà. Donc je ne suis déjà plus seule dans ma propre histoire.\n\nJe pose le téléphone face contre la table. Je continue mon Excel."
+        "content": "23h17. Numéro inconnu. Je relis trois fois. Je ne réponds pas."
+      },
+      {
+        "type": "innerThought",
+        "content": "*Avant de signer demain.* Donc cet inconnu sait que je vais voir Tristan. Donc l'information circule déjà. Donc je ne suis déjà plus seule dans ma propre histoire.\n\nJe pose le téléphone face contre la table. Je continue mon Excel."
       },
       {
         "type": "image",
@@ -524,6 +544,10 @@
       {
         "type": "sceneBreak",
         "content": "21:00 — Studio, lampe de chevet"
+      },
+      {
+        "type": "stickyNote",
+        "content": "demain.\n6h45 réveil. douche sans bruit.\nthé chez Camille à 7h30.\nmétro 9. arriver 10h30.\nne pas trembler dans l'ascenseur.\nrespirer."
       },
       {
         "type": "sms",
@@ -668,6 +692,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J07_tour_heng_47e.png",
         "content": "Tour Heng, 47e étage. La moquette absorbe les pas."
+      },
+      {
+        "type": "dayFooter",
+        "content": "22:08 — Studio. La signature reste invisible. Tout est différent."
       }
     ],
     "choice": {
