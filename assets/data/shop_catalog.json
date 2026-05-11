@@ -10,7 +10,8 @@
     "reputationGain": 0,
     "requiredReputation": 0,
     "requiredMood": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "scooter",
@@ -47,7 +48,7 @@
     "category": "vehicule",
     "emoji": "⚡",
     "name": "Tesla Model 3",
-    "description": "Vitre teintée, supercharge, autopilote.",
+    "description": "Vitres teintées, supercharge, autopilote.",
     "price": 42000,
     "moodGain": 3,
     "reputationGain": 4,
@@ -98,7 +99,8 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 6,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "sac_chanel",
@@ -126,7 +128,8 @@
     "reputationGain": 2,
     "requiredReputation": 2,
     "requiredMood": 6,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "montre_omega",
@@ -139,7 +142,8 @@
     "reputationGain": 3,
     "requiredReputation": 3,
     "requiredMood": 6,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "bracelet_or",
@@ -152,7 +156,8 @@
     "reputationGain": 2,
     "requiredReputation": 0,
     "requiredMood": 7,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "weekend_kyoto",
@@ -166,7 +171,7 @@
     "requiredReputation": 0,
     "requiredMood": 8,
     "generatesInstaPost": true,
-    "instaPostCaption": "Kyoto en avril 🌸",
+    "instaPostCaption": "Kyoto, cerisiers en avance 🌸",
     "instaPostEmoji": "🌸"
   },
   {
@@ -195,7 +200,8 @@
     "reputationGain": 0,
     "requiredReputation": 0,
     "requiredMood": 8,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "visite_village",
@@ -223,7 +229,8 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 5,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "ipad",
@@ -236,7 +243,8 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 5,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "macbook",
@@ -249,7 +257,8 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 5,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "leica",
@@ -277,7 +286,8 @@
     "reputationGain": 0,
     "requiredReputation": 0,
     "requiredMood": 4,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "kakemono",
@@ -290,7 +300,8 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 4,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "lampe_noguchi",
@@ -303,20 +314,22 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 4,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "tapis_persan",
     "category": "deco",
     "emoji": "🧶",
     "name": "Tapis persan vintage",
-    "description": "Laine nouée main, 2x3m, ton crème.",
+    "description": "Laine nouée main, 2 × 3 m, ton crème.",
     "price": 1900,
     "moodGain": 2,
     "reputationGain": 2,
     "requiredReputation": 0,
     "requiredMood": 4,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "spa_jasmin",
@@ -329,7 +342,8 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "coiffeur",
@@ -342,7 +356,8 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "skincare",
@@ -355,7 +370,8 @@
     "reputationGain": 0,
     "requiredReputation": 0,
     "requiredMood": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "chanel5",
@@ -368,20 +384,22 @@
     "reputationGain": 1,
     "requiredReputation": 0,
     "requiredMood": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "studio_belleville_renove",
     "category": "immobilier",
     "emoji": "🛠️",
     "name": "Rénover le studio Belleville",
-    "description": "Vraie cuisine, plomberie qui ne pleure plus. La maison qui retient maman.",
+    "description": "Vraie cuisine, plomberie qui ne pleure plus. La maison qui retient Maman.",
     "price": 8500,
     "moodGain": 2,
     "reputationGain": 0,
     "requiredReputation": 0,
     "requiredMood": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "achat_studio",
@@ -439,14 +457,15 @@
     "reputationGain": 3,
     "requiredReputation": 2,
     "requiredMood": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "instaPostCaption": ""
   },
   {
     "id": "mini_giacometti",
     "category": "art",
     "emoji": "🗿",
     "name": "Mini sculpture Giacometti (bronze)",
-    "description": "Femme debout, 22 cm, fonte d'art. Cher mais elle te regarde comme personne.",
+    "description": "Femme debout, 22 cm, fonte d'art. Chère mais elle te regarde comme personne.",
     "price": 38000,
     "moodGain": 2,
     "reputationGain": 6,
