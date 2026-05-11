@@ -610,7 +610,7 @@
       },
       {
         "type": "prose",
-        "content": "Il pose le dossier devant moi. Il l'ouvre lentement, comme on retourne une carte au poker. Sa voix ne change pas — il parle comme on lit un contrat de prestation, comme s'il en avait déjà fait dix.\n\n— Trois mois. Vous emménagez chez moi avenue Hoche, vous m'accompagnez aux dîners de famille et aux galas. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne.\n\nJe l'écoute sans bouger. La moquette m'absorbe.\n\n— Vous touchez trente mille euros. Virement en deux fois. Contrat notarié signé demain matin pour vous protéger.\n\nTrente mille. Le traitement de Maman, le loyer pour deux ans, et de la marge.\n\n— En échange : aucune relation physique. Aucune. C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne.\n\nIl s'arrête. Il regarde ailleurs une seconde, comme s'il cherchait s'il avait oublié quelque chose. Puis il revient sur moi.\n\n— Et un dernier point. Article 7, alinéa b. Je suis allergique aux fraises. Vous y aurez droit, pas moi. C'est une plaisanterie.\n\nC'est la première qu'il fait depuis que je suis entrée. Elle ne lui va pas. Mais elle est là. Et c'est peut-être ce détail qui change tout : un homme qui prévoit dans un contrat qu'il aura le droit de ne pas aimer les fraises avec moi."
+        "content": "Il pose le dossier devant moi. Il l'ouvre lentement, comme on retourne une carte au poker. Sa voix ne change pas — il parle comme on lit un contrat de prestation, comme s'il en avait déjà fait dix.\n\n— Trois mois. Vous emménagez chez moi rue de Berri, vous m'accompagnez aux dîners de famille et aux galas. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne.\n\nJe l'écoute sans bouger. La moquette m'absorbe.\n\n— Vous touchez trente mille euros. Virement en deux fois. Contrat notarié signé demain matin pour vous protéger.\n\nTrente mille. Le traitement de Maman, le loyer pour deux ans, et de la marge.\n\n— En échange : aucune relation physique. Aucune. C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne.\n\nIl s'arrête. Il regarde ailleurs une seconde, comme s'il cherchait s'il avait oublié quelque chose. Puis il revient sur moi.\n\n— Et un dernier point. Article 7, alinéa b. Je suis allergique aux fraises. Vous y aurez droit, pas moi. C'est une plaisanterie.\n\nC'est la première qu'il fait depuis que je suis entrée. Elle ne lui va pas. Mais elle est là. Et c'est peut-être ce détail qui change tout : un homme qui prévoit dans un contrat qu'il aura le droit de ne pas aimer les fraises avec moi."
       },
       {
         "type": "prose",
@@ -652,7 +652,7 @@
           "argent": 0,
           "mood": 0,
           "reputation": 1,
-          "aftermath": "Tristan a refermé le contrat sans me regarder. « Ma mère arrive ce week-end. Elle ne fera rien sans vous avoir vue. Trois jours chez moi, pas de contrat. Juste le temps qu'elle décide. » J'ai entendu mes propres mots avant moi : « D'accord. » Pas parce que j'avais un plan. Parce que je n'en avais pas. La chambre était prête depuis lundi.",
+          "aftermath": "Tristan a refermé le contrat sans me regarder. « Ma tante arrive ce week-end. Elle ne fera rien sans vous avoir vue. Trois jours chez moi, pas de contrat. Juste le temps qu'elle décide. » J'ai entendu mes propres mots avant moi : « D'accord. » Pas parce que j'avais un plan. Parce que je n'en avais pas. La chambre était prête depuis lundi.",
           "unlocks": [
             "tristan"
           ],
@@ -712,7 +712,7 @@
       },
       {
         "type": "prose",
-        "content": "Il signe. En serrant les dents.\n\nLe virement est programmé pour J+3. 30 000 €. Le traitement de Maman est dans le sac."
+        "content": "Il signe. En serrant les dents.\n\nLe virement est immédiat, valeur jour. 30 000 € qui tombent sur mon compte avant que je quitte l'étude. Le traitement de Maman est dans le sac."
       },
       {
         "type": "image",
@@ -1081,18 +1081,6 @@
         "type": "sms",
         "conversation": "maman",
         "messages": [
-          {
-            "sender": "Maman",
-            "content": "Premier jour de stage. Comment ça s'est passé ?"
-          },
-          {
-            "sender": "Moi",
-            "content": "Bien."
-          },
-          {
-            "sender": "Maman",
-            "content": "« Bien. » Tu écris « bien » depuis trois jours. Donne-moi un détail."
-          },
           {
             "sender": "Moi",
             "content": "Tiens. La courge du potager a doublé en deux jours. Lao Chen dit que c'est l'humidité."
@@ -1590,7 +1578,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Madame Heng est arrivée hier soir. Je ne l'ai pas vue monter. À minuit, ses chaussures étaient dans l'entrée — des escarpins en cuir noir, taille trente-six et demi, trois cents euros au moins. Elle dort à l'étage. Tristan m'a dit « ma mère prend le thé à seize heures. Elle aimerait que vous descendiez. »"
+        "content": "Madame Heng est arrivée hier soir. Je ne l'ai pas vue monter. À minuit, ses chaussures étaient dans l'entrée — des escarpins en cuir noir, taille trente-six et demi, trois cents euros au moins. Elle dort à l'étage. Tristan m'a dit « ma tante prend le thé à seize heures. Elle aimerait que vous descendiez. »"
       },
       {
         "type": "image",
@@ -1646,7 +1634,7 @@
       },
       {
         "type": "prose",
-        "content": "Maman a sorti l'album photo. Celui de la cheminée, sépia, couverture rouge. Elle a tourné les pages en silence jusqu'à une photo de groupe, 1996, dix personnes devant un mur à Belleville. Elle a posé son doigt sur une femme que je ne connaissais pas. « Tu lui ressembles, parfois. » C'était Madame Heng à vingt-huit ans. Maman a refermé l'album avant que je puisse parler."
+        "content": "Maman a sorti l'album photo. Celui de la cheminée, sépia, couverture rouge. Elle a tourné les pages en silence jusqu'à une photo de groupe, 1996, dix personnes devant un mur à Belleville. Elle a posé son doigt sur une femme que je ne connaissais pas. « Tu lui ressembles, parfois. » C'était Madame Heng à trente-deux ans. Maman a refermé l'album avant que je puisse parler."
       },
       {
         "type": "image",
@@ -1698,7 +1686,7 @@
       },
       {
         "type": "quote",
-        "content": "« Huit mille. Cadeau, pas prêt. Ma mère ne saura pas. »"
+        "content": "« Huit mille. Cadeau, pas prêt. Ma tante ne saura pas. »"
       },
       {
         "type": "prose",
@@ -1717,7 +1705,7 @@
             "accepted_tristan_envelope"
           ],
           "ledgerLabel": "Cadeau Tristan (secret)",
-          "aftermath": "J'ai compté. Huit billets de cent, quatre-vingts billets de mille. Cash, neuf, sentait encore l'imprimerie. Je l'ai mise dans mon sac, sous le Code Civil. Le lendemain matin, je suis allée à Tenon. J'ai posé huit mille en cash sur le bureau de l'admission. La caissière m'a regardée comme une criminelle aimable. Elle a tamponné le reçu. Maman aurait son premier versement. Et moi, j'avais désormais un secret avec Tristan que Madame Heng ne pourrait pas effacer."
+          "aftermath": "J'ai compté. Quatre-vingts billets de cent. Cash, neufs, sentaient encore l'imprimerie. Je les ai glissés dans la doublure de mon Code Civil. Pas pour Tenon — pour après. Les semaines où Maman ne pourra pas marcher seule. Les taxis, les courses, les choses qui ne tiennent pas sur une facture. Et puis j'avais désormais un secret avec Tristan que sa tante ne pourrait pas effacer."
         },
         {
           "text": "Je refuse fermement. « Ce n'est pas comme ça que ça se passe. »",
