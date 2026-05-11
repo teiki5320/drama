@@ -16,12 +16,21 @@ class ChoiceCard extends StatefulWidget {
     required this.onPicked,
     required this.disabled,
     this.selectedIndex,
+    this.autoStartTimer = true,
   });
 
   final Choice choice;
   final ChoicePicked onPicked;
   final bool disabled;
   final int? selectedIndex;
+
+  /// Si false, le décompte (quand il existe sur ce choix) ne démarre
+  /// pas dès le mount — c'est au parent de basculer la valeur à true
+  /// quand il estime que le joueur est "devant la décision". Permet
+  /// de différer le timer J7/J11/J14 jusqu'à ce que le joueur ait
+  /// scrollé jusqu'à la carte de choix, au lieu de le lancer à
+  /// l'ouverture du jour pendant qu'il lit encore le narratif.
+  final bool autoStartTimer;
 
   @override
   State<ChoiceCard> createState() => _ChoiceCardState();
@@ -41,13 +50,13 @@ class _ChoiceCardState extends State<ChoiceCard>
   @override
   void initState() {
     super.initState();
-    if (_hasTimer) _startTimer();
+    if (_hasTimer && widget.autoStartTimer) _startTimer();
   }
 
   @override
   void didUpdateWidget(covariant ChoiceCard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final shouldRun = _hasTimer;
+    final shouldRun = _hasTimer && widget.autoStartTimer;
     final isRunning = _timerCtrl != null && _timerCtrl!.isAnimating;
     if (shouldRun && !isRunning && !_expiredPicked) {
       _startTimer();
