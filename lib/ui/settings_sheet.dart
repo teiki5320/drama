@@ -151,7 +151,7 @@ class _RulesSheet extends StatelessWidget {
       icon: '😊',
       title: 'Mood (0–10)',
       body:
-          'L\'humeur de Shen. Si elle tombe à 2 ou moins plusieurs jours, attention : des choix vertueux peuvent se fermer. Repas, petits plaisirs, sommeil font remonter le mood.',
+          'L\'humeur de Shen. Si elle tombe à 2 ou moins pendant plusieurs jours, attention : des choix vertueux peuvent se fermer. Repas, petits plaisirs, sommeil font remonter le mood.',
     ),
     _Rule(
       icon: '⭐',

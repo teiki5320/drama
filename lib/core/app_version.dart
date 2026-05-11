@@ -1,3 +1,3 @@
 /// Bumped manually together with pubspec.yaml version.
-const String kAppVersion = '0.8.2';
+const String kAppVersion = '0.8.3';
 const String kBuildNumber = '1';

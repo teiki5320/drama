@@ -39,13 +39,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       icon: '⚖️',
       title: 'Trois jauges à surveiller.',
       body:
-          '💰 L\'argent (tu démarres à 2 384 €).\n😊 Le mood (0 à 10) — l\'humeur de Shen.\n⭐ La réputation — son influence sociale et ses partenariats Insta.\n\nChaque choix bouge ces trois jauges. Pas de bonne ou mauvaise option, juste des compromis.',
+          '💰 L\'argent (tu démarres à 2 384 €).\n😊 Le mood (0 à 10) — l\'humeur de Shen.\n⭐ La réputation — son influence sociale et ses partenariats Insta.\n\nChaque choix bouge ces trois jauges. Pas de bonne ni de mauvaise option, juste des compromis.',
     ),
     _Page(
       icon: '🏥',
       title: 'La deadline : J45.',
       body:
-          'Maman a besoin de 18 000 € pour son traitement avant le 45e jour. Si tu n\'as pas réuni la somme, le drama bascule sur la branche du deuil — sans retour.\n\nLes choix narratifs, la bourse, les partenariats Insta — à toi de jouer.',
+          'Maman a besoin de 18 000 € pour son traitement avant J45. Si tu n\'as pas réuni la somme, le drama bascule sur la branche du deuil — sans retour.\n\nLes choix narratifs, la bourse, les partenariats Insta — à toi de jouer.',
     ),
   ];
 

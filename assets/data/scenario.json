@@ -229,7 +229,7 @@
           },
           {
             "sender": "Camille",
-            "content": "Tu as gardé sa carte hein."
+            "content": "Tu as gardé sa carte, hein."
           }
         ]
       },
@@ -368,7 +368,7 @@
           },
           {
             "sender": "Camille",
-            "content": "Tu parles à peine mandarin avec lui hein ? Ça serait con de glisser sur ça."
+            "content": "Tu parles à peine mandarin avec lui, hein ? Ça serait con de glisser sur ça."
           },
           {
             "sender": "Moi",
@@ -402,7 +402,7 @@
           },
           {
             "sender": "Maman",
-            "content": "Je m'inquiéterai jamais pour toi sur ces choses-là. Tu es trop préparée."
+            "content": "Je ne m'inquiéterai jamais pour toi sur ces choses-là. Tu es trop préparée."
           }
         ]
       },
@@ -527,7 +527,7 @@
           "reputation": -2
         },
         {
-          "text": "Je négocie : 35 000 € au lieu de 30 000.",
+          "text": "Je négocie : 35 000 € au lieu de 30 000 €.",
           "argent": 35000,
           "mood": -3,
           "reputation": 6,
@@ -823,7 +823,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "J'ai préparé l'histoire avec Camille pendant deux jours. Je suis « stagiaire dans une équipe de paysagistes à Vincennes ». L'équipe travaille sur « des potagers pédagogiques pour des écoles ». Le chef s'appelle « Lao Chen », c'est un Sino-français de 60 ans. Camille a même créé un faux compte LinkedIn au cas où Maman vérifie.\n\nMaman vérifie jamais. Maman fait confiance.\n\nMaman me regarde longuement quand j'arrive. Elle a un châle gris sur les épaules. Elle me dit :"
+        "content": "J'ai préparé l'histoire avec Camille pendant deux jours. Je suis « stagiaire dans une équipe de paysagistes à Vincennes ». L'équipe travaille sur « des potagers pédagogiques pour des écoles ». Le chef s'appelle « Lao Chen », c'est un sino-français de 60 ans. Camille a même créé un faux compte LinkedIn au cas où Maman vérifierait.\n\nMaman vérifie jamais. Maman fait confiance.\n\nMaman me regarde longuement quand j'arrive. Elle a un châle gris sur les épaules. Elle me dit :"
       },
       {
         "type": "sms",
@@ -933,7 +933,7 @@
       },
       {
         "type": "prose",
-        "content": "Je regarde l'écran longtemps. La courge n'existe pas. Lao Chen non plus. Le stage non plus.\n\nJe lui mens depuis douze jours et chaque mensonge en appelle un autre. Le pire c'est qu'elle me croit. Le pire c'est aussi qu'elle ne me croit peut-être pas, mais qu'elle joue le jeu.\n\nTristan entre dans la cuisine pendant que je tape la réponse. Il voit l'écran. Il ne dit rien. Il se sert un verre d'eau et il sort.\n\nPlus tard, en passant devant ma chambre, il dit :"
+        "content": "Je regarde l'écran longtemps. La courge n'existe pas. Lao Chen non plus. Le stage non plus.\n\nJe lui mens depuis sept jours et chaque mensonge en appelle un autre. Le pire c'est qu'elle me croit. Le pire c'est aussi qu'elle ne me croit peut-être pas, mais qu'elle joue le jeu.\n\nTristan entre dans la cuisine pendant que je tape la réponse. Il voit l'écran. Il ne dit rien. Il se sert un verre d'eau et il sort.\n\nPlus tard, en passant devant ma chambre, il dit :"
       },
       {
         "type": "sms",
