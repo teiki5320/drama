@@ -34,6 +34,15 @@ class EconomyEngine {
   /// graphique du patrimoine ne soit pas vide à J1.
   static const int kBootstrapHistoryDays = 30;
 
+  /// Frais quotidiens (métro + bouffe rapide). Petit mais constant —
+  /// l'argent doit fondre s'il dort.
+  static const int kDailyLivingCost = 3;
+
+  /// Loyer mensuel du studio Belleville, prélevé tous les 30 jours
+  /// à partir de J30 (donc J30, J60, J90).
+  static const int kMonthlyRent = 500;
+  static const int kRentCycle = 30;
+
   static List<LedgerEntry> _capLedger(List<LedgerEntry> ledger) {
     if (ledger.length <= kMaxLedgerEntries) return ledger;
     return ledger.sublist(ledger.length - kMaxLedgerEntries);
@@ -180,9 +189,29 @@ class EconomyEngine {
       ));
     }
 
+    // Frais quotidiens : métro + bouffe rapide. Toujours prélevés.
+    ledger.add(LedgerEntry(
+      day: next,
+      kind: LedgerEntryKind.dailyExpense,
+      label: 'Métro + bouffe',
+      amount: -kDailyLivingCost,
+    ));
+
+    // Loyer mensuel : J30, J60, J90... du studio Belleville.
+    var rent = 0;
+    if (next % kRentCycle == 0) {
+      rent = kMonthlyRent;
+      ledger.add(LedgerEntry(
+        day: next,
+        kind: LedgerEntryKind.rent,
+        label: 'Loyer studio Belleville',
+        amount: -rent,
+      ));
+    }
+
     var advanced = state.copyWith(
       currentDay: next,
-      argent: state.argent + income,
+      argent: state.argent + income - kDailyLivingCost - rent,
       followersDeltaToday: 0, // reset au passage à un nouveau jour
       ledger: _capLedger(ledger),
     );

@@ -796,5 +796,9 @@ String _timeFor(LedgerEntryKind kind) {
     case LedgerEntryKind.choiceExpense:
     case LedgerEntryKind.choiceIncome:
       return '20:00';
+    case LedgerEntryKind.dailyExpense:
+      return '12:30';
+    case LedgerEntryKind.rent:
+      return '00:01';
   }
 }

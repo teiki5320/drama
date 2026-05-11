@@ -33,6 +33,9 @@ class DayNarrativeView extends StatelessWidget {
             caption: b.content,
           ));
           break;
+        case NarrativeBlockType.quote:
+          blocks.add(_Quote(text: b.content ?? ''));
+          break;
       }
       blocks.add(const SizedBox(height: 14));
     }
@@ -141,6 +144,55 @@ class _NarrativeImage extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+class _Quote extends StatelessWidget {
+  const _Quote({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 18),
+      padding: const EdgeInsets.fromLTRB(28, 36, 28, 36),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFFAE0CC), Color(0xFFFCEBC9)],
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '"',
+            style: GoogleFonts.crimsonPro(
+              fontSize: 64,
+              fontWeight: FontWeight.w700,
+              color: AppColors.accentOrange.withValues(alpha: 0.4),
+              height: 0.4,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.crimsonPro(
+              fontSize: 30,
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.italic,
+              color: AppColors.textPrimary,
+              height: 1.25,
+              letterSpacing: -0.2,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
