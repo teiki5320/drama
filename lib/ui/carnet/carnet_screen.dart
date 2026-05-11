@@ -34,7 +34,16 @@ class CarnetScreen extends ConsumerWidget {
             return _EndingView(endingId: state.ending!);
           }
           final dayId = state.currentDay;
-          final day = days.where((d) => d.id == dayId).firstOrNull;
+          final branch = state.currentBranch;
+          // Filtrage par branche : on cherche d'abord l'entry exactement
+          // sur la branche courante. À défaut, on retombe sur la voie
+          // principale (branch=null) — utile pour J1-J7 partagés.
+          DayEntry? day = days
+              .where((d) => d.id == dayId && d.branch == branch)
+              .firstOrNull;
+          day ??= days
+              .where((d) => d.id == dayId && d.branch == null)
+              .firstOrNull;
           if (day == null) {
             return _EpisodeEndView(state: state);
           }
@@ -449,9 +458,24 @@ class _PastDaysListScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Erreur : $e')),
         data: (days) {
-          final played = days
-              .where((d) => state.choicesMade.containsKey(d.id))
-              .toList();
+          final branch = state.currentBranch;
+          // Pour chaque jour joué, on prend en priorité l'entry de la
+          // branche courante; à défaut, on retombe sur la voie
+          // principale (branch=null). Ça évite de mélanger J8 voie 1
+          // et J8 voie 2 dans le journal d'un même joueur.
+          DayEntry? entryFor(int dayId) {
+            return days
+                    .where((d) => d.id == dayId && d.branch == branch)
+                    .firstOrNull ??
+                days
+                    .where((d) => d.id == dayId && d.branch == null)
+                    .firstOrNull;
+          }
+          final playedIds = state.choicesMade.keys.toList()..sort();
+          final played = <DayEntry>[
+            for (final id in playedIds)
+              if (entryFor(id) != null) entryFor(id)!,
+          ];
           if (played.isEmpty) {
             return Center(
               child: Padding(
