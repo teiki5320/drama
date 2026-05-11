@@ -161,6 +161,11 @@
       {
         "type": "prose",
         "content": "Calculs. Calculs. Calculs.\n\nSi je double les livraisons : +400€/mois. Si je prends un troisième service de nuit : +600€/mois mais je ne dors plus. Total potentiel sur six mois : 6 000€. Manque : 12 000€.\n\nJ'ai appelé la banque. Pas de prêt sans garant. Mon père français — celui de mon nom, Antoine Marchand, parti quand j'avais 6 ans — ne sera jamais garant de quoi que ce soit, on ne s'est pas vus depuis dix-huit ans.\n\nMaman regarde un film français des années 80 dans le canapé. Catherine Deneuve sourit. Maman sourit aussi. Elle ne sait rien."
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J03_calculs.png",
+        "content": "Trois fois la même réponse."
       }
     ],
     "choice": {
@@ -265,6 +270,11 @@
             "content": "🙄"
           }
         ]
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J04_cafe_hanami.png",
+        "content": "Camille pose son croissant. Mauvais signe."
       }
     ],
     "choice": {
@@ -303,6 +313,11 @@
       {
         "type": "prose",
         "content": "La carte est recollée. Le scotch a légèrement jauni le carton. Le numéro forme une diagonale parce que j'ai mal aligné les morceaux. J'ai mis une assiette dessus pour qu'elle reste plate.\n\nMaman dort. La pluie tombe contre la fenêtre. C'est le moment où je suis le plus seule de la journée, et c'est aussi le moment où je m'aime le plus. Curieux.\n\nJe relis les SMS de Camille. *« Ça veut dire oui mais avec dignité. »* Elle a raison. Si j'y vais, c'est avec un dossier. Pas en quémandeuse.\n\nJ'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J05_carte_recollee.png",
+        "content": "Je serai sa débitrice. Pas sa charité."
       }
     ],
     "choice": {
@@ -556,6 +571,11 @@
       {
         "type": "prose",
         "content": "Il signe. En serrant les dents.\n\nLe virement est programmé pour J+3. 30 000€. Le traitement de maman est dans le sac."
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J08_contrat_notarie.png",
+        "content": "Article 7, alinéa b : droit aux fraises."
       }
     ],
     "choice": {
@@ -760,6 +780,11 @@
       {
         "type": "prose",
         "content": "Il fait le thé. En silence. Il le fait bien — il chauffe la théière d'abord, il rince les feuilles, il jette la première eau. Mon arrière-grand-mère aurait approuvé."
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J10_cuisine_fraises.png",
+        "content": "Trois fraises. Article 7 b, en pratique."
       }
     ],
     "choice": {
@@ -839,6 +864,11 @@
             "content": "« Bien ». Tu écris « bien » depuis trois jours. Donne-moi un détail."
           }
         ]
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J11_visite_maman.png",
+        "content": "Maman lève la tête. Elle ne pose pas la question."
       }
     ],
     "choice": {
@@ -914,6 +944,11 @@
       {
         "type": "prose",
         "content": "Je le déteste pour cette gentillesse-là. Non parce qu'elle est moche. Parce qu'elle tombe trop juste."
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J12_dejeuner_heng.png",
+        "content": "Treize chaises. Deux occupées."
       }
     ],
     "choice": {
@@ -1035,6 +1070,11 @@
             "content": "Si elle te sert un thé et que tu fais une remarque dessus, tu gagnes ou tu perds. Étudie. Vite."
           }
         ]
+      },
+      {
+        "type": "image",
+        "imageAsset": "assets/photos/scenes/J13_camille_telephone.png",
+        "content": "Vingt-trois minutes de respiration."
       }
     ],
     "choice": {
