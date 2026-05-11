@@ -15,8 +15,7 @@ final hasSeenOnboardingProvider =
   return prefs.getBool(_onboardingKey) ?? false;
 });
 
-/// 3-page welcome screen on first launch. Sets a flag in
-/// SharedPreferences when the user taps "Commencer".
+/// 4-page welcome screen on first launch with character portraits.
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -30,22 +29,61 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   static const _pages = <_Page>[
     _Page(
-      icon: '🌿',
-      title: 'Bienvenue dans À Contre-Jour.',
+      title: 'Tu es Shen.',
       body:
-          'Tu vas suivre Shen Marchand, 24 ans, livreuse à vélo à Belleville. Sa mère est malade, le loyer monte, et un milliardaire la regarde depuis sa Bentley.\n\nÀ toi de choisir comment elle traverse les 112 prochains jours.',
+          'Shen Marchand. 24 ans, franco-chinoise, livreuse à vélo à Belleville. Yeux verts hérités d\'une mère française qui n\'a jamais quitté la France. Mandarin courant que personne ne sait qu\'elle parle.',
+      chars: [
+        _PageChar(
+          photo: 'assets/photos/characters/shen_y.jpeg',
+          name: 'Shen Marchand',
+          meta: '24 ans · Belleville',
+          accent: 'C\'est toi.',
+        ),
+      ],
     ),
     _Page(
-      icon: '⚖️',
-      title: 'Trois jauges à surveiller.',
+      title: 'Les deux femmes de ta vie.',
       body:
-          '💰 L\'argent (tu démarres à 2 384 €).\n😊 Le mood (0 à 10) — l\'humeur de Shen.\n⭐ La réputation — son influence sociale et ses partenariats Insta.\n\nChaque choix bouge ces trois jauges. Pas de bonne ni de mauvaise option, juste des compromis.',
+          'Maman te ment sur sa maladie pour ne pas t\'inquiéter. Camille te garde en vie avec des croissants et la moitié des phrases qui te font tenir.',
+      chars: [
+        _PageChar(
+          photo: 'assets/photos/characters/helene_marchand.png',
+          name: 'Maman',
+          meta: '50 ans · Hôpital Tenon',
+          accent: 'Te cache la moitié.',
+        ),
+        _PageChar(
+          photo: 'assets/photos/characters/camille_rx.png',
+          name: 'Camille',
+          meta: '24 ans · Étudiante en droit',
+          accent: 'Vannes & croissants.',
+        ),
+      ],
     ),
     _Page(
-      icon: '🏥',
-      title: 'La deadline : J45.',
+      title: 'Ce qui t\'attend.',
       body:
-          'Maman a besoin de 18 000 € pour son traitement avant J45. Si tu n\'as pas réuni la somme, le drama bascule sur la branche du deuil — sans retour.\n\nLes choix narratifs, la bourse, les partenariats Insta — à toi de jouer.',
+          'Un héritier glaçon. Une matriarche qui voit tout. Un demi-frère qui sourit trop. 112 jours pour décider de tout.',
+      chars: [
+        _PageChar(
+          photo: 'assets/photos/characters/t_heng.png',
+          name: 'Tristan Heng',
+          meta: '29 ans · Heng International',
+          accent: 'Le glaçon.',
+        ),
+        _PageChar(
+          photo: 'assets/photos/characters/heng_lihua.png',
+          name: 'Madame Heng',
+          meta: '58 ans · La tante',
+          accent: 'Sait des choses.',
+        ),
+      ],
+    ),
+    _Page(
+      title: 'Trois jauges. Une deadline.',
+      body:
+          '💰 L\'argent · 😊 Le mood · ⭐ La réputation. Chaque choix les bouge. Pas de bonne ni de mauvaise option, juste des compromis.\n\nMaman a besoin de 18 000 € pour son traitement avant J45. Si tu n\'y arrives pas, le drama bascule sur la branche du deuil.',
+      chars: [],
     ),
   ];
 
@@ -164,10 +202,23 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 }
 
 class _Page {
-  final String icon;
   final String title;
   final String body;
-  const _Page({required this.icon, required this.title, required this.body});
+  final List<_PageChar> chars;
+  const _Page({required this.title, required this.body, this.chars = const []});
+}
+
+class _PageChar {
+  final String photo;
+  final String name;
+  final String meta;
+  final String accent;
+  const _PageChar({
+    required this.photo,
+    required this.name,
+    required this.meta,
+    required this.accent,
+  });
 }
 
 class _PageBody extends StatelessWidget {
@@ -176,14 +227,12 @@ class _PageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 22),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(page.icon, style: const TextStyle(fontSize: 72)),
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
           Text(
             page.title,
             style: GoogleFonts.crimsonPro(
@@ -193,13 +242,166 @@ class _PageBody extends StatelessWidget {
               letterSpacing: -0.3,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Text(
             page.body,
             style: GoogleFonts.inter(
-              fontSize: 15,
+              fontSize: 14.5,
               color: AppColors.textPrimary,
               height: 1.55,
+            ),
+          ),
+          const SizedBox(height: 18),
+          if (page.chars.length == 1)
+            _BigCharCard(char: page.chars.first)
+          else if (page.chars.length >= 2)
+            Row(
+              children: [
+                Expanded(child: _DuoCharCard(char: page.chars[0])),
+                const SizedBox(width: 10),
+                Expanded(child: _DuoCharCard(char: page.chars[1])),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BigCharCard extends StatelessWidget {
+  const _BigCharCard({required this.char});
+  final _PageChar char;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      decoration: BoxDecoration(
+        color: AppColors.cardBg,
+        border: Border.all(color: const Color(0x141A1A1A)),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Image.asset(
+                char.photo,
+                fit: BoxFit.cover,
+                cacheWidth: 600,
+                errorBuilder: (_, __, ___) => Container(
+                  color: const Color(0xFFEAE6DD),
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.person,
+                      size: 64, color: AppColors.textSecondary),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            char.name,
+            style: GoogleFonts.crimsonPro(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            char.meta,
+            style: GoogleFonts.inter(
+              fontSize: 12,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppColors.accentOrange.withValues(alpha: 0.14),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              char.accent,
+              style: GoogleFonts.inter(
+                fontSize: 11.5,
+                fontWeight: FontWeight.w700,
+                color: AppColors.accentOrange,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DuoCharCard extends StatelessWidget {
+  const _DuoCharCard({required this.char});
+  final _PageChar char;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 12),
+      decoration: BoxDecoration(
+        color: AppColors.cardBg,
+        border: Border.all(color: const Color(0x141A1A1A)),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Image.asset(
+                char.photo,
+                fit: BoxFit.cover,
+                cacheWidth: 360,
+                errorBuilder: (_, __, ___) => Container(
+                  color: const Color(0xFFEAE6DD),
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.person,
+                      size: 36, color: AppColors.textSecondary),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            char.name,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.crimsonPro(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 1),
+          Text(
+            char.meta,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.inter(
+              fontSize: 10.5,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            char.accent,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.inter(
+              fontSize: 10.5,
+              fontWeight: FontWeight.w700,
+              color: AppColors.accentOrange,
             ),
           ),
         ],
