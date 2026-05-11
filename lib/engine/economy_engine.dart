@@ -159,6 +159,7 @@ class EconomyEngine {
       unlockedConversations: mergedConvos,
       isMomTreatmentPaid: newIsMomPaid,
       ledger: _capLedger(ledger),
+      currentBranch: option.setsBranch ?? state.currentBranch,
     );
   }
 

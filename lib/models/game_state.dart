@@ -24,6 +24,12 @@ class GameState {
   final int followersDeltaToday;
   final String? ending;
 
+  /// Branche narrative active. `null` = voie principale (canonique).
+  /// Bascule via `ChoiceOption.setsBranch` au moment d'un choix
+  /// déterminant (ex. J7B refuse l'argent + accepte l'hospitalité).
+  /// Lit ensuite les `DayEntry` dont le champ `branch` correspond.
+  final String? currentBranch;
+
   const GameState({
     this.currentDay = 1,
     this.argent = 2384,
@@ -44,6 +50,7 @@ class GameState {
     this.seenMessageThreads = const [],
     this.followersDeltaToday = 0,
     this.ending,
+    this.currentBranch,
   });
 
   GameState copyWith({
@@ -66,8 +73,13 @@ class GameState {
     List<String>? seenMessageThreads,
     int? followersDeltaToday,
     String? ending,
+    String? currentBranch,
+    bool clearCurrentBranch = false,
   }) {
     return GameState(
+      currentBranch: clearCurrentBranch
+          ? null
+          : (currentBranch ?? this.currentBranch),
       currentDay: currentDay ?? this.currentDay,
       argent: argent ?? this.argent,
       mood: mood ?? this.mood,
@@ -114,6 +126,7 @@ class GameState {
         'seenMessageThreads': seenMessageThreads,
         'followersDeltaToday': followersDeltaToday,
         'ending': ending,
+        if (currentBranch != null) 'currentBranch': currentBranch,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -161,6 +174,7 @@ class GameState {
         followersDeltaToday:
             (json['followersDeltaToday'] as num?)?.toInt() ?? 0,
         ending: json['ending'] as String?,
+        currentBranch: json['currentBranch'] as String?,
       );
 
   String encode() => jsonEncode(toJson());

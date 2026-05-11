@@ -97,6 +97,13 @@ class DayEntry {
   final Choice choice;
   final List<Trigger>? triggers;
 
+  /// Identifiant de branche narrative. `null` = voie principale
+  /// (chemin canonique J1→J14 via le contrat Heng). Une autre valeur
+  /// (ex. "voie2") sélectionne une variante de ce numéro de jour. À
+  /// `currentDay+1`, le moteur charge l'entry dont l'`id` et le
+  /// `branch` correspondent à la branche courante du joueur.
+  final String? branch;
+
   const DayEntry({
     required this.id,
     required this.date,
@@ -105,6 +112,7 @@ class DayEntry {
     required this.narrative,
     required this.choice,
     this.triggers,
+    this.branch,
   });
 
   factory DayEntry.fromJson(Map<String, dynamic> json) => DayEntry(
@@ -119,5 +127,6 @@ class DayEntry {
         triggers: (json['triggers'] as List<dynamic>?)
             ?.map((e) => Trigger.fromJson(e as Map<String, dynamic>))
             .toList(growable: false),
+        branch: json['branch'] as String?,
       );
 }

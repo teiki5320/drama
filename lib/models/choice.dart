@@ -53,6 +53,11 @@ class ChoiceOption {
   /// Crimson Pro sous les options, avant le bouton "Jour suivant".
   final String? aftermath;
 
+  /// Si non-null, bascule `GameState.currentBranch` à cette valeur au
+  /// moment de la prise de décision. Les jours suivants seront chargés
+  /// avec ce `branch` au lieu de la voie principale (`null`).
+  final String? setsBranch;
+
   const ChoiceOption({
     required this.text,
     required this.argent,
@@ -63,6 +68,7 @@ class ChoiceOption {
     this.triggersScene,
     this.ledgerLabel,
     this.aftermath,
+    this.setsBranch,
   });
 
   factory ChoiceOption.fromJson(Map<String, dynamic> json) => ChoiceOption(
@@ -79,6 +85,7 @@ class ChoiceOption {
         triggersScene: json['triggersScene'] as String?,
         ledgerLabel: json['ledgerLabel'] as String?,
         aftermath: json['aftermath'] as String?,
+        setsBranch: json['setsBranch'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -91,5 +98,6 @@ class ChoiceOption {
         if (triggersScene != null) 'triggersScene': triggersScene,
         if (ledgerLabel != null) 'ledgerLabel': ledgerLabel,
         if (aftermath != null) 'aftermath': aftermath,
+        if (setsBranch != null) 'setsBranch': setsBranch,
       };
 }
