@@ -18,6 +18,7 @@ class SpendingBreakdown extends StatelessWidget {
       _Bucket(label: 'Achats', emoji: '🛍️', color: const Color(0xFFE8AC83)),
       _Bucket(label: 'Bourse', emoji: '📈', color: const Color(0xFF8E8B7A)),
       _Bucket(label: 'Narratif', emoji: '🧾', color: const Color(0xFFB5A282)),
+      _Bucket(label: 'Vie quotidienne', emoji: '🏠', color: const Color(0xFF7D8B7A)),
     ];
 
     for (final e in entries) {
@@ -35,6 +36,10 @@ class SpendingBreakdown extends StatelessWidget {
           break;
         case LedgerEntryKind.choiceExpense:
           buckets[3].total += abs;
+          break;
+        case LedgerEntryKind.dailyExpense:
+        case LedgerEntryKind.rent:
+          buckets[4].total += abs;
           break;
         case LedgerEntryKind.passiveIncome:
         case LedgerEntryKind.stockSell:

@@ -32,6 +32,10 @@ class _MovementDetailDialog extends StatelessWidget {
         return 'Revenu narratif';
       case LedgerEntryKind.choiceExpense:
         return 'Dépense narrative';
+      case LedgerEntryKind.dailyExpense:
+        return 'Vie quotidienne';
+      case LedgerEntryKind.rent:
+        return 'Loyer mensuel';
     }
   }
 
@@ -50,6 +54,10 @@ class _MovementDetailDialog extends StatelessWidget {
       case LedgerEntryKind.choiceExpense:
       case LedgerEntryKind.choiceIncome:
         return '20:00';
+      case LedgerEntryKind.dailyExpense:
+        return '12:30';
+      case LedgerEntryKind.rent:
+        return '00:01';
     }
   }
 

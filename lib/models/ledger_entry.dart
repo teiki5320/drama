@@ -6,6 +6,8 @@ enum LedgerEntryKind {
   momTreatment,
   choiceExpense,
   choiceIncome,
+  dailyExpense,
+  rent,
 }
 
 class LedgerEntry {
@@ -37,6 +39,10 @@ class LedgerEntry {
         return '🧾';
       case LedgerEntryKind.choiceIncome:
         return '💵';
+      case LedgerEntryKind.dailyExpense:
+        return '🚇';
+      case LedgerEntryKind.rent:
+        return '🏠';
     }
   }
 
