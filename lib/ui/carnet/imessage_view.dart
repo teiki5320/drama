@@ -279,6 +279,7 @@ class _BubbleThread extends StatelessWidget {
 
     final showLabel =
         showSenderLabels && !me && !continuesAbove;
+    final senderAvatar = showLabel ? _avatarForSender(m.sender) : null;
 
     return Padding(
       padding: EdgeInsets.only(top: continuesAbove ? 2 : 8),
@@ -289,13 +290,22 @@ class _BubbleThread extends StatelessWidget {
           if (showLabel)
             Padding(
               padding: const EdgeInsets.only(left: 12, bottom: 2),
-              child: Text(
-                m.sender,
-                style: GoogleFonts.inter(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textSecondary,
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (senderAvatar != null) ...[
+                    senderAvatar,
+                    const SizedBox(width: 5),
+                  ],
+                  Text(
+                    m.sender,
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
               ),
             ),
           Align(
@@ -307,6 +317,61 @@ class _BubbleThread extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  /// Mini avatar 18 dp en haut de bulle pour les conversations inline.
+  /// Mappe un nom d'émetteur en clair vers le portrait perso si on en
+  /// a un, sinon un emoji discret pour les inconnus / institutions.
+  Widget? _avatarForSender(String sender) {
+    String? photo;
+    String? fallbackEmoji;
+    final s = sender.toLowerCase();
+    if (s == 'tristan' || s == 'lui') {
+      photo = 'assets/photos/characters/t_heng.png';
+    } else if (s == 'maman') {
+      photo = 'assets/photos/characters/helene_marchand.png';
+    } else if (s == 'camille') {
+      photo = 'assets/photos/characters/camille_rx.png';
+    } else if (s == 'vincent') {
+      photo = 'assets/photos/characters/vincent_h.png';
+    } else if (s == 'madame heng') {
+      photo = 'assets/photos/characters/heng_lihua.png';
+    } else if (s == 'tante mei') {
+      photo = 'assets/photos/characters/mei_fujian.png';
+    } else if (s == 'numéro inconnu') {
+      fallbackEmoji = '☎️';
+    } else if (s == 'banque') {
+      fallbackEmoji = '🏦';
+    } else if (s == 'le dr aubin' || s == 'dr aubin') {
+      fallbackEmoji = '🩺';
+    } else {
+      return null;
+    }
+
+    return Container(
+      width: 18,
+      height: 18,
+      decoration: BoxDecoration(
+        color: const Color(0xFFEFE9D8),
+        shape: BoxShape.circle,
+      ),
+      clipBehavior: Clip.antiAlias,
+      alignment: Alignment.center,
+      child: photo != null
+          ? Image.asset(
+              photo,
+              fit: BoxFit.cover,
+              cacheWidth: 96,
+              errorBuilder: (_, __, ___) => Text(
+                fallbackEmoji ?? '?',
+                style: const TextStyle(fontSize: 10),
+              ),
+            )
+          : Text(
+              fallbackEmoji ?? '?',
+              style: const TextStyle(fontSize: 10),
+            ),
     );
   }
 }
