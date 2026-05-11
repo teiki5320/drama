@@ -151,7 +151,7 @@
         {
           "text": "« Je l'ai humilié. C'était jouissif. »",
           "argent": 0,
-          "mood": -1,
+          "mood": -2,
           "reputation": 1
         },
         {
@@ -196,7 +196,7 @@
         {
           "text": "Pleurer dans les toilettes du rez-de-chaussée",
           "argent": 0,
-          "mood": -1,
+          "mood": -2,
           "reputation": 0
         },
         {
@@ -432,7 +432,7 @@
         {
           "text": "Je n'apporte rien, je veux voir comment il réagit",
           "argent": 0,
-          "mood": -1,
+          "mood": -2,
           "reputation": 2
         }
       ]
@@ -528,7 +528,7 @@
         {
           "text": "Je relis les lettres que j'ai écrites à mon père cette année (rituel)",
           "argent": 0,
-          "mood": 2,
+          "mood": -2,
           "reputation": 0
         }
       ]
@@ -614,6 +614,8 @@
     ],
     "choice": {
       "prompt": "Je signe ?",
+      "timeLimitSeconds": 45,
+      "defaultOptionIndex": 1,
       "options": [
         {
           "text": "J'accepte. Mais je rajoute mes propres clauses dans le contrat.",
@@ -708,7 +710,7 @@
         {
           "text": "Je garde tout en attendant, je verse étalé.",
           "argent": 0,
-          "mood": -1,
+          "mood": -2,
           "reputation": 0
         },
         {
@@ -827,7 +829,7 @@
         {
           "text": "Je garde ma valise faite, prête à partir si ça tourne mal.",
           "argent": 0,
-          "mood": -1,
+          "mood": -2,
           "reputation": 0
         }
       ]
@@ -931,7 +933,7 @@
         {
           "text": "Je file dans ma chambre, j'évite l'inconfort.",
           "argent": 0,
-          "mood": -1,
+          "mood": -2,
           "reputation": -1
         }
       ]
@@ -1007,6 +1009,8 @@
     ],
     "choice": {
       "prompt": "Quel détail je donne ?",
+      "timeLimitSeconds": 30,
+      "defaultOptionIndex": 2,
       "options": [
         {
           "text": "Un détail vrai (Tristan a fait du thé Long Jing comme grand-mère).",
@@ -1221,7 +1225,7 @@
         {
           "text": "Oui. Je joue cartes sur table dès la première phrase.",
           "argent": 0,
-          "mood": -1,
+          "mood": -2,
           "reputation": 2
         },
         {
@@ -1367,6 +1371,8 @@
     ],
     "choice": {
       "prompt": "Comment je termine la soirée ?",
+      "timeLimitSeconds": 20,
+      "defaultOptionIndex": 0,
       "options": [
         {
           "text": "Je reste à table, je joue normale. Je creuserai demain matin avec Tristan.",
