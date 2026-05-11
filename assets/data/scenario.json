@@ -652,7 +652,7 @@
           "argent": 0,
           "mood": 0,
           "reputation": 1,
-          "aftermath": "Tristan a refermé le contrat sans me regarder. « Ma tante arrive ce week-end. Elle ne fera rien sans vous avoir vue. Trois jours chez moi, pas de contrat. Juste le temps qu'elle décide. » J'ai entendu mes propres mots avant moi : « D'accord. » Pas parce que j'avais un plan. Parce que je n'en avais pas. La chambre était prête depuis lundi.",
+          "aftermath": "Tristan a refermé le contrat sans me regarder. « Ma mère arrive ce week-end. Elle ne fera rien sans vous avoir vue. Trois jours chez moi, pas de contrat. Juste le temps qu'elle décide. » J'ai entendu mes propres mots avant moi : « D'accord. » Pas parce que j'avais un plan. Parce que je n'en avais pas. La chambre était prête depuis lundi.",
           "unlocks": [
             "tristan"
           ],
@@ -1158,7 +1158,7 @@
         "messages": [
           {
             "sender": "Tristan",
-            "content": "Ma tante organise un dîner samedi. Elle a tenu à vous voir."
+            "content": "Ma mère organise un dîner samedi. Elle a tenu à vous voir."
           },
           {
             "sender": "Moi",
@@ -1192,11 +1192,11 @@
           },
           {
             "sender": "Moi",
-            "content": "Que vous ayez peur de votre tante."
+            "content": "Que vous ayez peur de votre mère."
           },
           {
             "sender": "Tristan",
-            "content": "Tout le monde a peur de ma tante."
+            "content": "Tout le monde a peur de ma mère."
           },
           {
             "sender": "Moi",
@@ -1240,7 +1240,7 @@
       },
       {
         "type": "prose",
-        "content": "Plus tard dans la soirée, le téléphone de Tristan sonne dans le salon. Il décroche. Il parle.\n\nIl parle en mandarin.\n\nJe suis dans la cuisine. Je tiens un verre d'eau dans la main. Je ne bouge plus. Madame Heng au téléphone. Tristan répond, calme : « 是的，姑姑。她会来。我会带她。 » *Oui, ma tante. Elle viendra. Je l'amènerai.*\n\nPuis Madame Heng dit quelque chose que Tristan répète, doucement, comme une instruction dont il prend note : « 我想看看她有没有听懂的能力。 » *Je veux voir si elle a la capacité de comprendre.*\n\nJe comprends chaque mot. J'ai parlé mandarin avec ma mère pendant 18 ans. Je l'ai appris seule sur YouTube et dans les restaurants du 13e. Personne ne le sait, à part Camille.\n\nJe pose le verre d'eau sans bruit. Je remonte dans ma chambre.\n\nMadame Heng veut me tester. Demain, samedi, au dîner. Elle me parlera en mandarin pour voir si je rougis. Si je tressaille. Si je trahis.\n\nTrois options pour moi maintenant. Et il faut que je décide cette nuit."
+        "content": "Plus tard dans la soirée, le téléphone de Tristan sonne dans le salon. Il décroche. Il parle.\n\nIl parle en mandarin.\n\nJe suis dans la cuisine. Je tiens un verre d'eau dans la main. Je ne bouge plus. Madame Heng au téléphone. Tristan répond, calme : « 是的，妈妈。她会来。我会带她。 » *Oui, maman. Elle viendra. Je l'amènerai.*\n\nPuis Madame Heng dit quelque chose que Tristan répète, doucement, comme une instruction dont il prend note : « 我想看看她有没有听懂的能力。 » *Je veux voir si elle a la capacité de comprendre.*\n\nJe comprends chaque mot. J'ai parlé mandarin avec ma mère pendant 18 ans. Je l'ai appris seule sur YouTube et dans les restaurants du 13e. Personne ne le sait, à part Camille.\n\nJe pose le verre d'eau sans bruit. Je remonte dans ma chambre.\n\nMadame Heng veut me tester. Demain, samedi, au dîner. Elle me parlera en mandarin pour voir si je rougis. Si je tressaille. Si je trahis.\n\nTrois options pour moi maintenant. Et il faut que je décide cette nuit."
       },
       {
         "type": "image",
@@ -1578,7 +1578,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Madame Heng est arrivée hier soir. Je ne l'ai pas vue monter. À minuit, ses chaussures étaient dans l'entrée — des escarpins en cuir noir, taille trente-six et demi, trois cents euros au moins. Elle dort à l'étage. Tristan m'a dit « ma tante prend le thé à seize heures. Elle aimerait que vous descendiez. »"
+        "content": "Madame Heng est arrivée hier soir. Je ne l'ai pas vue monter. À minuit, ses chaussures étaient dans l'entrée — des escarpins en cuir noir, taille trente-six et demi, trois cents euros au moins. Elle dort à l'étage. Tristan m'a dit « ma mère prend le thé à seize heures. Elle aimerait que vous descendiez. »"
       },
       {
         "type": "image",
@@ -1686,7 +1686,7 @@
       },
       {
         "type": "quote",
-        "content": "« Huit mille. Cadeau, pas prêt. Ma tante ne saura pas. »"
+        "content": "« Huit mille. Cadeau, pas prêt. Ma mère ne saura pas. »"
       },
       {
         "type": "prose",
@@ -1705,7 +1705,7 @@
             "accepted_tristan_envelope"
           ],
           "ledgerLabel": "Cadeau Tristan (secret)",
-          "aftermath": "J'ai compté. Quatre-vingts billets de cent. Cash, neufs, sentaient encore l'imprimerie. Je les ai glissés dans la doublure de mon Code Civil. Pas pour Tenon — pour après. Les semaines où Maman ne pourra pas marcher seule. Les taxis, les courses, les choses qui ne tiennent pas sur une facture. Et puis j'avais désormais un secret avec Tristan que sa tante ne pourrait pas effacer."
+          "aftermath": "J'ai compté. Quatre-vingts billets de cent. Cash, neufs, sentaient encore l'imprimerie. Je les ai glissés dans la doublure de mon Code Civil. Pas pour Tenon — pour après. Les semaines où Maman ne pourra pas marcher seule. Les taxis, les courses, les choses qui ne tiennent pas sur une facture. Et puis j'avais désormais un secret avec Tristan que sa mère ne pourrait pas effacer."
         },
         {
           "text": "Je refuse fermement. « Ce n'est pas comme ça que ça se passe. »",

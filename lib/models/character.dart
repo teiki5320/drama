@@ -78,9 +78,9 @@ const kCharacters = <Character>[
     emoji: '🍵',
     photoAsset: 'assets/photos/characters/heng_lihua.png',
     tint: Color(0xFFE7E1D2),
-    role: 'La tante de Tristan',
+    role: 'La mère de Tristan',
     bio:
-        'Heng Lihua, 58 ans. Tante de Tristan, matriarche du clan parisien. Thé Long Jing, regard sans complaisance, mémoire longue. Sait des choses qu\'elle ne dit pas.',
+        'Heng Lihua, 58 ans. Mère de Tristan, matriarche du clan parisien. Thé Long Jing, regard sans complaisance, mémoire longue. Sait des choses qu\'elle ne dit pas.',
   ),
   Character(
     id: 'mei_fujian',
