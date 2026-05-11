@@ -485,7 +485,8 @@
     "reputationGain": 0,
     "requiredMood": 30,
     "requiredReputation": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "description": "Le bout de chez Maman qu'on s'autorise enfin sans calculer."
   },
   {
     "id": "bouffe_diner_chez_boulud",
@@ -499,7 +500,8 @@
     "requiredReputation": 0,
     "generatesInstaPost": true,
     "instaPostEmoji": "🍷",
-    "instaPostCaption": "Premier vrai dîner seule depuis longtemps. Beaucoup trop de fourchettes."
+    "instaPostCaption": "Premier vrai dîner seule depuis longtemps. Beaucoup trop de fourchettes.",
+    "description": "Un dîner sans présence à côté. Six fourchettes. Personne à protéger."
   },
   {
     "id": "bouffe_saké_premium",
@@ -511,7 +513,8 @@
     "reputationGain": 0,
     "requiredMood": 30,
     "requiredReputation": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "description": "Junmai Daiginjo, robe pâle. Un verre suffit. Un verre par soir suffit."
   },
   {
     "id": "mecenat_asso_droit",
@@ -525,7 +528,8 @@
     "requiredReputation": 0,
     "generatesInstaPost": true,
     "instaPostEmoji": "📚",
-    "instaPostCaption": "Pour celles qui n'ont pas le filet familial. Don à l'asso droit (Sorbonne). Camille a vérifié les comptes."
+    "instaPostCaption": "Pour celles qui n'ont pas le filet familial. Don à l'asso droit (Sorbonne). Camille a vérifié les comptes.",
+    "description": "L'asso droit de la Sorbonne paie ses cotisations URSSAF avec ce chèque."
   },
   {
     "id": "mecenat_bourse_etudiante",
@@ -537,7 +541,8 @@
     "reputationGain": 3,
     "requiredMood": 90,
     "requiredReputation": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "description": "Une bourse, une étudiante, un nom rendu plus tard."
   },
   {
     "id": "mecenat_livres_tenon",
@@ -549,7 +554,8 @@
     "reputationGain": 1,
     "requiredMood": 90,
     "requiredReputation": 0,
-    "generatesInstaPost": false
+    "generatesInstaPost": false,
+    "description": "Annie Ernaux, Marguerite Duras, Yôko Ogawa. Pour les chambres voisines de Maman."
   },
   {
     "id": "mecenat_artiste_emergent",
@@ -563,6 +569,7 @@
     "requiredReputation": 2,
     "generatesInstaPost": true,
     "instaPostEmoji": "🎨",
-    "instaPostCaption": "Acheté trois pièces à Wu Lin (atelier 13e). On commence à parler d'une exposition."
+    "instaPostCaption": "Acheté trois pièces à Wu Lin (atelier 13e). On commence à parler d'une exposition.",
+    "description": "Trois pièces achetées à Wu Lin, atelier 13e. Le début d'une expo."
   }
 ]
