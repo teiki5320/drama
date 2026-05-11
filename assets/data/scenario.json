@@ -10,7 +10,7 @@
         "content": "Je note tout depuis hier. C'est Camille qui m'a dit de le faire. « Tu vas vivre des trucs que tu vas oublier de vivre si tu les écris pas. » Camille dit toujours des phrases comme ça avec un croissant dans la bouche.\n\nDonc voilà. Carnet. Stylo bic vert parce que je n'ai pas trouvé le noir.\n\nMaman a passé une mauvaise nuit. Je l'ai entendue tousser à 4h. J'ai fait semblant de dormir parce que si elle sait que je l'ai entendue, elle va s'excuser. Maman s'excuse de tomber malade. C'est insupportable.\n\nJe pars livrer dans dix minutes. Vélo, pluie, le 8e encore. Les riches commandent leur petit-déj à 8h pile, c'est mathématique."
       },
       {
-        "type": "sectionTitle",
+        "type": "sceneBreak",
         "content": "07:48 — Avant de partir"
       },
       {
@@ -60,7 +60,7 @@
         ]
       },
       {
-        "type": "sectionTitle",
+        "type": "sceneBreak",
         "content": "08:14 — Avenue Montaigne"
       },
       {
@@ -98,7 +98,7 @@
         "content": "Je range le téléphone dans la poche intérieure. Maman avait raison, il pleut. La pluie monte du bitume autant qu'elle tombe.\n\nAu feu rouge, je relis sa dernière phrase une fois encore. *Couvre-toi.* C'est tout ce qu'elle sait dire — couvre-toi, mange, dors. Comme si on pouvait faire passer une chimio avec un châle.\n\nLe feu passe au vert. Je m'élance. Quatre voitures à droite, je vérifie. Pas à gauche. La rue François 1er débouche à gauche."
       },
       {
-        "type": "sectionTitle",
+        "type": "sceneBreak",
         "content": "08:17 — La collision"
       },
       {
@@ -180,17 +180,49 @@
     "time": "06:30",
     "narrative": [
       {
-        "type": "prose",
-        "content": "Le néphrologue veut me parler en privé. Quand un médecin veut te parler en privé à 6h30 du matin, c'est jamais pour te dire que ça va.\n\nLe Dr Aubin a un visage que j'aime bien. Il porte des lunettes en écaille et il prend toujours le temps. Il pose son stylo avant de parler — c'est quelqu'un qui ne lit pas à haute voix une fiche, c'est quelqu'un qui réfléchit.\n\n— Madame Marchand, votre mère a besoin d'un traitement de seconde ligne. C'est un protocole hors AMM, donc non remboursé.\n— Combien ?\n— Dix-huit mille euros sur six mois. Et je dois insister sur un point — il faut commencer dans les six semaines, pas plus. Au-delà, la fenêtre se ferme.\n\nSix semaines. Quarante-deux jours. Le compteur démarre maintenant.\n\nJe n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a 2 384 € et c'est déjà un miracle de fin de mois.\n\nJe ressors. Le hall sent l'eau de Javel et le café froid. Je m'assois sur un banc et je calcule trois fois. Trois fois la même réponse."
+        "type": "sceneBreak",
+        "content": "06:30 — bureau du Dr Aubin"
       },
       {
         "type": "prose",
-        "content": "Une infirmière passe avec un gobelet. Elle s'arrête. Elle me regarde, hésite, puis elle s'assoit à côté.\n\n— Vous êtes la fille de Madame Marchand.\n\nJe hoche la tête.\n\n— Elle est ici depuis trois ans. Je la connais bien. Elle ne dit jamais ce qu'elle a vraiment, vous savez. Pas même au médecin. Faites attention à ce qu'elle vous dit.\n\nElle se lève avant que je puisse répondre. Elle me presse l'épaule en partant.\n\nMaman ne dit pas tout. Maman ne dit pas tout."
+        "content": "Le néphrologue veut me parler en privé. Quand un médecin veut te parler en privé à 6h30 du matin, c'est jamais pour te dire que ça va."
+      },
+      {
+        "type": "prose",
+        "content": "Le Dr Aubin a un visage que j'aime bien. Lunettes en écaille, le temps qu'il faut. Il pose son stylo avant de parler. Il ne lit pas une fiche. Il réfléchit."
+      },
+      {
+        "type": "prose",
+        "content": "— Madame Marchand, votre mère a besoin d'un traitement de seconde ligne. C'est un protocole hors AMM, donc non remboursé.\n— Combien ?\n— Dix-huit mille euros sur six mois. Et je dois insister sur un point — il faut commencer dans les six semaines, pas plus. Au-delà, la fenêtre se ferme."
+      },
+      {
+        "type": "beat",
+        "content": "Six semaines. Quarante-deux jours. Le compteur démarre maintenant."
+      },
+      {
+        "type": "prose",
+        "content": "Je n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a 2 384 € et c'est déjà un miracle de fin de mois."
       },
       {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J02_dr_aubin.png",
         "content": "Dr Aubin, néphrologue. Il pose son stylo avant de parler."
+      },
+      {
+        "type": "sceneBreak",
+        "content": "06:48 — hall d'accueil"
+      },
+      {
+        "type": "prose",
+        "content": "Je ressors. Le hall sent l'eau de Javel et le café froid. Je m'assois sur un banc et je calcule trois fois. Trois fois la même réponse."
+      },
+      {
+        "type": "prose",
+        "content": "Une infirmière passe avec un gobelet. Elle s'arrête. Elle me regarde, hésite, puis elle s'assoit à côté.\n\n— Vous êtes la fille de Madame Marchand.\n\nJe hoche la tête.\n\n— Elle est ici depuis trois ans. Je la connais bien. Elle ne dit jamais ce qu'elle a vraiment, vous savez. Pas même au médecin. Faites attention à ce qu'elle vous dit.\n\nElle se lève avant que je puisse répondre. Elle me presse l'épaule en partant."
+      },
+      {
+        "type": "beat",
+        "content": "Maman ne dit pas tout. Maman ne dit pas tout."
       }
     ],
     "choice": {
@@ -243,6 +275,10 @@
       {
         "type": "prose",
         "content": "J'ai aussi appelé l'aide sociale. Une voix fatiguée m'a dit : « Six mois minimum pour un dossier. Vous pouvez prendre rendez-vous. »\n\nSix mois. Maman a six semaines.\n\nJe raccroche. Je regarde par la fenêtre du studio. La pluie n'arrête pas. J'ouvre le tiroir de la table. La carte de Tristan Heng est là, en quatre morceaux, ramenée de la flaque hier soir. Je ne sais même plus à quel moment je l'ai ramassée."
+      },
+      {
+        "type": "beat",
+        "content": "Trois fois la même réponse."
       },
       {
         "type": "image",
@@ -323,8 +359,8 @@
         "content": "J'ai recollé les morceaux hier soir sur la table de la cuisine. Avec du scotch transparent. C'est ridicule. Le numéro est lisible."
       },
       {
-        "type": "sectionTitle",
-        "content": "Le soir"
+        "type": "sceneBreak",
+        "content": "19:30 — Le soir, studio Camille"
       },
       {
         "type": "sms",
@@ -486,8 +522,8 @@
         ]
       },
       {
-        "type": "sectionTitle",
-        "content": "21:00"
+        "type": "sceneBreak",
+        "content": "21:00 — Studio, lampe de chevet"
       },
       {
         "type": "sms",
@@ -619,6 +655,10 @@
       {
         "type": "prose",
         "content": "Le silence dure. La pluie sur la baie vitrée du 47e. Quelque part dans Paris, Maman regarde un film de Catherine Deneuve sans savoir qu'on est en train de discuter sa vie.\n\nTrois mois. Aucun baiser. Aucun mensonge sur Maman. Trente mille euros.\n\nMa main droite serre l'accoudoir du fauteuil. Je sens mes ongles dans le cuir."
+      },
+      {
+        "type": "beat",
+        "content": "Trois mois pour qu'on m'invente une vie."
       },
       {
         "type": "quote",
@@ -1007,8 +1047,8 @@
         "content": "Je me détourne pour faire le thé."
       },
       {
-        "type": "sectionTitle",
-        "content": "Le soir"
+        "type": "sceneBreak",
+        "content": "19:42 — Le soir, sur le pas de la porte"
       },
       {
         "type": "sms",
@@ -1330,6 +1370,10 @@
         "content": "Tristan repose son verre. Doucement. Trop doucement.\n\nMadame Heng ne dit rien mais elle a entendu. Elle sert le thé. Le thé Long Jing première récolte. Elle me regarde le porter à mes lèvres."
       },
       {
+        "type": "beat",
+        "content": "Personne n'a touché à son verre pendant le reste du plat."
+      },
+      {
         "type": "sms",
         "conversation": "_inline",
         "messages": [
@@ -1637,6 +1681,10 @@
         "content": "Maman a sorti l'album photo. Celui de la cheminée, sépia, couverture rouge. Elle a tourné les pages en silence jusqu'à une photo de groupe, 1996, dix personnes devant un mur à Belleville. Elle a posé son doigt sur une femme que je ne connaissais pas. « Tu lui ressembles, parfois. » C'était Madame Heng à trente-deux ans. Maman a refermé l'album avant que je puisse parler."
       },
       {
+        "type": "beat",
+        "content": "Elle a tourné la page avant que je puisse parler."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/posts/madame_heng_jm8.png",
         "content": "L'album sépia. Maman a tourné la page avant que je puisse poser la question."
@@ -1786,6 +1834,10 @@
       {
         "type": "prose",
         "content": "Au plat principal, Madame Heng a posé sa fourchette. Elle a regardé Tristan, puis moi. « J'ai pris ma décision concernant votre mère. Je paierai le traitement intégral à Tenon. Virement direct lundi matin. Pas un prêt. Pas un contrat. Un don. » Elle a repris sa fourchette. Tristan n'a pas relevé la tête. Mes mains tremblaient sous la table."
+      },
+      {
+        "type": "beat",
+        "content": "Dix-huit mille euros. Sans contrepartie. Sans contrat."
       },
       {
         "type": "quote",

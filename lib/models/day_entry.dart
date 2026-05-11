@@ -1,7 +1,7 @@
 import 'choice.dart';
 import 'sms_message.dart';
 
-enum NarrativeBlockType { prose, sms, sectionTitle, image, quote }
+enum NarrativeBlockType { prose, sms, sectionTitle, image, quote, beat, sceneBreak }
 
 NarrativeBlockType _blockTypeFromString(String s) {
   switch (s) {
@@ -15,6 +15,10 @@ NarrativeBlockType _blockTypeFromString(String s) {
       return NarrativeBlockType.image;
     case 'quote':
       return NarrativeBlockType.quote;
+    case 'beat':
+      return NarrativeBlockType.beat;
+    case 'sceneBreak':
+      return NarrativeBlockType.sceneBreak;
     default:
       throw FormatException('Unknown NarrativeBlockType: $s');
   }
@@ -32,6 +36,10 @@ String _blockTypeToString(NarrativeBlockType t) {
       return 'image';
     case NarrativeBlockType.quote:
       return 'quote';
+    case NarrativeBlockType.beat:
+      return 'beat';
+    case NarrativeBlockType.sceneBreak:
+      return 'sceneBreak';
   }
 }
 

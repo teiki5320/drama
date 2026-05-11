@@ -39,6 +39,12 @@ class DayNarrativeView extends StatelessWidget {
         case NarrativeBlockType.quote:
           child = _Quote(text: b.content ?? '');
           break;
+        case NarrativeBlockType.beat:
+          child = _Beat(text: b.content ?? '');
+          break;
+        case NarrativeBlockType.sceneBreak:
+          child = _SceneBreak(text: b.content ?? '');
+          break;
       }
       blocks.add(_FadeInUp(
         key: ValueKey('day-${day.id}-block-$i'),
@@ -260,6 +266,74 @@ class _NarrativeImageState extends State<_NarrativeImage>
           ),
         ],
       ],
+    );
+  }
+}
+
+/// Phrase-choc isolée au milieu de la prose. Plus discrète qu'une
+/// citation pleine page : italique Crimson Pro centré, taille moyenne,
+/// pas d'encadré, juste de l'air autour. Sert à marquer une respiration
+/// dramatique sans casser le flux narratif comme le ferait `_Quote`.
+class _Beat extends StatelessWidget {
+  const _Beat({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: GoogleFonts.crimsonPro(
+          fontSize: 20,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w500,
+          color: AppColors.textPrimary,
+          height: 1.35,
+          letterSpacing: 0.1,
+        ),
+      ),
+    );
+  }
+}
+
+/// Séparateur de scène : petit timestamp ou ancrage gris clair centré
+/// entre deux lignes horizontales fines. Marque une coupure visuelle
+/// nette (changement de lieu, saut temporel) sans le poids d'un
+/// `sectionTitle` qui prend la place d'un titre de chapitre.
+class _SceneBreak extends StatelessWidget {
+  const _SceneBreak({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final divider = Expanded(
+      child: Container(
+        height: 1,
+        color: AppColors.textSecondary.withValues(alpha: 0.25),
+      ),
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+      child: Row(
+        children: [
+          divider,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(
+              text,
+              style: GoogleFonts.inter(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1.2,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          divider,
+        ],
+      ),
     );
   }
 }
