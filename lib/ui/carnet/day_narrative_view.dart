@@ -245,8 +245,16 @@ class _NarrativeImageState extends State<_NarrativeImage>
 
   @override
   Widget build(BuildContext context) {
+    // Tilt et décalage déterministes par image — chaque photo a sa
+    // propre inclinaison, mais elle ne bouge pas entre deux passages
+    // sur le même jour. Donne l'impression "vraie photo collée au
+    // carnet" sans agiter le mise en page.
+    final hash =
+        (widget.imageAsset ?? widget.caption ?? 'fallback').hashCode.abs();
+    final tilt = ((hash % 7) - 3) * 0.007; // -0.021 à +0.021 rad (~ ±1.2°)
+    final offsetX = ((hash >> 3) % 5 - 2) * 1.2; // -2.4 à +2.4 px
+
     final fallback = Container(
-      height: 200,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
@@ -256,7 +264,6 @@ class _NarrativeImageState extends State<_NarrativeImage>
             Color(0xFFE3D9C2),
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
       ),
       alignment: Alignment.center,
       child: Icon(
@@ -266,62 +273,94 @@ class _NarrativeImageState extends State<_NarrativeImage>
       ),
     );
 
-    final Widget image;
+    final Widget pictureContent;
     if (widget.imageAsset == null) {
-      image = fallback;
+      pictureContent = AspectRatio(aspectRatio: 4 / 3, child: fallback);
     } else {
-      image = ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: AspectRatio(
-          aspectRatio: 4 / 3,
-          child: AnimatedBuilder(
-            animation: _kenBurns,
-            builder: (context, _) {
-              final t = Curves.easeInOut.transform(_kenBurns.value);
-              final scale = 1.04 + 0.06 * t;
-              final dx = -0.04 + 0.08 * t;
-              final dy = -0.02 + 0.04 * t;
-              return ClipRect(
-                child: OverflowBox(
-                  maxWidth: double.infinity,
-                  maxHeight: double.infinity,
-                  child: Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()
-                      ..translate(dx * 20.0, dy * 20.0)
-                      ..scale(scale, scale),
-                    child: Image.asset(
-                      widget.imageAsset!,
-                      fit: BoxFit.cover,
-                      cacheWidth: 1000,
-                      errorBuilder: (_, __, ___) => fallback,
-                    ),
+      pictureContent = AspectRatio(
+        aspectRatio: 4 / 3,
+        child: AnimatedBuilder(
+          animation: _kenBurns,
+          builder: (context, _) {
+            final t = Curves.easeInOut.transform(_kenBurns.value);
+            final scale = 1.04 + 0.06 * t;
+            final dx = -0.04 + 0.08 * t;
+            final dy = -0.02 + 0.04 * t;
+            return ClipRect(
+              child: OverflowBox(
+                maxWidth: double.infinity,
+                maxHeight: double.infinity,
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..translate(dx * 20.0, dy * 20.0)
+                    ..scale(scale, scale),
+                  child: Image.asset(
+                    widget.imageAsset!,
+                    fit: BoxFit.cover,
+                    cacheWidth: 1000,
+                    errorBuilder: (_, __, ___) =>
+                        AspectRatio(aspectRatio: 4 / 3, child: fallback),
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        image,
-        if (widget.caption != null && widget.caption!.isNotEmpty) ...[
-          const SizedBox(height: 6),
-          Text(
-            widget.caption!,
-            style: GoogleFonts.inter(
-              fontStyle: FontStyle.italic,
-              fontSize: 12.5,
-              color: AppColors.textSecondary,
-              height: 1.4,
-            ),
+    // Cadre polaroid : bord blanc, marge basse plus épaisse (zone où
+    // la légende d'une vraie polaroid serait écrite), ombre douce
+    // décalée pour le relief, légère inclinaison.
+    final polaroid = Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.16),
+            blurRadius: 12,
+            offset: const Offset(2, 6),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 2,
+            offset: const Offset(0, 1),
           ),
         ],
-      ],
+      ),
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 22),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(2),
+        child: pictureContent,
+      ),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Transform.translate(
+            offset: Offset(offsetX, 0),
+            child: Transform.rotate(angle: tilt, child: polaroid),
+          ),
+          if (widget.caption != null && widget.caption!.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Text(
+              widget.caption!,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.crimsonPro(
+                fontStyle: FontStyle.italic,
+                fontSize: 13.5,
+                color: AppColors.textSecondary,
+                height: 1.45,
+                letterSpacing: 0.15,
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
