@@ -33,7 +33,7 @@ class GameState {
   const GameState({
     this.currentDay = 1,
     this.argent = 2384,
-    this.mood = 5,
+    this.mood = 50,
     this.reputation = 0,
     this.followers = 712,
     this.stockHoldings = const {},
@@ -132,7 +132,13 @@ class GameState {
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
         currentDay: (json['currentDay'] as num?)?.toInt() ?? 1,
         argent: (json['argent'] as num?)?.toInt() ?? 2384,
-        mood: (json['mood'] as num?)?.toInt() ?? 5,
+        // Migration : avant la passe /100, mood était sur 0-10. Toute
+        // valeur ≤ 10 est repassée à l'échelle /100 par ×10. Les saves
+        // déjà à /100 (mood > 10) restent intactes.
+        mood: () {
+          final m = (json['mood'] as num?)?.toInt() ?? 50;
+          return m <= 10 ? m * 10 : m;
+        }(),
         reputation: (json['reputation'] as num?)?.toInt() ?? 0,
         followers: (json['followers'] as num?)?.toInt() ?? 712,
         stockHoldings: ((json['stockHoldings'] as Map?) ?? const {})

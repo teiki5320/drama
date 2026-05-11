@@ -114,7 +114,7 @@ class EconomyEngine {
     required int optionIndex,
     required ChoiceOption option,
   }) {
-    final newMood = (state.mood + option.mood).clamp(0, 10);
+    final newMood = (state.mood + option.mood).clamp(0, 100);
     final newReputation = (state.reputation + option.reputation)
         .clamp(0, 1 << 30); // no negative reputation
     final newArgent = state.argent + option.argent;
@@ -232,7 +232,7 @@ class EconomyEngine {
       advanced = advanced.copyWith(
         isMomTreatmentPaid: true,
         argent: advanced.argent - kMomTreatmentCost,
-        mood: (advanced.mood + 2).clamp(0, 10),
+        mood: (advanced.mood + 2).clamp(0, 100),
         ledger: _capLedger(updatedLedger),
       );
     }
@@ -353,7 +353,7 @@ class EconomyEngine {
 
     return state.copyWith(
       argent: state.argent - item.price,
-      mood: (state.mood + item.moodGain).clamp(0, 10),
+      mood: (state.mood + item.moodGain).clamp(0, 100),
       reputation: newRep,
       followers: followersFromReputation(newRep),
       ownedItems: newOwned,
