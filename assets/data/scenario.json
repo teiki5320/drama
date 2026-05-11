@@ -7,7 +7,15 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Je note tout depuis hier. C'est Camille qui m'a dit de le faire. « Tu vas vivre des trucs que tu vas oublier de vivre si tu les écris pas. » Camille dit toujours des phrases comme ça avec un croissant dans la bouche.\n\nDonc voilà. Carnet. Stylo bic vert parce que je n'ai pas trouvé le noir.\n\nMaman a passé une mauvaise nuit. Je l'ai entendue tousser à 4h. J'ai fait semblant de dormir parce que si elle sait que je l'ai entendue, elle va s'excuser. Maman s'excuse de tomber malade. C'est insupportable.\n\nJe pars livrer dans dix minutes. Vélo, pluie, le 8e encore. Les riches commandent leur petit-déj à 8h pile, c'est mathématique."
+        "content": "Je note tout depuis hier. C'est Camille qui m'a dit de le faire. « Tu vas vivre des trucs que tu vas oublier de vivre si tu les écris pas. » Camille dit toujours des phrases comme ça avec un croissant dans la bouche."
+      },
+      {
+        "type": "prose",
+        "content": "Donc voilà. Carnet. Stylo bic vert parce que je n'ai pas trouvé le noir.\n\nMaman a passé une mauvaise nuit. Je l'ai entendue tousser à 4h. J'ai fait semblant de dormir parce que si elle sait que je l'ai entendue, elle va s'excuser. Maman s'excuse de tomber malade. C'est insupportable."
+      },
+      {
+        "type": "prose",
+        "content": "Je pars livrer dans dix minutes. Vélo, pluie, le 8e encore. Les riches commandent leur petit-déj à 8h pile, c'est mathématique."
       },
       {
         "type": "sceneBreak",
@@ -103,7 +111,31 @@
       },
       {
         "type": "prose",
-        "content": "Le bruit arrive en deux temps.\n\nD'abord la mécanique d'un freinage trop tard — un crissement aigu qui n'a pas le temps de finir — puis le métal qui touche le métal, sourd, qui se cogne dans ma poitrine avant même que mon vélo soit touché.\n\nJe suis projetée. Quelqu'un a appuyé sur 'pause' à l'intérieur de moi.\n\nLe bitume est plus rapide que la pensée. Mon épaule droite touche en premier, puis le casque, puis le genou. Le casque tient. Le genou non. Je le sens s'ouvrir avant d'en avoir mal — la peau qui se déchire fait un son qu'on n'oublie pas, un son qu'on confond avec celui du papier qu'on déchire.\n\nPas de douleur. Pas encore. Juste une chaleur qui monte, et le bruit du moteur qui tourne au ralenti à un mètre de mon visage.\n\nLe sac de livraison s'éventre comme un fruit trop mûr. Le bowl se renverse en direct, l'açaí s'étale en traînée violette sur le bitume mouillé, le smoothie rejoint la pluie. Trente-huit euros que la plateforme va me retenir sur la prochaine paie. Je ferme les yeux. C'est le seul endroit où je peux pleurer sans que ça compte.\n\nQuand je les rouvre, des chaussures cuir.\n\nL'homme qui sort de la berline a un costume qui coûte plus que mon loyer annuel. Il regarde sa montre. Il regarde la rue. Il regarde son rétroviseur. Il regarde tout sauf moi. Quand il finit par baisser les yeux, c'est avec l'expression de quelqu'un qui calcule combien ça va lui coûter.\n\nPremière erreur."
+        "content": "Le bruit arrive en deux temps.\n\nD'abord la mécanique d'un freinage trop tard — un crissement aigu qui n'a pas le temps de finir — puis le métal qui touche le métal, sourd, qui se cogne dans ma poitrine avant même que mon vélo soit touché."
+      },
+      {
+        "type": "beat",
+        "content": "Je suis projetée. Quelqu'un a appuyé sur 'pause' à l'intérieur de moi."
+      },
+      {
+        "type": "prose",
+        "content": "Le bitume est plus rapide que la pensée. Mon épaule droite touche en premier, puis le casque, puis le genou. Le casque tient. Le genou non. Je le sens s'ouvrir avant d'en avoir mal — la peau qui se déchire fait un son qu'on n'oublie pas, un son qu'on confond avec celui du papier qu'on déchire."
+      },
+      {
+        "type": "prose",
+        "content": "Pas de douleur. Pas encore. Juste une chaleur qui monte, et le bruit du moteur qui tourne au ralenti à un mètre de mon visage."
+      },
+      {
+        "type": "prose",
+        "content": "Le sac de livraison s'éventre comme un fruit trop mûr. Le bowl se renverse en direct, l'açaí s'étale en traînée violette sur le bitume mouillé, le smoothie rejoint la pluie. Trente-huit euros que la plateforme va me retenir sur la prochaine paie. Je ferme les yeux. C'est le seul endroit où je peux pleurer sans que ça compte."
+      },
+      {
+        "type": "prose",
+        "content": "Quand je les rouvre, des chaussures cuir."
+      },
+      {
+        "type": "prose",
+        "content": "L'homme qui sort de la berline a un costume qui coûte plus que mon loyer annuel. Il regarde sa montre. Il regarde la rue. Il regarde son rétroviseur. Il regarde tout sauf moi. Quand il finit par baisser les yeux, c'est avec l'expression de quelqu'un qui calcule combien ça va lui coûter."
       },
       {
         "type": "sms",
@@ -227,6 +259,10 @@
       {
         "type": "beat",
         "content": "Maman ne dit pas tout. Maman ne dit pas tout."
+      },
+      {
+        "type": "dayFooter",
+        "content": "07:24 — Métro Couronnes. Je rentre. Compteur : J42."
       }
     ],
     "choice": {
@@ -286,7 +322,15 @@
       },
       {
         "type": "prose",
-        "content": "J'ai aussi appelé l'aide sociale. Une voix fatiguée m'a dit : « Six mois minimum pour un dossier. Vous pouvez prendre rendez-vous. »\n\nSix mois. Maman a six semaines.\n\nJe raccroche. Je regarde par la fenêtre du studio. La pluie n'arrête pas. J'ouvre le tiroir de la table. La carte de Tristan Heng est là, en quatre morceaux, ramenée de la flaque hier soir. Je ne sais même plus à quel moment je l'ai ramassée."
+        "content": "J'ai aussi appelé l'aide sociale. Une voix fatiguée m'a dit : « Six mois minimum pour un dossier. Vous pouvez prendre rendez-vous. »"
+      },
+      {
+        "type": "beat",
+        "content": "Six mois. Maman a six semaines."
+      },
+      {
+        "type": "prose",
+        "content": "Je raccroche. Je regarde par la fenêtre du studio. La pluie n'arrête pas. J'ouvre le tiroir de la table. La carte de Tristan Heng est là, en quatre morceaux, ramenée de la flaque hier soir. Je ne sais même plus à quel moment je l'ai ramassée."
       },
       {
         "type": "beat",
@@ -296,6 +340,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J03_calculs.png",
         "content": "Trois fois la même réponse."
+      },
+      {
+        "type": "dayFooter",
+        "content": "23:58 — Studio. Pas de solution. Pas encore."
       }
     ],
     "choice": {
@@ -416,6 +464,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J04_cafe_hanami.png",
         "content": "Camille pose son croissant. Mauvais signe."
+      },
+      {
+        "type": "dayFooter",
+        "content": "22:30 — Studio Camille. La carte est dans ma poche. Pas dans la poubelle."
       }
     ],
     "choice": {
@@ -456,7 +508,19 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "La carte est recollée. Le scotch a légèrement jauni le carton. Le numéro forme une diagonale parce que j'ai mal aligné les morceaux. J'ai mis une assiette dessus pour qu'elle reste plate.\n\nMaman dort. La pluie tombe contre la fenêtre. C'est le moment où je suis la plus seule de la journée, et c'est aussi le moment où je m'aime le plus. Curieux.\n\nJe relis les SMS de Camille. *« Ça veut dire oui mais avec dignité. »* Elle a raison. Si j'y vais, c'est avec un dossier. Pas en quémandeuse.\n\nJ'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
+        "content": "La carte est recollée. Le scotch a légèrement jauni le carton. Le numéro forme une diagonale parce que j'ai mal aligné les morceaux. J'ai mis une assiette dessus pour qu'elle reste plate."
+      },
+      {
+        "type": "prose",
+        "content": "Maman dort. La pluie tombe contre la fenêtre. C'est le moment où je suis la plus seule de la journée, et c'est aussi le moment où je m'aime le plus. Curieux."
+      },
+      {
+        "type": "prose",
+        "content": "Je relis les SMS de Camille. *« Ça veut dire oui mais avec dignité. »* Elle a raison. Si j'y vais, c'est avec un dossier. Pas en quémandeuse."
+      },
+      {
+        "type": "innerThought",
+        "content": "J'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
       },
       {
         "type": "sms",
@@ -480,6 +544,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J05_carte_recollee.png",
         "content": "Je serai sa débitrice. Pas sa charité."
+      },
+      {
+        "type": "dayFooter",
+        "content": "23:42 — Studio. Le SMS reste sans réponse. Demain j'y vais."
       }
     ],
     "choice": {
@@ -577,12 +645,24 @@
       },
       {
         "type": "prose",
-        "content": "Avant qu'elle parte, je lui pose la question que je n'ai jamais posée.\n\n— Camille. Ta mère. Elle est où en ce moment ?\n\nElle range les épingles dans le tailleur. Elle ne lève pas les yeux.\n\n— Une autre fois. Concentre-toi sur demain.\n\nElle prend son sac. Elle m'embrasse sur le front, vite, comme on embrasse quelqu'un avant un examen.\n\n— Tu vas casser la baraque. Et si tu casses pas, tu sors. T'as toujours le droit de sortir."
+        "content": "Avant qu'elle parte, je lui pose la question que je n'ai jamais posée.\n\n— Camille. Ta mère. Elle est où en ce moment ?"
+      },
+      {
+        "type": "prose",
+        "content": "Elle range les épingles dans le tailleur. Elle ne lève pas les yeux."
+      },
+      {
+        "type": "prose",
+        "content": "— Une autre fois. Concentre-toi sur demain.\n\nElle prend son sac. Elle m'embrasse sur le front, vite, comme on embrasse quelqu'un avant un examen.\n\n— Tu vas casser la baraque. Et si tu casses pas, tu sors. T'as toujours le droit de sortir."
       },
       {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J06_tailleur_miroir.jpeg",
         "content": "Pas plus belle. Plus coupée."
+      },
+      {
+        "type": "dayFooter",
+        "content": "22:48 — Studio. Le tailleur sur la chaise. Maman m'attend de l'autre côté."
       }
     ],
     "choice": {
@@ -670,7 +750,39 @@
       },
       {
         "type": "prose",
-        "content": "Il pose le dossier devant moi. Il l'ouvre lentement, comme on retourne une carte au poker. Sa voix ne change pas — il parle comme on lit un contrat de prestation, comme s'il en avait déjà fait dix.\n\n— Trois mois. Vous emménagez chez moi rue de Berri, vous m'accompagnez aux dîners de famille et aux galas. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne.\n\nJe l'écoute sans bouger. La moquette m'absorbe.\n\n— Vous touchez trente mille euros. Virement en deux fois. Contrat notarié signé demain matin pour vous protéger.\n\nTrente mille. Le traitement de Maman, le loyer pour deux ans, et de la marge.\n\n— En échange : aucune relation physique. Aucune. C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne.\n\nIl s'arrête. Il regarde ailleurs une seconde, comme s'il cherchait s'il avait oublié quelque chose. Puis il revient sur moi.\n\n— Et un dernier point. Article 7, alinéa b. Je suis allergique aux fraises. Vous y aurez droit, pas moi. C'est une plaisanterie.\n\nC'est la première qu'il fait depuis que je suis entrée. Elle ne lui va pas. Mais elle est là. Et c'est peut-être ce détail qui change tout : un homme qui prévoit dans un contrat qu'il aura le droit de ne pas aimer les fraises avec moi."
+        "content": "Il pose le dossier devant moi. Il l'ouvre lentement, comme on retourne une carte au poker. Sa voix ne change pas — il parle comme on lit un contrat de prestation, comme s'il en avait déjà fait dix."
+      },
+      {
+        "type": "prose",
+        "content": "— Trois mois. Vous emménagez chez moi rue de Berri, vous m'accompagnez aux dîners de famille et aux galas. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne."
+      },
+      {
+        "type": "prose",
+        "content": "Je l'écoute sans bouger. La moquette m'absorbe."
+      },
+      {
+        "type": "prose",
+        "content": "— Vous touchez trente mille euros. Virement en deux fois. Contrat notarié signé demain matin pour vous protéger."
+      },
+      {
+        "type": "beat",
+        "content": "Trente mille. Le traitement de Maman, le loyer pour deux ans, et de la marge."
+      },
+      {
+        "type": "prose",
+        "content": "— En échange : aucune relation physique. Aucune. C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne."
+      },
+      {
+        "type": "prose",
+        "content": "Il s'arrête. Il regarde ailleurs une seconde, comme s'il cherchait s'il avait oublié quelque chose. Puis il revient sur moi."
+      },
+      {
+        "type": "prose",
+        "content": "— Et un dernier point. Article 7, alinéa b. Je suis allergique aux fraises. Vous y aurez droit, pas moi. C'est une plaisanterie."
+      },
+      {
+        "type": "prose",
+        "content": "C'est la première qu'il fait depuis que je suis entrée. Elle ne lui va pas. Mais elle est là. Et c'est peut-être ce détail qui change tout : un homme qui prévoit dans un contrat qu'il aura le droit de ne pas aimer les fraises avec moi."
       },
       {
         "type": "prose",
@@ -758,7 +870,23 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Quatorze pages. Quatorze pages pour décrire trois mois de mensonge encadré par un papier signé.\n\nLe notaire — un type chauve qui sourit poliment comme s'il faisait ce genre de contrat tous les jours, et peut-être que oui — fait défiler les clauses.\n\nArticle 14. *« Aucun contact physique non public ne sera exigé entre les parties. »*\n\nJe prends son stylo. J'écris en marge, à la main : *« Pas de baisers. Pas de mensonges sur ma mère malade. Droit de manger des fraises devant lui même s'il est allergique. »*\n\nTristan me regarde. Le notaire fait semblant de ne rien voir."
+        "content": "Quatorze pages. Quatorze pages pour décrire trois mois de mensonge encadré par un papier signé."
+      },
+      {
+        "type": "prose",
+        "content": "Le notaire — un type chauve qui sourit poliment comme s'il faisait ce genre de contrat tous les jours, et peut-être que oui — fait défiler les clauses."
+      },
+      {
+        "type": "prose",
+        "content": "Article 14. *« Aucun contact physique non public ne sera exigé entre les parties. »*"
+      },
+      {
+        "type": "prose",
+        "content": "Je prends son stylo. J'écris en marge, à la main : *« Pas de baisers. Pas de mensonges sur ma mère malade. Droit de manger des fraises devant lui même s'il est allergique. »*"
+      },
+      {
+        "type": "prose",
+        "content": "Tristan me regarde. Le notaire fait semblant de ne rien voir."
       },
       {
         "type": "prose",
@@ -786,6 +914,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J08_contrat_notarie.png",
         "content": "Article 7, alinéa b : droit aux fraises."
+      },
+      {
+        "type": "dayFooter",
+        "content": "16:14 — Compte courant. 30 000 €. Le chiffre ne tient pas sur l'écran."
       }
     ],
     "choice": {
@@ -896,7 +1028,27 @@
       },
       {
         "type": "prose",
-        "content": "Je cherche un cintre dans la penderie. Je tire trop fort sur l'étagère du haut. Une boîte en bois descend, tombe sur la moquette en faisant un bruit qu'elle n'aurait pas dû faire.\n\nJe l'ouvre par réflexe. Une seconde. Je n'aurais pas dû.\n\nUne photo, format polaroid : Tristan, plus jeune, peut-être 26 ans. À côté de lui, une jeune femme asiatique. Ils sont sur une terrasse, peut-être à Hong Kong. Elle rit. Lui ne rit pas mais il la regarde — et là, dans cette photo, son visage n'est pas le visage que je connais.\n\nSous la photo, une carte de visite. Au dos, écrit à la main, encre noire :\n\n*Pour Mei. Trois mois aussi. — T.*\n\nJe remets exactement comme c'était. Je referme la boîte. Je remonte l'étagère.\n\nJe ne suis pas la première. Je ne suis pas la première. Je ne suis pas la première."
+        "content": "Je cherche un cintre dans la penderie. Je tire trop fort sur l'étagère du haut. Une boîte en bois descend, tombe sur la moquette en faisant un bruit qu'elle n'aurait pas dû faire."
+      },
+      {
+        "type": "prose",
+        "content": "Je l'ouvre par réflexe. Une seconde. Je n'aurais pas dû."
+      },
+      {
+        "type": "prose",
+        "content": "Une photo, format polaroid : Tristan, plus jeune, peut-être 26 ans. À côté de lui, une jeune femme asiatique. Ils sont sur une terrasse, peut-être à Hong Kong. Elle rit. Lui ne rit pas mais il la regarde — et là, dans cette photo, son visage n'est pas le visage que je connais."
+      },
+      {
+        "type": "prose",
+        "content": "Sous la photo, une carte de visite. Au dos, écrit à la main, encre noire :"
+      },
+      {
+        "type": "prose",
+        "content": "Je remets exactement comme c'était. Je referme la boîte. Je remonte l'étagère."
+      },
+      {
+        "type": "beat",
+        "content": "Je ne suis pas la première. Je ne suis pas la première. Je ne suis pas la première."
       },
       {
         "type": "quote",
@@ -906,6 +1058,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J09_valise_grand_lit.png",
         "content": "Une valise au milieu de 350 m²."
+      },
+      {
+        "type": "dayFooter",
+        "content": "01:32 — Chambre d'amis. La boîte de Mei sur l'étagère. Comme c'était."
       }
     ],
     "choice": {
@@ -1007,12 +1163,28 @@
       },
       {
         "type": "prose",
-        "content": "Tristan entre dans la cuisine sans me voir. Il pose un petit bol blanc devant moi. Trois fraises. Une coupée en deux.\n\n— Article 7, alinéa b. Vous y avez droit. Pas moi.\n\nIl se sert un café noir et il s'éloigne. Il ne sourit pas. Mais il a posé les fraises dans MON bol, pas dans le sien. Il les a achetées hier au marché — j'ai vu le ticket ce matin sur la table.\n\nJe mange une fraise devant lui. Lentement. Il fait semblant de lire le journal. Mais il regarde, je le sais, sans me regarder."
+        "content": "Tristan entre dans la cuisine sans me voir. Il pose un petit bol blanc devant moi. Trois fraises. Une coupée en deux."
+      },
+      {
+        "type": "prose",
+        "content": "— Article 7, alinéa b. Vous y avez droit. Pas moi."
+      },
+      {
+        "type": "prose",
+        "content": "Il se sert un café noir et il s'éloigne. Il ne sourit pas. Mais il a posé les fraises dans MON bol, pas dans le sien. Il les a achetées hier au marché — j'ai vu le ticket ce matin sur la table."
+      },
+      {
+        "type": "prose",
+        "content": "Je mange une fraise devant lui. Lentement. Il fait semblant de lire le journal. Mais il regarde, je le sais, sans me regarder."
       },
       {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J10_cuisine_fraises.png",
         "content": "Trois fraises. Article 7 b, en pratique."
+      },
+      {
+        "type": "dayFooter",
+        "content": "21:58 — Chambre. Trois fraises dans le bol vide."
       }
     ],
     "choice": {
@@ -1098,7 +1270,23 @@
       },
       {
         "type": "prose",
-        "content": "Quand je m'apprête à partir, Maman me retient sur le pas de la porte. Elle a son châle gris, sa voix de quand elle parle de choses sérieuses sans en avoir l'air.\n\n— Lao Chen. J'ai cherché.\n\nJe me fige.\n\n— Y'a 47 Lao Chen sur LinkedIn. Tu en es sûre, ma fille ?\n\nElle ne pose pas la vraie question. Elle laisse l'espace. Elle me regarde et ne me regarde pas en même temps. Comme avant, à l'école, quand elle savait que j'avais menti sur une note et qu'elle attendait que je me reprenne toute seule.\n\nMaman sait. Maman ne dit rien.\n\nJe l'embrasse trop fort. Je sors. Je marche jusqu'au métro Couronnes en pleurant à demi, en frottant mes yeux comme s'il pleuvait."
+        "content": "Quand je m'apprête à partir, Maman me retient sur le pas de la porte. Elle a son châle gris, sa voix de quand elle parle de choses sérieuses sans en avoir l'air."
+      },
+      {
+        "type": "prose",
+        "content": "— Lao Chen. J'ai cherché.\n\nJe me fige.\n\n— Y'a 47 Lao Chen sur LinkedIn. Tu en es sûre, ma fille ?"
+      },
+      {
+        "type": "prose",
+        "content": "Elle ne pose pas la vraie question. Elle laisse l'espace. Elle me regarde et ne me regarde pas en même temps. Comme avant, à l'école, quand elle savait que j'avais menti sur une note et qu'elle attendait que je me reprenne toute seule."
+      },
+      {
+        "type": "beat",
+        "content": "Maman sait. Maman ne dit rien."
+      },
+      {
+        "type": "prose",
+        "content": "Je l'embrasse trop fort. Je sors. Je marche jusqu'au métro Couronnes en pleurant à demi, en frottant mes yeux comme s'il pleuvait."
       },
       {
         "type": "quote",
@@ -1108,6 +1296,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J11_visite_maman.png",
         "content": "Maman lève la tête. Elle ne pose pas la question."
+      },
+      {
+        "type": "dayFooter",
+        "content": "23:17 — Studio Heng. Quarante-sept Lao Chen sur LinkedIn. Aucun n'est moi."
       }
     ],
     "choice": {
@@ -1161,7 +1353,15 @@
       },
       {
         "type": "prose",
-        "content": "Je regarde l'écran longtemps. La courge n'existe pas. Lao Chen non plus. Le stage non plus.\n\nJe lui mens depuis sept jours et chaque mensonge en appelle un autre. Le pire c'est qu'elle me croit. Le pire c'est aussi qu'elle ne me croit peut-être pas, mais qu'elle joue le jeu.\n\nTristan entre dans la cuisine pendant que je tape la réponse. Il voit l'écran. Il ne dit rien. Il se sert un verre d'eau et il sort.\n\nPlus tard, en passant devant ma chambre, il dit :"
+        "content": "Je regarde l'écran longtemps. La courge n'existe pas. Lao Chen non plus. Le stage non plus."
+      },
+      {
+        "type": "innerThought",
+        "content": "Je lui mens depuis sept jours et chaque mensonge en appelle un autre. Le pire c'est qu'elle me croit. Le pire c'est aussi qu'elle ne me croit peut-être pas, mais qu'elle joue le jeu."
+      },
+      {
+        "type": "prose",
+        "content": "Tristan entre dans la cuisine pendant que je tape la réponse. Il voit l'écran. Il ne dit rien. Il se sert un verre d'eau et il sort.\n\nPlus tard, en passant devant ma chambre, il dit :"
       },
       {
         "type": "sms",
@@ -1181,6 +1381,10 @@
         "type": "image",
         "imageAsset": "assets/photos/scenes/J12_dejeuner_heng.png",
         "content": "Treize chaises. Deux occupées."
+      },
+      {
+        "type": "dayFooter",
+        "content": "23:52 — Chambre. Léo va devoir s'entraîner cette nuit."
       }
     ],
     "choice": {
@@ -1308,12 +1512,40 @@
       },
       {
         "type": "prose",
-        "content": "Plus tard dans la soirée, le téléphone de Tristan sonne dans le salon. Il décroche. Il parle.\n\nIl parle en mandarin.\n\nJe suis dans la cuisine. Je tiens un verre d'eau dans la main. Je ne bouge plus. Madame Heng au téléphone. Tristan répond, calme : « 是的，妈妈。她会来。我会带她。 » *Oui, maman. Elle viendra. Je l'amènerai.*\n\nPuis Madame Heng dit quelque chose que Tristan répète, doucement, comme une instruction dont il prend note : « 我想看看她有没有听懂的能力。 » *Je veux voir si elle a la capacité de comprendre.*\n\nJe comprends chaque mot. J'ai parlé mandarin avec ma mère pendant 18 ans. Je l'ai appris seule sur YouTube et dans les restaurants du 13e. Personne ne le sait, à part Camille.\n\nJe pose le verre d'eau sans bruit. Je remonte dans ma chambre.\n\nMadame Heng veut me tester. Demain, samedi, au dîner. Elle me parlera en mandarin pour voir si je rougis. Si je tressaille. Si je trahis.\n\nTrois options pour moi maintenant. Et il faut que je décide cette nuit."
+        "content": "Plus tard dans la soirée, le téléphone de Tristan sonne dans le salon. Il décroche. Il parle."
+      },
+      {
+        "type": "beat",
+        "content": "Il parle en mandarin."
+      },
+      {
+        "type": "prose",
+        "content": "Je suis dans la cuisine. Je tiens un verre d'eau dans la main. Je ne bouge plus. Madame Heng au téléphone. Tristan répond, calme : « 是的，妈妈。她会来。我会带她。 » *Oui, maman. Elle viendra. Je l'amènerai.*"
+      },
+      {
+        "type": "prose",
+        "content": "Puis Madame Heng dit quelque chose que Tristan répète, doucement, comme une instruction dont il prend note : « 我想看看她有没有听懂的能力。 » *Je veux voir si elle a la capacité de comprendre.*"
+      },
+      {
+        "type": "prose",
+        "content": "Je comprends chaque mot. J'ai parlé mandarin avec ma mère pendant 18 ans. Je l'ai appris seule sur YouTube et dans les restaurants du 13e. Personne ne le sait, à part Camille."
+      },
+      {
+        "type": "prose",
+        "content": "Je pose le verre d'eau sans bruit. Je remonte dans ma chambre."
+      },
+      {
+        "type": "innerThought",
+        "content": "Madame Heng veut me tester. Demain, samedi, au dîner. Elle me parlera en mandarin pour voir si je rougis. Si je tressaille. Si je trahis.\n\nTrois options pour moi maintenant. Et il faut que je décide cette nuit."
       },
       {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J13_camille_telephone.png",
         "content": "Vingt-trois minutes de respiration."
+      },
+      {
+        "type": "dayFooter",
+        "content": "01:14 — Chambre. 你好. Je n'ai pas dormi."
       }
     ],
     "choice": {
@@ -1461,16 +1693,44 @@
       },
       {
         "type": "prose",
-        "content": "Madame Heng pose sa main sur la mienne. Sa main est fraîche, plus légère que je ne l'aurais cru. Elle me regarde. Elle ne sourit pas vraiment. Elle dit, en français :\n\n— Tu as les yeux de ta mère.\n\nJe m'arrête de respirer.\n\nJe n'ai jamais parlé de ma mère ce soir. Je n'ai jamais montré une photo. Tristan ne sait même pas comment elle s'appelle. Personne autour de cette table ne devrait connaître Hélène Marchand.\n\nMadame Heng retire sa main. Elle reprend une fraise. Elle ne me regarde plus.\n\nLe dîner continue. Vincent rit à une blague d'Adrien. Léa demande des nouvelles d'une amie commune. Tristan me regarde une seconde. Lui aussi a entendu.\n\nJe n'entends plus rien. Je tiens ma tasse. Je serre.\n\nTu as les yeux de ta mère.\n\nComment elle sait."
+        "content": "Madame Heng pose sa main sur la mienne. Sa main est fraîche, plus légère que je ne l'aurais cru. Elle me regarde. Elle ne sourit pas vraiment. Elle dit, en français :\n\n— Tu as les yeux de ta mère."
+      },
+      {
+        "type": "prose",
+        "content": "Je m'arrête de respirer."
+      },
+      {
+        "type": "prose",
+        "content": "Je n'ai jamais parlé de ma mère ce soir. Je n'ai jamais montré une photo. Tristan ne sait même pas comment elle s'appelle. Personne autour de cette table ne devrait connaître Hélène Marchand."
+      },
+      {
+        "type": "prose",
+        "content": "Madame Heng retire sa main. Elle reprend une fraise. Elle ne me regarde plus."
+      },
+      {
+        "type": "prose",
+        "content": "Le dîner continue. Vincent rit à une blague d'Adrien. Léa demande des nouvelles d'une amie commune. Tristan me regarde une seconde. Lui aussi a entendu."
+      },
+      {
+        "type": "innerThought",
+        "content": "Je n'entends plus rien. Je tiens ma tasse. Je serre."
       },
       {
         "type": "quote",
         "content": "Tu as les yeux de ta mère."
       },
       {
+        "type": "beat",
+        "content": "Comment elle sait."
+      },
+      {
         "type": "image",
         "imageAsset": "assets/photos/scenes/J14_the_madame_heng.png",
         "content": "Le thé Long Jing première récolte. « Ma fille. »"
+      },
+      {
+        "type": "dayFooter",
+        "content": "02:18 — Chambre. Madame Heng est rentrée. Tristan n'est pas venu."
       }
     ],
     "choice": {
@@ -1558,6 +1818,10 @@
       {
         "type": "quote",
         "content": "Je ne savais pas comment on tenait debout dans une chambre qui n'était pas la mienne."
+      },
+      {
+        "type": "dayFooter",
+        "content": "22:38 — Chambre d'amis. Le peignoir replié sur la chaise."
       }
     ],
     "choice": {
@@ -1606,6 +1870,10 @@
         "type": "image",
         "imageAsset": "assets/photos/posts/helene_jm16.png",
         "content": "Maman, profil de fenêtre. Elle attend que je dise quelque chose."
+      },
+      {
+        "type": "dayFooter",
+        "content": "00:14 — Métro nuit. « Sois prudente. » Comme une mise en garde."
       }
     ],
     "choice": {
@@ -1664,6 +1932,10 @@
       {
         "type": "quote",
         "content": "Elle savait comment Maman buvait son thé."
+      },
+      {
+        "type": "dayFooter",
+        "content": "23:12 — Chambre. Le bracelet de jade. 1996. Trois fois rien."
       }
     ],
     "choice": {
@@ -1716,6 +1988,10 @@
         "type": "image",
         "imageAsset": "assets/photos/posts/madame_heng_jm8.png",
         "content": "L'album sépia. Maman a tourné la page avant que je puisse poser la question."
+      },
+      {
+        "type": "dayFooter",
+        "content": "23:42 — Studio Belleville. Le papier avec le numéro inconnu dans ma poche."
       }
     ],
     "choice": {
@@ -1767,6 +2043,10 @@
       {
         "type": "prose",
         "content": "Il m'a regardée. Plus longtemps que d'habitude. Il a fermé la porte en sortant. L'enveloppe est restée sur le bureau, à côté de mon Code Civil, à côté du tampon « Bibliothèque Cujas » qui me venait d'une autre vie."
+      },
+      {
+        "type": "dayFooter",
+        "content": "00:48 — Chambre. L'enveloppe quelque part. Demain je décide."
       }
     ],
     "choice": {
@@ -1819,6 +2099,10 @@
         "type": "image",
         "imageAsset": "assets/photos/posts/madame_heng_jm1.png",
         "content": "Le service à thé attend samedi. Maman a appris à parler chinois pour Papa."
+      },
+      {
+        "type": "dayFooter",
+        "content": "01:32 — Chambre. Le 你好 sur la première page. Demain le grand jour."
       }
     ],
     "choice": {
@@ -1879,6 +2163,10 @@
         "type": "image",
         "imageAsset": "assets/photos/posts/madame_heng_jm22.png",
         "content": "Le thé Long Jing. Elle attend ma réponse en mandarin."
+      },
+      {
+        "type": "dayFooter",
+        "content": "03:18 — Chambre d'amis. Le don promis. La vérité encore à venir."
       }
     ],
     "choice": {
