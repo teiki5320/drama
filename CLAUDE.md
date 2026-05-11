@@ -35,3 +35,34 @@ principal `https://github.com/teiki5320/drama.git`, projet
   écrire des tests unitaires sans Flutter.
 - Avant de toucher au scénario (`assets/data/scenario.json`), confirmer avec
   l'utilisateur — la voix de Shen est sensible.
+
+## Conventions linguistiques (à respecter partout)
+
+- **`Maman`** toujours majuscule (prénom de cœur). Jamais `maman`.
+- **`Traitement de Maman`** : label unique pour la deadline J45.
+- **Étages / arrondissements** : `8e`, `47e` (jamais `8ème`, `47ème`).
+- **Montants** : `2 384 €` avec espace insécable avant le symbole. Jamais `2 384€`.
+- **Jours** : `J1`, `J45`, `J112` (pas `45ème jour`, ni `45e jour`).
+- **Indicateurs bourse** : `Plus-value latente` (jamais `PnL`). `PRU` reste OK comme abréviation pour le prix de revient unitaire.
+- **Personnages** :
+  - `Madame Heng` (jamais `Mme Heng`, jamais `Madame HENG`)
+  - `Tante Mei` (toujours majuscule au titre)
+  - `Tristan Heng`, `Vincent Heng`, `Camille Roux`
+- **Tickers** : majuscules en prose (`HENG`, jamais `Heng` quand c'est l'action).
+- **Citations dans dialogue** : point INTÉRIEUR aux guillemets pour une phrase complète : `« Oui. »` (pas `« Oui ».`).
+- **Apostrophes** : droites (`'`), jamais typographiques (`’`).
+- **Voix de Shen** : "je" majoritaire, ironie sèche, pas de superlatifs littéraires forcés. Jeune, 24 ans, qui écrit dans son carnet.
+- **Voix Camille** : machine à vannes, croissants, légèreté piquante.
+- **Voix Tristan** : sec, peu de mots, pas de superlatifs.
+- **Voix Madame Heng** : sentencieuse, formelle, références chinoises.
+- **Voix Vincent** : commercial, anglicismes (`closing`, `deal`).
+- **Voix Hélène/Maman** : douce, lettrée (Duras, Ernaux), s'excuse.
+
+## Workflow photos
+
+- Tampon : `refs/tampon/` (zone d'arrivée)
+- Archive : `refs/archive/` (non utilisées, autres dramas, variantes)
+- Bundle final : `assets/photos/{characters,scenes,posts}/`
+- Status : `refs/SCENES_STATUS.md` (tableau de bord)
+- Prompts portraits : `refs/PROMPTS.md`
+- Prompts scènes J1-J14 : `refs/PROMPTS_SCENES.md`

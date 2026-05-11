@@ -97,7 +97,7 @@ void showDayStatPopup(BuildContext context, int day) {
       title: 'JOUR EN COURS',
       bigValue: 'J$day / 112',
       body:
-          'Le drama dure 112 jours et a 5 fins possibles. La deadline maman tombe à J45 : tu dois avoir réuni 18 000 € avant.',
+          'Le drama dure 112 jours et a 5 fins possibles. La deadline Maman tombe à J45 : tu dois avoir réuni 18 000 € avant.',
     ),
   );
 }

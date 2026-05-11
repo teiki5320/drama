@@ -372,7 +372,7 @@ class _StatGrid extends StatelessWidget {
           children: [
             Expanded(
               child: _MiniStat(
-                label: 'PnL latente',
+                label: 'Plus-value latente',
                 value: formatMoneySigned(pnl),
                 valueColor: pnlColor,
               ),
