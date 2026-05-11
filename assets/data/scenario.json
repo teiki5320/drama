@@ -523,6 +523,10 @@
         "content": "J'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
       },
       {
+        "type": "stickyNote",
+        "content": "mes conditions.\npas de baisers.\npas de mensonges sur Maman.\ncontrat notarié.\n30 jours pour me rétracter."
+      },
+      {
         "type": "sms",
         "conversation": "_inline",
         "messages": [
@@ -989,6 +993,10 @@
         "content": "Je pose ma valise sur le lit. Une seule valise. Je la regarde longtemps. Elle a l'air toute petite."
       },
       {
+        "type": "stickyNote",
+        "content": "règles ici.\nne pas dormir profondément.\ntoujours porter quelque chose à moi.\nne pas appeler Maman du salon.\nfermer la porte de la chambre la nuit."
+      },
+      {
         "type": "sms",
         "conversation": "camille",
         "messages": [
@@ -1221,6 +1229,10 @@
     "time": "19:00",
     "narrative": [
       {
+        "type": "stickyNote",
+        "content": "stage paysagisme Vincennes.\nLao Chen, chef d'équipe. accent du Sichuan.\n9h-17h, 3 mois.\nmétro 5 puis 1.\nCamille couvre si Maman appelle."
+      },
+      {
         "type": "prose",
         "content": "J'ai préparé l'histoire avec Camille pendant deux jours. Je suis « stagiaire dans une équipe de paysagistes à Vincennes ». L'équipe travaille sur « des potagers pédagogiques pour des écoles ». Le chef s'appelle « Lao Chen », c'est un sino-français de 60 ans. Camille a même créé un faux compte LinkedIn au cas où Maman vérifierait.\n\nMaman vérifie jamais. Maman fait confiance.\n\nMaman me regarde longuement quand j'arrive. Elle a un châle gris sur les épaules. Elle me dit :"
       },
@@ -1358,6 +1370,10 @@
       {
         "type": "innerThought",
         "content": "Je lui mens depuis sept jours et chaque mensonge en appelle un autre. Le pire c'est qu'elle me croit. Le pire c'est aussi qu'elle ne me croit peut-être pas, mais qu'elle joue le jeu."
+      },
+      {
+        "type": "stickyNote",
+        "content": "Léo — Lao Chen.\nton grave, accent du Sichuan.\n« Yan, la courge a doublé cette semaine. Bonne soirée à ta mère. »\nne pas dire « Madame Marchand »."
       },
       {
         "type": "prose",
@@ -1537,6 +1553,10 @@
       {
         "type": "innerThought",
         "content": "Madame Heng veut me tester. Demain, samedi, au dîner. Elle me parlera en mandarin pour voir si je rougis. Si je tressaille. Si je trahis.\n\nTrois options pour moi maintenant. Et il faut que je décide cette nuit."
+      },
+      {
+        "type": "stickyNote",
+        "content": "demain dîner.\nne pas réagir au mandarin.\nsourire poli.\nne pas montrer que je comprends.\nrespirer comme Camille m'a montré."
       },
       {
         "type": "image",

@@ -390,36 +390,53 @@ class _InnerThought extends StatelessWidget {
 }
 
 /// Post-it Shen : note crue, liste, rappel. Fond crème jaune, légère
-/// rotation, ombre douce. Crimson Pro, comme tracée au stylo.
+/// rotation, ombre douce. Crimson Pro, comme tracée au stylo. Ne prend
+/// jamais toute la largeur — un vrai post-it tient dans un coin du
+/// carnet. Angle et alignement varient légèrement selon le contenu
+/// pour éviter l'effet "tous identiques".
 class _StickyNote extends StatelessWidget {
   const _StickyNote({required this.text});
   final String text;
 
   @override
   Widget build(BuildContext context) {
-    return Transform.rotate(
-      angle: -0.018,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-        padding: const EdgeInsets.fromLTRB(18, 14, 18, 16),
-        decoration: BoxDecoration(
-          color: const Color(0xFFFFF2C4),
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.10),
-              blurRadius: 6,
-              offset: const Offset(2, 4),
+    final hash = text.hashCode.abs();
+    final angle = ((hash % 5) - 2) * 0.011;
+    final alignment = (hash % 3) == 0
+        ? Alignment.center
+        : ((hash % 2) == 0 ? Alignment.centerLeft : Alignment.centerRight);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      child: Align(
+        alignment: alignment,
+        child: Transform.rotate(
+          angle: angle,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 320),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(18, 14, 18, 16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF2C4),
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.12),
+                    blurRadius: 8,
+                    offset: const Offset(2, 4),
+                  ),
+                ],
+              ),
+              child: Text(
+                text,
+                style: GoogleFonts.crimsonPro(
+                  fontSize: 15.5,
+                  color: AppColors.textPrimary,
+                  height: 1.4,
+                  letterSpacing: 0.1,
+                ),
+              ),
             ),
-          ],
-        ),
-        child: Text(
-          text,
-          style: GoogleFonts.crimsonPro(
-            fontSize: 16,
-            color: AppColors.textPrimary,
-            height: 1.4,
-            letterSpacing: 0.1,
           ),
         ),
       ),
