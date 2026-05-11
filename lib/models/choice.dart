@@ -2,18 +2,38 @@ class Choice {
   final String prompt;
   final List<ChoiceOption> options;
 
-  const Choice({required this.prompt, required this.options});
+  /// Délai en secondes au-delà duquel le choix est forcé (option par
+  /// défaut sélectionnée automatiquement). `null` = pas de timer. Réservé
+  /// aux jours climactiques où l'hésitation a un poids dramatique.
+  final int? timeLimitSeconds;
+
+  /// Index de l'option choisie par défaut quand le timer expire. Par
+  /// défaut la dernière option (généralement "ne pas répondre" /
+  /// "passivité"), qui correspond à un échec narratif explicite.
+  final int? defaultOptionIndex;
+
+  const Choice({
+    required this.prompt,
+    required this.options,
+    this.timeLimitSeconds,
+    this.defaultOptionIndex,
+  });
 
   factory Choice.fromJson(Map<String, dynamic> json) => Choice(
         prompt: json['prompt'] as String,
         options: (json['options'] as List<dynamic>)
             .map((e) => ChoiceOption.fromJson(e as Map<String, dynamic>))
             .toList(growable: false),
+        timeLimitSeconds: (json['timeLimitSeconds'] as num?)?.toInt(),
+        defaultOptionIndex: (json['defaultOptionIndex'] as num?)?.toInt(),
       );
 
   Map<String, dynamic> toJson() => {
         'prompt': prompt,
         'options': options.map((e) => e.toJson()).toList(),
+        if (timeLimitSeconds != null) 'timeLimitSeconds': timeLimitSeconds,
+        if (defaultOptionIndex != null)
+          'defaultOptionIndex': defaultOptionIndex,
       };
 }
 
