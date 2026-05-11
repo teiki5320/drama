@@ -59,6 +59,7 @@ class IMessageView extends StatelessWidget {
                 messages: messages,
                 otherBubble: _otherBubble,
                 meBubble: _meBubble,
+                showSenderLabels: contact == null,
               ),
             ),
           ],
@@ -204,11 +205,17 @@ class _BubbleThread extends StatelessWidget {
     required this.messages,
     required this.otherBubble,
     required this.meBubble,
+    this.showSenderLabels = false,
   });
 
   final List<SmsMessage> messages;
   final Color otherBubble;
   final Color meBubble;
+
+  /// Quand on est en mode `_inline` (pas de header contact en haut),
+  /// afficher le nom de l'émetteur au-dessus de chaque bulle non-Moi
+  /// dont l'auteur change. Sinon le joueur ne sait pas qui parle.
+  final bool showSenderLabels;
 
   @override
   Widget build(BuildContext context) {
@@ -270,14 +277,35 @@ class _BubbleThread extends StatelessWidget {
       );
     }
 
+    final showLabel =
+        showSenderLabels && !me && !continuesAbove;
+
     return Padding(
-      padding: EdgeInsets.only(top: continuesAbove ? 2 : 6),
-      child: Align(
-        alignment: me ? Alignment.centerRight : Alignment.centerLeft,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: maxBubbleWidth),
-          child: child,
-        ),
+      padding: EdgeInsets.only(top: continuesAbove ? 2 : 8),
+      child: Column(
+        crossAxisAlignment:
+            me ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          if (showLabel)
+            Padding(
+              padding: const EdgeInsets.only(left: 12, bottom: 2),
+              child: Text(
+                m.sender,
+                style: GoogleFonts.inter(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+          Align(
+            alignment: me ? Alignment.centerRight : Alignment.centerLeft,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxBubbleWidth),
+              child: child,
+            ),
+          ),
+        ],
       ),
     );
   }
