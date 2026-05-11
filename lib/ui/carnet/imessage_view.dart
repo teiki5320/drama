@@ -200,7 +200,7 @@ class _Avatar extends StatelessWidget {
   }
 }
 
-class _BubbleThread extends StatelessWidget {
+class _BubbleThread extends StatefulWidget {
   const _BubbleThread({
     required this.messages,
     required this.otherBubble,
@@ -218,17 +218,73 @@ class _BubbleThread extends StatelessWidget {
   final bool showSenderLabels;
 
   @override
+  State<_BubbleThread> createState() => _BubbleThreadState();
+}
+
+class _BubbleThreadState extends State<_BubbleThread> {
+  int _visible = 0;
+  bool _typingNext = false;
+  bool _disposed = false;
+
+  static const _typingDelay = Duration(milliseconds: 480);
+  static const _bubbleDelay = Duration(milliseconds: 720);
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleNext();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  void _scheduleNext() async {
+    if (_visible >= widget.messages.length) return;
+    final next = widget.messages[_visible];
+    // Pas de "tape..." pour les bulles "Moi" — c'est l'utilisateur qui
+    // les "envoie", pas la peine de simuler son propre tapotage.
+    if (!next.isMe && next.imageAsset == null) {
+      await Future.delayed(_typingDelay);
+      if (_disposed) return;
+      setState(() => _typingNext = true);
+      await Future.delayed(_bubbleDelay);
+    } else {
+      await Future.delayed(const Duration(milliseconds: 280));
+    }
+    if (_disposed) return;
+    setState(() {
+      _typingNext = false;
+      _visible++;
+    });
+    _scheduleNext();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final shown = widget.messages.take(_visible).toList(growable: false);
+    final children = <Widget>[];
+    for (var i = 0; i < shown.length; i++) {
+      children.add(_bubble(context, i, shown));
+    }
+    if (_typingNext && _visible < widget.messages.length) {
+      final m = widget.messages[_visible];
+      children.add(_TypingIndicator(
+        bubbleColor: widget.otherBubble,
+        senderName: widget.showSenderLabels ? m.sender : null,
+        senderAvatar:
+            widget.showSenderLabels ? _avatarForSender(m.sender) : null,
+      ));
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        for (var i = 0; i < messages.length; i++)
-          _bubble(context, i),
-      ],
+      children: children,
     );
   }
 
-  Widget _bubble(BuildContext context, int i) {
+  Widget _bubble(BuildContext context, int i, List<SmsMessage> messages) {
     final m = messages[i];
     final me = m.isMe;
     final prev = i > 0 ? messages[i - 1] : null;
@@ -264,7 +320,9 @@ class _BubbleThread extends StatelessWidget {
       );
     } else {
       child = Container(
-        decoration: BoxDecoration(color: me ? meBubble : otherBubble, borderRadius: radius),
+        decoration: BoxDecoration(
+            color: me ? widget.meBubble : widget.otherBubble,
+            borderRadius: radius),
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
         child: Text(
           m.content,
@@ -278,10 +336,13 @@ class _BubbleThread extends StatelessWidget {
     }
 
     final showLabel =
-        showSenderLabels && !me && !continuesAbove;
+        widget.showSenderLabels && !me && !continuesAbove;
     final senderAvatar = showLabel ? _avatarForSender(m.sender) : null;
 
-    return Padding(
+    return _BubbleAppear(
+      key: ValueKey('bubble-$i-${m.sender}-${m.content.hashCode}'),
+      isMe: me,
+      child: Padding(
       padding: EdgeInsets.only(top: continuesAbove ? 2 : 8),
       child: Column(
         crossAxisAlignment:
@@ -316,6 +377,7 @@ class _BubbleThread extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }
@@ -372,6 +434,188 @@ class _BubbleThread extends StatelessWidget {
               fallbackEmoji ?? '?',
               style: const TextStyle(fontSize: 10),
             ),
+    );
+  }
+}
+
+/// Animation d'apparition d'une bulle iMessage : pop léger + fade,
+/// avec un point de pivot dans le coin "départ" de la bulle (en bas
+/// à droite pour Moi, en bas à gauche pour l'autre).
+class _BubbleAppear extends StatefulWidget {
+  const _BubbleAppear({
+    super.key,
+    required this.child,
+    required this.isMe,
+  });
+
+  final Widget child;
+  final bool isMe;
+
+  @override
+  State<_BubbleAppear> createState() => _BubbleAppearState();
+}
+
+class _BubbleAppearState extends State<_BubbleAppear>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<double> _scale;
+  late final Animation<double> _opacity;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 280),
+    );
+    _scale = Tween<double>(begin: 0.88, end: 1).animate(
+      CurvedAnimation(parent: _ctrl, curve: Curves.easeOutBack),
+    );
+    _opacity = CurvedAnimation(parent: _ctrl, curve: Curves.easeOut);
+    _ctrl.forward();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: ScaleTransition(
+        scale: _scale,
+        alignment:
+            widget.isMe ? Alignment.bottomRight : Alignment.bottomLeft,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+/// Indicateur "tape…" : trois points qui rebondissent dans une bulle
+/// grise, comme dans iMessage. Affiché brièvement avant chaque bulle
+/// non-Moi pour donner l'impression que l'autre est en train d'écrire.
+class _TypingIndicator extends StatefulWidget {
+  const _TypingIndicator({
+    required this.bubbleColor,
+    this.senderName,
+    this.senderAvatar,
+  });
+
+  final Color bubbleColor;
+  final String? senderName;
+  final Widget? senderAvatar;
+
+  @override
+  State<_TypingIndicator> createState() => _TypingIndicatorState();
+}
+
+class _TypingIndicatorState extends State<_TypingIndicator>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1100),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.senderName != null)
+            Padding(
+              padding: const EdgeInsets.only(left: 12, bottom: 2),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (widget.senderAvatar != null) ...[
+                    widget.senderAvatar!,
+                    const SizedBox(width: 5),
+                  ],
+                  Text(
+                    widget.senderName!,
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: widget.bubbleColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(18),
+                  topRight: Radius.circular(18),
+                  bottomRight: Radius.circular(18),
+                  bottomLeft: Radius.circular(4),
+                ),
+              ),
+              child: AnimatedBuilder(
+                animation: _ctrl,
+                builder: (context, _) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      for (var i = 0; i < 3; i++) ...[
+                        if (i > 0) const SizedBox(width: 4),
+                        _Dot(phase: (_ctrl.value + i * 0.18) % 1.0),
+                      ],
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Dot extends StatelessWidget {
+  const _Dot({required this.phase});
+  final double phase;
+
+  @override
+  Widget build(BuildContext context) {
+    // Pulse vertical : opacité+translation au rythme phase ∈ [0..1].
+    final t = (phase < 0.5 ? phase * 2 : (1 - phase) * 2);
+    final dy = -2.0 * t;
+    final opacity = 0.35 + 0.55 * t;
+    return Transform.translate(
+      offset: Offset(0, dy),
+      child: Container(
+        width: 7,
+        height: 7,
+        decoration: BoxDecoration(
+          color: AppColors.textSecondary.withValues(alpha: opacity),
+          shape: BoxShape.circle,
+        ),
+      ),
     );
   }
 }

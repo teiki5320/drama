@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/colors.dart';
 import '../../models/choice.dart';
 
 typedef ChoicePicked = void Function(int index, ChoiceOption option);
 
-class ChoiceCard extends StatelessWidget {
+class ChoiceCard extends StatefulWidget {
   const ChoiceCard({
     super.key,
     required this.choice,
@@ -21,35 +24,199 @@ class ChoiceCard extends StatelessWidget {
   final int? selectedIndex;
 
   @override
+  State<ChoiceCard> createState() => _ChoiceCardState();
+}
+
+class _ChoiceCardState extends State<ChoiceCard>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _timerCtrl;
+  Timer? _hapticTimer;
+  bool _expiredPicked = false;
+
+  bool get _hasTimer =>
+      widget.choice.timeLimitSeconds != null &&
+      !widget.disabled &&
+      widget.selectedIndex == null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_hasTimer) _startTimer();
+  }
+
+  @override
+  void didUpdateWidget(covariant ChoiceCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final shouldRun = _hasTimer;
+    final isRunning = _timerCtrl != null && _timerCtrl!.isAnimating;
+    if (shouldRun && !isRunning && !_expiredPicked) {
+      _startTimer();
+    } else if (!shouldRun && isRunning) {
+      _timerCtrl?.stop();
+    }
+  }
+
+  void _startTimer() {
+    final seconds = widget.choice.timeLimitSeconds!;
+    _timerCtrl?.dispose();
+    _timerCtrl = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: seconds),
+    );
+    _timerCtrl!.addStatusListener((status) {
+      if (status == AnimationStatus.completed && !_expiredPicked) {
+        _expiredPicked = true;
+        HapticFeedback.heavyImpact();
+        final fallbackIdx = widget.choice.defaultOptionIndex ??
+            (widget.choice.options.length - 1);
+        widget.onPicked(
+          fallbackIdx,
+          widget.choice.options[fallbackIdx],
+        );
+      }
+    });
+    // Tick haptique léger sur les 5 dernières secondes pour la tension.
+    _hapticTimer?.cancel();
+    _hapticTimer = Timer.periodic(const Duration(milliseconds: 1000), (t) {
+      final c = _timerCtrl;
+      if (c == null || !mounted) {
+        t.cancel();
+        return;
+      }
+      final remaining =
+          (c.duration!.inSeconds * (1 - c.value)).ceil();
+      if (remaining <= 5 && remaining > 0) {
+        HapticFeedback.selectionClick();
+      }
+    });
+    _timerCtrl!.forward();
+  }
+
+  @override
+  void dispose() {
+    _timerCtrl?.dispose();
+    _hapticTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          choice.prompt,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                widget.choice.prompt,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ),
+            if (_timerCtrl != null && widget.selectedIndex == null)
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: _Countdown(controller: _timerCtrl!),
+              ),
+          ],
         ),
+        if (_timerCtrl != null && widget.selectedIndex == null) ...[
+          const SizedBox(height: 8),
+          _TimerBar(controller: _timerCtrl!),
+        ],
         const SizedBox(height: 10),
-        for (var i = 0; i < choice.options.length; i++) ...[
+        for (var i = 0; i < widget.choice.options.length; i++) ...[
           _OptionTile(
             index: i,
-            option: choice.options[i],
-            selected: selectedIndex == i,
-            dimmed: selectedIndex != null && selectedIndex != i,
-            onTap: disabled
+            option: widget.choice.options[i],
+            selected: widget.selectedIndex == i,
+            dimmed: widget.selectedIndex != null && widget.selectedIndex != i,
+            onTap: widget.disabled
                 ? null
                 : () {
                     HapticFeedback.selectionClick();
-                    onPicked(i, choice.options[i]);
+                    _timerCtrl?.stop();
+                    widget.onPicked(i, widget.choice.options[i]);
                   },
           ),
           const SizedBox(height: 8),
         ],
       ],
+    );
+  }
+}
+
+class _Countdown extends StatelessWidget {
+  const _Countdown({required this.controller});
+  final AnimationController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) {
+        final remaining =
+            (controller.duration!.inSeconds * (1 - controller.value)).ceil();
+        final danger = remaining <= 5;
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: (danger ? AppColors.negative : AppColors.accentOrange)
+                .withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.timer_outlined,
+                size: 14,
+                color: danger ? AppColors.negative : AppColors.accentOrange,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                '${remaining}s',
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                  color: danger ? AppColors.negative : AppColors.accentOrange,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _TimerBar extends StatelessWidget {
+  const _TimerBar({required this.controller});
+  final AnimationController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) {
+        final remaining = 1 - controller.value;
+        final danger = remaining < (5 / controller.duration!.inSeconds);
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: remaining,
+            minHeight: 4,
+            backgroundColor: const Color(0x14000000),
+            valueColor: AlwaysStoppedAnimation(
+              danger ? AppColors.negative : AppColors.accentOrange,
+            ),
+          ),
+        );
+      },
     );
   }
 }

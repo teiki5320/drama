@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/big_title.dart';
 import '../../core/colors.dart';
+import '../../core/day_ambience.dart';
 import '../../core/formatters.dart';
 import '../../engine/economy_engine.dart';
 import '../../engine/ending_calculator.dart';
@@ -62,6 +63,7 @@ class _DayBody extends ConsumerWidget {
           BigTitle(
             'Jour ${day.id}',
             subtitle: '${day.date} · ${day.location} · ${day.time}',
+            ambience: ambienceForDay(day.id),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
@@ -589,6 +591,7 @@ class _PastDayView extends ConsumerWidget {
             BigTitle(
               'Jour ${day.id}',
               subtitle: '${day.date} · ${day.location} · ${day.time}',
+              ambience: ambienceForDay(day.id),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
