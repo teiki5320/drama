@@ -138,15 +138,56 @@ class _Prose extends StatelessWidget {
   const _Prose({required this.text});
   final String text;
 
+  /// Rouge brique pour les phrases marquées `**ainsi**` dans le scénario.
+  /// Réservé aux mots vraiment importants — pas un usage décoratif.
+  static const _emphasisRed = Color(0xFFB02A23);
+
+  /// Parse les emphases markdown inline :
+  ///   - `**texte**` → gras, couleur rouge brique
+  ///   - `*texte*` → italique
+  /// Les autres occurrences de `*` restent littérales.
+  static List<TextSpan> _parseEmphasis(String text, TextStyle base) {
+    final spans = <TextSpan>[];
+    final pattern = RegExp(r'\*\*([^*]+)\*\*|\*([^*]+)\*');
+    int last = 0;
+    for (final m in pattern.allMatches(text)) {
+      if (m.start > last) {
+        spans.add(TextSpan(text: text.substring(last, m.start), style: base));
+      }
+      if (m.group(1) != null) {
+        spans.add(TextSpan(
+          text: m.group(1),
+          style: base.copyWith(
+            color: _emphasisRed,
+            fontWeight: FontWeight.w700,
+          ),
+        ));
+      } else if (m.group(2) != null) {
+        spans.add(TextSpan(
+          text: m.group(2),
+          style: base.copyWith(fontStyle: FontStyle.italic),
+        ));
+      }
+      last = m.end;
+    }
+    if (last < text.length) {
+      spans.add(TextSpan(text: text.substring(last), style: base));
+    }
+    return spans;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: GoogleFonts.inter(
-        color: AppColors.textPrimary,
-        fontSize: 15.5,
-        height: 1.6,
-      ),
+    final base = GoogleFonts.inter(
+      color: AppColors.textPrimary,
+      fontSize: 15.5,
+      height: 1.6,
+    );
+    if (!text.contains('*')) {
+      return Text(text, style: base);
+    }
+    return Text.rich(
+      TextSpan(children: _parseEmphasis(text, base)),
     );
   }
 }
