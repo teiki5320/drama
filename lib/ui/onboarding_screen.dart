@@ -45,7 +45,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       icon: '🏥',
       title: 'La deadline : J45.',
       body:
-          'Maman a besoin de 18 000 € pour son traitement avant le 45ème jour. Si tu n\'as pas réuni la somme, le drama bascule sur la branche du deuil — sans retour.\n\nLes choix narratifs, la bourse, les partenariats Insta — à toi de jouer.',
+          'Maman a besoin de 18 000 € pour son traitement avant le 45e jour. Si tu n\'as pas réuni la somme, le drama bascule sur la branche du deuil — sans retour.\n\nLes choix narratifs, la bourse, les partenariats Insta — à toi de jouer.',
     ),
   ];
 

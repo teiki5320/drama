@@ -7,7 +7,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Je note tout depuis hier. C'est Camille qui m'a dit de le faire. « Tu vas vivre des trucs que tu vas oublier de vivre si tu les écris pas. » Camille dit toujours des phrases comme ça avec un croissant dans la bouche.\n\nDonc voilà. Carnet. Stylo bic vert parce que je n'ai pas trouvé le noir.\n\nMaman a passé une mauvaise nuit. Je l'ai entendue tousser à 4h. J'ai fait semblant de dormir parce que si elle sait que je l'ai entendue, elle va s'excuser. Maman s'excuse de tomber malade. C'est insupportable.\n\nJe pars livrer dans dix minutes. Vélo, pluie, le 8ème encore. Les riches commandent leur petit-déj à 8h pile, c'est mathématique."
+        "content": "Je note tout depuis hier. C'est Camille qui m'a dit de le faire. « Tu vas vivre des trucs que tu vas oublier de vivre si tu les écris pas. » Camille dit toujours des phrases comme ça avec un croissant dans la bouche.\n\nDonc voilà. Carnet. Stylo bic vert parce que je n'ai pas trouvé le noir.\n\nMaman a passé une mauvaise nuit. Je l'ai entendue tousser à 4h. J'ai fait semblant de dormir parce que si elle sait que je l'ai entendue, elle va s'excuser. Maman s'excuse de tomber malade. C'est insupportable.\n\nJe pars livrer dans dix minutes. Vélo, pluie, le 8e encore. Les riches commandent leur petit-déj à 8h pile, c'est mathématique."
       },
       {
         "type": "sectionTitle",
@@ -27,7 +27,7 @@
           },
           {
             "sender": "Maman",
-            "content": "« Oui ». Tu réponds « oui » depuis trois jours. Donne-moi un détail."
+            "content": "« Oui. » Tu réponds « oui » depuis trois jours. Donne-moi un détail."
           },
           {
             "sender": "Moi",
@@ -53,7 +53,7 @@
       },
       {
         "type": "prose",
-        "content": "Une berline noire surgit de la rue François 1er. Freins. Pas assez tôt.\n\nLe vélo finit sous la roue avant. Mon genou s'ouvre sur le bitume. Le sac de livraison explose — bowl renversé, smoothie sur ma jambe, le tout vaut 38€ que je vais devoir rembourser à la plateforme.\n\nL'homme qui sort de la voiture a un costume qui coûte plus que mon loyer annuel. Il regarde sa montre avant de me regarder moi. Première erreur."
+        "content": "Une berline noire surgit de la rue François 1er. Le bruit des freins arrive avant tout le reste, plus aigu que je ne l'aurais imaginé. Pas assez tôt.\n\nLe vélo part en travers. Ma jambe gauche tape la portière. Mon genou s'ouvre sur le bitume — je vois le sang avant de sentir la douleur. Le sac de livraison explose. Le bowl se renverse en direct, l'açaí s'étale en traînée violette, le smoothie rejoint la pluie. Trente-huit euros que la plateforme va me retenir sur la prochaine paie.\n\nTrois secondes de silence. Le moteur de la berline qui tourne. Ma main qui tremble en cherchant à me redresser.\n\nL'homme qui sort de la voiture a un costume qui coûte plus que mon loyer annuel. Il regarde sa montre. Avant de me regarder moi.\n\nPremière erreur."
       },
       {
         "type": "sms",
@@ -61,7 +61,7 @@
         "messages": [
           {
             "sender": "Lui",
-            "content": "Ça va aller. Pour le vélo et la consultation. (Il sort 200€.)"
+            "content": "Ça va aller. Pour le vélo et la consultation. (Il sort 200 €.)"
           },
           {
             "sender": "Moi",
@@ -79,7 +79,7 @@
       },
       {
         "type": "prose",
-        "content": "Il me tend une carte de visite. *Tristan Heng — Heng International — Directeur Europe.* Je la déchire devant lui et je laisse tomber les morceaux dans la flaque.\n\nJe repars en boitant avec mon vélo cassé sur l'épaule."
+        "content": "Il me tend une carte de visite, deux doigts en pince, comme on tend l'addition.\n\n*Tristan Heng — Heng International — Directeur Europe.*\n\nJe la prends. Je la regarde. Je la déchire devant lui — un coup, deux coups, quatre morceaux. Je laisse tomber les bouts dans la flaque, l'açaí et la pluie qui s'en occupent.\n\nJe repars en boitant avec mon vélo cassé sur l'épaule. Je ne me retourne pas. Si je me retournais, il verrait que je tremble."
       },
       {
         "type": "image",
@@ -120,7 +120,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Le néphrologue veut me parler en privé. Quand un médecin veut te parler en privé à 6h30 du matin, c'est jamais pour te dire que ça va.\n\nLe Dr Aubin a un visage que j'aime bien. Il porte des lunettes en écaille et il prend toujours le temps. Il pose son stylo avant de parler — c'est quelqu'un qui ne lit pas à haute voix une fiche, c'est quelqu'un qui réfléchit.\n\n— Madame Marchand, votre mère a besoin d'un traitement de seconde ligne. C'est un protocole hors AMM, donc non remboursé.\n— Combien ?\n— Dix-huit mille euros sur six mois.\n\nJe n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a 2 384€ et c'est déjà un miracle de fin de mois.\n\nJe ressors. Le hall sent l'eau de Javel et le café froid. Je m'assois sur un banc et je calcule trois fois. Trois fois la même réponse."
+        "content": "Le néphrologue veut me parler en privé. Quand un médecin veut te parler en privé à 6h30 du matin, c'est jamais pour te dire que ça va.\n\nLe Dr Aubin a un visage que j'aime bien. Il porte des lunettes en écaille et il prend toujours le temps. Il pose son stylo avant de parler — c'est quelqu'un qui ne lit pas à haute voix une fiche, c'est quelqu'un qui réfléchit.\n\n— Madame Marchand, votre mère a besoin d'un traitement de seconde ligne. C'est un protocole hors AMM, donc non remboursé.\n— Combien ?\n— Dix-huit mille euros sur six mois.\n\nJe n'ai pas dix-huit mille euros. Je n'ai pas dix-huit *cents* euros. Sur mon compte courant il y a 2 384 € et c'est déjà un miracle de fin de mois.\n\nJe ressors. Le hall sent l'eau de Javel et le café froid. Je m'assois sur un banc et je calcule trois fois. Trois fois la même réponse."
       },
       {
         "type": "image",
@@ -160,7 +160,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "Calculs. Calculs. Calculs.\n\nSi je double les livraisons : +400€/mois. Si je prends un troisième service de nuit : +600€/mois mais je ne dors plus. Total potentiel sur six mois : 6 000€. Manque : 12 000€.\n\nJ'ai appelé la banque. Pas de prêt sans garant. Mon père français — celui de mon nom, Antoine Marchand, parti quand j'avais 6 ans — ne sera jamais garant de quoi que ce soit, on ne s'est pas vus depuis dix-huit ans.\n\nMaman regarde un film français des années 80 dans le canapé. Catherine Deneuve sourit. Maman sourit aussi. Elle ne sait rien."
+        "content": "Calculs. Calculs. Calculs.\n\nSi je double les livraisons : +400 €/mois. Si je prends un troisième service de nuit : +600 €/mois mais je ne dors plus. Total potentiel sur six mois : 6 000 €. Manque : 12 000 €.\n\nJ'ai appelé la banque. Pas de prêt sans garant. Mon père français — celui de mon nom, Antoine Marchand, parti quand j'avais 6 ans — ne sera jamais garant de quoi que ce soit, on ne s'est pas vus depuis dix-huit ans.\n\nMaman regarde un film français des années 80 dans le canapé. Catherine Deneuve sourit. Maman sourit aussi. Elle ne sait rien."
       },
       {
         "type": "image",
@@ -312,7 +312,7 @@
     "narrative": [
       {
         "type": "prose",
-        "content": "La carte est recollée. Le scotch a légèrement jauni le carton. Le numéro forme une diagonale parce que j'ai mal aligné les morceaux. J'ai mis une assiette dessus pour qu'elle reste plate.\n\nMaman dort. La pluie tombe contre la fenêtre. C'est le moment où je suis le plus seule de la journée, et c'est aussi le moment où je m'aime le plus. Curieux.\n\nJe relis les SMS de Camille. *« Ça veut dire oui mais avec dignité. »* Elle a raison. Si j'y vais, c'est avec un dossier. Pas en quémandeuse.\n\nJ'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
+        "content": "La carte est recollée. Le scotch a légèrement jauni le carton. Le numéro forme une diagonale parce que j'ai mal aligné les morceaux. J'ai mis une assiette dessus pour qu'elle reste plate.\n\nMaman dort. La pluie tombe contre la fenêtre. C'est le moment où je suis la plus seule de la journée, et c'est aussi le moment où je m'aime le plus. Curieux.\n\nJe relis les SMS de Camille. *« Ça veut dire oui mais avec dignité. »* Elle a raison. Si j'y vais, c'est avec un dossier. Pas en quémandeuse.\n\nJ'ouvre mon vieux MacBook Air. J'écris un plan de remboursement sur dix ans. Taux légal. Échéancier mensuel. Je veux un contrat notarié. Je serai sa débitrice, pas sa charité."
       },
       {
         "type": "image",
@@ -494,7 +494,11 @@
       },
       {
         "type": "prose",
-        "content": "Et là il sort un dossier que sa secrétaire a préparé avant que j'arrive.\n\n**Avant. Que. J'arrive.**\n\nDonc il savait que je viendrais."
+        "content": "Il pose le dossier devant moi. Il l'ouvre lentement, comme on retourne une carte au poker. Sa voix ne change pas — il parle comme on lit un contrat de prestation, comme s'il en avait déjà fait dix.\n\n— Trois mois. Vous emménagez chez moi avenue Hoche, vous m'accompagnez aux dîners de famille et aux galas. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne.\n\nJe l'écoute sans bouger. La moquette m'absorbe.\n\n— Vous touchez trente mille euros. Virement en deux fois. Contrat notarié signé demain matin pour vous protéger.\n\nTrente mille. Le traitement de Maman, le loyer pour deux ans, et de la marge.\n\n— En échange : aucune relation physique. Aucune. C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne.\n\nIl s'arrête. Il regarde ailleurs une seconde, comme s'il cherchait s'il avait oublié quelque chose. Puis il revient sur moi.\n\n— Et un dernier point. Article 7, alinéa b. Je suis allergique aux fraises. Vous y aurez droit, pas moi. C'est une plaisanterie.\n\nC'est la première qu'il fait depuis que je suis entrée. Elle ne lui va pas. Mais elle est là. Et c'est peut-être ce détail qui change tout : un homme qui prévoit dans un contrat qu'il aura le droit de ne pas aimer les fraises avec moi."
+      },
+      {
+        "type": "prose",
+        "content": "Le silence dure. La pluie sur la baie vitrée du 47e. Quelque part dans Paris, Maman regarde un film de Catherine Deneuve sans savoir qu'on est en train de discuter sa vie.\n\nTrois mois. Aucun baiser. Aucun mensonge sur Maman. Trente mille euros.\n\nMa main droite serre l'accoudoir du fauteuil. Je sens mes ongles dans le cuir."
       },
       {
         "type": "image",
@@ -503,10 +507,10 @@
       }
     ],
     "choice": {
-      "prompt": "Sa proposition de fausse fiancée pendant 3 mois pour 30 000€ ?",
+      "prompt": "Je signe ?",
       "options": [
         {
-          "text": "J'accepte mais j'ajoute des clauses (pas de baisers, pas de mensonges sur maman, fraises).",
+          "text": "J'accepte. Mais je rajoute mes propres clauses dans le contrat.",
           "argent": 30000,
           "mood": -2,
           "reputation": 5,
@@ -517,13 +521,13 @@
           "ledgerLabel": "Contrat Heng (3 mois)"
         },
         {
-          "text": "Je refuse et je pars.",
+          "text": "Je refuse. Je trouverai 18 000 € autrement.",
           "argent": 0,
           "mood": 3,
           "reputation": -2
         },
         {
-          "text": "Je négocie le montant à la hausse (40 000€).",
+          "text": "Je négocie : 35 000 € au lieu de 30 000.",
           "argent": 35000,
           "mood": -3,
           "reputation": 6,
@@ -570,7 +574,7 @@
       },
       {
         "type": "prose",
-        "content": "Il signe. En serrant les dents.\n\nLe virement est programmé pour J+3. 30 000€. Le traitement de maman est dans le sac."
+        "content": "Il signe. En serrant les dents.\n\nLe virement est programmé pour J+3. 30 000 €. Le traitement de Maman est dans le sac."
       },
       {
         "type": "image",
@@ -610,7 +614,7 @@
   {
     "id": 9,
     "date": "Samedi 11 juin",
-    "location": "Appartement Heng, 8ème",
+    "location": "Appartement Heng, 8e",
     "time": "17:20",
     "narrative": [
       {
@@ -814,12 +818,12 @@
   {
     "id": 11,
     "date": "Lundi 13 juin",
-    "location": "Studio Belleville (visite à maman)",
+    "location": "Studio Belleville (visite à Maman)",
     "time": "19:00",
     "narrative": [
       {
         "type": "prose",
-        "content": "J'ai préparé l'histoire avec Camille pendant deux jours. Je suis « stagiaire dans une équipe de paysagistes à Vincennes ». L'équipe travaille sur « des potagers pédagogiques pour des écoles ». Le chef s'appelle « Lao Chen », c'est un Sino-français de 60 ans. Camille a même créé un faux compte LinkedIn au cas où maman vérifie.\n\nMaman vérifie jamais. Maman fait confiance.\n\nMaman me regarde longuement quand j'arrive. Elle a un châle gris sur les épaules. Elle me dit :"
+        "content": "J'ai préparé l'histoire avec Camille pendant deux jours. Je suis « stagiaire dans une équipe de paysagistes à Vincennes ». L'équipe travaille sur « des potagers pédagogiques pour des écoles ». Le chef s'appelle « Lao Chen », c'est un Sino-français de 60 ans. Camille a même créé un faux compte LinkedIn au cas où Maman vérifie.\n\nMaman vérifie jamais. Maman fait confiance.\n\nMaman me regarde longuement quand j'arrive. Elle a un châle gris sur les épaules. Elle me dit :"
       },
       {
         "type": "sms",
@@ -827,7 +831,7 @@
         "messages": [
           {
             "sender": "Maman",
-            "content": "Tu as l'air différent."
+            "content": "Tu as l'air différente."
           },
           {
             "sender": "Moi",
@@ -861,7 +865,7 @@
           },
           {
             "sender": "Maman",
-            "content": "« Bien ». Tu écris « bien » depuis trois jours. Donne-moi un détail."
+            "content": "« Bien. » Tu écris « bien » depuis trois jours. Donne-moi un détail."
           }
         ]
       },
@@ -915,7 +919,7 @@
           },
           {
             "sender": "Maman",
-            "content": "« Bien ». Tu écris « bien » depuis trois jours. Donne-moi un détail."
+            "content": "« Bien. » Tu écris « bien » depuis trois jours. Donne-moi un détail."
           },
           {
             "sender": "Moi",

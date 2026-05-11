@@ -298,7 +298,7 @@ class _RecapCard extends StatelessWidget {
       ('Followers', '${state.followers}'),
       ('Contrat Heng',
           state.unlockedConversations.contains('tristan') ? 'Signé' : 'Refusé'),
-      ('Traitement maman',
+      ('Traitement de Maman',
           state.isMomTreatmentPaid ? 'Payé' : 'Pas encore'),
     ];
     return Container(
@@ -625,7 +625,7 @@ String _buildSummary(GameState s) {
     'Mood : ${s.mood} / 10',
     'Réputation : ★ ${s.reputation} · ${s.followers} abonnés',
     'Contrat Heng : ${s.unlockedConversations.contains('tristan') ? 'signé' : 'refusé'}',
-    'Traitement maman : ${s.isMomTreatmentPaid ? 'payé' : 'pas encore'}',
+    'Traitement de Maman : ${s.isMomTreatmentPaid ? 'payé' : 'pas encore'}',
   ];
   return lines.join('\n');
 }

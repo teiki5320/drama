@@ -196,7 +196,7 @@ class EconomyEngine {
         ..add(LedgerEntry(
           day: advanced.currentDay,
           kind: LedgerEntryKind.momTreatment,
-          label: 'Traitement maman (Tenon)',
+          label: 'Traitement de Maman (Tenon)',
           amount: -kMomTreatmentCost,
         ));
       advanced = advanced.copyWith(
