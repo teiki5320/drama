@@ -68,12 +68,16 @@ class CompteTab extends ConsumerWidget {
         SpendingBreakdown(entries: s.ledger),
         if (s.ledger.any((e) => e.amount < 0))
           const SizedBox(height: 14),
-        _MomDeadlineCard(
-          paid: s.isMomTreatmentPaid,
-          argent: s.argent,
-          currentDay: s.currentDay,
-        ),
-        const SizedBox(height: 14),
+        // La carte deadline n'apparaît qu'à partir de J2 (post-diagnostic
+        // Aubin), sinon le coût des 18 000 € est un spoiler à J1.
+        if (s.currentDay >= 2) ...[
+          _MomDeadlineCard(
+            paid: s.isMomTreatmentPaid,
+            argent: s.argent,
+            currentDay: s.currentDay,
+          ),
+          const SizedBox(height: 14),
+        ],
         _MovementsCard(entries: s.ledger),
       ],
     );
