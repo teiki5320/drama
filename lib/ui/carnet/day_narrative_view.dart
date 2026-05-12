@@ -402,7 +402,7 @@ class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
       break;
     case 'shen':
     case 'shen_y':
-      photo = 'assets/photos/characters/shen_y.png';
+      photo = 'assets/photos/characters/shen_y.jpeg';
       break;
     case 'dr_aubin':
     case 'aubin':
@@ -450,13 +450,13 @@ class _SpeakerBubbleState extends State<_SpeakerBubble>
       duration: const Duration(milliseconds: 320),
     );
     _scale = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween(begin: 1, end: 1.2)
+      TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 1.0, end: 1.2)
             .chain(CurveTween(curve: Curves.easeOut)),
         weight: 50,
       ),
-      TweenSequenceItem(
-        tween: Tween(begin: 1.2, end: 1)
+      TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 1.2, end: 1.0)
             .chain(CurveTween(curve: Curves.easeIn)),
         weight: 50,
       ),
