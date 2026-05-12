@@ -21,9 +21,14 @@ class DayNarrativeView extends StatelessWidget {
       Widget child;
       switch (b.type) {
         case NarrativeBlockType.prose:
+          final proseText = b.content ?? '';
+          // Le drop cap n'est pertinent que sur une vraie prose qui
+          // remplit plusieurs lignes — sinon la grosse lettre flotte
+          // toute seule à côté d'un fragment de phrase.
+          final isFirstAndLongEnough = isFirstProse && proseText.length >= 80;
           child = _Prose(
-            text: b.content ?? '',
-            dropCap: isFirstProse,
+            text: proseText,
+            dropCap: isFirstAndLongEnough,
             speaker: b.speaker,
           );
           isFirstProse = false;
@@ -148,6 +153,50 @@ class _FadeInUpState extends State<_FadeInUp>
   }
 }
 
+/// Parse les emphases markdown inline (`**texte**` rouge gras / `*texte*`
+/// italique) en TextSpans. `redT` permet d'animer la couleur du rouge
+/// (0 = noir, 1 = rouge brique plein) — utilisé par `_Prose` pour son
+/// reveal différé. Les autres widgets (sticky note, etc.) appellent
+/// avec la valeur par défaut 1.0.
+List<TextSpan> _parseEmphasisSpans(
+  String text,
+  TextStyle base, {
+  double redT = 1.0,
+}) {
+  final spans = <TextSpan>[];
+  final pattern = RegExp(r'\*\*([^*]+)\*\*|\*([^*]+)\*');
+  int last = 0;
+  final lerpRed = Color.lerp(
+    AppColors.textPrimary,
+    _Prose._emphasisRed,
+    redT,
+  )!;
+  for (final m in pattern.allMatches(text)) {
+    if (m.start > last) {
+      spans.add(TextSpan(text: text.substring(last, m.start), style: base));
+    }
+    if (m.group(1) != null) {
+      spans.add(TextSpan(
+        text: m.group(1),
+        style: base.copyWith(
+          color: lerpRed,
+          fontWeight: FontWeight.w700,
+        ),
+      ));
+    } else if (m.group(2) != null) {
+      spans.add(TextSpan(
+        text: m.group(2),
+        style: base.copyWith(fontStyle: FontStyle.italic),
+      ));
+    }
+    last = m.end;
+  }
+  if (last < text.length) {
+    spans.add(TextSpan(text: text.substring(last), style: base));
+  }
+  return spans;
+}
+
 class _Prose extends StatefulWidget {
   const _Prose({
     required this.text,
@@ -234,47 +283,6 @@ class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  List<TextSpan> _parseEmphasis(String text, TextStyle base, double redT) {
-    final spans = <TextSpan>[];
-    final pattern = RegExp(r'\*\*([^*]+)\*\*|\*([^*]+)\*');
-    int last = 0;
-    final lerpRed = Color.lerp(
-      AppColors.textPrimary,
-      _Prose._emphasisRed,
-      redT,
-    )!;
-    for (final m in pattern.allMatches(text)) {
-      if (m.start > last) {
-        spans.add(TextSpan(text: text.substring(last, m.start), style: base));
-      }
-      if (m.group(1) != null) {
-        spans.add(TextSpan(
-          text: m.group(1),
-          style: base.copyWith(
-            color: lerpRed,
-            fontWeight: FontWeight.w700,
-          ),
-        ));
-      } else if (m.group(2) != null) {
-        spans.add(TextSpan(
-          text: m.group(2),
-          style: base.copyWith(fontStyle: FontStyle.italic),
-        ));
-      }
-      last = m.end;
-    }
-    if (last < text.length) {
-      spans.add(TextSpan(text: text.substring(last), style: base));
-    }
-    return spans;
-  }
-
-  Widget _buildText(TextStyle base, double redT) {
-    if (!widget.text.contains('*')) {
-      return Text(widget.text, style: base);
-    }
-    return Text.rich(TextSpan(children: _parseEmphasis(widget.text, base, redT)));
-  }
 
   Widget _wrapWithSpeaker(Widget child) {
     final avatar = _speakerAvatar(widget.speaker!);
@@ -336,7 +344,7 @@ class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
         Widget content;
         if (mainText.contains('*')) {
           content = Text.rich(
-            TextSpan(children: _parseEmphasis(mainText, base, _redReveal.value)),
+            TextSpan(children: _parseEmphasisSpans(mainText, base, redT: _redReveal.value)),
           );
         } else {
           content = Text(mainText, style: base);
@@ -975,15 +983,20 @@ class _StickyNote extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Text(
-                text,
-                style: GoogleFonts.crimsonPro(
+              child: Builder(builder: (context) {
+                final base = GoogleFonts.crimsonPro(
                   fontSize: 15.5,
                   color: AppColors.textPrimary,
                   height: 1.4,
                   letterSpacing: 0.1,
-                ),
-              ),
+                );
+                if (!text.contains('*')) {
+                  return Text(text, style: base);
+                }
+                return Text.rich(
+                  TextSpan(children: _parseEmphasisSpans(text, base)),
+                );
+              }),
             ),
           ),
         ),
