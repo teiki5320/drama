@@ -83,12 +83,20 @@ class NarrativeBlock {
   final List<SmsMessage>? messages;
   final String? imageAsset;
 
+  /// Identifiant du personnage qui parle dans ce bloc (pour les
+  /// blocs prose contenant un dialogue). Affiche un mini avatar à
+  /// gauche du paragraphe quand renseigné. Valeurs : ids déclarés
+  /// dans `Character` (tristan, maman, camille, vincent, madame_heng,
+  /// dr_aubin, etc.).
+  final String? speaker;
+
   const NarrativeBlock({
     required this.type,
     this.content,
     this.conversation,
     this.messages,
     this.imageAsset,
+    this.speaker,
   });
 
   factory NarrativeBlock.fromJson(Map<String, dynamic> json) => NarrativeBlock(
@@ -99,6 +107,7 @@ class NarrativeBlock {
             ?.map((e) => SmsMessage.fromJson(e as Map<String, dynamic>))
             .toList(growable: false),
         imageAsset: json['imageAsset'] as String?,
+        speaker: json['speaker'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -108,6 +117,7 @@ class NarrativeBlock {
         if (messages != null)
           'messages': messages!.map((e) => e.toJson()).toList(),
         if (imageAsset != null) 'imageAsset': imageAsset,
+        if (speaker != null) 'speaker': speaker,
       };
 }
 

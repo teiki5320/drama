@@ -126,7 +126,20 @@ class _DayBodyState extends ConsumerState<_DayBody> {
     final state = ref.watch(gameStateProvider);
     final hasChosen = state.choicesMade.containsKey(day.id);
 
-    return SingleChildScrollView(
+    return ShaderMask(
+      shaderCallback: (rect) => const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0x99000000),
+          Color(0xFF000000),
+          Color(0xFF000000),
+          Color(0x99000000),
+        ],
+        stops: [0.0, 0.10, 0.90, 1.0],
+      ).createShader(rect),
+      blendMode: BlendMode.dstIn,
+      child: SingleChildScrollView(
       controller: _scrollCtrl,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 32),
       child: Column(
@@ -175,6 +188,7 @@ class _DayBodyState extends ConsumerState<_DayBody> {
             ),
         ],
       ),
+    ),
     );
   }
 }
