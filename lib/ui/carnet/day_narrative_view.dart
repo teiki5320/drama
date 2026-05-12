@@ -16,8 +16,7 @@ class DayNarrativeView extends StatelessWidget {
   /// pour garder le scénario data-only.
   static String? _dayStyleFor(int id, String? branch) {
     if (branch != null) return null;
-    if (id == 1) return 'handwritten';
-    if (id == 2) return 'letter';
+    if (id == 1 || id == 2) return 'notebook';
     return null;
   }
 
@@ -193,44 +192,87 @@ class _Prose extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final base = dayStyle == 'handwritten'
-        ? GoogleFonts.caveat(
-            color: AppColors.textPrimary,
-            fontSize: 22,
-            height: 1.4,
-            letterSpacing: 0.2,
-          )
-        : GoogleFonts.inter(
-            color: AppColors.textPrimary,
-            fontSize: 15.5,
-            height: 1.6,
-          );
+    final base = GoogleFonts.inter(
+      color: AppColors.textPrimary,
+      fontSize: 15.5,
+      height: 1.55,
+    );
 
     Widget content = text.contains('*')
         ? Text.rich(TextSpan(children: _parseEmphasis(text, base)))
         : Text(text, style: base);
 
-    if (dayStyle == 'letter') {
-      content = Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFFFAF1D8),
-          border: Border.all(color: const Color(0x18000000)),
-          borderRadius: BorderRadius.circular(2),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.07),
-              blurRadius: 6,
-              offset: const Offset(1, 3),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
-        child: content,
-      );
+    if (dayStyle == 'notebook') {
+      content = _NotebookPaper(child: content);
     }
 
     return content;
   }
+}
+
+/// Page de cahier d'écolier : fond cream, lignes horizontales bleu
+/// pâle (style Seyès simplifié), marge rose à gauche. Le texte est
+/// peint par-dessus, ce qui donne le côté "cahier de Shen".
+class _NotebookPaper extends StatelessWidget {
+  const _NotebookPaper({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFFBF7E8),
+        borderRadius: BorderRadius.circular(2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 5,
+            offset: const Offset(1, 2),
+          ),
+        ],
+      ),
+      child: CustomPaint(
+        painter: _NotebookLinesPainter(),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(36, 14, 16, 16),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+class _NotebookLinesPainter extends CustomPainter {
+  static const _lineColor = Color(0xFFB7C8DD);
+  static const _marginColor = Color(0xFFD89090);
+  static const _lineSpacing = 25.0;
+  static const _marginX = 28.0;
+  static const _topPad = 16.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final linePaint = Paint()
+      ..color = _lineColor
+      ..strokeWidth = 0.6;
+    final marginPaint = Paint()
+      ..color = _marginColor
+      ..strokeWidth = 0.9;
+
+    // Lignes horizontales, espacées comme un cahier
+    for (double y = _topPad; y < size.height; y += _lineSpacing) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), linePaint);
+    }
+
+    // Marge verticale rose à gauche
+    canvas.drawLine(
+      const Offset(_marginX, 0),
+      Offset(_marginX, size.height),
+      marginPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _NotebookLinesPainter old) => false;
 }
 
 class _SectionTitle extends StatelessWidget {
