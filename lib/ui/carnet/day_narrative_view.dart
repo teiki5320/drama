@@ -24,8 +24,37 @@ class DayNarrativeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final dayStyle = _dayStyleFor(day.id, day.branch);
     final blocks = <Widget>[];
+    int animIndex = 0;
+
+    // En mode 'notebook', on bufferise les prose consécutives pour
+    // qu'elles partagent une seule page de cahier au lieu d'avoir
+    // chacune leur cadre séparé. Tout autre type de bloc (beat, sms,
+    // image, scene break...) flush le buffer en cours.
+    final List<String> proseBatch = [];
+
+    void flushProseBatch() {
+      if (proseBatch.isEmpty) return;
+      final group = _ProseGroup(
+        texts: List<String>.from(proseBatch),
+        dayStyle: dayStyle,
+      );
+      blocks.add(_FadeInUp(
+        key: ValueKey('day-${day.id}-prose-batch-$animIndex'),
+        delay: Duration(milliseconds: 80 * animIndex),
+        child: group,
+      ));
+      blocks.add(const SizedBox(height: 14));
+      proseBatch.clear();
+      animIndex++;
+    }
+
     for (var i = 0; i < day.narrative.length; i++) {
       final b = day.narrative[i];
+      if (b.type == NarrativeBlockType.prose && dayStyle == 'notebook') {
+        proseBatch.add(b.content ?? '');
+        continue;
+      }
+      flushProseBatch();
       Widget child;
       switch (b.type) {
         case NarrativeBlockType.prose:
@@ -73,16 +102,56 @@ class DayNarrativeView extends StatelessWidget {
       }
       blocks.add(_FadeInUp(
         key: ValueKey('day-${day.id}-block-$i'),
-        delay: Duration(milliseconds: 80 * i),
+        delay: Duration(milliseconds: 80 * animIndex),
         child: child,
       ));
       blocks.add(const SizedBox(height: 14));
+      animIndex++;
     }
+    flushProseBatch();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: blocks,
     );
+  }
+}
+
+/// Groupe de prose consécutives partageant le même cadre cahier.
+/// Chaque texte rendu comme paragraphe, séparé par un petit espace
+/// vertical, mais l'ensemble est dans un seul `_NotebookPaper` —
+/// donne l'impression d'une page de cahier continue plutôt qu'une
+/// suite de petites cartes empilées.
+class _ProseGroup extends StatelessWidget {
+  const _ProseGroup({required this.texts, this.dayStyle});
+  final List<String> texts;
+  final String? dayStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    final base = GoogleFonts.inter(
+      color: AppColors.textPrimary,
+      fontSize: 15.5,
+      height: 1.55,
+    );
+
+    final children = <Widget>[];
+    for (var i = 0; i < texts.length; i++) {
+      if (i > 0) children.add(const SizedBox(height: 10));
+      final t = texts[i];
+      children.add(t.contains('*')
+          ? Text.rich(TextSpan(children: _Prose._parseEmphasis(t, base)))
+          : Text(t, style: base));
+    }
+    Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: children,
+    );
+
+    if (dayStyle == 'notebook') {
+      content = _NotebookPaper(child: content);
+    }
+    return content;
   }
 }
 
