@@ -300,16 +300,8 @@
     "time": "14:30",
     "narrative": [
       {
-        "type": "prose",
-        "content": "Calculs. Calculs. Calculs."
-      },
-      {
-        "type": "list",
-        "content": "Doubler les livraisons : +400 €/mois\nTroisième service de nuit : +600 €/mois mais je ne dors plus\nVendre le piano de Maman : 1 200 € à 1 800 €. Hors de question."
-      },
-      {
-        "type": "prose",
-        "content": "Total potentiel sur six mois : **6 000 €**. Manque : **12 000 €**."
+        "type": "stickyNote",
+        "content": "Calculs. Calculs. Calculs.\n\n— Doubler les livraisons : +400 €/mois\n— Troisième service de nuit : +600 €/mois mais je ne dors plus\n— Vendre le piano de Maman : 1 200 € à 1 800 €. Hors de question.\n\nTotal potentiel sur six mois : **6 000 €**. Manque : **12 000 €**."
       },
       {
         "type": "sms",
