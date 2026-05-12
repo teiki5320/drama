@@ -14,12 +14,19 @@ class DayNarrativeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final blocks = <Widget>[];
+    int sceneBreakCount = 0;
+    bool isFirstProse = true;
     for (var i = 0; i < day.narrative.length; i++) {
       final b = day.narrative[i];
       Widget child;
       switch (b.type) {
         case NarrativeBlockType.prose:
-          child = _Prose(text: b.content ?? '');
+          child = _Prose(
+            text: b.content ?? '',
+            dropCap: isFirstProse,
+            speaker: b.speaker,
+          );
+          isFirstProse = false;
           break;
         case NarrativeBlockType.sectionTitle:
           child = _SectionTitle(text: b.content ?? '');
@@ -43,7 +50,11 @@ class DayNarrativeView extends StatelessWidget {
           child = _Beat(text: b.content ?? '');
           break;
         case NarrativeBlockType.sceneBreak:
-          child = _SceneBreak(text: b.content ?? '');
+          sceneBreakCount++;
+          child = _SceneBreak(
+            text: b.content ?? '',
+            chapterNumber: sceneBreakCount,
+          );
           break;
         case NarrativeBlockType.innerThought:
           child = _InnerThought(text: b.content ?? '');
@@ -134,22 +145,66 @@ class _FadeInUpState extends State<_FadeInUp>
   }
 }
 
-class _Prose extends StatelessWidget {
-  const _Prose({required this.text});
+class _Prose extends StatefulWidget {
+  const _Prose({
+    required this.text,
+    this.dropCap = false,
+    this.speaker,
+  });
   final String text;
+
+  /// Si true, la toute première lettre est rendue en très gros
+  /// Crimson Pro à côté de la prose. Réservé à la première prose
+  /// du jour pour ouvrir comme un livre.
+  final bool dropCap;
+
+  /// Id de personnage qui parle dans ce bloc (dialogue). Affiche un
+  /// mini avatar 16dp à gauche du paragraphe. Voir
+  /// `_speakerAvatar()` pour le mapping.
+  final String? speaker;
 
   /// Rouge brique pour les phrases marquées `**ainsi**` dans le scénario.
   /// Réservé aux mots vraiment importants — pas un usage décoratif.
   static const _emphasisRed = Color(0xFFB02A23);
 
-  /// Parse les emphases markdown inline :
-  ///   - `**texte**` → gras, couleur rouge brique
-  ///   - `*texte*` → italique
-  /// Les autres occurrences de `*` restent littérales.
-  static List<TextSpan> _parseEmphasis(String text, TextStyle base) {
+  @override
+  State<_Prose> createState() => _ProseState();
+}
+
+class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
+  late final AnimationController _redCtrl;
+  late final Animation<double> _redReveal;
+
+  @override
+  void initState() {
+    super.initState();
+    _redCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 480),
+    );
+    _redReveal = CurvedAnimation(parent: _redCtrl, curve: Curves.easeOut);
+    // Léger délai pour que la prose entre d'abord en noir, puis les
+    // rouges s'enflamment juste après.
+    Future.delayed(const Duration(milliseconds: 320), () {
+      if (mounted) _redCtrl.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _redCtrl.dispose();
+    super.dispose();
+  }
+
+  List<TextSpan> _parseEmphasis(String text, TextStyle base, double redT) {
     final spans = <TextSpan>[];
     final pattern = RegExp(r'\*\*([^*]+)\*\*|\*([^*]+)\*');
     int last = 0;
+    final lerpRed = Color.lerp(
+      AppColors.textPrimary,
+      _Prose._emphasisRed,
+      redT,
+    )!;
     for (final m in pattern.allMatches(text)) {
       if (m.start > last) {
         spans.add(TextSpan(text: text.substring(last, m.start), style: base));
@@ -158,7 +213,7 @@ class _Prose extends StatelessWidget {
         spans.add(TextSpan(
           text: m.group(1),
           style: base.copyWith(
-            color: _emphasisRed,
+            color: lerpRed,
             fontWeight: FontWeight.w700,
           ),
         ));
@@ -176,6 +231,50 @@ class _Prose extends StatelessWidget {
     return spans;
   }
 
+  Widget _buildText(TextStyle base, double redT) {
+    if (!widget.text.contains('*')) {
+      return Text(widget.text, style: base);
+    }
+    return Text.rich(TextSpan(children: _parseEmphasis(widget.text, base, redT)));
+  }
+
+  Widget _wrapWithSpeaker(Widget child) {
+    final avatar = _speakerAvatar(widget.speaker!);
+    if (avatar == null) return child;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 10, top: 4),
+          child: avatar,
+        ),
+        Expanded(child: child),
+      ],
+    );
+  }
+
+  Widget _wrapWithDropCap(Widget child, String first, TextStyle base) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 8, top: 4),
+          child: Text(
+            first,
+            style: GoogleFonts.crimsonPro(
+              fontSize: 44,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
+              height: 1.0,
+              letterSpacing: -1,
+            ),
+          ),
+        ),
+        Expanded(child: child),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final base = GoogleFonts.inter(
@@ -184,11 +283,101 @@ class _Prose extends StatelessWidget {
       height: 1.55,
     );
 
-    if (!text.contains('*')) {
-      return Text(text, style: base);
+    // Drop cap : on retire la première lettre de la prose pour la
+    // rendre en gros à part. Le reste du texte garde ses asterisques.
+    String mainText = widget.text;
+    String? capLetter;
+    if (widget.dropCap && widget.text.isNotEmpty) {
+      capLetter = widget.text[0];
+      mainText = widget.text.substring(1).trimLeft();
     }
-    return Text.rich(TextSpan(children: _parseEmphasis(text, base)));
+
+    return AnimatedBuilder(
+      animation: _redReveal,
+      builder: (context, _) {
+        Widget content;
+        if (mainText.contains('*')) {
+          content = Text.rich(
+            TextSpan(children: _parseEmphasis(mainText, base, _redReveal.value)),
+          );
+        } else {
+          content = Text(mainText, style: base);
+        }
+
+        if (capLetter != null) {
+          content = _wrapWithDropCap(content, capLetter, base);
+        }
+        if (widget.speaker != null) {
+          content = _wrapWithSpeaker(content);
+        }
+        return content;
+      },
+    );
   }
+}
+
+/// Mini avatar 18dp à gauche d'un paragraphe de dialogue. Mappe l'id
+/// passé en `speaker` vers le portrait du perso s'il existe.
+Widget? _speakerAvatar(String id) {
+  String? photo;
+  String? emoji;
+  switch (id.toLowerCase()) {
+    case 'tristan':
+    case 't_heng':
+      photo = 'assets/photos/characters/t_heng.png';
+      break;
+    case 'maman':
+    case 'helene':
+    case 'helene_marchand':
+      photo = 'assets/photos/characters/helene_marchand.png';
+      break;
+    case 'camille':
+    case 'camille_rx':
+      photo = 'assets/photos/characters/camille_rx.png';
+      break;
+    case 'vincent':
+    case 'vincent_h':
+      photo = 'assets/photos/characters/vincent_h.png';
+      break;
+    case 'madame_heng':
+    case 'heng_lihua':
+      photo = 'assets/photos/characters/heng_lihua.png';
+      break;
+    case 'tante_mei':
+    case 'mei_fujian':
+      photo = 'assets/photos/characters/mei_fujian.png';
+      break;
+    case 'dr_aubin':
+    case 'aubin':
+      emoji = '🩺';
+      break;
+    case 'notaire':
+      emoji = '✒️';
+      break;
+    default:
+      return null;
+  }
+  return Container(
+    width: 20,
+    height: 20,
+    decoration: const BoxDecoration(
+      color: Color(0xFFEFE9D8),
+      shape: BoxShape.circle,
+    ),
+    clipBehavior: Clip.antiAlias,
+    alignment: Alignment.center,
+    child: photo != null
+        ? Image.asset(
+            photo,
+            fit: BoxFit.cover,
+            cacheWidth: 96,
+            errorBuilder: (_, __, ___) => Text(
+              emoji ?? '?',
+              style: const TextStyle(fontSize: 11),
+            ),
+          )
+        : Text(emoji ?? '?', style: const TextStyle(fontSize: 11)),
+  );
 }
 
 class _SectionTitle extends StatelessWidget {
@@ -368,64 +557,181 @@ class _NarrativeImageState extends State<_NarrativeImage>
 /// citation pleine page : italique Crimson Pro centré, taille moyenne,
 /// pas d'encadré, juste de l'air autour. Sert à marquer une respiration
 /// dramatique sans casser le flux narratif comme le ferait `_Quote`.
-class _Beat extends StatelessWidget {
+class _Beat extends StatefulWidget {
   const _Beat({required this.text});
   final String text;
+
+  @override
+  State<_Beat> createState() => _BeatState();
+}
+
+class _BeatState extends State<_Beat> with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<int> _charsRevealed;
+
+  @override
+  void initState() {
+    super.initState();
+    final ms = (widget.text.length * 28).clamp(800, 4000);
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: ms),
+    );
+    _charsRevealed = IntTween(
+      begin: 0,
+      end: widget.text.length,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOut));
+    // Court délai pour laisser le _FadeInUp parent terminer son entrée
+    Future.delayed(const Duration(milliseconds: 280), () {
+      if (mounted) _ctrl.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: GoogleFonts.crimsonPro(
-          fontSize: 20,
-          fontStyle: FontStyle.italic,
-          fontWeight: FontWeight.w500,
-          color: AppColors.textPrimary,
-          height: 1.35,
-          letterSpacing: 0.1,
-        ),
+      child: AnimatedBuilder(
+        animation: _charsRevealed,
+        builder: (context, _) {
+          final shown = widget.text.substring(0, _charsRevealed.value);
+          return Text(
+            shown,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.crimsonPro(
+              fontSize: 20,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textPrimary,
+              height: 1.35,
+              letterSpacing: 0.1,
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-/// Séparateur de scène : petit timestamp ou ancrage gris clair centré
-/// entre deux lignes horizontales fines. Marque une coupure visuelle
-/// nette (changement de lieu, saut temporel) sans le poids d'un
-/// `sectionTitle` qui prend la place d'un titre de chapitre.
-class _SceneBreak extends StatelessWidget {
-  const _SceneBreak({required this.text});
+/// Séparateur de scène avec chiffre romain optionnel au-dessus.
+/// Les deux lignes horizontales se tracent à l'apparition, du centre
+/// vers les extrémités, pour rendre le passage de scène vivant.
+class _SceneBreak extends StatefulWidget {
+  const _SceneBreak({required this.text, this.chapterNumber});
   final String text;
+  final int? chapterNumber;
+
+  @override
+  State<_SceneBreak> createState() => _SceneBreakState();
+}
+
+class _SceneBreakState extends State<_SceneBreak>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<double> _spread;
+
+  static const _romanNumerals = [
+    '', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X',
+    'XI', 'XII', 'XIII', 'XIV', 'XV',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 520),
+    );
+    _spread = CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic);
+    Future.delayed(const Duration(milliseconds: 220), () {
+      if (mounted) _ctrl.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  String get _roman {
+    final n = widget.chapterNumber;
+    if (n == null || n < 1 || n >= _romanNumerals.length) return '';
+    return _romanNumerals[n];
+  }
 
   @override
   Widget build(BuildContext context) {
-    final divider = Expanded(
-      child: Container(
-        height: 1,
-        color: AppColors.textSecondary.withValues(alpha: 0.25),
-      ),
-    );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-      child: Row(
+      child: Column(
         children: [
-          divider,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              text,
-              style: GoogleFonts.inter(
-                fontSize: 11,
+          if (_roman.isNotEmpty) ...[
+            Text(
+              _roman,
+              style: GoogleFonts.crimsonPro(
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
-                letterSpacing: 1.2,
-                color: AppColors.textSecondary,
+                letterSpacing: 2.0,
+                color: AppColors.accentOrange.withValues(alpha: 0.7),
               ),
             ),
+            const SizedBox(height: 4),
+          ],
+          AnimatedBuilder(
+            animation: _spread,
+            builder: (context, _) {
+              final t = _spread.value;
+              return Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FractionallySizedBox(
+                        widthFactor: t,
+                        child: Container(
+                          height: 1,
+                          color: AppColors.textSecondary
+                              .withValues(alpha: 0.25),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      widget.text,
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: FractionallySizedBox(
+                        widthFactor: t,
+                        child: Container(
+                          height: 1,
+                          color: AppColors.textSecondary
+                              .withValues(alpha: 0.25),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
-          divider,
         ],
       ),
     );

@@ -229,7 +229,8 @@
       },
       {
         "type": "prose",
-        "content": "— **Madame Marchand**, votre mère a besoin d'un **traitement de seconde ligne**. C'est un protocole **hors AMM**, donc non remboursé.\n— Combien ?\n— **Dix-huit mille euros** sur six mois. Et je dois insister sur un point — il faut commencer dans les **six semaines, pas plus**. Au-delà, **la fenêtre se ferme**."
+        "content": "— **Madame Marchand**, votre mère a besoin d'un **traitement de seconde ligne**. C'est un protocole **hors AMM**, donc non remboursé.\n— Combien ?\n— **Dix-huit mille euros** sur six mois. Et je dois insister sur un point — il faut commencer dans les **six semaines, pas plus**. Au-delà, **la fenêtre se ferme**.",
+        "speaker": "dr_aubin"
       },
       {
         "type": "beat",
@@ -657,7 +658,8 @@
       },
       {
         "type": "prose",
-        "content": "— Une autre fois. Concentre-toi sur demain.\n\nElle prend son sac. Elle m'embrasse sur le front, vite, comme on embrasse quelqu'un avant un examen.\n\n— Tu vas casser la baraque. Et si tu casses pas, tu sors. T'as toujours le droit de sortir."
+        "content": "— Une autre fois. Concentre-toi sur demain.\n\nElle prend son sac. Elle m'embrasse sur le front, vite, comme on embrasse quelqu'un avant un examen.\n\n— Tu vas casser la baraque. Et si tu casses pas, tu sors. T'as toujours le droit de sortir.",
+        "speaker": "camille"
       },
       {
         "type": "image",
@@ -758,7 +760,8 @@
       },
       {
         "type": "prose",
-        "content": "— **Trois mois.** Vous emménagez chez moi **rue de Berri**, vous m'accompagnez aux **dîners de famille et aux galas**. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne."
+        "content": "— **Trois mois.** Vous emménagez chez moi **rue de Berri**, vous m'accompagnez aux **dîners de famille et aux galas**. Personne ne sait que c'est arrangé. Personne. Pas votre meilleure amie, pas votre mère, pas la mienne.",
+        "speaker": "tristan"
       },
       {
         "type": "prose",
@@ -766,7 +769,8 @@
       },
       {
         "type": "prose",
-        "content": "— Vous touchez **trente mille euros**. **Virement en deux fois**. Contrat notarié signé demain matin pour vous protéger."
+        "content": "— Vous touchez **trente mille euros**. **Virement en deux fois**. Contrat notarié signé demain matin pour vous protéger.",
+        "speaker": "tristan"
       },
       {
         "type": "beat",
@@ -774,7 +778,8 @@
       },
       {
         "type": "prose",
-        "content": "— En échange : **aucune relation physique**. **Aucune.** C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne."
+        "content": "— En échange : **aucune relation physique**. **Aucune.** C'est dans le contrat, vous pouvez le faire vérifier. Je ne mens pas sur votre mère ni sur le reste — vous gardez votre vie privée, j'invente la mienne.",
+        "speaker": "tristan"
       },
       {
         "type": "prose",
@@ -782,7 +787,8 @@
       },
       {
         "type": "prose",
-        "content": "— Et un dernier point. **Article 7, alinéa b**. Je suis **allergique aux fraises**. Vous y aurez droit, pas moi. C'est une plaisanterie."
+        "content": "— Et un dernier point. **Article 7, alinéa b**. Je suis **allergique aux fraises**. Vous y aurez droit, pas moi. C'est une plaisanterie.",
+        "speaker": "tristan"
       },
       {
         "type": "prose",
@@ -1175,7 +1181,8 @@
       },
       {
         "type": "prose",
-        "content": "— **Article 7, alinéa b**. Vous y avez droit. Pas moi."
+        "content": "— **Article 7, alinéa b**. Vous y avez droit. Pas moi.",
+        "speaker": "tristan"
       },
       {
         "type": "prose",
@@ -1286,7 +1293,8 @@
       },
       {
         "type": "prose",
-        "content": "— **Lao Chen**. J'ai cherché.\n\nJe me fige.\n\n— Y'a 47 **Lao Chen** sur LinkedIn. Tu en es sûre, ma fille ?"
+        "content": "— **Lao Chen**. J'ai cherché.\n\nJe me fige.\n\n— Y'a 47 **Lao Chen** sur LinkedIn. Tu en es sûre, ma fille ?",
+        "speaker": "maman"
       },
       {
         "type": "prose",
@@ -1713,7 +1721,8 @@
       },
       {
         "type": "prose",
-        "content": "Madame Heng pose sa main sur la mienne. Sa main est fraîche, plus légère que je ne l'aurais cru. Elle me regarde. Elle ne sourit pas vraiment. Elle dit, en français :\n\n— Tu as les yeux de ta mère."
+        "content": "Madame Heng pose sa main sur la mienne. Sa main est fraîche, plus légère que je ne l'aurais cru. Elle me regarde. Elle ne sourit pas vraiment. Elle dit, en français :\n\n— Tu as les yeux de ta mère.",
+        "speaker": "madame_heng"
       },
       {
         "type": "prose",
