@@ -11,15 +11,26 @@ class DayNarrativeView extends StatelessWidget {
 
   final DayEntry day;
 
+  /// Style visuel spécifique à certains jours (expérimentation). `null`
+  /// = rendu prose standard. Géré ici plutôt que dans scenario.json
+  /// pour garder le scénario data-only.
+  static String? _dayStyleFor(int id, String? branch) {
+    if (branch != null) return null;
+    if (id == 1) return 'handwritten';
+    if (id == 2) return 'letter';
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final dayStyle = _dayStyleFor(day.id, day.branch);
     final blocks = <Widget>[];
     for (var i = 0; i < day.narrative.length; i++) {
       final b = day.narrative[i];
       Widget child;
       switch (b.type) {
         case NarrativeBlockType.prose:
-          child = _Prose(text: b.content ?? '');
+          child = _Prose(text: b.content ?? '', dayStyle: dayStyle);
           break;
         case NarrativeBlockType.sectionTitle:
           child = _SectionTitle(text: b.content ?? '');
@@ -135,8 +146,12 @@ class _FadeInUpState extends State<_FadeInUp>
 }
 
 class _Prose extends StatelessWidget {
-  const _Prose({required this.text});
+  const _Prose({required this.text, this.dayStyle});
   final String text;
+
+  /// Style spécifique du jour parent : 'handwritten' (Caveat, J1) ou
+  /// 'letter' (cadre papier à lettre, J2). `null` = rendu standard.
+  final String? dayStyle;
 
   /// Rouge brique pour les phrases marquées `**ainsi**` dans le scénario.
   /// Réservé aux mots vraiment importants — pas un usage décoratif.
@@ -178,17 +193,43 @@ class _Prose extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final base = GoogleFonts.inter(
-      color: AppColors.textPrimary,
-      fontSize: 15.5,
-      height: 1.6,
-    );
-    if (!text.contains('*')) {
-      return Text(text, style: base);
+    final base = dayStyle == 'handwritten'
+        ? GoogleFonts.caveat(
+            color: AppColors.textPrimary,
+            fontSize: 22,
+            height: 1.4,
+            letterSpacing: 0.2,
+          )
+        : GoogleFonts.inter(
+            color: AppColors.textPrimary,
+            fontSize: 15.5,
+            height: 1.6,
+          );
+
+    Widget content = text.contains('*')
+        ? Text.rich(TextSpan(children: _parseEmphasis(text, base)))
+        : Text(text, style: base);
+
+    if (dayStyle == 'letter') {
+      content = Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFFAF1D8),
+          border: Border.all(color: const Color(0x18000000)),
+          borderRadius: BorderRadius.circular(2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.07),
+              blurRadius: 6,
+              offset: const Offset(1, 3),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
+        child: content,
+      );
     }
-    return Text.rich(
-      TextSpan(children: _parseEmphasis(text, base)),
-    );
+
+    return content;
   }
 }
 
