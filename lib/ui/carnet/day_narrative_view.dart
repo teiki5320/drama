@@ -1,3 +1,5 @@
+import 'dart:ui' show ImageFilter;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,9 +9,18 @@ import '../../models/day_entry.dart';
 import 'imessage_view.dart';
 
 class DayNarrativeView extends StatelessWidget {
-  const DayNarrativeView({super.key, required this.day});
+  const DayNarrativeView({
+    super.key,
+    required this.day,
+    this.staticReplay = false,
+  });
 
   final DayEntry day;
+
+  /// En relecture du journal (jour déjà joué), on affiche tout d'un
+  /// coup : pas de typewriter sur les sceneDialogue, pas de tap pour
+  /// avancer. `false` par défaut pour les jours en cours.
+  final bool staticReplay;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +89,15 @@ class DayNarrativeView extends StatelessWidget {
           break;
         case NarrativeBlockType.inlineQuote:
           child = _InlineQuote(text: b.content ?? '');
+          break;
+        case NarrativeBlockType.sceneDialogue:
+          child = _SceneDialogue(
+            key: ValueKey('scene-${day.id}-$i'),
+            location: b.location ?? '',
+            backgroundImageAsset: b.backgroundImageAsset,
+            lines: b.lines ?? const [],
+            staticReplay: staticReplay,
+          );
           break;
       }
       blocks.add(_FadeInUp(
@@ -415,6 +435,10 @@ class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
     case 'dr_aubin':
     case 'aubin':
       emoji = '🩺';
+      break;
+    case 'infirmiere':
+    case 'infirmière':
+      emoji = '👩‍⚕️';
       break;
     case 'notaire':
       emoji = '✒️';
@@ -1177,6 +1201,324 @@ class _InlineQuote extends StatelessWidget {
             letterSpacing: 0.1,
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Scène de dialogue style "visual novel" sobre, occupant 80% de la
+/// hauteur viewport. Photo de scène en arrière-plan flou (ou fond noir
+/// si pas de backgroundImageAsset), polaroid du speaker, boîte de
+/// dialogue en bas avec speaker label en small caps + texte typewriter.
+/// Tap n'importe où pour avancer (ou skipper le typewriter en cours).
+/// Quand `staticReplay` est true, on affiche directement la dernière
+/// réplique sans animation — usage relecture du journal.
+class _SceneDialogue extends StatefulWidget {
+  const _SceneDialogue({
+    super.key,
+    required this.location,
+    required this.lines,
+    this.backgroundImageAsset,
+    this.staticReplay = false,
+  });
+
+  final String location;
+  final String? backgroundImageAsset;
+  final List<DialogueLine> lines;
+  final bool staticReplay;
+
+  @override
+  State<_SceneDialogue> createState() => _SceneDialogueState();
+}
+
+class _SceneDialogueState extends State<_SceneDialogue>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _typeCtrl;
+  late Animation<int> _chars;
+  int _lineIndex = 0;
+  bool _finished = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _typeCtrl = AnimationController(vsync: this);
+    if (widget.lines.isEmpty) {
+      _finished = true;
+    } else if (widget.staticReplay) {
+      // Relecture : on saute à la dernière ligne, entièrement révélée.
+      _lineIndex = widget.lines.length - 1;
+      _finished = true;
+    } else {
+      _startLine(0);
+    }
+  }
+
+  void _startLine(int i) {
+    _lineIndex = i;
+    final text = widget.lines[i].text;
+    final cleaned = _stripMarkers(text);
+    _typeCtrl.duration =
+        Duration(milliseconds: (cleaned.length * 28).clamp(800, 5000));
+    _chars = IntTween(begin: 0, end: cleaned.length)
+        .animate(CurvedAnimation(parent: _typeCtrl, curve: Curves.easeOut));
+    _typeCtrl.reset();
+    _typeCtrl.forward();
+  }
+
+  /// Pour le compteur typewriter on retire les marqueurs `**`/`*` :
+  /// on veut révéler le texte « visible », pas les caractères de balise.
+  static String _stripMarkers(String s) =>
+      s.replaceAll('**', '').replaceAll('*', '');
+
+  void _onTap() {
+    if (_finished) {
+      // Plus rien à faire : on est sur la dernière ligne déjà complète.
+      // (Le bouton "Skip" disparaît à ce stade.)
+      return;
+    }
+    final lineDone = _typeCtrl.value >= 1.0;
+    if (!lineDone) {
+      // Termine le typewriter sur la ligne courante.
+      _typeCtrl.value = 1.0;
+      return;
+    }
+    // Ligne entièrement révélée → passer à la suivante.
+    if (_lineIndex + 1 >= widget.lines.length) {
+      setState(() => _finished = true);
+      return;
+    }
+    setState(() => _startLine(_lineIndex + 1));
+  }
+
+  void _skipAll() {
+    _typeCtrl.value = 1.0;
+    setState(() {
+      _lineIndex = widget.lines.length - 1;
+      _finished = true;
+    });
+  }
+
+  @override
+  void dispose() {
+    _typeCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.lines.isEmpty) return const SizedBox.shrink();
+    final viewportH = MediaQuery.of(context).size.height;
+    final sceneHeight = viewportH * 0.8;
+
+    final line = widget.lines[_lineIndex];
+    final speakerInfo = _resolveSpeaker(line.speaker);
+
+    return GestureDetector(
+      onTap: _onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        height: sceneHeight,
+        margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: Colors.black,
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Arrière-plan : photo de scène floutée si dispo, sinon noir.
+            if (widget.backgroundImageAsset != null)
+              ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                child: Image.asset(
+                  widget.backgroundImageAsset!,
+                  fit: BoxFit.cover,
+                  cacheWidth: 1200,
+                  errorBuilder: (_, __, ___) => Container(color: Colors.black),
+                ),
+              ),
+            // Voile sombre pour faire ressortir le texte.
+            Container(color: Colors.black.withValues(alpha: 0.45)),
+
+            // Header location + bouton skip (en haut).
+            Positioned(
+              top: 12,
+              left: 14,
+              right: 14,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.location,
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                        color: Colors.white.withValues(alpha: 0.75),
+                      ),
+                    ),
+                  ),
+                  if (!_finished)
+                    InkWell(
+                      onTap: _skipAll,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        child: Text(
+                          'Passer',
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.8,
+                            color: Colors.white.withValues(alpha: 0.8),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
+            // Polaroid speaker au centre.
+            Positioned.fill(
+              top: 40,
+              bottom: 180,
+              child: Center(
+                child: _ScenePortrait(
+                  key: ValueKey('portrait-$_lineIndex-${line.speaker}'),
+                  speakerInfo: speakerInfo,
+                ),
+              ),
+            ),
+
+            // Boîte de dialogue en bas.
+            Positioned(
+              left: 14,
+              right: 14,
+              bottom: 14,
+              child: AnimatedBuilder(
+                animation: _typeCtrl,
+                builder: (context, _) {
+                  final clean = _stripMarkers(line.text);
+                  final shown = clean.substring(
+                    0,
+                    _chars.value.clamp(0, clean.length),
+                  );
+                  final lineDone = _typeCtrl.value >= 1.0 || widget.staticReplay;
+                  return Container(
+                    padding:
+                        const EdgeInsets.fromLTRB(18, 14, 18, 18),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFBF5E5),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.15),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          line.label,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.6,
+                            color: AppColors.accentOrange,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          shown,
+                          style: GoogleFonts.crimsonPro(
+                            fontSize: 17,
+                            color: AppColors.textPrimary,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              _finished
+                                  ? '— fin de scène —'
+                                  : (lineDone
+                                      ? 'tap →'
+                                      : '...'),
+                              style: GoogleFonts.inter(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0.8,
+                                color: AppColors.textSecondary
+                                    .withValues(alpha: 0.7),
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Portrait centré dans la scène : la photo du speaker rendue
+/// polaroid (cadre blanc, ombre), à environ 180dp de large.
+class _ScenePortrait extends StatelessWidget {
+  const _ScenePortrait({super.key, required this.speakerInfo});
+  final ({String? photo, String? emoji})? speakerInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    final inner = speakerInfo?.photo != null
+        ? Image.asset(
+            speakerInfo!.photo!,
+            fit: BoxFit.cover,
+            cacheWidth: 600,
+            errorBuilder: (_, __, ___) => Container(
+              color: const Color(0xFFE3D9C2),
+              alignment: Alignment.center,
+              child: Text(
+                speakerInfo?.emoji ?? '?',
+                style: const TextStyle(fontSize: 64),
+              ),
+            ),
+          )
+        : Container(
+            color: const Color(0xFFE3D9C2),
+            alignment: Alignment.center,
+            child: Text(
+              speakerInfo?.emoji ?? '?',
+              style: const TextStyle(fontSize: 64),
+            ),
+          );
+    return Container(
+      width: 180,
+      height: 220,
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.4),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(2),
+        child: inner,
       ),
     );
   }
