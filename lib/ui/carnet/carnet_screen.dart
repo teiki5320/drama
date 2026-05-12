@@ -126,6 +126,23 @@ class _DayBodyState extends ConsumerState<_DayBody> {
     final state = ref.watch(gameStateProvider);
     final hasChosen = state.choicesMade.containsKey(day.id);
 
+    // Jour suivant (pour le mini footer "demain →"). On retombe sur la
+    // branche partagée (null) si le jour suivant n'existe pas sur la
+    // branche courante.
+    final scenarioAsync = ref.watch(scenarioProvider);
+    final allDays = scenarioAsync.valueOrNull;
+    DayEntry? nextDay;
+    if (allDays != null) {
+      final nextId = day.id + 1;
+      final br = state.currentBranch;
+      nextDay = allDays
+              .where((d) => d.id == nextId && d.branch == br)
+              .firstOrNull ??
+          allDays
+              .where((d) => d.id == nextId && d.branch == null)
+              .firstOrNull;
+    }
+
     return ShaderMask(
       shaderCallback: (rect) => const LinearGradient(
         begin: Alignment.topCenter,
@@ -154,6 +171,25 @@ class _DayBodyState extends ConsumerState<_DayBody> {
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
             child: DayNarrativeView(day: day),
           ),
+          if (nextDay != null) ...[
+            const SizedBox(height: 8),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'Demain → Jour ${nextDay.id} · ${nextDay.date} · ${nextDay.location}',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.6,
+                    color: AppColors.textSecondary.withValues(alpha: 0.65),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ),
+          ],
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
