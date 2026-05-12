@@ -228,9 +228,26 @@
         "content": "Le **Dr Aubin** a un visage que j'aime bien. Lunettes en écaille, le temps qu'il faut. Il pose son stylo avant de parler. Il ne lit pas une fiche. Il réfléchit."
       },
       {
-        "type": "prose",
-        "content": "— **Madame Marchand**, votre mère a besoin d'un **traitement de seconde ligne**. C'est un protocole **hors AMM**, donc non remboursé.\n— Combien ?\n— **Dix-huit mille euros** sur six mois. Et je dois insister sur un point — il faut commencer dans les **six semaines, pas plus**. Au-delà, **la fenêtre se ferme**.",
-        "speaker": "dr_aubin"
+        "type": "sceneDialogue",
+        "location": "06:30 — bureau du Dr Aubin",
+        "backgroundImageAsset": "assets/photos/scenes/J02_dr_aubin.png",
+        "lines": [
+          {
+            "speaker": "dr_aubin",
+            "label": "LE DR AUBIN",
+            "text": "**Madame Marchand**, votre mère a besoin d'un **traitement de seconde ligne**. C'est un protocole **hors AMM**, donc non remboursé."
+          },
+          {
+            "speaker": "shen",
+            "label": "MOI",
+            "text": "Combien ?"
+          },
+          {
+            "speaker": "dr_aubin",
+            "label": "LE DR AUBIN",
+            "text": "**Dix-huit mille euros** sur six mois. Et je dois insister sur un point — il faut commencer dans les **six semaines, pas plus**. Au-delà, **la fenêtre se ferme**."
+          }
+        ]
       },
       {
         "type": "beat",
@@ -254,8 +271,21 @@
         "content": "Je ressors. Le hall sent l'eau de Javel et le café froid. Je m'assois sur un banc et je calcule trois fois. Trois fois la même réponse."
       },
       {
-        "type": "prose",
-        "content": "Une infirmière passe avec un gobelet. Elle s'arrête. Elle me regarde, hésite, puis elle s'assoit à côté.\n\n— Vous êtes la fille de **Madame Marchand**.\n\nJe hoche la tête.\n\n— Elle est ici depuis trois ans. Je la connais bien. Elle ne dit jamais ce qu'elle a vraiment, vous savez. Pas même au médecin. **Faites attention à ce qu'elle vous dit**.\n\nElle se lève avant que je puisse répondre. Elle me presse l'épaule en partant."
+        "type": "sceneDialogue",
+        "location": "06:48 — Hall, banc",
+        "backgroundImageAsset": null,
+        "lines": [
+          {
+            "speaker": "infirmiere",
+            "label": "L'INFIRMIÈRE",
+            "text": "Vous êtes la fille de **Madame Marchand**."
+          },
+          {
+            "speaker": "infirmiere",
+            "label": "L'INFIRMIÈRE",
+            "text": "Elle est ici depuis trois ans. Je la connais bien. Elle ne dit jamais ce qu'elle a vraiment, vous savez. Pas même au médecin. **Faites attention à ce qu'elle vous dit**."
+          }
+        ]
       },
       {
         "type": "beat",

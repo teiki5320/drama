@@ -15,6 +15,7 @@ enum NarrativeBlockType {
   marginalia,
   dayFooter,
   inlineQuote,
+  sceneDialogue,
 }
 
 NarrativeBlockType _blockTypeFromString(String s) {
@@ -45,6 +46,8 @@ NarrativeBlockType _blockTypeFromString(String s) {
       return NarrativeBlockType.dayFooter;
     case 'inlineQuote':
       return NarrativeBlockType.inlineQuote;
+    case 'sceneDialogue':
+      return NarrativeBlockType.sceneDialogue;
     default:
       throw FormatException('Unknown NarrativeBlockType: $s');
   }
@@ -78,7 +81,33 @@ String _blockTypeToString(NarrativeBlockType t) {
       return 'dayFooter';
     case NarrativeBlockType.inlineQuote:
       return 'inlineQuote';
+    case NarrativeBlockType.sceneDialogue:
+      return 'sceneDialogue';
   }
+}
+
+class DialogueLine {
+  final String speaker;
+  final String label;
+  final String text;
+
+  const DialogueLine({
+    required this.speaker,
+    required this.label,
+    required this.text,
+  });
+
+  factory DialogueLine.fromJson(Map<String, dynamic> json) => DialogueLine(
+        speaker: json['speaker'] as String,
+        label: json['label'] as String,
+        text: json['text'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'speaker': speaker,
+        'label': label,
+        'text': text,
+      };
 }
 
 class NarrativeBlock {
@@ -95,6 +124,19 @@ class NarrativeBlock {
   /// dr_aubin, etc.).
   final String? speaker;
 
+  /// En-tête horodaté du bloc `sceneDialogue` (ex. "06:30 — Bureau
+  /// du Dr Aubin"). Affiché en petit au-dessus de la scène.
+  final String? location;
+
+  /// Photo de scène utilisée en arrière-plan flou du `sceneDialogue`.
+  /// Si null, fond noir uni.
+  final String? backgroundImageAsset;
+
+  /// Liste de répliques pour `sceneDialogue`. Chaque ligne identifie
+  /// son speaker (clé de portrait), son label affiché en small caps,
+  /// et son texte (qui supporte les emphases `**rouge**` / `*italique*`).
+  final List<DialogueLine>? lines;
+
   const NarrativeBlock({
     required this.type,
     this.content,
@@ -102,6 +144,9 @@ class NarrativeBlock {
     this.messages,
     this.imageAsset,
     this.speaker,
+    this.location,
+    this.backgroundImageAsset,
+    this.lines,
   });
 
   factory NarrativeBlock.fromJson(Map<String, dynamic> json) => NarrativeBlock(
@@ -113,6 +158,11 @@ class NarrativeBlock {
             .toList(growable: false),
         imageAsset: json['imageAsset'] as String?,
         speaker: json['speaker'] as String?,
+        location: json['location'] as String?,
+        backgroundImageAsset: json['backgroundImageAsset'] as String?,
+        lines: (json['lines'] as List<dynamic>?)
+            ?.map((e) => DialogueLine.fromJson(e as Map<String, dynamic>))
+            .toList(growable: false),
       );
 
   Map<String, dynamic> toJson() => {
@@ -123,6 +173,10 @@ class NarrativeBlock {
           'messages': messages!.map((e) => e.toJson()).toList(),
         if (imageAsset != null) 'imageAsset': imageAsset,
         if (speaker != null) 'speaker': speaker,
+        if (location != null) 'location': location,
+        if (backgroundImageAsset != null)
+          'backgroundImageAsset': backgroundImageAsset,
+        if (lines != null) 'lines': lines!.map((e) => e.toJson()).toList(),
       };
 }
 

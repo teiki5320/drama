@@ -719,7 +719,7 @@ class _PastDayView extends ConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-              child: DayNarrativeView(day: day),
+              child: DayNarrativeView(day: day, staticReplay: true),
             ),
             const SizedBox(height: 18),
             Padding(
