@@ -71,6 +71,9 @@ class DayNarrativeView extends StatelessWidget {
         case NarrativeBlockType.dayFooter:
           child = _DayFooter(text: b.content ?? '');
           break;
+        case NarrativeBlockType.inlineQuote:
+          child = _InlineQuote(text: b.content ?? '');
+          break;
       }
       blocks.add(_FadeInUp(
         key: ValueKey('day-${day.id}-block-$i'),
@@ -175,6 +178,40 @@ class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
   late final AnimationController _redCtrl;
   late final Animation<double> _redReveal;
 
+  // Surbrillance pêche selon la proximité au centre du viewport.
+  // 0 = loin, 1 = au centre. Recalculée à chaque scroll via le
+  // listener attaché à la ScrollPosition parente.
+  ScrollPosition? _scrollPos;
+  double _proximity = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final newPos = Scrollable.maybeOf(context)?.position;
+    if (newPos != _scrollPos) {
+      _scrollPos?.removeListener(_updateProximity);
+      _scrollPos = newPos;
+      _scrollPos?.addListener(_updateProximity);
+      // Première mesure après layout.
+      WidgetsBinding.instance.addPostFrameCallback((_) => _updateProximity());
+    }
+  }
+
+  void _updateProximity() {
+    if (!mounted) return;
+    final box = context.findRenderObject() as RenderBox?;
+    if (box == null || !box.attached) return;
+    final pos = box.localToGlobal(Offset.zero);
+    final viewportH = MediaQuery.of(context).size.height;
+    final blockCenter = pos.dy + box.size.height / 2;
+    final dist = (blockCenter - viewportH / 2).abs();
+    // Fenêtre douce : ±220 px autour du centre.
+    final p = (1 - (dist / 220)).clamp(0.0, 1.0);
+    if ((p - _proximity).abs() > 0.03) {
+      setState(() => _proximity = p);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -192,6 +229,7 @@ class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    _scrollPos?.removeListener(_updateProximity);
     _redCtrl.dispose();
     super.dispose();
   }
@@ -310,7 +348,20 @@ class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
         if (widget.speaker != null) {
           content = _wrapWithSpeaker(content);
         }
-        return content;
+
+        // Highlight pêche autour du paragraphe au centre du viewport.
+        // Très léger (max 8 % d'alpha) — c'est un guide de lecture, pas
+        // une mise en avant criarde.
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOut,
+          padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFAE0CC).withValues(alpha: _proximity * 0.08),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: content,
+        );
       },
     );
   }
@@ -318,7 +369,9 @@ class _ProseState extends State<_Prose> with SingleTickerProviderStateMixin {
 
 /// Mini avatar 18dp à gauche d'un paragraphe de dialogue. Mappe l'id
 /// passé en `speaker` vers le portrait du perso s'il existe.
-Widget? _speakerAvatar(String id) {
+/// Retourne `null` si l'id n'est pas reconnu (le bloc s'affichera
+/// alors sans avatar).
+({String? photo, String? emoji})? _resolveSpeaker(String id) {
   String? photo;
   String? emoji;
   switch (id.toLowerCase()) {
@@ -347,6 +400,10 @@ Widget? _speakerAvatar(String id) {
     case 'mei_fujian':
       photo = 'assets/photos/characters/mei_fujian.png';
       break;
+    case 'shen':
+    case 'shen_y':
+      photo = 'assets/photos/characters/shen_y.png';
+      break;
     case 'dr_aubin':
     case 'aubin':
       emoji = '🩺';
@@ -357,27 +414,93 @@ Widget? _speakerAvatar(String id) {
     default:
       return null;
   }
-  return Container(
-    width: 20,
-    height: 20,
-    decoration: const BoxDecoration(
-      color: Color(0xFFEFE9D8),
-      shape: BoxShape.circle,
-    ),
-    clipBehavior: Clip.antiAlias,
-    alignment: Alignment.center,
-    child: photo != null
+  return (photo: photo, emoji: emoji);
+}
+
+Widget? _speakerAvatar(String id, {double size = 20}) {
+  final r = _resolveSpeaker(id);
+  if (r == null) return null;
+  return _SpeakerBubble(photo: r.photo, emoji: r.emoji, size: size);
+}
+
+class _SpeakerBubble extends StatefulWidget {
+  const _SpeakerBubble({
+    required this.photo,
+    required this.emoji,
+    this.size = 20,
+  });
+  final String? photo;
+  final String? emoji;
+  final double size;
+
+  @override
+  State<_SpeakerBubble> createState() => _SpeakerBubbleState();
+}
+
+class _SpeakerBubbleState extends State<_SpeakerBubble>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 320),
+    );
+    _scale = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween(begin: 1, end: 1.2)
+            .chain(CurveTween(curve: Curves.easeOut)),
+        weight: 50,
+      ),
+      TweenSequenceItem(
+        tween: Tween(begin: 1.2, end: 1)
+            .chain(CurveTween(curve: Curves.easeIn)),
+        weight: 50,
+      ),
+    ]).animate(_ctrl);
+    Future.delayed(const Duration(milliseconds: 360), () {
+      if (mounted) _ctrl.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final fallbackText = Text(
+      widget.emoji ?? '?',
+      style: TextStyle(fontSize: widget.size * 0.55),
+    );
+    final inner = widget.photo != null
         ? Image.asset(
-            photo,
+            widget.photo!,
             fit: BoxFit.cover,
             cacheWidth: 96,
-            errorBuilder: (_, __, ___) => Text(
-              emoji ?? '?',
-              style: const TextStyle(fontSize: 11),
-            ),
+            errorBuilder: (_, __, ___) => fallbackText,
           )
-        : Text(emoji ?? '?', style: const TextStyle(fontSize: 11)),
-  );
+        : fallbackText;
+    return ScaleTransition(
+      scale: _scale,
+      child: Container(
+        width: widget.size,
+        height: widget.size,
+        decoration: const BoxDecoration(
+          color: Color(0xFFEFE9D8),
+          shape: BoxShape.circle,
+        ),
+        clipBehavior: Clip.antiAlias,
+        alignment: Alignment.center,
+        child: inner,
+      ),
+    );
+  }
 }
 
 class _SectionTitle extends StatelessWidget {
@@ -413,8 +536,10 @@ class _NarrativeImage extends StatefulWidget {
 }
 
 class _NarrativeImageState extends State<_NarrativeImage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _kenBurns;
+  late final AnimationController _reveal;
+  late final Animation<double> _revealCurve;
 
   @override
   void initState() {
@@ -423,11 +548,23 @@ class _NarrativeImageState extends State<_NarrativeImage>
       vsync: this,
       duration: const Duration(seconds: 14),
     )..repeat(reverse: true);
+    // Reveal : la polaroid arrive un peu plus inclinée et translatée
+    // en haut, puis "se pose" sur sa rotation finale. Durée 700ms,
+    // easeOut, comme posée à la main sur le carnet.
+    _reveal = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+    _revealCurve = CurvedAnimation(parent: _reveal, curve: Curves.easeOutCubic);
+    Future.delayed(const Duration(milliseconds: 220), () {
+      if (mounted) _reveal.forward();
+    });
   }
 
   @override
   void dispose() {
     _kenBurns.dispose();
+    _reveal.dispose();
     super.dispose();
   }
 
@@ -529,9 +666,21 @@ class _NarrativeImageState extends State<_NarrativeImage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Transform.translate(
-            offset: Offset(offsetX, 0),
-            child: Transform.rotate(angle: tilt, child: polaroid),
+          AnimatedBuilder(
+            animation: _revealCurve,
+            builder: (context, child) {
+              final t = _revealCurve.value;
+              // Au début : double l'inclinaison + translation haute,
+              // se résorbe vers le tilt final + offsetX.
+              final liveTilt = tilt * (2 - t);
+              final liveDx = offsetX * t;
+              final liveDy = (1 - t) * -8.0;
+              return Transform.translate(
+                offset: Offset(liveDx, liveDy),
+                child: Transform.rotate(angle: liveTilt, child: child),
+              );
+            },
+            child: polaroid,
           ),
           if (widget.caption != null && widget.caption!.isNotEmpty) ...[
             const SizedBox(height: 12),
@@ -747,6 +896,7 @@ class _InnerThought extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final shenAvatar = _speakerAvatar('shen', size: 18);
     return Container(
       margin: const EdgeInsets.only(left: 18, right: 8, top: 4, bottom: 4),
       padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
@@ -760,15 +910,28 @@ class _InnerThought extends StatelessWidget {
           ),
         ),
       ),
-      child: Text(
-        text,
-        style: GoogleFonts.crimsonPro(
-          fontSize: 15.5,
-          fontStyle: FontStyle.italic,
-          color: AppColors.textPrimary,
-          height: 1.55,
-          letterSpacing: 0.1,
-        ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (shenAvatar != null) ...[
+            Padding(
+              padding: const EdgeInsets.only(top: 2, right: 10),
+              child: shenAvatar,
+            ),
+          ],
+          Expanded(
+            child: Text(
+              text,
+              style: GoogleFonts.crimsonPro(
+                fontSize: 15.5,
+                fontStyle: FontStyle.italic,
+                color: AppColors.textPrimary,
+                height: 1.55,
+                letterSpacing: 0.1,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -963,6 +1126,44 @@ class _DayFooter extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Variante "inline" de la citation : plus petite que `_Quote` pleine
+/// page, indentée à 80% de largeur, avec une barre verticale orange
+/// à gauche. Pour les phrases marquantes intermédiaires qui ne
+/// méritent pas la grosse boîte gradient.
+class _InlineQuote extends StatelessWidget {
+  const _InlineQuote({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(18, 12, 12, 14),
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: AppColors.accentOrange.withValues(alpha: 0.7),
+              width: 3.5,
+            ),
+          ),
+        ),
+        child: Text(
+          text,
+          style: GoogleFonts.crimsonPro(
+            fontSize: 22,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
+            height: 1.35,
+            letterSpacing: 0.1,
+          ),
+        ),
       ),
     );
   }

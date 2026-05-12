@@ -69,17 +69,74 @@ class BigTitle extends StatelessWidget {
           ),
           if (subtitle != null) ...[
             const SizedBox(height: 4),
-            Text(
-              subtitle!,
-              style: GoogleFonts.inter(
-                fontSize: 13,
-                color: AppColors.textSecondary,
-                letterSpacing: 0.2,
-              ),
-            ),
+            _TypewriterSubtitle(text: subtitle!),
           ],
         ],
       ),
+    );
+  }
+}
+
+/// Sous-titre du jour qui s'écrit caractère par caractère à
+/// l'ouverture du jour. Donne l'impression que la date / le lieu /
+/// l'heure sont en train d'être tapés dans le carnet.
+class _TypewriterSubtitle extends StatefulWidget {
+  const _TypewriterSubtitle({required this.text});
+  final String text;
+
+  @override
+  State<_TypewriterSubtitle> createState() => _TypewriterSubtitleState();
+}
+
+class _TypewriterSubtitleState extends State<_TypewriterSubtitle>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<int> _chars;
+
+  @override
+  void initState() {
+    super.initState();
+    final ms = (widget.text.length * 22).clamp(400, 1800);
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: ms),
+    );
+    _chars = IntTween(begin: 0, end: widget.text.length)
+        .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOut));
+    Future.delayed(const Duration(milliseconds: 380), () {
+      if (mounted) _ctrl.forward();
+    });
+  }
+
+  @override
+  void didUpdateWidget(_TypewriterSubtitle old) {
+    super.didUpdateWidget(old);
+    if (old.text != widget.text) {
+      _ctrl.reset();
+      _ctrl.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _chars,
+      builder: (context, _) {
+        return Text(
+          widget.text.substring(0, _chars.value),
+          style: GoogleFonts.inter(
+            fontSize: 13,
+            color: AppColors.textSecondary,
+            letterSpacing: 0.2,
+          ),
+        );
+      },
     );
   }
 }

@@ -14,6 +14,7 @@ enum NarrativeBlockType {
   list,
   marginalia,
   dayFooter,
+  inlineQuote,
 }
 
 NarrativeBlockType _blockTypeFromString(String s) {
@@ -42,6 +43,8 @@ NarrativeBlockType _blockTypeFromString(String s) {
       return NarrativeBlockType.marginalia;
     case 'dayFooter':
       return NarrativeBlockType.dayFooter;
+    case 'inlineQuote':
+      return NarrativeBlockType.inlineQuote;
     default:
       throw FormatException('Unknown NarrativeBlockType: $s');
   }
@@ -73,6 +76,8 @@ String _blockTypeToString(NarrativeBlockType t) {
       return 'marginalia';
     case NarrativeBlockType.dayFooter:
       return 'dayFooter';
+    case NarrativeBlockType.inlineQuote:
+      return 'inlineQuote';
   }
 }
 
