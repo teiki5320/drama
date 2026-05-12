@@ -11,54 +11,15 @@ class DayNarrativeView extends StatelessWidget {
 
   final DayEntry day;
 
-  /// Style visuel spécifique à certains jours (expérimentation). `null`
-  /// = rendu prose standard. Géré ici plutôt que dans scenario.json
-  /// pour garder le scénario data-only.
-  static String? _dayStyleFor(int id, String? branch) {
-    if (branch != null) return null;
-    if (id == 1 || id == 2) return 'notebook';
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final dayStyle = _dayStyleFor(day.id, day.branch);
     final blocks = <Widget>[];
-    int animIndex = 0;
-
-    // En mode 'notebook', on bufferise les prose consécutives pour
-    // qu'elles partagent une seule page de cahier au lieu d'avoir
-    // chacune leur cadre séparé. Tout autre type de bloc (beat, sms,
-    // image, scene break...) flush le buffer en cours.
-    final List<String> proseBatch = [];
-
-    void flushProseBatch() {
-      if (proseBatch.isEmpty) return;
-      final group = _ProseGroup(
-        texts: List<String>.from(proseBatch),
-        dayStyle: dayStyle,
-      );
-      blocks.add(_FadeInUp(
-        key: ValueKey('day-${day.id}-prose-batch-$animIndex'),
-        delay: Duration(milliseconds: 80 * animIndex),
-        child: group,
-      ));
-      blocks.add(const SizedBox(height: 14));
-      proseBatch.clear();
-      animIndex++;
-    }
-
     for (var i = 0; i < day.narrative.length; i++) {
       final b = day.narrative[i];
-      if (b.type == NarrativeBlockType.prose && dayStyle == 'notebook') {
-        proseBatch.add(b.content ?? '');
-        continue;
-      }
-      flushProseBatch();
       Widget child;
       switch (b.type) {
         case NarrativeBlockType.prose:
-          child = _Prose(text: b.content ?? '', dayStyle: dayStyle);
+          child = _Prose(text: b.content ?? '');
           break;
         case NarrativeBlockType.sectionTitle:
           child = _SectionTitle(text: b.content ?? '');
@@ -102,56 +63,16 @@ class DayNarrativeView extends StatelessWidget {
       }
       blocks.add(_FadeInUp(
         key: ValueKey('day-${day.id}-block-$i'),
-        delay: Duration(milliseconds: 80 * animIndex),
+        delay: Duration(milliseconds: 80 * i),
         child: child,
       ));
       blocks.add(const SizedBox(height: 14));
-      animIndex++;
     }
-    flushProseBatch();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: blocks,
     );
-  }
-}
-
-/// Groupe de prose consécutives partageant le même cadre cahier.
-/// Chaque texte rendu comme paragraphe, séparé par un petit espace
-/// vertical, mais l'ensemble est dans un seul `_NotebookPaper` —
-/// donne l'impression d'une page de cahier continue plutôt qu'une
-/// suite de petites cartes empilées.
-class _ProseGroup extends StatelessWidget {
-  const _ProseGroup({required this.texts, this.dayStyle});
-  final List<String> texts;
-  final String? dayStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    final base = GoogleFonts.inter(
-      color: AppColors.textPrimary,
-      fontSize: 15.5,
-      height: 1.55,
-    );
-
-    final children = <Widget>[];
-    for (var i = 0; i < texts.length; i++) {
-      if (i > 0) children.add(const SizedBox(height: 10));
-      final t = texts[i];
-      children.add(t.contains('*')
-          ? Text.rich(TextSpan(children: _Prose._parseEmphasis(t, base)))
-          : Text(t, style: base));
-    }
-    Widget content = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: children,
-    );
-
-    if (dayStyle == 'notebook') {
-      content = _NotebookPaper(child: content);
-    }
-    return content;
   }
 }
 
@@ -214,12 +135,8 @@ class _FadeInUpState extends State<_FadeInUp>
 }
 
 class _Prose extends StatelessWidget {
-  const _Prose({required this.text, this.dayStyle});
+  const _Prose({required this.text});
   final String text;
-
-  /// Style spécifique du jour parent : 'handwritten' (Caveat, J1) ou
-  /// 'letter' (cadre papier à lettre, J2). `null` = rendu standard.
-  final String? dayStyle;
 
   /// Rouge brique pour les phrases marquées `**ainsi**` dans le scénario.
   /// Réservé aux mots vraiment importants — pas un usage décoratif.
@@ -267,81 +184,11 @@ class _Prose extends StatelessWidget {
       height: 1.55,
     );
 
-    Widget content = text.contains('*')
-        ? Text.rich(TextSpan(children: _parseEmphasis(text, base)))
-        : Text(text, style: base);
-
-    if (dayStyle == 'notebook') {
-      content = _NotebookPaper(child: content);
+    if (!text.contains('*')) {
+      return Text(text, style: base);
     }
-
-    return content;
+    return Text.rich(TextSpan(children: _parseEmphasis(text, base)));
   }
-}
-
-/// Page de cahier d'écolier : fond cream, lignes horizontales bleu
-/// pâle (style Seyès simplifié), marge rose à gauche. Le texte est
-/// peint par-dessus, ce qui donne le côté "cahier de Shen".
-class _NotebookPaper extends StatelessWidget {
-  const _NotebookPaper({required this.child});
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFFBF7E8),
-        borderRadius: BorderRadius.circular(2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 5,
-            offset: const Offset(1, 2),
-          ),
-        ],
-      ),
-      child: CustomPaint(
-        painter: _NotebookLinesPainter(),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(36, 14, 16, 16),
-          child: child,
-        ),
-      ),
-    );
-  }
-}
-
-class _NotebookLinesPainter extends CustomPainter {
-  static const _lineColor = Color(0xFFB7C8DD);
-  static const _marginColor = Color(0xFFD89090);
-  static const _lineSpacing = 25.0;
-  static const _marginX = 28.0;
-  static const _topPad = 16.0;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final linePaint = Paint()
-      ..color = _lineColor
-      ..strokeWidth = 0.6;
-    final marginPaint = Paint()
-      ..color = _marginColor
-      ..strokeWidth = 0.9;
-
-    // Lignes horizontales, espacées comme un cahier
-    for (double y = _topPad; y < size.height; y += _lineSpacing) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), linePaint);
-    }
-
-    // Marge verticale rose à gauche
-    canvas.drawLine(
-      const Offset(_marginX, 0),
-      Offset(_marginX, size.height),
-      marginPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant _NotebookLinesPainter old) => false;
 }
 
 class _SectionTitle extends StatelessWidget {
