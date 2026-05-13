@@ -8,12 +8,21 @@ library;
 enum SpritePosition { left, right, center }
 
 class AceSprite {
+  /// Asset statique (PNG transparent). Toujours requis — sert de
+  /// fallback si l'asset animé n'est pas disponible / ne se charge pas.
   final String asset;
+
+  /// Asset animé optionnel : WebP animé à fond transparent (boucle
+  /// 2 s à 12 fps). Si renseigné, c'est lui qui est affiché à la place
+  /// du PNG statique.
+  final String? animatedAsset;
+
   final SpritePosition position;
   final double scale;
 
   const AceSprite({
     required this.asset,
+    this.animatedAsset,
     this.position = SpritePosition.left,
     this.scale = 1.0,
   });
@@ -44,8 +53,14 @@ enum BeatSfx { impact, ring }
 enum BeatAmbient { none, rain }
 
 class AceBeat {
-  /// Image de fond (recouvre tout l'écran, légèrement floue).
+  /// Image de fond (recouvre tout l'écran, légèrement floue). Si
+  /// `backgroundVideo` est renseigné, cette image sert de fallback.
   final String background;
+
+  /// Vidéo de fond optionnelle (MP4 plein écran). Sert pour les beats
+  /// où la scène entière est animée (ex. Shen au feu rouge sous la
+  /// pluie). Remplace l'image floue + sprite par une vidéo unique.
+  final String? backgroundVideo;
 
   /// Sprites visibles (0..2). Un seul = positionné selon `position`.
   /// Deux = un à gauche + un à droite.
@@ -70,6 +85,7 @@ class AceBeat {
   const AceBeat({
     required this.background,
     required this.text,
+    this.backgroundVideo,
     this.sprites = const [],
     this.kind = BeatKind.dialogue,
     this.speakerLabel,

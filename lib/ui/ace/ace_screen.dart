@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../core/colors.dart';
 import '../../data/ace_j1_j3.dart';
@@ -140,7 +141,15 @@ class _AceScreenState extends State<AceScreen>
         child: Stack(
         fit: StackFit.expand,
         children: [
-          _Background(asset: beat.background, key: ValueKey(beat.background)),
+          if (beat.backgroundVideo != null)
+            _BackgroundVideo(
+              key: ValueKey(beat.backgroundVideo),
+              asset: beat.backgroundVideo!,
+              fallbackImage: beat.background,
+            )
+          else
+            _Background(
+                asset: beat.background, key: ValueKey(beat.background)),
           _SpriteLayer(sprites: beat.sprites),
           _TopBar(
             title: scene.title,
@@ -254,6 +263,79 @@ class _BackgroundState extends State<_Background>
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Vidéo de fond plein écran (MP4 en boucle). Pour les beats où la scène
+/// entière est animée (ex. Shen au feu rouge sous la pluie). Affiche
+/// l'image fallback pendant l'initialisation, puis la vidéo couvrante.
+class _BackgroundVideo extends StatefulWidget {
+  const _BackgroundVideo({
+    super.key,
+    required this.asset,
+    required this.fallbackImage,
+  });
+
+  final String asset;
+  final String fallbackImage;
+
+  @override
+  State<_BackgroundVideo> createState() => _BackgroundVideoState();
+}
+
+class _BackgroundVideoState extends State<_BackgroundVideo> {
+  VideoPlayerController? _ctrl;
+  bool _ready = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      _ctrl = VideoPlayerController.asset(widget.asset);
+      await _ctrl!.initialize();
+      _ctrl!.setLooping(true);
+      _ctrl!.setVolume(0);
+      await _ctrl!.play();
+      if (mounted) setState(() => _ready = true);
+    } catch (_) {
+      // En cas d'erreur on garde le fallback.
+    }
+  }
+
+  @override
+  void dispose() {
+    _ctrl?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Image.asset(
+          widget.fallbackImage,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Container(color: Colors.black87),
+        ),
+        if (_ready && _ctrl != null)
+          FittedBox(
+            fit: BoxFit.cover,
+            clipBehavior: Clip.hardEdge,
+            child: SizedBox(
+              width: _ctrl!.value.size.width,
+              height: _ctrl!.value.size.height,
+              child: VideoPlayer(_ctrl!),
+            ),
+          ),
+        // Voile sombre léger pour cohérence avec _Background.
+        Container(color: Colors.black.withValues(alpha: 0.18)),
+      ],
     );
   }
 }
@@ -377,10 +459,18 @@ class _SpriteWidgetState extends State<_SpriteWidget>
             );
           },
           child: Image.asset(
-            widget.sprite.asset,
+            // Animated WebP si présent (lecture native via Image.asset),
+            // sinon PNG statique.
+            widget.sprite.animatedAsset ?? widget.sprite.asset,
             height: widget.height * widget.sprite.scale,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+            gaplessPlayback: true,
+            errorBuilder: (_, __, ___) => Image.asset(
+              widget.sprite.asset,
+              height: widget.height * widget.sprite.scale,
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+            ),
           ),
         ),
       ),
