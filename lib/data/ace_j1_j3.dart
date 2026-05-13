@@ -19,10 +19,10 @@ import '../models/ace_scene.dart';
 ///   quatre-vingt-quatre.
 /// - Dignité de Shen sous tension : elle refuse, elle compte, elle tient.
 
-const String _bgStudioMatin = 'assets/photos/ace/bg_j1_studio_matin.jpeg';
-const String _bgStudioNuit = 'assets/photos/ace/bg_j1_studio_nuit.jpeg';
+const String _bgStudioMatin = 'assets/photos/ace/bg_j1_studio_matin.png';
+const String _bgStudioNuit = 'assets/photos/ace/bg_j1_studio_nuit.png';
 const String _bgRueBelleville = 'assets/photos/ace/bg_j1_rue_belleville.png';
-const String _bgCollision = 'assets/photos/ace/bg_j1_avenue_collision.jpeg';
+const String _bgCollision = 'assets/photos/ace/bg_j1_avenue_collision.png';
 const String _bgAvenuePropre = 'assets/photos/ace/bg_j1_avenue_propre.png';
 const String _bgBureauAubin = 'assets/photos/ace/bg_j2_bureau_aubin.png';
 const String _bgCalculs = 'assets/photos/ace/bg_j3_calculs.png';
@@ -30,52 +30,33 @@ const String _bgCalculs = 'assets/photos/ace/bg_j3_calculs.png';
 // Sprites Shen livreuse — PNG statiques + WebP animés transparents
 const String _shenPretePartir =
     'assets/photos/ace/shen_livreuse_01_prete_a_partir.png';
-const String _shenPretePartirAnim =
-    'assets/photos/ace/shen_livreuse_01_prete_a_partir.webp';
 const String _shenFeuRouge =
     'assets/photos/ace/shen_livreuse_02_au_feu_rouge.png';
 const String _shenDouleur =
     'assets/photos/ace/shen_livreuse_03_douleur_collision.png';
-const String _shenDouleurAnim =
-    'assets/photos/ace/shen_livreuse_03_douleur_collision.webp';
 const String _shenRelevee =
     'assets/photos/ace/shen_livreuse_04_releve_la_tete.png';
 const String _shenDechireCarte =
     'assets/photos/ace/shen_livreuse_05_dechire_la_carte.png';
 const String _shenMarcheMouillee =
     'assets/photos/ace/shen_livreuse_06_marche_mouillee.png';
-const String _shenMarcheMouilleeAnim =
-    'assets/photos/ace/shen_livreuse_06_marche_mouillee.webp';
 
 // Sprites Shen studio
 const String _shenEcrit = 'assets/photos/ace/shen_studio_01_ecrit_carnet.png';
-const String _shenEcritAnim =
-    'assets/photos/ace/shen_studio_01_ecrit_carnet.webp';
 const String _shenRecolle =
     'assets/photos/ace/shen_studio_02_recolle_la_carte.png';
-const String _shenRecolleAnim =
-    'assets/photos/ace/shen_studio_02_recolle_la_carte.webp';
 const String _shenCalcule =
     'assets/photos/ace/shen_studio_03_calcule_prostree.png';
-const String _shenCalculeAnim =
-    'assets/photos/ace/shen_studio_03_calcule_prostree.webp';
 const String _shenTelAide =
     'assets/photos/ace/shen_studio_04_telephone_aide_sociale.png';
-const String _shenTelAideAnim =
-    'assets/photos/ace/shen_studio_04_telephone_aide_sociale.webp';
 const String _shenTete =
     'assets/photos/ace/shen_studio_06_se_tient_la_tete.png';
-const String _shenTeteAnim =
-    'assets/photos/ace/shen_studio_06_se_tient_la_tete.webp';
 
 // Sprites Tristan anonyme (pas d'anim pour l'instant)
 const String _tJambes = 'assets/photos/ace/tristan_01_jambes_chaussures.png';
 const String _tMainCarte = 'assets/photos/ace/tristan_02_main_carte.png';
 const String _tDosSeloigne = 'assets/photos/ace/tristan_05_dos_seloigne.png';
 
-// Vidéo plein écran (MP4 avec son propre fond)
-const String _vidFeuRouge =
-    'assets/photos/ace/scene_j1_feu_rouge_belleville.mp4';
 
 final AceScene aceJ1 = AceScene(
   day: 1,
@@ -138,7 +119,7 @@ final AceScene aceJ1 = AceScene(
     ),
     AceBeat(
       background: _bgStudioMatin,
-      sprites: [AceSprite(asset: _shenEcrit, animatedAsset: _shenEcritAnim, position: SpritePosition.left)],
+      sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.narration,
       text:
           'La pluie cogne la fenêtre du studio. Shen écrit, vite, sans '
@@ -146,7 +127,7 @@ final AceScene aceJ1 = AceScene(
     ),
     AceBeat(
       background: _bgStudioMatin,
-      sprites: [AceSprite(asset: _shenEcrit, animatedAsset: _shenEcritAnim, position: SpritePosition.left)],
+      sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.thought,
       text:
           'Maman a toussé à quatre heures du matin.\n'
@@ -156,7 +137,7 @@ final AceScene aceJ1 = AceScene(
     ),
     AceBeat(
       background: _bgStudioMatin,
-      sprites: [AceSprite(asset: _shenEcrit, animatedAsset: _shenEcritAnim, position: SpritePosition.left)],
+      sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.narration,
       text:
           'Sur l\'étagère, une lettre du Fujian patiente, fermée. Tante '
@@ -168,7 +149,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenPretePartir, animatedAsset: _shenPretePartirAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenPretePartir, position: SpritePosition.center)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'Maman',
@@ -177,7 +158,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenPretePartir, animatedAsset: _shenPretePartirAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenPretePartir, position: SpritePosition.center)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'Shen',
@@ -186,7 +167,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenPretePartir, animatedAsset: _shenPretePartirAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenPretePartir, position: SpritePosition.center)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'Maman',
@@ -198,7 +179,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenPretePartir, animatedAsset: _shenPretePartirAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenPretePartir, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
       text:
@@ -207,12 +188,11 @@ final AceScene aceJ1 = AceScene(
     ),
 
     // ─── Rue Belleville sous la pluie ──────────────────────────────
-    // Cette séquence utilise la vidéo plein écran (Shen au feu rouge,
-    // pluie qui ruisselle sur le casque, trafic en arrière-plan). Pas
-    // de sprite composité : la scène EST la vidéo.
     AceBeat(
       background: _bgRueBelleville,
-      backgroundVideo: _vidFeuRouge,
+      sprites: [
+        AceSprite(asset: _shenFeuRouge, position: SpritePosition.left)
+      ],
       kind: BeatKind.narration,
       ambient: BeatAmbient.rain,
       text:
@@ -222,7 +202,9 @@ final AceScene aceJ1 = AceScene(
     ),
     AceBeat(
       background: _bgRueBelleville,
-      backgroundVideo: _vidFeuRouge,
+      sprites: [
+        AceSprite(asset: _shenFeuRouge, position: SpritePosition.left)
+      ],
       kind: BeatKind.thought,
       text:
           'Ce soir : payer le loyer, lire la lettre du Fujian, vérifier '
@@ -231,7 +213,9 @@ final AceScene aceJ1 = AceScene(
     ),
     AceBeat(
       background: _bgRueBelleville,
-      backgroundVideo: _vidFeuRouge,
+      sprites: [
+        AceSprite(asset: _shenFeuRouge, position: SpritePosition.left)
+      ],
       kind: BeatKind.narration,
       text:
           'Ce matin-là, Shen croyait que la pluie était son pire ennemi. '
@@ -253,7 +237,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCollision,
       sprites: [
-        AceSprite(asset: _shenDouleur, animatedAsset: _shenDouleurAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenDouleur, position: SpritePosition.left)
       ],
       kind: BeatKind.thought,
       text: 'Quelqu\'un vient d\'appuyer sur pause à l\'intérieur de moi.',
@@ -261,7 +245,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCollision,
       sprites: [
-        AceSprite(asset: _shenDouleur, animatedAsset: _shenDouleurAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenDouleur, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
       text:
@@ -273,7 +257,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCollision,
       sprites: [
-        AceSprite(asset: _shenDouleur, animatedAsset: _shenDouleurAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenDouleur, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
       text:
@@ -285,7 +269,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCollision,
       sprites: [
-        AceSprite(asset: _shenDouleur, animatedAsset: _shenDouleurAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenDouleur, position: SpritePosition.left)
       ],
       kind: BeatKind.thought,
       text:
@@ -296,7 +280,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCollision,
       sprites: [
-        AceSprite(asset: _shenDouleur, animatedAsset: _shenDouleurAnim, position: SpritePosition.left),
+        AceSprite(asset: _shenDouleur, position: SpritePosition.left),
         AceSprite(asset: _tJambes, position: SpritePosition.right),
       ],
       kind: BeatKind.narration,
@@ -425,7 +409,7 @@ final AceScene aceJ1 = AceScene(
       background: _bgAvenuePropre,
       sprites: [
         AceSprite(
-            asset: _shenMarcheMouillee, animatedAsset: _shenMarcheMouilleeAnim, position: SpritePosition.center)
+            asset: _shenMarcheMouillee, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
       text:
@@ -437,7 +421,7 @@ final AceScene aceJ1 = AceScene(
       background: _bgAvenuePropre,
       sprites: [
         AceSprite(
-            asset: _shenMarcheMouillee, animatedAsset: _shenMarcheMouilleeAnim, position: SpritePosition.center)
+            asset: _shenMarcheMouillee, position: SpritePosition.center)
       ],
       kind: BeatKind.narration,
       text:
@@ -450,7 +434,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioNuit,
       sprites: [
-        AceSprite(asset: _shenRecolle, animatedAsset: _shenRecolleAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenRecolle, position: SpritePosition.center)
       ],
       kind: BeatKind.narration,
       ambient: BeatAmbient.rain,
@@ -463,7 +447,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioNuit,
       sprites: [
-        AceSprite(asset: _shenRecolle, animatedAsset: _shenRecolleAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenRecolle, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
       text: 'Première erreur.',
@@ -481,7 +465,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgBureauAubin,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
       text:
@@ -492,7 +476,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgBureauAubin,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.thought,
       text:
@@ -502,7 +486,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgBureauAubin,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'Dr Aubin',
@@ -513,7 +497,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgBureauAubin,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'Shen',
@@ -522,7 +506,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgBureauAubin,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'Dr Aubin',
@@ -533,7 +517,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgBureauAubin,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.thought,
       text:
@@ -554,7 +538,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.center)
       ],
       kind: BeatKind.narration,
       text:
@@ -565,7 +549,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
       text:
@@ -576,7 +560,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenTete, animatedAsset: _shenTeteAnim, position: SpritePosition.right)
+        AceSprite(asset: _shenTete, position: SpritePosition.right)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'L\'infirmière',
@@ -585,7 +569,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenTete, animatedAsset: _shenTeteAnim, position: SpritePosition.right)
+        AceSprite(asset: _shenTete, position: SpritePosition.right)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'L\'infirmière',
@@ -598,7 +582,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioMatin,
       sprites: [
-        AceSprite(asset: _shenTete, animatedAsset: _shenTeteAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenTete, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
       text: 'Maman ne dit pas tout.\nMaman ne dit pas tout.',
@@ -625,7 +609,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
       text:
@@ -638,7 +622,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
       text:
@@ -650,7 +634,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenTete, animatedAsset: _shenTeteAnim, position: SpritePosition.right)
+        AceSprite(asset: _shenTete, position: SpritePosition.right)
       ],
       kind: BeatKind.thought,
       text:
@@ -663,7 +647,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
       sfx: BeatSfx.ring,
@@ -672,7 +656,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'La banque',
@@ -684,7 +668,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenCalcule, animatedAsset: _shenCalculeAnim, position: SpritePosition.left)
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.thought,
       text: 'Une porte. Fermée.',
@@ -694,7 +678,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenTelAide, animatedAsset: _shenTelAideAnim, position: SpritePosition.right)
+        AceSprite(asset: _shenTelAide, position: SpritePosition.right)
       ],
       kind: BeatKind.narration,
       text:
@@ -705,7 +689,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenTelAide, animatedAsset: _shenTelAideAnim, position: SpritePosition.right)
+        AceSprite(asset: _shenTelAide, position: SpritePosition.right)
       ],
       kind: BeatKind.dialogue,
       speakerLabel: 'Aide sociale',
@@ -716,7 +700,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgCalculs,
       sprites: [
-        AceSprite(asset: _shenTete, animatedAsset: _shenTeteAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenTete, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
       text:
@@ -729,7 +713,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioNuit,
       sprites: [
-        AceSprite(asset: _shenRecolle, animatedAsset: _shenRecolleAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenRecolle, position: SpritePosition.center)
       ],
       kind: BeatKind.narration,
       ambient: BeatAmbient.rain,
@@ -741,7 +725,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioNuit,
       sprites: [
-        AceSprite(asset: _shenRecolle, animatedAsset: _shenRecolleAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenRecolle, position: SpritePosition.center)
       ],
       kind: BeatKind.narration,
       text:
@@ -752,7 +736,7 @@ final AceScene aceJ1 = AceScene(
     AceBeat(
       background: _bgStudioNuit,
       sprites: [
-        AceSprite(asset: _shenRecolle, animatedAsset: _shenRecolleAnim, position: SpritePosition.center)
+        AceSprite(asset: _shenRecolle, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
       text:
