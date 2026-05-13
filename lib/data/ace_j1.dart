@@ -42,11 +42,70 @@ final AceScene aceJ1 = AceScene(
   location: 'Belleville · Avenue Montaigne',
   time: '06:40 → 23:55',
   beats: [
+    // ─── Prologue : "Avant" ──────────────────────────────────────────
+    AceBeat(
+      background: _bgStudioMatin,
+      kind: BeatKind.titleCard,
+      text: 'À CONTRE-JOUR\n逆光',
+    ),
+    AceBeat(
+      background: _bgRueBelleville,
+      kind: BeatKind.titleCard,
+      ambient: BeatAmbient.rain,
+      text:
+          'Belleville, 20ᵉ.\nPluie de mai.\nSix heures du matin.',
+    ),
+    AceBeat(
+      background: _bgStudioMatin,
+      sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.right)],
+      kind: BeatKind.titleCard,
+      text:
+          'SHEN MARCHAND, 24 ans.\n'
+          'Études d\'archi à mi-temps.\n'
+          'Livreuse à vélo.\n'
+          'Bilingue français-mandarin.',
+    ),
+    AceBeat(
+      background: _bgStudioMatin,
+      kind: BeatKind.titleCard,
+      text:
+          'Sa mère : Hélène. 50 ans.\n'
+          'Hôpital Tenon. Traitement long.\n'
+          'Elle s\'excuse de tomber malade.\n'
+          'C\'est insupportable.',
+    ),
+    AceBeat(
+      background: _bgStudioMatin,
+      sprites: [
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
+      ],
+      kind: BeatKind.titleCard,
+      text:
+          'Loyer le 5 du mois.\n'
+          'Traitement de Maman, tous les mois.\n'
+          'Le compte ne suit pas.\n'
+          'Le carnet sait.',
+    ),
+    AceBeat(
+      background: _bgRueBelleville,
+      sprites: [
+        AceSprite(asset: _shenPretePartir, position: SpritePosition.center)
+      ],
+      kind: BeatKind.titleCard,
+      ambient: BeatAmbient.rain,
+      text:
+          'Aujourd\'hui : 5 mai 2026.\n'
+          'Trois courses. Une berline noire.\n'
+          'Une carte.\n'
+          'Et un nom qui n\'est pas encore prononcé.',
+    ),
+
     // ─── Acte 1 : matin Belleville ───────────────────────────────────
     AceBeat(
       background: _bgStudioMatin,
       sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.narration,
+      ambient: BeatAmbient.none,
       text:
           '6h40. Je note le matin avant qu\'il ne me note. Bic vert. Carnet. '
           'Maman dort encore — Tenon nous mange à petites cuillerées.',

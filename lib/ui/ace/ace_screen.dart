@@ -158,19 +158,28 @@ class _AceScreenState extends State<AceScreen>
               });
             },
           ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: SafeArea(
-              top: false,
-              child: _DialogueBox(
-                beat: beat,
-                isLast: isLast,
-                typeProgress: _typeProgress,
+          if (beat.kind == BeatKind.titleCard)
+            Positioned.fill(
+              child: _TitleCard(
+                key: ValueKey('tc-$beatIndex'),
+                text: beat.text,
+                progress: _typeProgress,
+              ),
+            )
+          else
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: SafeArea(
+                top: false,
+                child: _DialogueBox(
+                  beat: beat,
+                  isLast: isLast,
+                  typeProgress: _typeProgress,
+                ),
               ),
             ),
-          ),
         ],
         ),
       ),
@@ -586,6 +595,124 @@ class _DialogueBox extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Title card du prologue : voile sombre par-dessus le background, texte
+/// serif large centré qui apparait progressivement. Conduit le même
+/// `progress` que le typewriter pour rester compatible avec le tap-to-skip.
+class _TitleCard extends StatefulWidget {
+  const _TitleCard({
+    super.key,
+    required this.text,
+    required this.progress,
+  });
+
+  final String text;
+  final ValueNotifier<double> progress;
+
+  @override
+  State<_TitleCard> createState() => _TitleCardState();
+}
+
+class _TitleCardState extends State<_TitleCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    );
+    _ctrl.addListener(() {
+      widget.progress.value = _ctrl.value;
+    });
+    widget.progress.value = 0.0;
+    widget.progress.addListener(_handleExternal);
+    _ctrl.forward();
+  }
+
+  void _handleExternal() {
+    if (widget.progress.value >= 1.0 && _ctrl.value < 1.0) {
+      _ctrl.value = 1.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.progress.removeListener(_handleExternal);
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, _) {
+        final t = Curves.easeOut.transform(_ctrl.value);
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            // Voile sombre par-dessus le background flouté.
+            Opacity(
+              opacity: 0.45 + 0.35 * t,
+              child: Container(color: Colors.black),
+            ),
+            // Texte centré qui fade-in + monte légèrement.
+            Center(
+              child: Opacity(
+                opacity: t,
+                child: Transform.translate(
+                  offset: Offset(0, (1 - t) * 12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      widget.text,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.crimsonPro(
+                        fontSize: 26,
+                        height: 1.45,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        shadows: const [
+                          Shadow(
+                              color: Colors.black, blurRadius: 12,
+                              offset: Offset(0, 2)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Indicateur "tap" discret en bas, n'apparait qu'à la fin
+            // de la fade-in.
+            if (t > 0.95)
+              Positioned(
+                bottom: 24,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Opacity(
+                    opacity: (t - 0.95) * 20,
+                    child: Text(
+                      '— tap —',
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        color: Colors.white54,
+                        letterSpacing: 1.6,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
