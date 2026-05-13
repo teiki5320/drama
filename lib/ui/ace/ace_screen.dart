@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -20,7 +21,8 @@ class AceScreen extends StatefulWidget {
   State<AceScreen> createState() => _AceScreenState();
 }
 
-class _AceScreenState extends State<AceScreen> {
+class _AceScreenState extends State<AceScreen>
+    with SingleTickerProviderStateMixin {
   late final AceScene scene;
   int beatIndex = 0;
 
@@ -32,18 +34,29 @@ class _AceScreenState extends State<AceScreen> {
   /// `null` sur un beat (= "garde la précédente").
   BeatAmbient _currentAmbient = BeatAmbient.none;
 
+  /// Controlleur du camera shake (450ms). Sur un beat impact, on
+  /// secoue tout le Stack (sprite + bg + cartouche) pour donner le
+  /// choc.
+  late final AnimationController _shake;
+
   @override
   void initState() {
     super.initState();
     scene = aceJ1;
+    _shake = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 450),
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _applyBeatAudio(scene.beats.first);
+      if (scene.beats.first.sfx == BeatSfx.impact) _shake.forward(from: 0);
     });
   }
 
   @override
   void dispose() {
     AceAudio.instance.stopAll();
+    _shake.dispose();
     _typeProgress.dispose();
     super.dispose();
   }
@@ -60,6 +73,7 @@ class _AceScreenState extends State<AceScreen> {
   void _applyBeatAudio(AceBeat beat) {
     if (beat.sfx == BeatSfx.impact) {
       AceAudio.instance.playSfx(AceSfx.impact, volume: 0.8);
+      _shake.forward(from: 0);
     } else if (beat.sfx == BeatSfx.ring) {
       AceAudio.instance.playSfx(AceSfx.ring, volume: 0.6);
     }
@@ -113,7 +127,17 @@ class _AceScreenState extends State<AceScreen> {
           _next();
         }
       },
-      child: Stack(
+      child: AnimatedBuilder(
+        animation: _shake,
+        builder: (context, child) {
+          if (_shake.value == 0) return child!;
+          // Decroissance + sinusoide haute frequence
+          final amp = 14 * (1 - _shake.value);
+          final dx = math.sin(_shake.value * math.pi * 14) * amp;
+          final dy = math.sin(_shake.value * math.pi * 11) * amp * 0.6;
+          return Transform.translate(offset: Offset(dx, dy), child: child);
+        },
+        child: Stack(
         fit: StackFit.expand,
         children: [
           _Background(asset: beat.background, key: ValueKey(beat.background)),
@@ -148,28 +172,71 @@ class _AceScreenState extends State<AceScreen> {
             ),
           ),
         ],
+        ),
       ),
     );
   }
 }
 
-class _Background extends StatelessWidget {
+/// Background avec Ken Burns : zoom lent 1.0 → 1.10 sur 18 s, et une
+/// dérive en X/Y subtile pour donner de la respiration à la scène.
+/// Le tout est aussi flouté (sigma 4) et assombri.
+class _Background extends StatefulWidget {
   const _Background({super.key, required this.asset});
   final String asset;
+
+  @override
+  State<_Background> createState() => _BackgroundState();
+}
+
+class _BackgroundState extends State<_Background>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 18),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 350),
       child: SizedBox.expand(
-        key: ValueKey(asset),
+        key: ValueKey(widget.asset),
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              asset,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(color: Colors.black87),
+            AnimatedBuilder(
+              animation: _ctrl,
+              builder: (context, child) {
+                final t = _ctrl.value; // 0..1
+                final scale = 1.04 + 0.06 * t; // 1.04 → 1.10
+                final dx = (t - 0.5) * 16; // ±8 px
+                final dy = (t - 0.5) * 10; // ±5 px
+                return Transform.translate(
+                  offset: Offset(dx, dy),
+                  child: Transform.scale(
+                    scale: scale,
+                    child: child,
+                  ),
+                );
+              },
+              child: Image.asset(
+                widget.asset,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(color: Colors.black87),
+              ),
             ),
             BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
@@ -197,6 +264,9 @@ class _SpriteLayer extends StatelessWidget {
         children: [
           for (final s in sprites)
             _SpriteWidget(
+              // Key qui change avec asset+position → State recreee
+              // donc la slide-in se rejoue a chaque beat.
+              key: ValueKey('${s.asset}-${s.position}'),
               sprite: s,
               height: spriteHeight,
               parentWidth: c.maxWidth,
@@ -207,8 +277,12 @@ class _SpriteLayer extends StatelessWidget {
   }
 }
 
-class _SpriteWidget extends StatelessWidget {
+/// Sprite avec :
+/// - slide-in 260 ms ease-out depuis l'extérieur du cadre (gauche/droite/bas).
+/// - bobbing sinusoïdal lent (4 s, ±2.5 px Y) pour simuler la respiration.
+class _SpriteWidget extends StatefulWidget {
   const _SpriteWidget({
+    super.key,
     required this.sprite,
     required this.height,
     required this.parentWidth,
@@ -219,33 +293,83 @@ class _SpriteWidget extends StatelessWidget {
   final double parentWidth;
 
   @override
+  State<_SpriteWidget> createState() => _SpriteWidgetState();
+}
+
+class _SpriteWidgetState extends State<_SpriteWidget>
+    with TickerProviderStateMixin {
+  late final AnimationController _entry;
+  late final AnimationController _bob;
+
+  @override
+  void initState() {
+    super.initState();
+    _entry = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 260),
+    )..forward();
+    _bob = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _entry.dispose();
+    _bob.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Alignment align;
     EdgeInsets pad;
-    switch (sprite.position) {
+    double slideFromX = 0;
+    switch (widget.sprite.position) {
       case SpritePosition.left:
         align = Alignment.bottomLeft;
         pad = const EdgeInsets.only(left: 12, bottom: 180);
+        slideFromX = -60;
         break;
       case SpritePosition.right:
         align = Alignment.bottomRight;
         pad = const EdgeInsets.only(right: 12, bottom: 180);
+        slideFromX = 60;
         break;
       case SpritePosition.center:
         align = Alignment.bottomCenter;
         pad = const EdgeInsets.only(bottom: 180);
+        slideFromX = 0;
         break;
     }
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 220),
-      child: Padding(
-        key: ValueKey('${sprite.asset}-${sprite.position}'),
-        padding: pad,
-        child: Align(
-          alignment: align,
+    return Padding(
+      padding: pad,
+      child: Align(
+        alignment: align,
+        child: AnimatedBuilder(
+          animation: Listenable.merge([_entry, _bob]),
+          builder: (context, child) {
+            final ec =
+                Curves.easeOutCubic.transform(_entry.value); // 0 → 1
+            final opacity = ec;
+            final tx = slideFromX * (1 - ec);
+            final ty = (1 - ec) * 18; // slight lift on entry
+            // Bobbing respiration (sin sur la phase 0..1).
+            final bobY = (widget.sprite.position == SpritePosition.center)
+                ? 0.0
+                : -2.5 * math.sin(_bob.value * 2 * math.pi);
+            return Opacity(
+              opacity: opacity,
+              child: Transform.translate(
+                offset: Offset(tx, ty + bobY),
+                child: child,
+              ),
+            );
+          },
           child: Image.asset(
-            sprite.asset,
-            height: height * sprite.scale,
+            widget.sprite.asset,
+            height: widget.height * widget.sprite.scale,
             fit: BoxFit.contain,
             errorBuilder: (_, __, ___) => const SizedBox.shrink(),
           ),
@@ -254,6 +378,7 @@ class _SpriteWidget extends StatelessWidget {
     );
   }
 }
+
 
 class _TopBar extends StatelessWidget {
   const _TopBar({
