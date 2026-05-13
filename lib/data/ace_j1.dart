@@ -76,6 +76,7 @@ final AceScene aceJ1 = AceScene(
         AceSprite(asset: _shenFeuRouge, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
+      ambient: BeatAmbient.rain,
       text:
           'Feu rouge rue Ramponeau. La ville s\'éveille en gris. '
           'Le sac fluo pèse trois croissants et un loyer.',
@@ -94,6 +95,7 @@ final AceScene aceJ1 = AceScene(
       background: _bgCollision,
       sprites: [],
       kind: BeatKind.narration,
+      sfx: BeatSfx.impact,
       text:
           'Avenue Montaigne. 8h12. Une berline noire ouvre sa portière sans regarder.',
     ),
@@ -144,6 +146,7 @@ final AceScene aceJ1 = AceScene(
         AceSprite(asset: _tDosSeloigne, position: SpritePosition.right),
       ],
       kind: BeatKind.narration,
+      sfx: BeatSfx.impact,
       text:
           'Il remonte dans la berline. La portière claque. La voiture '
           's\'éloigne. Mon vélo est tordu sur les pavés.',
@@ -197,6 +200,7 @@ final AceScene aceJ1 = AceScene(
         AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
+      ambient: BeatAmbient.none,
       text:
           'Studio. 14h. Je compte ce que je n\'ai pas : un vélo, trois '
           'courses, une fierté.',
@@ -271,6 +275,8 @@ final AceScene aceJ1 = AceScene(
         AceSprite(asset: _shenTelNuit, position: SpritePosition.left)
       ],
       kind: BeatKind.narration,
+      sfx: BeatSfx.ring,
+      ambient: BeatAmbient.rain,
       text:
           '23h55. Numéro masqué. Je décroche par fatigue.',
     ),
