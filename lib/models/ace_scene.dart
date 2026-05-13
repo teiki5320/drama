@@ -30,6 +30,14 @@ enum BeatKind {
   thought,
 }
 
+/// SFX joué à l'apparition du beat (en plus du tick du typewriter).
+/// Null = aucun SFX d'apparition.
+enum BeatSfx { impact, ring }
+
+/// Ambiance sonore en boucle pendant le beat. Hérite du beat précédent
+/// si null.
+enum BeatAmbient { none, rain }
+
 class AceBeat {
   /// Image de fond (recouvre tout l'écran, légèrement floue).
   final String background;
@@ -47,12 +55,21 @@ class AceBeat {
   /// Texte affiché dans le cartouche, avec emphase **gras** / *italique*.
   final String text;
 
+  /// SFX one-shot joué à l'apparition du beat. Null = silence.
+  final BeatSfx? sfx;
+
+  /// Ambiance en boucle à activer sur ce beat (ne se relance pas si déjà
+  /// active). Null = on garde l'ambiance précédente.
+  final BeatAmbient? ambient;
+
   const AceBeat({
     required this.background,
     required this.text,
     this.sprites = const [],
     this.kind = BeatKind.dialogue,
     this.speakerLabel,
+    this.sfx,
+    this.ambient,
   });
 }
 

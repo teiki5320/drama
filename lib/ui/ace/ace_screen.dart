@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/colors.dart';
 import '../../data/ace_j1.dart';
 import '../../models/ace_scene.dart';
+import 'ace_audio.dart';
 
 /// Écran ACE — BD animée à la Ace Attorney.
 ///
@@ -27,14 +28,22 @@ class _AceScreenState extends State<AceScreen> {
   /// pour décider si un tap doit "compléter le texte" ou "avancer".
   final ValueNotifier<double> _typeProgress = ValueNotifier(0.0);
 
+  /// Ambiance courante. Mémorisée parce que `BeatAmbient` peut être
+  /// `null` sur un beat (= "garde la précédente").
+  BeatAmbient _currentAmbient = BeatAmbient.none;
+
   @override
   void initState() {
     super.initState();
     scene = aceJ1;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _applyBeatAudio(scene.beats.first);
+    });
   }
 
   @override
   void dispose() {
+    AceAudio.instance.stopAll();
     _typeProgress.dispose();
     super.dispose();
   }
@@ -48,23 +57,44 @@ class _AceScreenState extends State<AceScreen> {
     _next();
   }
 
+  void _applyBeatAudio(AceBeat beat) {
+    if (beat.sfx == BeatSfx.impact) {
+      AceAudio.instance.playSfx(AceSfx.impact, volume: 0.8);
+    } else if (beat.sfx == BeatSfx.ring) {
+      AceAudio.instance.playSfx(AceSfx.ring, volume: 0.6);
+    }
+    if (beat.ambient != null && beat.ambient != _currentAmbient) {
+      _currentAmbient = beat.ambient!;
+      AceAudio.instance.setAmbient(_mapAmbient(beat.ambient!));
+    }
+  }
+
+  AceAmbient _mapAmbient(BeatAmbient a) => switch (a) {
+        BeatAmbient.none => AceAmbient.none,
+        BeatAmbient.rain => AceAmbient.rain,
+      };
+
   void _next() {
     if (beatIndex < scene.beats.length - 1) {
       HapticFeedback.selectionClick();
+      AceAudio.instance.playSfx(AceSfx.advance, volume: 0.5);
       setState(() {
         beatIndex++;
         _typeProgress.value = 0.0;
       });
+      _applyBeatAudio(scene.beats[beatIndex]);
     }
   }
 
   void _prev() {
     if (beatIndex > 0) {
       HapticFeedback.selectionClick();
+      AceAudio.instance.playSfx(AceSfx.advance, volume: 0.4);
       setState(() {
         beatIndex--;
         _typeProgress.value = 0.0;
       });
+      _applyBeatAudio(scene.beats[beatIndex]);
     }
   }
 
@@ -92,6 +122,17 @@ class _AceScreenState extends State<AceScreen> {
             title: scene.title,
             location: scene.location,
             progress: (beatIndex + 1) / scene.beats.length,
+            muted: AceAudio.instance.muted,
+            onToggleMute: () {
+              setState(() {
+                AceAudio.instance.muted = !AceAudio.instance.muted;
+                if (AceAudio.instance.muted) {
+                  AceAudio.instance.stopAll();
+                } else {
+                  AceAudio.instance.setAmbient(_mapAmbient(_currentAmbient));
+                }
+              });
+            },
           ),
           Positioned(
             left: 0,
@@ -219,11 +260,15 @@ class _TopBar extends StatelessWidget {
     required this.title,
     required this.location,
     required this.progress,
+    required this.muted,
+    required this.onToggleMute,
   });
 
   final String title;
   final String location;
   final double progress;
+  final bool muted;
+  final VoidCallback onToggleMute;
 
   @override
   Widget build(BuildContext context) {
@@ -235,36 +280,49 @@ class _TopBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.55),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.crimsonPro(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      height: 1.1,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.55),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          title,
+                          style: GoogleFonts.crimsonPro(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            height: 1.1,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          location,
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: Colors.white70,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    location,
-                    style: GoogleFonts.inter(
-                      fontSize: 11,
-                      color: Colors.white70,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 8),
+                _RoundIconBtn(
+                  icon: muted ? Icons.volume_off : Icons.volume_up,
+                  onTap: onToggleMute,
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             ClipRRect(
@@ -278,6 +336,28 @@ class _TopBar extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RoundIconBtn extends StatelessWidget {
+  const _RoundIconBtn({required this.icon, required this.onTap});
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black.withValues(alpha: 0.55),
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Icon(icon, size: 18, color: Colors.white),
         ),
       ),
     );
@@ -406,6 +486,7 @@ class _TypewriterText extends StatefulWidget {
 class _TypewriterTextState extends State<_TypewriterText>
     with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
+  int _lastTickChar = 0;
 
   @override
   void initState() {
@@ -428,9 +509,27 @@ class _TypewriterTextState extends State<_TypewriterText>
     );
     _ctrl.addListener(() {
       widget.progress.value = _ctrl.value;
+      _maybeTick();
     });
     widget.progress.value = 0.0;
+    _lastTickChar = 0;
     _ctrl.forward();
+  }
+
+  /// Joue un petit "tick" toutes les 3 lettres (utilisable comme machine
+  /// à écrire). On évite de jouer sur les espaces, et on cap à ~1 tick
+  /// toutes les 60 ms pour ne pas saturer.
+  void _maybeTick() {
+    final n = (widget.text.length * _ctrl.value).round();
+    if (n <= _lastTickChar) return;
+    if (n - _lastTickChar < 3) return;
+    final c = n - 1 < widget.text.length ? widget.text[n - 1] : ' ';
+    if (c == ' ' || c == '\n') {
+      _lastTickChar = n;
+      return;
+    }
+    _lastTickChar = n;
+    AceAudio.instance.playSfx(AceSfx.tick, volume: 0.20);
   }
 
   @override
