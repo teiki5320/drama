@@ -7,7 +7,8 @@ import '../models/ace_scene.dart';
 /// Voix de Shen : "je" majoritaire, ironie sèche, 24 ans, carnet.
 /// Voix de Tristan : sec, peu de mots, pas de superlatifs.
 
-const String _bgStudio = 'assets/photos/ace/bg_j1_studio_matin.jpeg';
+const String _bgStudioMatin = 'assets/photos/ace/bg_j1_studio_matin.jpeg';
+const String _bgStudioNuit = 'assets/photos/ace/bg_j1_studio_nuit.jpeg';
 const String _bgRueBelleville = 'assets/photos/ace/bg_j1_rue_belleville.png';
 const String _bgCollision = 'assets/photos/ace/bg_j1_avenue_collision.jpeg';
 const String _bgAvenuePropre = 'assets/photos/ace/bg_j1_avenue_propre.png';
@@ -43,7 +44,7 @@ final AceScene aceJ1 = AceScene(
   beats: [
     // ─── Acte 1 : matin Belleville ───────────────────────────────────
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioMatin,
       sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.narration,
       text:
@@ -51,7 +52,7 @@ final AceScene aceJ1 = AceScene(
           'Maman dort encore — Tenon nous mange à petites cuillerées.',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioMatin,
       sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.thought,
       text:
@@ -59,7 +60,7 @@ final AceScene aceJ1 = AceScene(
           'toujours.',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioMatin,
       sprites: [
         AceSprite(asset: _shenPretePartir, position: SpritePosition.center)
       ],
@@ -191,7 +192,7 @@ final AceScene aceJ1 = AceScene(
 
     // ─── Acte 5 : retour studio, le regret ───────────────────────────
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioMatin,
       sprites: [
         AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
@@ -201,7 +202,7 @@ final AceScene aceJ1 = AceScene(
           'courses, une fierté.',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioMatin,
       sprites: [
         AceSprite(asset: _shenCalcule, position: SpritePosition.left)
       ],
@@ -211,7 +212,7 @@ final AceScene aceJ1 = AceScene(
           'Juste ça.',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioMatin,
       sprites: [
         AceSprite(asset: _shenRecolle, position: SpritePosition.center)
       ],
@@ -221,7 +222,7 @@ final AceScene aceJ1 = AceScene(
           'quatrième. Le numéro y serait peut-être.',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioMatin,
       sprites: [
         AceSprite(asset: _shenRecolle, position: SpritePosition.center)
       ],
@@ -231,19 +232,19 @@ final AceScene aceJ1 = AceScene(
           'On verra ce soir.',
     ),
 
-    // ─── Acte 6 : tentative aide sociale ─────────────────────────────
+    // ─── Acte 6 : tentative aide sociale (soir tombant) ──────────────
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioNuit,
       sprites: [
         AceSprite(asset: _shenTelAide, position: SpritePosition.right)
       ],
       kind: BeatKind.narration,
       text:
-          '17h. J\'appelle l\'aide sociale pour les frais de Maman. '
+          '20h. J\'appelle l\'aide sociale pour les frais de Maman. '
           'Musique d\'attente. Vivaldi en sourdine.',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioNuit,
       sprites: [
         AceSprite(asset: _shenTelAide, position: SpritePosition.right)
       ],
@@ -254,7 +255,7 @@ final AceScene aceJ1 = AceScene(
           'semaines. »',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioNuit,
       sprites: [
         AceSprite(asset: _shenTete, position: SpritePosition.center)
       ],
@@ -265,7 +266,7 @@ final AceScene aceJ1 = AceScene(
 
     // ─── Acte 7 : le coup de fil de nuit ─────────────────────────────
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioNuit,
       sprites: [
         AceSprite(asset: _shenTelNuit, position: SpritePosition.left)
       ],
@@ -274,7 +275,7 @@ final AceScene aceJ1 = AceScene(
           '23h55. Numéro masqué. Je décroche par fatigue.',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioNuit,
       sprites: [
         AceSprite(asset: _shenTelNuit, position: SpritePosition.left)
       ],
@@ -285,7 +286,7 @@ final AceScene aceJ1 = AceScene(
           'Rostand. — T. »',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioNuit,
       sprites: [
         AceSprite(asset: _shenTelNuit, position: SpritePosition.left)
       ],
@@ -294,7 +295,7 @@ final AceScene aceJ1 = AceScene(
           'Comment il sait. Pour la carte. Pour moi. Pour ce numéro.',
     ),
     AceBeat(
-      background: _bgStudio,
+      background: _bgStudioNuit,
       sprites: [
         AceSprite(asset: _shenEcrit, position: SpritePosition.right)
       ],
