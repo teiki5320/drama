@@ -30,6 +30,7 @@ flutter:
     - assets/photos/characters/
     - assets/photos/posts/
     - assets/photos/scenes/
+    - assets/photos/ace/
 
 flutter_launcher_icons:
   image_path: "assets/icon/icon.png"

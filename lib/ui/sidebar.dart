@@ -69,8 +69,8 @@ class Sidebar extends ConsumerWidget {
           ),
           const Spacer(),
           _NavItem(
-            icon: Icons.menu_book,
-            label: 'CARNET',
+            icon: Icons.auto_stories,
+            label: 'ACE',
             selected: selected == 0,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -78,8 +78,8 @@ class Sidebar extends ConsumerWidget {
             },
           ),
           _NavItem(
-            icon: Icons.account_balance,
-            label: 'BANQUE',
+            icon: Icons.menu_book,
+            label: 'CARNET',
             selected: selected == 1,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -87,8 +87,8 @@ class Sidebar extends ConsumerWidget {
             },
           ),
           _NavItem(
-            icon: Icons.photo_library,
-            label: 'INSTA',
+            icon: Icons.account_balance,
+            label: 'BANQUE',
             selected: selected == 2,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -96,13 +96,22 @@ class Sidebar extends ConsumerWidget {
             },
           ),
           _NavItem(
+            icon: Icons.photo_library,
+            label: 'INSTA',
+            selected: selected == 3,
+            onTap: () {
+              HapticFeedback.selectionClick();
+              ref.read(selectedTabProvider.notifier).state = 3;
+            },
+          ),
+          _NavItem(
             icon: Icons.chat_bubble,
             label: 'INVIT.',
-            selected: selected == 3,
+            selected: selected == 4,
             badgeCount: unread,
             onTap: () async {
               HapticFeedback.selectionClick();
-              ref.read(selectedTabProvider.notifier).state = 3;
+              ref.read(selectedTabProvider.notifier).state = 4;
               await ref
                   .read(gameStateProvider.notifier)
                   .markMessagesSeen();
