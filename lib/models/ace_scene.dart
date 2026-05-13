@@ -28,6 +28,11 @@ enum BeatKind {
 
   /// Pensée intérieure de Shen (italique, sans guillemets).
   thought,
+
+  /// Title card du prologue : texte serif centré plein écran, pas de
+  /// cartouche, fond ultra sombre. Utilisé pour planter les
+  /// personnages et le contexte avant J1.
+  titleCard,
 }
 
 /// SFX joué à l'apparition du beat (en plus du tick du typewriter).
