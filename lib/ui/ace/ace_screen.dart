@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/colors.dart';
-import '../../data/ace_j1.dart';
+import '../../data/ace_j1_j3.dart';
 import '../../models/ace_scene.dart';
 import 'ace_audio.dart';
 
