@@ -1,18 +1,23 @@
 import '../models/ace_scene.dart';
 
-/// Scénario J1 → J3 en mode BD-animée, version cinéma.
+/// Scénario J1 → J3 en mode BD-animée, version drama.
 ///
-/// **Style** :
-/// - Narration en 3e personne, présent narratif, sensorielle. Descriptions
-///   filmiques ("Le bitume monte autant qu'il tombe", "Le sac s'éventre
-///   comme un fruit trop mûr"). Phrases pleines, plus longues que le
-///   carnet — c'est le contrat de l'ACE.
-/// - Pensées en 1re personne, rares et percutantes. "Quelqu'un a appuyé
-///   sur pause à l'intérieur de moi." Voix de Shen préservée pour les
-///   pics émotionnels.
-/// - Quelques voix off omniscientes ("Plus tard, elle ne saurait pas
-///   dire quand elle a ramassé les morceaux.") pour le suspense.
-/// - Dialogues longs, frontaux, drama coréen.
+/// **Règles de voix (strictes)** :
+/// - **Narration** = 3e personne, présent narratif, sensorielle. Phrases
+///   pleines, descriptions filmiques. Aucun "je".
+/// - **Pensées** = 1re personne. "Je", "moi", "mon". Aucune référence à
+///   "Shen" en 3e personne dans une pensée.
+/// - **Voix off omnisciente** ponctuelle, en 3e personne narratif :
+///   "Plus tard, Shen ne saurait pas dire à quel moment elle a décidé."
+/// - **Dialogues** = répliques entre guillemets français « ». Speaker
+///   nommé dans le label.
+///
+/// **Drama** :
+/// - Cliffhangers de fin de beat. Chaque beat tire vers le suivant.
+/// - Stakes corporels : douleur, faim, sommeil, argent retenu.
+/// - Compteur visible : six semaines, dix-huit mille, deux mille trois cent
+///   quatre-vingt-quatre.
+/// - Dignité de Shen sous tension : elle refuse, elle compte, elle tient.
 
 const String _bgStudioMatin = 'assets/photos/ace/bg_j1_studio_matin.jpeg';
 const String _bgStudioNuit = 'assets/photos/ace/bg_j1_studio_nuit.jpeg';
@@ -59,7 +64,7 @@ final AceScene aceJ1 = AceScene(
   time: '03 → 05 juin 2026',
   beats: [
     // ═══════════════════════════════════════════════════════════════════
-    // PROLOGUE : « Avant »
+    // PROLOGUE — « Avant »
     // ═══════════════════════════════════════════════════════════════════
     AceBeat(
       background: _bgStudioMatin,
@@ -71,9 +76,9 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.titleCard,
       ambient: BeatAmbient.rain,
       text:
-          'Belleville, 20ᵉ arrondissement.\n'
+          'Belleville, 20ᵉ.\n'
           'Pluie de juin.\n'
-          'Sept heures du matin.',
+          'Six heures du matin.',
     ),
     AceBeat(
       background: _bgStudioMatin,
@@ -81,7 +86,7 @@ final AceScene aceJ1 = AceScene(
       ambient: BeatAmbient.none,
       text:
           'SHEN MARCHAND, 24 ans.\n'
-          'Études d\'architecture à mi-temps.\n'
+          'Architecture à mi-temps.\n'
           'Livreuse à vélo, le reste du temps.\n'
           'Bilingue français-mandarin.',
     ),
@@ -98,7 +103,8 @@ final AceScene aceJ1 = AceScene(
       background: _bgStudioMatin,
       kind: BeatKind.titleCard,
       text:
-          'Trois jours. Trois portes qui se ferment.\n'
+          'Trois jours pour comprendre.\n'
+          'Trois portes pour s\'effondrer.\n'
           'Et un homme qui n\'a pas encore de nom.',
     ),
 
@@ -115,25 +121,27 @@ final AceScene aceJ1 = AceScene(
       sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.narration,
       text:
-          'La pluie tape la fenêtre du studio comme un visiteur insistant. '
-          'Shen écrit. Bic vert — elle n\'a pas trouvé le noir.',
+          'La pluie cogne la fenêtre du studio. Shen écrit, vite, sans '
+          'lever la tête. Bic vert : elle n\'a pas trouvé le noir.',
     ),
     AceBeat(
       background: _bgStudioMatin,
       sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.thought,
       text:
-          'Camille m\'a dit que si je n\'écris pas, je vais oublier de '
-          'vivre. Je n\'écris pas pour me souvenir. J\'écris pour ne pas '
-          'pleurer.',
+          'Maman a toussé à quatre heures du matin.\n'
+          'J\'ai fait semblant de dormir. Si elle sait que je l\'ai '
+          'entendue, elle s\'excusera.\n'
+          'Maman s\'excuse de tomber malade. Je ne supporte pas.',
     ),
     AceBeat(
       background: _bgStudioMatin,
       sprites: [AceSprite(asset: _shenEcrit, position: SpritePosition.left)],
       kind: BeatKind.narration,
       text:
-          'Sur l\'étagère, une lettre du Fujian dort. Tante Mei écrit en '
-          'chinois ; Shen lira ce soir. Si la journée laisse le soir.',
+          'Sur l\'étagère, une lettre du Fujian patiente, fermée. Tante '
+          'Mei écrit en chinois. Shen lira ce soir — si la journée laisse '
+          'le soir.',
     ),
 
     // ─── SMS Maman avant départ ────────────────────────────────────
@@ -163,9 +171,19 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.dialogue,
       speakerLabel: 'Maman',
       text:
-          '« Tes 24 ans tiendront pas la pluie aussi longtemps que tu le '
-          'crois. Couvre-toi. Et mange un truc avant de monter sur ce '
-          'vélo. »',
+          '« Tes vingt-quatre ans ne tiendront pas la pluie aussi '
+          'longtemps que tu le crois. Couvre-toi. Et mange un truc avant '
+          'de monter sur ce vélo. »',
+    ),
+    AceBeat(
+      background: _bgStudioMatin,
+      sprites: [
+        AceSprite(asset: _shenPretePartir, position: SpritePosition.center)
+      ],
+      kind: BeatKind.thought,
+      text:
+          'Pain au chocolat de la veille trempé dans du thé tiède. Ça me '
+          'tient debout. Je ne lui dirai pas.',
     ),
 
     // ─── Rue Belleville sous la pluie ──────────────────────────────
@@ -177,9 +195,9 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.narration,
       ambient: BeatAmbient.rain,
       text:
-          'Belleville se réveille au pas. Le sac fluo de Shen charge trois '
-          'bowls vegan et un loyer. Au feu rouge, elle relit le dernier '
-          'SMS de Maman.',
+          'Belleville s\'éveille à contre-cœur. Le sac fluo charge trois '
+          'petits-déjeuners à quatre euros pièce — moins la part de la '
+          'plateforme, il restera de quoi acheter du riz.',
     ),
     AceBeat(
       background: _bgRueBelleville,
@@ -188,8 +206,9 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.thought,
       text:
-          '« Couvre-toi. » Trois syllabes qui essaient de tenir la pluie. '
-          'Comme si on pouvait faire passer une chimio avec un châle.',
+          'Ce soir : payer le loyer, lire la lettre du Fujian, vérifier '
+          'que Maman a bien pris ses gélules de seize heures.\n'
+          'Pédaler. Ne pas penser. Pédaler.',
     ),
     AceBeat(
       background: _bgRueBelleville,
@@ -198,7 +217,7 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Ce matin-là, Shen pensait que la pluie était son pire ennemi. '
+          'Ce matin-là, Shen croyait que la pluie était son pire ennemi. '
           'Elle se trompait.',
     ),
 
@@ -208,11 +227,11 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.narration,
       sfx: BeatSfx.impact,
       text:
-          'Avenue Montaigne. 8h17. Le bruit arrive en deux temps. D\'abord '
-          'la mécanique d\'un freinage trop tard — un crissement aigu qui '
-          'n\'a pas le temps de finir. Puis le métal qui touche le métal, '
-          'sourd, qui se cogne dans la poitrine de Shen avant même que '
-          'son vélo soit touché.',
+          'Avenue Montaigne. Huit heures dix-sept. Le bruit arrive en deux '
+          'temps. D\'abord la mécanique d\'un freinage trop tard : un '
+          'crissement aigu qui n\'a pas le temps de finir. Puis le métal '
+          'qui touche le métal — sourd, court — et qui frappe dans la '
+          'poitrine de Shen avant même que son vélo soit touché.',
     ),
     AceBeat(
       background: _bgCollision,
@@ -220,7 +239,7 @@ final AceScene aceJ1 = AceScene(
         AceSprite(asset: _shenDouleur, position: SpritePosition.left)
       ],
       kind: BeatKind.thought,
-      text: 'Quelqu\'un a appuyé sur pause à l\'intérieur de moi.',
+      text: 'Quelqu\'un vient d\'appuyer sur pause à l\'intérieur de moi.',
     ),
     AceBeat(
       background: _bgCollision,
@@ -231,8 +250,8 @@ final AceScene aceJ1 = AceScene(
       text:
           'Le bitume est plus rapide que la pensée. L\'épaule droite touche '
           'en premier, puis le casque, puis le genou. Le casque tient. Le '
-          'genou non. La peau se déchire avec le bruit du papier qu\'on '
-          'déchire — un son qu\'on n\'oublie pas.',
+          'genou non — la peau s\'ouvre avec le bruit du papier qu\'on '
+          'déchire. Un son qu\'on n\'oublie jamais.',
     ),
     AceBeat(
       background: _bgCollision,
@@ -242,9 +261,18 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.narration,
       text:
           'Le sac de livraison s\'éventre comme un fruit trop mûr. Le bowl '
-          'se renverse en direct ; l\'açaí trace une traînée violette sur '
-          'le bitume mouillé. Trente-huit euros que la plateforme va '
-          'retenir sur la prochaine paie.',
+          'se renverse en direct ; l\'açaí trace une coulée violette sur '
+          'le bitume mouillé. Trente-huit euros que la plateforme retiendra '
+          'sur la prochaine paie.',
+    ),
+    AceBeat(
+      background: _bgCollision,
+      sprites: [
+        AceSprite(asset: _shenDouleur, position: SpritePosition.left)
+      ],
+      kind: BeatKind.thought,
+      text:
+          'Pas pleurer. Pas devant lui. Pas devant la rue.',
     ),
 
     // ─── Le costume sans yeux ──────────────────────────────────────
@@ -256,10 +284,10 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Quand Shen rouvre les yeux, des chaussures cuir. L\'homme qui '
-          'sort de la berline porte un costume qui coûte plus que son '
+          'Quand Shen rouvre les yeux : des chaussures cuir. L\'homme qui '
+          'descend de la berline porte un costume qui coûte plus que son '
           'loyer annuel. Il regarde sa montre. Il regarde la rue. Il '
-          'regarde son rétroviseur. Il regarde tout sauf elle.',
+          'regarde son rétroviseur. Il regarde tout — sauf elle.',
     ),
     AceBeat(
       background: _bgCollision,
@@ -269,8 +297,8 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Quand il baisse enfin les yeux, c\'est avec l\'expression de '
-          'quelqu\'un qui calcule combien ça va lui coûter.',
+          'Quand il finit par baisser les yeux, c\'est avec l\'expression '
+          'de quelqu\'un qui calcule combien ça va lui coûter.',
     ),
 
     // ─── Dialogue du mépris ────────────────────────────────────────
@@ -283,7 +311,7 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.dialogue,
       speakerLabel: 'L\'inconnu',
       text:
-          '« Ça va aller. Pour le vélo et la consultation. »\n'
+          '« Ça ira. Pour le vélo et la consultation. »\n'
           '(Il sort deux billets de cent euros.)',
     ),
     AceBeat(
@@ -315,11 +343,11 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.dialogue,
       speakerLabel: 'Shen',
       text:
-          '« Votre assurance va payer correctement, comme tout le monde. '
-          'Je ne suis pas un pourboire. »',
+          '« Votre assurance paiera. Comme tout le monde. Je ne suis pas '
+          'un pourboire. »',
     ),
 
-    // ─── La carte ──────────────────────────────────────────────────
+    // ─── La carte — révélation ─────────────────────────────────────
     AceBeat(
       background: _bgCollision,
       sprites: [
@@ -328,9 +356,9 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Il lui tend une carte de visite, deux doigts en pince, comme '
+          'Il lui tend une carte de visite — deux doigts en pince, comme '
           'on tend l\'addition. Bristol crème. Lettrage discret. Trois '
-          'lignes que Shen va retenir malgré elle :',
+          'lignes que Shen lit malgré elle :',
     ),
     AceBeat(
       background: _bgCollision,
@@ -349,9 +377,18 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.narration,
       sfx: BeatSfx.impact,
       text:
-          'Shen prend la carte. La regarde. La déchire devant lui — un '
-          'coup, deux coups, quatre morceaux. Les bouts tombent dans la '
-          'flaque d\'açaí. La pluie s\'en occupe.',
+          'Shen prend la carte. Elle la regarde. Elle la déchire devant '
+          'lui — un coup, deux coups, quatre morceaux. Les bouts tombent '
+          'dans la flaque d\'açaí. La pluie s\'en occupe.',
+    ),
+    AceBeat(
+      background: _bgCollision,
+      sprites: [
+        AceSprite(asset: _shenDechireCarte, position: SpritePosition.center)
+      ],
+      kind: BeatKind.thought,
+      text:
+          'Voilà. Ça, au moins, je l\'aurai fait correctement aujourd\'hui.',
     ),
 
     // ─── Le retour ─────────────────────────────────────────────────
@@ -375,8 +412,9 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.thought,
       text:
-          '« Heng International — Directeur Europe. » Trois mots que je '
-          'ne devrais pas avoir retenus.',
+          'Heng International. Directeur Europe.\n'
+          'Trois mots que je ne devrais pas avoir retenus.\n'
+          'Trois mots que je ne vais pas oublier.',
     ),
     AceBeat(
       background: _bgAvenuePropre,
@@ -387,9 +425,8 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.narration,
       text:
           'Shen passe par le 8ᵉ exprès en rentrant. Plus longtemps. Pas '
-          'pour y aller. Pour pouvoir y penser. Camille l\'attend ce soir. '
-          'Elle va vouloir tout savoir. Shen va devoir choisir ce qu\'elle '
-          'raconte.',
+          'pour y aller — pour pouvoir y penser. Camille l\'attend ce soir. '
+          'Elle voudra tout savoir. Shen devra choisir ce qu\'elle raconte.',
     ),
 
     // ─── Endcap J1 — la carte recollée ─────────────────────────────
@@ -401,9 +438,9 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.narration,
       ambient: BeatAmbient.rain,
       text:
-          '23h42. Studio. La carte est recollée sur l\'étagère — quatre '
-          'morceaux, ruban adhésif transparent. Personne — pas même Shen — '
-          'ne saurait dire à quel moment elle a ramassé les bouts dans la '
+          'Vingt-trois heures quarante-deux. Studio. Les quatre morceaux '
+          'sont posés sur l\'étagère, alignés. Personne — pas même Shen — '
+          'ne saurait dire à quel moment elle les a ramassés dans la '
           'flaque.',
     ),
     AceBeat(
@@ -431,9 +468,9 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Le Dr Aubin a un visage que Shen aime bien. Lunettes en écaille. '
-          'Le temps qu\'il faut. Il pose son stylo avant de parler. Il ne '
-          'lit pas une fiche. Il réfléchit.',
+          'Le Dr Aubin a un visage que Shen aime bien. Lunettes en écaille, '
+          'cheveux gris coupés trop court. Il pose son stylo avant de '
+          'parler. Il ne lit pas une fiche : il réfléchit.',
     ),
     AceBeat(
       background: _bgBureauAubin,
@@ -442,8 +479,8 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.thought,
       text:
-          'Quand un médecin veut te parler en privé à 6h30 du matin, c\'est '
-          'jamais pour te dire que ça va.',
+          'Quand un médecin demande à me parler en privé à six heures '
+          'trente du matin, ce n\'est jamais pour me dire que ça va.',
     ),
     AceBeat(
       background: _bgBureauAubin,
@@ -453,8 +490,8 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.dialogue,
       speakerLabel: 'Dr Aubin',
       text:
-          '« Mademoiselle Marchand. Votre mère a besoin d\'un traitement '
-          'de seconde ligne. Un protocole hors AMM. Donc non remboursé. »',
+          '« Madame Marchand. Votre mère a besoin d\'un traitement de '
+          'seconde ligne. Un protocole hors AMM. Donc non remboursé. »',
     ),
     AceBeat(
       background: _bgBureauAubin,
@@ -473,9 +510,19 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.dialogue,
       speakerLabel: 'Dr Aubin',
       text:
-          '« Dix-huit mille euros sur six mois. Et je dois insister sur '
-          'un point — il faut commencer dans les six semaines, pas plus. '
-          'Au-delà, la fenêtre se ferme. »',
+          '« Dix-huit mille euros sur six mois. Et il faut commencer sous '
+          'six semaines, pas au-delà. Au-delà, il sera trop tard. »',
+    ),
+    AceBeat(
+      background: _bgBureauAubin,
+      sprites: [
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
+      ],
+      kind: BeatKind.thought,
+      text:
+          'Dix-huit mille.\n'
+          'J\'en ai deux mille trois cent quatre-vingt-quatre.\n'
+          'Et c\'est déjà un miracle de fin de mois.',
     ),
     AceBeat(
       background: _bgBureauAubin,
@@ -494,8 +541,9 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Hall d\'accueil, 6h48. Eau de Javel et café froid. Shen s\'assoit '
-          'sur un banc et calcule. Trois fois. Trois fois la même réponse.',
+          'Hall d\'accueil, six heures quarante-huit. Eau de Javel et café '
+          'froid. Shen s\'assoit sur un banc et reprend ses comptes. Trois '
+          'fois. Trois fois la même réponse.',
     ),
     AceBeat(
       background: _bgStudioMatin,
@@ -504,8 +552,9 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.thought,
       text:
-          'Sur mon compte courant : 2 384 €. C\'est déjà un miracle de fin '
-          'de mois.',
+          'Manque : quinze mille six cent seize.\n'
+          'Temps : quarante-deux jours.\n'
+          'Sommeil restant : aucun.',
     ),
     AceBeat(
       background: _bgStudioMatin,
@@ -524,8 +573,9 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.dialogue,
       speakerLabel: 'L\'infirmière',
       text:
-          '« Elle est ici depuis trois ans. Je la connais bien. Elle ne dit '
-          'jamais ce qu\'elle a vraiment, vous savez. Pas même au médecin. '
+          '« Elle est ici depuis trois ans. Je la connais bien. Elle ne '
+          'dit jamais ce qu\'elle a vraiment, vous savez. Pas même au '
+          'médecin.\n'
           'Faites attention à ce qu\'elle vous dit. »',
     ),
     AceBeat(
@@ -534,16 +584,16 @@ final AceScene aceJ1 = AceScene(
         AceSprite(asset: _shenTete, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
-      text: 'Maman ne dit pas tout. Maman ne dit pas tout.',
+      text: 'Maman ne dit pas tout.\nMaman ne dit pas tout.',
     ),
     AceBeat(
       background: _bgRueBelleville,
       kind: BeatKind.narration,
       ambient: BeatAmbient.rain,
       text:
-          '07h24. Métro Couronnes. Shen rentre. Compteur : J42. '
-          'Quarante-deux jours pour trouver dix-huit mille euros que '
-          'personne ne va lui prêter.',
+          'Sept heures vingt-quatre. Métro Couronnes. Shen rentre. Compteur '
+          'au front : J42. Quarante-deux jours pour trouver dix-huit mille '
+          'euros que personne ne lui prêtera.',
     ),
 
     // ═══════════════════════════════════════════════════════════════════
@@ -562,10 +612,11 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Sur la table de la cuisine, trois feuilles. Trois colonnes : '
+          'Sur la table de la cuisine : trois feuilles. Trois colonnes — '
           'argent disponible, manque, temps restant. Shen écrit, raye, '
           'recompte. Le chiffre du manque refuse de tenir dans la case ; '
-          'elle l\'écrit deux fois, plus petit, pour voir s\'il rétrécit.',
+          'elle l\'écrit deux fois, plus petit, pour voir s\'il rétrécit. '
+          'Il ne rétrécit pas.',
     ),
     AceBeat(
       background: _bgCalculs,
@@ -574,9 +625,10 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Doubler les livraisons : +400 € par mois. Troisième service de '
-          'nuit : +600 €, mais elle ne dormirait plus. Vendre le piano de '
-          'Maman : hors de question.',
+          'Doubler les livraisons : quatre cents euros par mois. Troisième '
+          'service de nuit : six cents, mais elle ne dormirait plus. Vendre '
+          'le piano de Maman : entre mille deux cents et mille huit cents. '
+          'Hors de question.',
     ),
     AceBeat(
       background: _bgCalculs,
@@ -584,7 +636,10 @@ final AceScene aceJ1 = AceScene(
         AceSprite(asset: _shenTete, position: SpritePosition.right)
       ],
       kind: BeatKind.thought,
-      text: 'Total potentiel sur six mois : 6 000 €. Manque : 12 000 €.',
+      text:
+          'Total potentiel sur six mois : six mille.\n'
+          'Manque réel : douze mille.\n'
+          'Marge d\'erreur : zéro.',
     ),
 
     // ─── La banque ─────────────────────────────────────────────────
@@ -595,7 +650,7 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       sfx: BeatSfx.ring,
-      text: 'Un SMS vibre. La banque a répondu.',
+      text: 'Le téléphone vibre. La banque a répondu.',
     ),
     AceBeat(
       background: _bgCalculs,
@@ -606,9 +661,16 @@ final AceScene aceJ1 = AceScene(
       speakerLabel: 'La banque',
       text:
           '« Mademoiselle Marchand, suite à l\'étude de votre dossier, '
-          'votre demande de crédit personnel est refusée. Vous n\'avez '
-          'pas de garant éligible et vos revenus sont jugés insuffisants. '
-          'Cordialement. »',
+          'votre demande de crédit personnel est refusée. Pas de garant '
+          'éligible. Revenus jugés insuffisants. Cordialement. »',
+    ),
+    AceBeat(
+      background: _bgCalculs,
+      sprites: [
+        AceSprite(asset: _shenCalcule, position: SpritePosition.left)
+      ],
+      kind: BeatKind.thought,
+      text: 'Une porte. Fermée.',
     ),
 
     // ─── L'aide sociale ────────────────────────────────────────────
@@ -619,9 +681,9 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.narration,
       text:
-          'Aide sociale, deuxième tentative. Musique d\'attente. Vivaldi '
-          'en sourdine — toujours Vivaldi. Comme si l\'État voulait te '
-          'rappeler qu\'il est vieux.',
+          'Aide sociale, deuxième tentative. Musique d\'attente. Vivaldi, '
+          'en sourdine — toujours Vivaldi, comme si l\'État rappelait à '
+          'chacun qu\'il est plus vieux que lui.',
     ),
     AceBeat(
       background: _bgCalculs,
@@ -631,8 +693,8 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.dialogue,
       speakerLabel: 'Aide sociale',
       text:
-          '« Six mois minimum pour un dossier, mademoiselle. Vous pouvez '
-          'prendre rendez-vous. »',
+          '« Six mois minimum pour instruire un dossier, mademoiselle. '
+          'Vous pouvez prendre rendez-vous. »',
     ),
     AceBeat(
       background: _bgCalculs,
@@ -640,7 +702,10 @@ final AceScene aceJ1 = AceScene(
         AceSprite(asset: _shenTete, position: SpritePosition.center)
       ],
       kind: BeatKind.thought,
-      text: 'Six mois.\nMaman a six semaines.',
+      text:
+          'Six mois.\n'
+          'Maman a six semaines.\n'
+          'Deux portes. Fermées.',
     ),
 
     // ─── La carte revient ──────────────────────────────────────────
@@ -652,10 +717,9 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.narration,
       ambient: BeatAmbient.rain,
       text:
-          'La pluie n\'arrête pas. Shen ouvre le tiroir de la table. La '
-          'carte de Tristan Heng est là — en quatre morceaux, ramenée de '
-          'la flaque avant-hier soir. Le scotch transparent attend, posé '
-          'à côté.',
+          'La pluie ne s\'arrête pas. Shen ouvre le tiroir de la table. '
+          'Les quatre morceaux sont là, alignés depuis avant-hier soir. '
+          'À côté, un rouleau de scotch transparent. Il attend.',
     ),
     AceBeat(
       background: _bgStudioNuit,
@@ -665,8 +729,8 @@ final AceScene aceJ1 = AceScene(
       kind: BeatKind.narration,
       text:
           'Plus tard, Shen ne saura pas dire à quel moment elle a décidé. '
-          'Le scotch a légèrement jauni le bristol. Le « T » de Tristan a '
-          'refusé de se réaligner ; elle a recommencé deux fois.',
+          'Le scotch jaunit légèrement le bristol. Le « T » de Tristan '
+          'refuse de se réaligner. Elle recommence deux fois.',
     ),
     AceBeat(
       background: _bgStudioNuit,
@@ -675,7 +739,9 @@ final AceScene aceJ1 = AceScene(
       ],
       kind: BeatKind.thought,
       text:
-          'Le numéro est lisible. C\'est ridicule. Le numéro est lisible.',
+          'Le numéro est lisible.\n'
+          'C\'est ridicule.\n'
+          'Le numéro est lisible.',
     ),
     AceBeat(
       background: _bgStudioNuit,
