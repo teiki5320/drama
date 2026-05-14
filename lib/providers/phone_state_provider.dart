@@ -6,7 +6,7 @@ import '../models/phone_state.dart';
 /// Singleton Riverpod du PhoneState.
 final phoneStateProvider =
     StateNotifierProvider<PhoneStateNotifier, PhoneState>(
-  (ref) => PhoneStateNotifier(ref: ref),
+  PhoneStateNotifier.new,
 );
 
 /// Provider qui expose le dernier événement déclenché — l'UI peut
@@ -14,11 +14,11 @@ final phoneStateProvider =
 final lastTriggeredEventProvider = StateProvider<DayEvent?>((ref) => null);
 
 class PhoneStateNotifier extends StateNotifier<PhoneState> {
-  PhoneStateNotifier({this.ref}) : super(const PhoneState());
+  PhoneStateNotifier(this._ref) : super(const PhoneState());
 
   /// Ref injectable pour permettre de déclencher des side-effects
-  /// (notifs, badges). Si null, les events sont ignorés.
-  final Ref? ref;
+  /// (notifs, badges).
+  final Ref _ref;
 
   /// Avance l'heure de `minutes`. Roule sur 24h. Déclenche les
   /// événements DayEvent qui tombent dans l'intervalle franchi.
@@ -57,7 +57,7 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     }
     state = state.copyWith(badges: newBadges);
     // Expose l'event pour que l'UI affiche un banner
-    ref?.read(lastTriggeredEventProvider.notifier).state = e;
+    _ref.read(lastTriggeredEventProvider.notifier).state = e;
   }
 
   /// Passe au lendemain matin (réveil à 6h30 par défaut), reverrouille
