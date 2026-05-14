@@ -21,31 +21,31 @@ class PhonePalette {
   static PhonePalette forBand(TimeOfDayBand b) {
     switch (b) {
       case TimeOfDayBand.matin:
-        // 6h-9h : ciel pâle, encore frais
+        // 6h-9h : ciel pâle gris-bleu, encore frais
         return const PhonePalette(
-          wallpaperTop: Color(0xFFD6E4F0),
-          wallpaperBottom: Color(0xFFFAE7CC),
-          statusBarFg: Color(0xFF1A1A1A),
-          homeOverlay: Color(0x00000000),
-          brightness: Brightness.light,
+          wallpaperTop: Color(0xFF8FA9C2),
+          wallpaperBottom: Color(0xFFD6B98C),
+          statusBarFg: Colors.white,
+          homeOverlay: Color(0x14000000),
+          brightness: Brightness.dark,
         );
       case TimeOfDayBand.jour:
-        // 9h-12h : journée pleine
+        // 9h-12h : journée pleine, ciel plus profond
         return const PhonePalette(
-          wallpaperTop: Color(0xFFB8D4F0),
-          wallpaperBottom: Color(0xFFE8F1F8),
-          statusBarFg: Color(0xFF1A1A1A),
-          homeOverlay: Color(0x00000000),
-          brightness: Brightness.light,
+          wallpaperTop: Color(0xFF6E94B5),
+          wallpaperBottom: Color(0xFFAEC4D8),
+          statusBarFg: Colors.white,
+          homeOverlay: Color(0x14000000),
+          brightness: Brightness.dark,
         );
       case TimeOfDayBand.midi:
-        // 12h-17h : lumière chaude
+        // 12h-17h : lumière chaude saturée
         return const PhonePalette(
-          wallpaperTop: Color(0xFFFFD9A8),
-          wallpaperBottom: Color(0xFFFFEBC9),
-          statusBarFg: Color(0xFF1A1A1A),
-          homeOverlay: Color(0x00000000),
-          brightness: Brightness.light,
+          wallpaperTop: Color(0xFFE8AC65),
+          wallpaperBottom: Color(0xFFF2C68A),
+          statusBarFg: Colors.white,
+          homeOverlay: Color(0x14000000),
+          brightness: Brightness.dark,
         );
       case TimeOfDayBand.couchant:
         // 17h-20h : orange rose

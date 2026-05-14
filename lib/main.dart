@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'ui/phone/device_frame.dart';
 import 'ui/phone/phone_shell.dart';
 
 /// Point d'entrée — l'app est un faux téléphone. Toute la navigation et
@@ -31,7 +32,7 @@ class DramaApp extends StatelessWidget {
         splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
       ),
-      home: const PhoneShell(),
+      home: const DeviceFrame(child: PhoneShell()),
     );
   }
 }
