@@ -91,4 +91,58 @@ const kNotes = <NoteEntry>[
         'Le numéro est lisible.',
     starred: true,
   ),
+  // J6 — la veille du rendez-vous Tour Heng
+  NoteEntry(
+    day: 6,
+    time: '22:31',
+    title: 'Le tailleur',
+    body:
+        'Camille a apporté un tailleur. Noir. 38.\n'
+        '« Tu vas plaider ta propre affaire. »\n\n'
+        'Le miroir me dit quelqu\'un d\'autre. Pas plus belle, pas moins. '
+        'Juste plus coupée. Plus tranchante.\n\n'
+        'Demain 11h. Tour Heng. 47ᵉ étage.',
+    starred: true,
+  ),
+  // J7 — après la Tour Heng
+  NoteEntry(
+    day: 7,
+    time: '12:48',
+    title: 'Ce que j\'avais pas prévu',
+    body:
+        'Il avait préparé un dossier AVANT que j\'arrive.\n'
+        'Donc il savait que je viendrais.\n\n'
+        '— J\'ai mieux qu\'un prêt. Une proposition. Trois mois.\n\n'
+        'Trente mille euros.\n'
+        'Fausse fiancée.\n'
+        'J\'ai dit oui.\n\n'
+        'J\'ai dit oui avec des clauses au stylo dans la marge.',
+    starred: true,
+  ),
+  // J11 — premier mensonge à Maman
+  NoteEntry(
+    day: 11,
+    time: '21:14',
+    title: 'Lao Chen',
+    body:
+        'J\'ai inventé un patron qui s\'appelle Lao Chen. Sino-français, '
+        '60 ans, potagers pédagogiques.\n\n'
+        'Maman me croit. C\'est ça le pire.\n'
+        'Ou alors elle ne me croit pas et elle joue le jeu pour me protéger.\n\n'
+        'Je ne sais plus laquelle des deux je préfère.',
+  ),
+  // J14 — après le premier dîner Madame Heng
+  NoteEntry(
+    day: 14,
+    time: '23:42',
+    title: 'Long Jing, deuxième récolte',
+    body:
+        'Six personnes autour de la table.\n'
+        'Madame Heng m\'a regardé porter la tasse à mes lèvres.\n\n'
+        '— Je crois que c\'est de la deuxième.\n\n'
+        'Silence. Elle repose sa tasse.\n'
+        '— Tu as raison, ma fille.\n\n'
+        'Elle a dit *ma fille*. En français. Ce n\'est pas anodin.',
+    starred: true,
+  ),
 ];

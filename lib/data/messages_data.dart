@@ -139,6 +139,21 @@ const Map<String, List<Msg>> kThreads = {
       day: 1,
       beatId: 'maman_couvre_toi_j1',
     ),
+    // J11 — Premier mensonge sur le « stage paysagiste »
+    Msg(
+      sender: 'maman',
+      text: 'Premier jour de stage. Comment ça s\'est passé ?',
+      time: '21:08',
+      day: 11,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          '« Bien ». Tu écris « bien » depuis trois jours. Donne-moi un détail.',
+      time: '21:10',
+      day: 11,
+      beatId: 'maman_stage_j11',
+    ),
   ],
   'camille': [
     Msg(
@@ -182,8 +197,62 @@ const Map<String, List<Msg>> kThreads = {
       day: 4,
       beatId: 'camille_carte_j4',
     ),
+    // J6 — Préparation Tour Heng le lendemain
+    Msg(
+      sender: 'camille',
+      text: 'Je passe ce soir avec le tailleur de ma mère. Noir. 38.',
+      time: '17:42',
+      day: 6,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Tu vas plaider ta propre affaire. Habille-toi comme telle.',
+      time: '17:43',
+      day: 6,
+    ),
+    Msg(
+      sender: 'camille',
+      text: 'Et révise ton mandarin. Au cas où il glisse dedans.',
+      time: '17:44',
+      day: 6,
+      beatId: 'camille_tailleur_j6',
+    ),
+    // J13 — Préparation dîner Madame Heng
+    Msg(
+      sender: 'camille',
+      text: 'Dîner Madame Heng samedi ? Tu y vas comment ?',
+      time: '15:08',
+      day: 13,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Mauvaise question. La vraie c\'est : QUEL THÉ ?',
+      time: '15:09',
+      day: 13,
+      beatId: 'camille_quel_the_j13',
+    ),
   ],
-  'tristan': [],
+  'tristan': [
+    // J7 — premier contact via la secrétaire
+    Msg(
+      sender: 'tristan',
+      text:
+          'Heng International. Mlle Marchand, j\'ai votre demande. Jeudi 11h, 47ᵉ étage, Tour Heng. Confirmation ?',
+      time: '14:12',
+      day: 6,
+      beatId: 'tristan_rdv_j6',
+    ),
+    // J9 — premier SMS après emménagement
+    Msg(
+      sender: 'tristan',
+      text:
+          'J\'ai laissé la moitié de la penderie et la salle de bain attenante. Bureau pour moi. Vous êtes libre de réorganiser.',
+      time: '17:22',
+      day: 9,
+    ),
+  ],
   'banque': [
     Msg(
       sender: 'banque',

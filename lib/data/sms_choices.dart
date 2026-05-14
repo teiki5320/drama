@@ -90,6 +90,98 @@ const Map<String, SmsChoice> kSmsChoices = {
     ],
   ),
 
+  // J6 — Camille apporte le tailleur, prêche la posture
+  'camille_tailleur_j6': SmsChoice(
+    beatId: 'camille_tailleur_j6',
+    contactId: 'camille',
+    options: [
+      SmsChoiceOption(
+        label: 'Acceptation',
+        reply: 'Merci. J\'arrive avec le dossier sur dix ans, taux légal.',
+        delta: RelationshipDelta(trust: 5, loyalty: 3),
+      ),
+      SmsChoiceOption(
+        label: 'Doute',
+        reply: 'Et si je n\'y allais pas ?',
+        delta: RelationshipDelta(trust: -3, dependency: 4, suspicion: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Vanne',
+        reply: '38, sérieux ? Je l\'épouse pas, je négocie un prêt.',
+        delta: RelationshipDelta(attraction: 3, loyalty: 2),
+      ),
+    ],
+  ),
+
+  // J6 — Tristan : confirmation rdv Tour Heng
+  'tristan_rdv_j6': SmsChoice(
+    beatId: 'tristan_rdv_j6',
+    contactId: 'tristan',
+    options: [
+      SmsChoiceOption(
+        label: 'Confirmé',
+        reply: 'Confirmé. À jeudi 11h.',
+        delta: RelationshipDelta(trust: 3, attraction: 1),
+      ),
+      SmsChoiceOption(
+        label: 'Reprends le pouvoir',
+        reply: 'Jeudi 11h, oui. Et merci de ne pas confondre rendez-vous et faveur.',
+        delta: RelationshipDelta(attraction: 4, suspicion: 2, trust: -1),
+      ),
+      SmsChoiceOption(
+        label: 'Annule',
+        reply: 'Je passe mon tour.',
+        delta: RelationshipDelta(trust: -8, attraction: -5, loyalty: -3),
+      ),
+    ],
+  ),
+
+  // J11 — Maman, premier mensonge sur le stage
+  'maman_stage_j11': SmsChoice(
+    beatId: 'maman_stage_j11',
+    contactId: 'maman',
+    options: [
+      SmsChoiceOption(
+        label: 'Mensonge construit',
+        reply: 'La courge du potager a doublé en deux jours. Lao Chen dit que c\'est l\'humidité.',
+        delta: RelationshipDelta(trust: -4, suspicion: 8, attraction: -1),
+      ),
+      SmsChoiceOption(
+        label: 'Demi-vérité',
+        reply: 'Compliqué à raconter en SMS. Je passe dimanche.',
+        delta: RelationshipDelta(trust: 2, suspicion: 4, dependency: 3),
+      ),
+      SmsChoiceOption(
+        label: 'Reverse',
+        reply: 'Et toi, comment tu te sens vraiment ?',
+        delta: RelationshipDelta(trust: 5, attraction: 4, suspicion: -2),
+      ),
+    ],
+  ),
+
+  // J13 — Camille « QUEL THÉ »
+  'camille_quel_the_j13': SmsChoice(
+    beatId: 'camille_quel_the_j13',
+    contactId: 'camille',
+    options: [
+      SmsChoiceOption(
+        label: 'Long Jing',
+        reply: 'Long Jing première récolte. Si elle me sert autre chose, je le verrai.',
+        delta: RelationshipDelta(trust: 4, attraction: 3, loyalty: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Pu\'er',
+        reply: 'Pu\'er sans doute. Vieux, fermenté, intimidant. Comme elle.',
+        delta: RelationshipDelta(attraction: 2, loyalty: 1),
+      ),
+      SmsChoiceOption(
+        label: 'Je sais pas',
+        reply: 'Je sais pas. J\'improviserai.',
+        delta: RelationshipDelta(trust: -2, dependency: 2, suspicion: 1),
+      ),
+    ],
+  ),
+
   // J4 — Camille "Tu as gardé sa carte, hein."
   'camille_carte_j4': SmsChoice(
     beatId: 'camille_carte_j4',
