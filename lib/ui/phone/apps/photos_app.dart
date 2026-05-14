@@ -185,9 +185,13 @@ class _PhotoFullView extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // "Photo" = gradient
+          // "Photo" = gradient, zoomable via InteractiveViewer
           Center(
-            child: AspectRatio(
+            child: InteractiveViewer(
+              minScale: 1.0,
+              maxScale: 4.0,
+              clipBehavior: Clip.none,
+              child: AspectRatio(
               aspectRatio: 1,
               child: Container(
                 decoration: BoxDecoration(
@@ -211,6 +215,7 @@ class _PhotoFullView extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
             ),
           ),
           SafeArea(
