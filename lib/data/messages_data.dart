@@ -75,12 +75,18 @@ class Msg {
   final int day; // J1, J2...
   final MsgStatus status;
 
+  /// Si ce message attend une réponse de Shen avec choix (3 options),
+  /// indique l'ID du beat. Quand le joueur répond, son message s'ajoute
+  /// au thread et les jauges relation sont mises à jour.
+  final String? beatId;
+
   const Msg({
     required this.sender,
     required this.text,
     required this.time,
     required this.day,
     this.status = MsgStatus.read,
+    this.beatId,
   });
 }
 
@@ -124,25 +130,14 @@ const Map<String, List<Msg>> kThreads = {
           '« Oui ». Tu réponds « oui » depuis trois jours. Donne-moi un détail.',
       time: '08:15',
       day: 1,
-    ),
-    Msg(
-      sender: 'moi',
-      text: 'Pain au chocolat de la veille trempé dans du thé. Ça m\'a tenu.',
-      time: '08:16',
-      day: 1,
+      beatId: 'maman_petit_dej_j1',
     ),
     Msg(
       sender: 'maman',
       text: 'Merci ma fille. Couvre-toi, il pleut.',
-      time: '08:16',
+      time: '08:18',
       day: 1,
-    ),
-    Msg(
-      sender: 'moi',
-      text: 'Toi couvre-toi surtout.',
-      time: '08:17',
-      day: 1,
-      status: MsgStatus.delivered,
+      beatId: 'maman_couvre_toi_j1',
     ),
   ],
   'camille': [
@@ -180,7 +175,13 @@ const Map<String, List<Msg>> kThreads = {
     Msg(sender: 'camille', text: 'Shen. Dix-huit mille. Ta mère.', time: '14:03', day: 4),
     Msg(sender: 'moi', text: 'Je ne mendie pas chez les Heng.', time: '14:03', day: 4),
     Msg(sender: 'camille', text: 'C\'est pas mendier si tu rends. C\'est emprunter.', time: '14:04', day: 4),
-    Msg(sender: 'camille', text: 'Tu as gardé sa carte, hein.', time: '14:05', day: 4),
+    Msg(
+      sender: 'camille',
+      text: 'Tu as gardé sa carte, hein.',
+      time: '14:05',
+      day: 4,
+      beatId: 'camille_carte_j4',
+    ),
   ],
   'tristan': [],
   'banque': [

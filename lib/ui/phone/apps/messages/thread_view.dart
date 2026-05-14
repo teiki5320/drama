@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../data/messages_data.dart';
 import '../../../../providers/phone_state_provider.dart';
+import '../../../../providers/sent_replies_provider.dart';
+import 'choice_panel.dart';
 
 /// Vue conversation iMessage : bulles bleues à droite (Shen), grises à
 /// gauche (l'autre), barre du haut avec emoji + nom, indicateur de
@@ -60,9 +62,28 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
   @override
   Widget build(BuildContext context) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
-    final msgs = (kThreads[widget.contact.id] ?? [])
+    final sentReplies = ref.watch(sentRepliesProvider);
+    // Messages canoniques du thread + réponses dynamiques de Shen
+    // intercalées après chaque beat répondu.
+    final canonMsgs = (kThreads[widget.contact.id] ?? [])
         .where((m) => m.day <= day)
         .toList();
+    final msgs = <Msg>[];
+    for (final m in canonMsgs) {
+      msgs.add(m);
+      if (m.beatId != null && sentReplies.containsKey(m.beatId!)) {
+        final r = sentReplies[m.beatId!]!;
+        msgs.add(r.toMsg());
+      }
+    }
+    // Détecte si le dernier message attend une réponse de Shen
+    final last = msgs.isNotEmpty ? msgs.last : null;
+    final pendingBeat = (last != null &&
+            last.sender != 'moi' &&
+            last.beatId != null &&
+            !sentReplies.containsKey(last.beatId!))
+        ? last.beatId!
+        : null;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -141,8 +162,16 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
               },
             ),
           ),
-          // Input bar (fake — pas de saisie en PR 2)
-          _InputBar(),
+          // Soit le panneau de choix de réponse (beat ouvert), soit
+          // l'input bar iMessage classique.
+          if (pendingBeat != null)
+            ChoicePanel(
+              beatId: pendingBeat,
+              lastMessageTime: last!.time,
+              lastMessageDay: last.day,
+            )
+          else
+            _InputBar(),
         ],
       ),
     );
