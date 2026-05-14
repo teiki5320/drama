@@ -1,0 +1,227 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../../data/messages_data.dart';
+import '../../../providers/phone_state_provider.dart';
+import '../status_bar.dart';
+import 'messages/thread_view.dart';
+
+/// App Messages — liste des conversations (style iMessage). Filtre par
+/// jour courant : on n'affiche que les messages déjà reçus jusqu'au
+/// `currentDay` (pas de spoiler).
+class MessagesApp extends ConsumerWidget {
+  const MessagesApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+
+    // Threads triés : favoris d'abord, puis les autres par activité.
+    final visible = kContacts.where((c) {
+      final msgs = (kThreads[c.id] ?? []).where((m) => m.day <= day).toList();
+      return msgs.isNotEmpty;
+    }).toList()
+      ..sort((a, b) {
+        if (a.isFavorite && !b.isFavorite) return -1;
+        if (!a.isFavorite && b.isFavorite) return 1;
+        return 0;
+      });
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          const PhoneStatusBar(foreground: Color(0xFF1A1A1A)),
+          // Header avec bouton retour + titre Messages
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 4, 16, 8),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new,
+                      color: Color(0xFF007AFF), size: 20),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    ref.read(phoneStateProvider.notifier).closeApp();
+                  },
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  'Messages',
+                  style: GoogleFonts.crimsonPro(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF1A1A1A),
+                  ),
+                ),
+                const Spacer(),
+                Icon(Icons.edit_note,
+                    color: Colors.grey.shade400, size: 24),
+              ],
+            ),
+          ),
+          // Barre de recherche style iOS
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEFEFEF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.search, color: Colors.grey.shade500, size: 18),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Rechercher',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                HapticFeedback.lightImpact();
+                await Future.delayed(const Duration(milliseconds: 600));
+              },
+              child: ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: visible.length,
+                separatorBuilder: (_, __) => Padding(
+                  padding: const EdgeInsets.only(left: 78),
+                  child: Container(height: 0.5, color: Colors.grey.shade300),
+                ),
+                itemBuilder: (context, i) {
+                  final c = visible[i];
+                  return _ThreadTile(contact: c, currentDay: day);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ThreadTile extends ConsumerWidget {
+  const _ThreadTile({required this.contact, required this.currentDay});
+  final MsgContact contact;
+  final int currentDay;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final msgs =
+        (kThreads[contact.id] ?? []).where((m) => m.day <= currentDay).toList();
+    if (msgs.isEmpty) return const SizedBox.shrink();
+    final last = msgs.last;
+    final unread = last.sender != 'moi' && last.status != MsgStatus.read;
+
+    return InkWell(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => ThreadView(contact: contact),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Avatar emoji teinté
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color:
+                    Color(int.parse('0xFF${contact.avatarTint.substring(1)}')),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(contact.emoji,
+                  style: const TextStyle(fontSize: 24)),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          contact.displayName,
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: unread
+                                ? FontWeight.w700
+                                : FontWeight.w600,
+                            color: const Color(0xFF1A1A1A),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        last.time,
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      Icon(Icons.chevron_right,
+                          color: Colors.grey.shade400, size: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      if (unread)
+                        Container(
+                          margin: const EdgeInsets.only(right: 6),
+                          width: 9,
+                          height: 9,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF007AFF),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      Expanded(
+                        child: Text(
+                          last.sender == 'moi' ? 'Vous : ${last.text}' : last.text,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: unread
+                                ? const Color(0xFF1A1A1A)
+                                : Colors.grey.shade600,
+                            fontWeight: unread
+                                ? FontWeight.w500
+                                : FontWeight.normal,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

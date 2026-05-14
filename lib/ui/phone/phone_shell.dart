@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/phone_apps.dart';
 import '../../providers/phone_state_provider.dart';
+import 'apps/messages_app.dart';
 import 'apps/shell_app.dart';
 import 'home_screen.dart';
 import 'lock_screen.dart';
@@ -20,8 +21,7 @@ class PhoneShell extends ConsumerWidget {
     if (p.isLocked) {
       body = const LockScreen();
     } else if (p.openAppId != null) {
-      // En PR 1, toutes les apps utilisent la coquille générique.
-      body = ShellApp(meta: appById(p.openAppId!));
+      body = _routeApp(p.openAppId!);
     } else {
       body = const HomeScreen();
     }
@@ -38,5 +38,16 @@ class PhoneShell extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Routing par appId vers le bon écran. Les apps non encore
+  /// implémentées tombent sur la coquille générique.
+  Widget _routeApp(String id) {
+    switch (id) {
+      case 'messages':
+        return const MessagesApp();
+      default:
+        return ShellApp(meta: appById(id));
+    }
   }
 }
