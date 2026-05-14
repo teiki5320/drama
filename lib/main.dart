@@ -1,72 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Placeholder build pendant la refonte du projet en version téléphone.
-/// L'ancienne app (carnet + ACE + 4 onglets) a été retirée le 14 mai
-/// 2026. La nouvelle architecture sera reconstruite depuis le repo
-/// nettoyé (`ROADMAP.md` histoire + `assets/data/*.json`).
-void main() => runApp(const ComingSoonApp());
+import 'ui/phone/phone_shell.dart';
 
-class ComingSoonApp extends StatelessWidget {
-  const ComingSoonApp({super.key});
+/// Point d'entrée — l'app est un faux téléphone. Toute la navigation et
+/// la narration passent par `PhoneShell` (lock → home → apps).
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black,
+    ),
+  );
+  runApp(const ProviderScope(child: DramaApp()));
+}
+
+class DramaApp extends StatelessWidget {
+  const DramaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(scaffoldBackgroundColor: const Color(0xFFFBF7EF)),
-      home: Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'À Contre-Jour',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.crimsonPro(
-                      fontSize: 38,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF1A1A1A),
-                      height: 1.0,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '逆光',
-                    style: GoogleFonts.crimsonPro(
-                      fontSize: 22,
-                      color: const Color(0xFF6B6B6B),
-                    ),
-                  ),
-                  const SizedBox(height: 28),
-                  Text(
-                    'Refonte en cours.',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: const Color(0xFF6B6B6B),
-                      letterSpacing: 0.4,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Le drama revient bientôt.',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.inter(
-                      fontSize: 13,
-                      color: const Color(0xFF6B6B6B),
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+      title: 'Drama',
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.black,
+        useMaterial3: true,
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
       ),
+      home: const PhoneShell(),
     );
   }
 }

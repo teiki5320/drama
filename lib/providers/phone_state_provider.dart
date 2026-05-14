@@ -1,0 +1,81 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../models/phone_state.dart';
+
+/// Singleton Riverpod du PhoneState.
+final phoneStateProvider =
+    StateNotifierProvider<PhoneStateNotifier, PhoneState>(
+  (ref) => PhoneStateNotifier(),
+);
+
+class PhoneStateNotifier extends StateNotifier<PhoneState> {
+  PhoneStateNotifier() : super(const PhoneState());
+
+  /// Avance l'heure de `minutes`. Roule sur 24h. Met à jour le mode DND
+  /// automatique (actif de 23h à 7h).
+  void advanceTime(int minutes) {
+    var total = state.hour * 60 + state.minute + minutes;
+    final newDay = state.currentDay + (total ~/ (24 * 60));
+    total %= 24 * 60;
+    final h = total ~/ 60;
+    final m = total % 60;
+    state = state.copyWith(
+      currentDay: newDay,
+      hour: h,
+      minute: m,
+      dndEnabled: h >= 23 || h < 7,
+    );
+  }
+
+  /// Passe au lendemain matin (réveil à 6h30 par défaut), reverrouille
+  /// l'écran (= chaque jour commence sur le lock screen).
+  void advanceDay() {
+    state = state.copyWith(
+      currentDay: state.currentDay + 1,
+      hour: 6,
+      minute: 30,
+      isLocked: true,
+      dndEnabled: false,
+      clearOpenApp: true,
+      battery: (state.battery - 15).clamp(20, 100),
+    );
+  }
+
+  /// Déverrouille l'écran (swipe up depuis le lock screen).
+  void unlock() => state = state.copyWith(isLocked: false);
+
+  /// Reverrouille (bouton power, ou auto-lock après inactivité).
+  void lock() => state = state.copyWith(isLocked: true, clearOpenApp: true);
+
+  /// Ouvre une app (depuis le home screen).
+  void openApp(String id) => state = state.copyWith(openAppId: id);
+
+  /// Ferme l'app courante (retour home).
+  void closeApp() => state = state.copyWith(clearOpenApp: true);
+
+  /// Modifie le signal (Wi-Fi chez Heng, 5G livraison, none dans le métro).
+  void setSignal(SignalType s) => state = state.copyWith(signal: s);
+
+  /// Petite consommation batterie sur action (1-3% par action significative).
+  void consumeBattery(int amount) =>
+      state = state.copyWith(battery: (state.battery - amount).clamp(0, 100));
+
+  /// Augmente le badge d'une app (nouvelle notif).
+  void addBadge(String appId, [int n = 1]) {
+    final badges = Map<String, int>.from(state.badges);
+    badges[appId] = (badges[appId] ?? 0) + n;
+    state = state.copyWith(badges: badges);
+  }
+
+  /// Vide le badge d'une app (l'utilisateur a vu).
+  void clearBadge(String appId) {
+    final badges = Map<String, int>.from(state.badges)..remove(appId);
+    state = state.copyWith(badges: badges);
+  }
+
+  /// Débloque une app jusqu'ici cachée.
+  void unlockApp(String appId) {
+    final apps = {...state.unlockedApps, appId};
+    state = state.copyWith(unlockedApps: apps);
+  }
+}
