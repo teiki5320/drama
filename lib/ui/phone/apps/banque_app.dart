@@ -4,11 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/banque_data.dart';
+import '../../../models/phone_state.dart';
+import '../../../models/shop_item.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/shop_catalog_provider.dart';
 import '../status_bar.dart';
 
-/// App Banque — soldes, mouvements récents, bourse intégrée, alerte
-/// Apple Pay refusé quand le solde est trop bas pour une transaction.
+/// App Banque — 3 onglets : Compte / Investissement / Achats. Comme
+/// l'ancien BanqueScreen mais intégré dans la métaphore téléphone.
 class BanqueApp extends ConsumerStatefulWidget {
   const BanqueApp({super.key});
 
@@ -17,17 +20,13 @@ class BanqueApp extends ConsumerStatefulWidget {
 }
 
 class _BanqueAppState extends ConsumerState<BanqueApp> {
-  int _tab = 0; // 0 = Compte, 1 = Bourse
+  int _tab = 0;
 
   @override
   Widget build(BuildContext context) {
-    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
-    final movements =
-        kMovements.where((m) => m.day <= day).toList().reversed.toList();
-    final balance = kStartingBalance +
-        kMovements.where((m) => m.day <= day).fold<int>(0, (a, m) => a + m.amount);
+    final p = ref.watch(phoneStateProvider);
     final visibleStocks = kStocks
-        .where((s) => s.unlockedAtDay == null || s.unlockedAtDay! <= day)
+        .where((s) => s.unlockedAtDay == null || s.unlockedAtDay! <= p.currentDay)
         .toList();
 
     return Scaffold(
@@ -35,7 +34,6 @@ class _BanqueAppState extends ConsumerState<BanqueApp> {
       body: Column(
         children: [
           const PhoneStatusBar(foreground: Color(0xFF1A1A1A)),
-          // Header
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 4, 16, 8),
             child: Row(
@@ -63,7 +61,7 @@ class _BanqueAppState extends ConsumerState<BanqueApp> {
               ],
             ),
           ),
-          // Tabs Compte / Bourse
+          // Tabs Compte / Investissement / Achats
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
@@ -80,9 +78,14 @@ class _BanqueAppState extends ConsumerState<BanqueApp> {
                     onTap: () => setState(() => _tab = 0),
                   ),
                   _TabPill(
-                    label: 'Bourse',
+                    label: 'Investissement',
                     selected: _tab == 1,
                     onTap: () => setState(() => _tab = 1),
+                  ),
+                  _TabPill(
+                    label: 'Achats',
+                    selected: _tab == 2,
+                    onTap: () => setState(() => _tab = 2),
                   ),
                 ],
               ),
@@ -91,8 +94,10 @@ class _BanqueAppState extends ConsumerState<BanqueApp> {
           const SizedBox(height: 12),
           Expanded(
             child: _tab == 0
-                ? _CompteView(balance: balance, movements: movements)
-                : _BourseView(stocks: visibleStocks),
+                ? _CompteView(state: p)
+                : _tab == 1
+                    ? _InvestissementView(stocks: visibleStocks)
+                    : _AchatsView(state: p),
           ),
         ],
       ),
@@ -101,8 +106,11 @@ class _BanqueAppState extends ConsumerState<BanqueApp> {
 }
 
 class _TabPill extends StatelessWidget {
-  const _TabPill(
-      {required this.label, required this.selected, required this.onTap});
+  const _TabPill({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -134,7 +142,7 @@ class _TabPill extends StatelessWidget {
           child: Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
               color: const Color(0xFF1A1A1A),
             ),
@@ -145,18 +153,48 @@ class _TabPill extends StatelessWidget {
   }
 }
 
+// ─── Compte ──────────────────────────────────────────────────────
 class _CompteView extends StatelessWidget {
-  const _CompteView({required this.balance, required this.movements});
-  final int balance;
-  final List<BankMovement> movements;
+  const _CompteView({required this.state});
+  final PhoneState state;
 
   @override
   Widget build(BuildContext context) {
+    // Solde = balance de départ + mouvements canoniques (jour <= currentDay)
+    // + mouvements dynamiques (achats du joueur).
+    final staticBalance = kStartingBalance +
+        kMovements
+            .where((m) => m.day <= state.currentDay)
+            .fold<int>(0, (a, m) => a + m.amount);
+    final dynamicDelta =
+        state.dynamicMovements.fold<int>(0, (a, m) => a + m.amount);
+    final balance = staticBalance + dynamicDelta;
     final lowBalance = balance < 100;
+
+    // Combine mouvements canoniques + dynamiques pour l'affichage.
+    final allMvts = <_DisplayMvt>[
+      ...kMovements
+          .where((m) => m.day <= state.currentDay)
+          .map((m) => _DisplayMvt(
+                emoji: m.emoji,
+                label: m.label,
+                amount: m.amount,
+                dateLabel: m.day == 0
+                    ? 'La semaine dernière'
+                    : 'J${m.day} · ${m.time}',
+              )),
+      ...state.dynamicMovements.map((m) => _DisplayMvt(
+            emoji: m.emoji,
+            label: m.label,
+            amount: m.amount,
+            dateLabel: 'J${m.day} · ${m.time}',
+          )),
+    ].reversed.toList();
+
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       children: [
-        // Solde principal
+        // Solde
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -197,7 +235,6 @@ class _CompteView extends StatelessWidget {
             ],
           ),
         ),
-        // Alerte Apple Pay si solde bas
         if (lowBalance)
           Padding(
             padding: const EdgeInsets.only(top: 12),
@@ -241,7 +278,6 @@ class _CompteView extends StatelessWidget {
             ),
           ),
         const SizedBox(height: 20),
-        // Section mouvements
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
@@ -260,9 +296,7 @@ class _CompteView extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
-            children: movements
-                .map((m) => _MovementRow(movement: m))
-                .toList(),
+            children: allMvts.map((m) => _MovementRow(mvt: m)).toList(),
           ),
         ),
         const SizedBox(height: 24),
@@ -271,13 +305,26 @@ class _CompteView extends StatelessWidget {
   }
 }
 
+class _DisplayMvt {
+  final String emoji;
+  final String label;
+  final int amount;
+  final String dateLabel;
+  const _DisplayMvt({
+    required this.emoji,
+    required this.label,
+    required this.amount,
+    required this.dateLabel,
+  });
+}
+
 class _MovementRow extends StatelessWidget {
-  const _MovementRow({required this.movement});
-  final BankMovement movement;
+  const _MovementRow({required this.mvt});
+  final _DisplayMvt mvt;
 
   @override
   Widget build(BuildContext context) {
-    final isOut = movement.amount < 0;
+    final isOut = mvt.amount < 0;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
@@ -285,13 +332,12 @@ class _MovementRow extends StatelessWidget {
           Container(
             width: 36,
             height: 36,
-            decoration: BoxDecoration(
-              color: const Color(0xFFF0F0F2),
+            decoration: const BoxDecoration(
+              color: Color(0xFFF0F0F2),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
-            child: Text(movement.emoji,
-                style: const TextStyle(fontSize: 18)),
+            child: Text(mvt.emoji, style: const TextStyle(fontSize: 18)),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -299,7 +345,7 @@ class _MovementRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  movement.label,
+                  mvt.label,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -307,7 +353,7 @@ class _MovementRow extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  movement.day == 0 ? 'La semaine dernière' : 'J${movement.day} · ${movement.time}',
+                  mvt.dateLabel,
                   style: GoogleFonts.inter(
                     fontSize: 11,
                     color: Colors.grey.shade600,
@@ -317,11 +363,13 @@ class _MovementRow extends StatelessWidget {
             ),
           ),
           Text(
-            (movement.amount > 0 ? '+ ' : '') + _formatMoney(movement.amount),
+            (mvt.amount > 0 ? '+ ' : '') + _formatMoney(mvt.amount),
             style: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: isOut ? const Color(0xFFE53935) : const Color(0xFF2E7D32),
+              color: isOut
+                  ? const Color(0xFFE53935)
+                  : const Color(0xFF2E7D32),
             ),
           ),
         ],
@@ -330,8 +378,9 @@ class _MovementRow extends StatelessWidget {
   }
 }
 
-class _BourseView extends StatelessWidget {
-  const _BourseView({required this.stocks});
+// ─── Investissement ──────────────────────────────────────────────
+class _InvestissementView extends StatelessWidget {
+  const _InvestissementView({required this.stocks});
   final List<StockPosition> stocks;
 
   @override
@@ -437,6 +486,265 @@ class _StockRow extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Achats ──────────────────────────────────────────────────────
+class _AchatsView extends ConsumerStatefulWidget {
+  const _AchatsView({required this.state});
+  final PhoneState state;
+
+  @override
+  ConsumerState<_AchatsView> createState() => _AchatsViewState();
+}
+
+class _AchatsViewState extends ConsumerState<_AchatsView> {
+  String? _categoryFilter; // null = tout
+
+  @override
+  Widget build(BuildContext context) {
+    final asyncCatalog = ref.watch(shopCatalogProvider);
+
+    return asyncCatalog.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, st) => Center(
+        child: Text('Erreur catalogue : $e',
+            style: GoogleFonts.inter(color: Colors.red)),
+      ),
+      data: (items) {
+        final filtered = _categoryFilter == null
+            ? items
+            : items.where((i) => i.category == _categoryFilter).toList();
+        return Column(
+          children: [
+            // Filtres catégorie en pills horizontales
+            SizedBox(
+              height: 36,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
+                  _CategoryPill(
+                    label: 'Tout',
+                    selected: _categoryFilter == null,
+                    onTap: () => setState(() => _categoryFilter = null),
+                  ),
+                  ...kShopCategories.entries.map((e) => _CategoryPill(
+                        label: e.value,
+                        selected: _categoryFilter == e.key,
+                        onTap: () => setState(() => _categoryFilter = e.key),
+                      )),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 0.78,
+                ),
+                itemCount: filtered.length,
+                itemBuilder: (context, i) =>
+                    _ShopCard(item: filtered[i], state: widget.state),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _CategoryPill extends StatelessWidget {
+  const _CategoryPill({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: InkWell(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+          decoration: BoxDecoration(
+            color: selected ? const Color(0xFF1F2937) : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+                color: selected
+                    ? Colors.transparent
+                    : const Color(0xFFE0E0E0)),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color:
+                  selected ? Colors.white : const Color(0xFF1A1A1A),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShopCard extends ConsumerWidget {
+  const _ShopCard({required this.item, required this.state});
+  final ShopItem item;
+  final PhoneState state;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final balance = kStartingBalance +
+        kMovements
+            .where((m) => m.day <= state.currentDay)
+            .fold<int>(0, (a, m) => a + m.amount) +
+        state.dynamicMovements.fold<int>(0, (a, m) => a + m.amount);
+    final owned = state.ownedItems.contains(item.id);
+    final lockedByMood = state.mood < item.requiredMood;
+    final lockedByRep = state.reputation < item.requiredReputation;
+    final tooExpensive = balance < item.price;
+    final canBuy = !owned && !lockedByMood && !lockedByRep && !tooExpensive;
+
+    String btnLabel;
+    Color btnBg;
+    if (owned) {
+      btnLabel = 'Possédé';
+      btnBg = const Color(0xFF8B8B8B);
+    } else if (lockedByMood) {
+      btnLabel = 'Mood ≥ ${item.requiredMood} requis';
+      btnBg = Colors.grey.shade400;
+    } else if (lockedByRep) {
+      btnLabel = '⭐ ${item.requiredReputation} requis';
+      btnBg = Colors.grey.shade400;
+    } else if (tooExpensive) {
+      btnLabel = 'Trop cher';
+      btnBg = Colors.grey.shade400;
+    } else {
+      btnLabel = 'Acheter ${_formatMoney(item.price)}';
+      btnBg = const Color(0xFFD97757);
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(item.emoji, style: const TextStyle(fontSize: 28)),
+          const SizedBox(height: 6),
+          Text(
+            item.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF1A1A1A),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Expanded(
+            child: Text(
+              item.description,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.crimsonPro(
+                fontSize: 12,
+                color: Colors.grey.shade700,
+                fontStyle: FontStyle.italic,
+                height: 1.3,
+              ),
+            ),
+          ),
+          // Deltas mood/réputation
+          if (item.moodGain != 0 || item.reputationGain != 0)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Row(
+                children: [
+                  if (item.moodGain != 0)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: Text(
+                        '😊 ${item.moodGain > 0 ? "+" : ""}${item.moodGain}',
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          color: item.moodGain > 0
+                              ? const Color(0xFF2E7D32)
+                              : const Color(0xFFE53935),
+                        ),
+                      ),
+                    ),
+                  if (item.reputationGain != 0)
+                    Text(
+                      '⭐ ${item.reputationGain > 0 ? "+" : ""}${item.reputationGain}',
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        color: const Color(0xFFD97757),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          // Bouton acheter
+          InkWell(
+            onTap: canBuy
+                ? () {
+                    HapticFeedback.mediumImpact();
+                    ref.read(phoneStateProvider.notifier).buyItem(
+                          id: item.id,
+                          name: item.name,
+                          emoji: item.emoji,
+                          price: item.price,
+                          moodGain: item.moodGain,
+                          reputationGain: item.reputationGain,
+                        );
+                  }
+                : null,
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: btnBg,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                btnLabel,
+                style: GoogleFonts.inter(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
         ],
       ),
