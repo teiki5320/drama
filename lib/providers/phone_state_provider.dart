@@ -1,21 +1,31 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/day_events.dart';
 import '../models/phone_state.dart';
 
 /// Singleton Riverpod du PhoneState.
 final phoneStateProvider =
     StateNotifierProvider<PhoneStateNotifier, PhoneState>(
-  (ref) => PhoneStateNotifier(),
+  (ref) => PhoneStateNotifier(ref: ref),
 );
 
-class PhoneStateNotifier extends StateNotifier<PhoneState> {
-  PhoneStateNotifier() : super(const PhoneState());
+/// Provider qui expose le dernier événement déclenché — l'UI peut
+/// l'observer pour afficher un banner notification quand il change.
+final lastTriggeredEventProvider = StateProvider<DayEvent?>((ref) => null);
 
-  /// Avance l'heure de `minutes`. Roule sur 24h. Met à jour le mode DND
-  /// automatique (actif de 23h à 7h).
+class PhoneStateNotifier extends StateNotifier<PhoneState> {
+  PhoneStateNotifier({this.ref}) : super(const PhoneState());
+
+  /// Ref injectable pour permettre de déclencher des side-effects
+  /// (notifs, badges). Si null, les events sont ignorés.
+  final Ref? ref;
+
+  /// Avance l'heure de `minutes`. Roule sur 24h. Déclenche les
+  /// événements DayEvent qui tombent dans l'intervalle franchi.
   void advanceTime(int minutes) {
-    var total = state.hour * 60 + state.minute + minutes;
-    final newDay = state.currentDay + (total ~/ (24 * 60));
+    final from = state;
+    var total = from.hour * 60 + from.minute + minutes;
+    final newDay = from.currentDay + (total ~/ (24 * 60));
     total %= 24 * 60;
     final h = total ~/ 60;
     final m = total % 60;
@@ -25,6 +35,29 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       minute: m,
       dndEnabled: h >= 23 || h < 7,
     );
+    // Déclenche les events traversés
+    final events = eventsBetween(
+      fromDay: from.currentDay,
+      fromHour: from.hour,
+      fromMinute: from.minute,
+      toDay: newDay,
+      toHour: h,
+      toMinute: m,
+    );
+    for (final e in events) {
+      _fireEvent(e);
+    }
+  }
+
+  void _fireEvent(DayEvent e) {
+    // Pousse les badges
+    final newBadges = Map<String, int>.from(state.badges);
+    for (final appId in e.apps) {
+      newBadges[appId] = (newBadges[appId] ?? 0) + 1;
+    }
+    state = state.copyWith(badges: newBadges);
+    // Expose l'event pour que l'UI affiche un banner
+    ref?.read(lastTriggeredEventProvider.notifier).state = e;
   }
 
   /// Passe au lendemain matin (réveil à 6h30 par défaut), reverrouille

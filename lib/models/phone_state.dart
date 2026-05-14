@@ -25,8 +25,7 @@ class PhoneState {
     this.badges = const {},
     this.unlockedApps = const {
       'messages', 'telephone', 'whatsapp', 'instagram', 'banque',
-      'ubereats', 'photos', 'notes', 'calendrier',
-      // tinder reste verrouillé au début
+      'ubereats', 'photos', 'notes', 'calendrier', 'tinder',
     },
   });
 
