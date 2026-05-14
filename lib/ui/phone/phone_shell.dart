@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/phone_apps.dart';
 import '../../providers/phone_state_provider.dart';
 import 'apps/messages_app.dart';
+import 'apps/notes_app.dart';
+import 'apps/photos_app.dart';
 import 'apps/shell_app.dart';
 import 'home_screen.dart';
 import 'lock_screen.dart';
@@ -46,6 +48,10 @@ class PhoneShell extends ConsumerWidget {
     switch (id) {
       case 'messages':
         return const MessagesApp();
+      case 'notes':
+        return const NotesApp();
+      case 'photos':
+        return const PhotosApp();
       default:
         return ShellApp(meta: appById(id));
     }
