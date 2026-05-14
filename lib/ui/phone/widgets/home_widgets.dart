@@ -22,7 +22,7 @@ class MeteoWidget extends StatelessWidget {
                 'Belleville',
                 style: GoogleFonts.inter(
                   fontSize: 12,
-                  color: Colors.white.withValues(alpha: 0.85),
+                  color: Colors.white.withOpacity(0.85),
                 ),
               ),
               const SizedBox(height: 2),
@@ -47,7 +47,7 @@ class MeteoWidget extends StatelessWidget {
                 'Min : 11°  ·  Max : 15°',
                 style: GoogleFonts.inter(
                   fontSize: 10,
-                  color: Colors.white.withValues(alpha: 0.75),
+                  color: Colors.white.withOpacity(0.75),
                 ),
               ),
             ],
@@ -108,7 +108,7 @@ class PhotoMamanWidget extends StatelessWidget {
             'Hier, 22h08',
             style: GoogleFonts.inter(
               fontSize: 10,
-              color: Colors.white.withValues(alpha: 0.65),
+              color: Colors.white.withOpacity(0.65),
             ),
           ),
         ],
@@ -150,7 +150,7 @@ class CalendarWidget extends StatelessWidget {
             'Hôpital Tenon',
             style: GoogleFonts.inter(
               fontSize: 11,
-              color: Colors.white.withValues(alpha: 0.75),
+              color: Colors.white.withOpacity(0.75),
             ),
           ),
           const Spacer(),
@@ -162,7 +162,7 @@ class CalendarWidget extends StatelessWidget {
                 'Demain 9h30',
                 style: GoogleFonts.inter(
                   fontSize: 11,
-                  color: Colors.white.withValues(alpha: 0.85),
+                  color: Colors.white.withOpacity(0.85),
                 ),
               ),
             ],
@@ -212,7 +212,7 @@ class TimeSkipWidget extends ConsumerWidget {
                     'Tap : +1h  ·  Long : +1 jour',
                     style: GoogleFonts.inter(
                       fontSize: 10,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: Colors.white.withOpacity(0.7),
                     ),
                   ),
                 ],
@@ -236,10 +236,10 @@ class _GlassCard extends StatelessWidget {
       height: 120,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.20),
+        color: Colors.white.withOpacity(0.20),
         borderRadius: BorderRadius.circular(18),
         border:
-            Border.all(color: Colors.white.withValues(alpha: 0.20), width: 1),
+            Border.all(color: Colors.white.withOpacity(0.20), width: 1),
       ),
       child: child,
     );
