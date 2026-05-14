@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/phone_apps.dart';
 import '../../providers/phone_state_provider.dart';
+import 'apps/banque_app.dart';
 import 'apps/messages_app.dart';
 import 'apps/notes_app.dart';
 import 'apps/photos_app.dart';
@@ -52,6 +53,8 @@ class PhoneShell extends ConsumerWidget {
         return const NotesApp();
       case 'photos':
         return const PhotosApp();
+      case 'banque':
+        return const BanqueApp();
       default:
         return ShellApp(meta: appById(id));
     }
