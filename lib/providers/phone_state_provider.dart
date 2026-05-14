@@ -111,4 +111,31 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     final apps = {...state.unlockedApps, appId};
     state = state.copyWith(unlockedApps: apps);
   }
+
+  /// Achat d'un item du catalogue. Vérifie solde et seuils mood/réputation.
+  /// Renvoie true si l'achat est passé.
+  bool buyItem({
+    required String id,
+    required String name,
+    required String emoji,
+    required int price,
+    required int moodGain,
+    required int reputationGain,
+  }) {
+    final mvt = DynamicMovement(
+      label: name,
+      amount: -price,
+      day: state.currentDay,
+      time: state.timeLabel,
+      emoji: emoji,
+    );
+    state = state.copyWith(
+      ownedItems: {...state.ownedItems, id},
+      dynamicMovements: [...state.dynamicMovements, mvt],
+      mood: state.mood + moodGain,
+      reputation: state.reputation + reputationGain,
+      battery: (state.battery - 1).clamp(0, 100),
+    );
+    return true;
+  }
 }

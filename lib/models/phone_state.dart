@@ -13,6 +13,17 @@ class PhoneState {
   final Map<String, int> badges; // notif unread par app
   final Set<String> unlockedApps; // apps visibles sur le home
 
+  // ─── Économie / vie ─────────────────────────────────────────────
+  /// Mood 0-10. Démarre à 5.
+  final int mood;
+  /// Réputation 0-∞. Démarre à 0.
+  final int reputation;
+  /// IDs d'items déjà achetés (référence kShopCatalog).
+  final Set<String> ownedItems;
+  /// Mouvements bancaires dynamiques (achats / virements en cours de jeu).
+  /// Format : (label, amount, day, time, emoji).
+  final List<DynamicMovement> dynamicMovements;
+
   const PhoneState({
     this.currentDay = 1,
     this.hour = 6,
@@ -27,6 +38,10 @@ class PhoneState {
       'messages', 'telephone', 'whatsapp', 'instagram', 'banque',
       'ubereats', 'photos', 'notes', 'calendrier', 'tinder', 'cloud',
     },
+    this.mood = 5,
+    this.reputation = 0,
+    this.ownedItems = const {},
+    this.dynamicMovements = const [],
   });
 
   /// Période visuelle pour le skin (palette qui réchauffe ou refroidit).
@@ -56,6 +71,10 @@ class PhoneState {
     bool clearOpenApp = false,
     Map<String, int>? badges,
     Set<String>? unlockedApps,
+    int? mood,
+    int? reputation,
+    Set<String>? ownedItems,
+    List<DynamicMovement>? dynamicMovements,
   }) =>
       PhoneState(
         currentDay: currentDay ?? this.currentDay,
@@ -68,7 +87,28 @@ class PhoneState {
         openAppId: clearOpenApp ? null : (openAppId ?? this.openAppId),
         badges: badges ?? this.badges,
         unlockedApps: unlockedApps ?? this.unlockedApps,
+        mood: (mood ?? this.mood).clamp(0, 10),
+        reputation: (reputation ?? this.reputation).clamp(0, 9999),
+        ownedItems: ownedItems ?? this.ownedItems,
+        dynamicMovements: dynamicMovements ?? this.dynamicMovements,
       );
+}
+
+/// Mouvement bancaire ajouté en cours de jeu (achat, virement…).
+class DynamicMovement {
+  final String label;
+  final int amount; // négatif = sortie
+  final int day;
+  final String time;
+  final String emoji;
+
+  const DynamicMovement({
+    required this.label,
+    required this.amount,
+    required this.day,
+    required this.time,
+    required this.emoji,
+  });
 }
 
 enum SignalType { wifi, fiveG, lte, none }
