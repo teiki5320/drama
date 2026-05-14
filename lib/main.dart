@@ -1,40 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'core/theme.dart';
-import 'ui/onboarding_screen.dart';
-import 'ui/root_tab_view.dart';
+import 'ui/phone/phone_shell.dart';
 
+/// Point d'entrée — l'app est un faux téléphone. Toute la navigation et
+/// la narration passent par `PhoneShell` (lock → home → apps).
 void main() {
-  runApp(const ProviderScope(child: ContreJourApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black,
+    ),
+  );
+  runApp(const ProviderScope(child: DramaApp()));
 }
 
-class ContreJourApp extends StatelessWidget {
-  const ContreJourApp({super.key});
+class DramaApp extends StatelessWidget {
+  const DramaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'À Contre-Jour',
       debugShowCheckedModeBanner: false,
-      theme: buildAppTheme(),
-      home: const _Root(),
-    );
-  }
-}
-
-class _Root extends ConsumerWidget {
-  const _Root();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(hasSeenOnboardingProvider);
-    return async.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      title: 'Drama',
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.black,
+        useMaterial3: true,
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
       ),
-      error: (_, __) => const RootTabView(),
-      data: (seen) => seen ? const RootTabView() : const OnboardingScreen(),
+      home: const PhoneShell(),
     );
   }
 }
