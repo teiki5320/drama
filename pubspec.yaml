@@ -13,8 +13,6 @@ dependencies:
   flutter_riverpod: ^2.5.1
   shared_preferences: ^2.2.3
   google_fonts: ^6.2.1
-  audioplayers: ^6.1.0
-  video_player: ^2.9.1
 
 dev_dependencies:
   flutter_test:
@@ -32,8 +30,6 @@ flutter:
     - assets/photos/characters/
     - assets/photos/posts/
     - assets/photos/scenes/
-    - assets/photos/ace/
-    - assets/audio/ace/
 
 flutter_launcher_icons:
   image_path: "assets/icon/icon.png"

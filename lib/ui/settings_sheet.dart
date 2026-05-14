@@ -78,9 +78,9 @@ class SettingsSheet extends ConsumerWidget {
                   final ok = await _confirmReset(context);
                   if (ok != true) return;
                   await ref.read(gameStateProvider.notifier).reset();
-                  // Reset → on revient au CARNET (onglet 1). L'onglet 0
-                  // (ACE) est expérimental et ne pilote pas la save.
-                  ref.read(selectedTabProvider.notifier).state = 1;
+                  // Reset → MESSAGES (onglet 0), seul onglet narratif
+                  // qui reste après suppression de ACE et CARNET.
+                  ref.read(selectedTabProvider.notifier).state = 0;
                   if (context.mounted) {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(

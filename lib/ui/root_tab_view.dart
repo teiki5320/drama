@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/ui_provider.dart';
-import 'ace/ace_screen.dart';
 import 'banque/banque_screen.dart';
-import 'carnet/carnet_screen.dart';
 import 'insta/insta_screen.dart';
 import 'messages/messages_screen.dart';
 import 'sidebar.dart';
@@ -12,14 +10,14 @@ import 'sidebar.dart';
 class RootTabView extends ConsumerWidget {
   const RootTabView({super.key});
 
-  // Ordre des onglets : ACE (BD animée) en haut, puis CARNET, BANQUE,
-  // INSTA, INVIT. (cf. sidebar.dart pour les boutons).
+  // ACE et CARNET ont été supprimés — l'app pivote vers une version
+  // téléphone. Les onglets restants : MESSAGES (narration principale),
+  // BANQUE, INSTA. Le home screen téléphone viendra remplacer la
+  // sidebar dans une PR suivante.
   static const _tabs = <Widget>[
-    AceScreen(),
-    CarnetScreen(),
+    MessagesScreen(),
     BanqueScreen(),
     InstaScreen(),
-    MessagesScreen(),
   ];
 
   @override

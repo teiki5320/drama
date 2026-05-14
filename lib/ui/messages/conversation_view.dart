@@ -6,7 +6,7 @@ import '../../models/day_entry.dart';
 import '../../models/sms_message.dart';
 import '../../providers/game_state_provider.dart';
 import '../../providers/scenario_provider.dart';
-import '../carnet/imessage_view.dart';
+import 'imessage_view.dart';
 
 /// Displays every SMS block addressed to a given conversation up to and
 /// including the current day. Inline-only blocks (`_inline`) are skipped.
