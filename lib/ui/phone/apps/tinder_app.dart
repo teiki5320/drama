@@ -59,7 +59,7 @@ class TinderApp extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
+                      color: Colors.black.withOpacity(0.2),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -96,7 +96,7 @@ class TinderApp extends ConsumerWidget {
                         '« Charcuterie • Crossfit • Bons vivants »',
                         style: GoogleFonts.inter(
                           fontSize: 13,
-                          color: Colors.white.withValues(alpha: 0.85),
+                          color: Colors.white.withOpacity(0.85),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -161,7 +161,7 @@ class _ActionBtn extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
+              color: Colors.black.withOpacity(0.2),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),

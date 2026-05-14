@@ -61,7 +61,7 @@ class _LockScreenState extends ConsumerState<LockScreen>
                   style: GoogleFonts.inter(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: palette.statusBarFg.withValues(alpha: 0.85),
+                    color: palette.statusBarFg.withOpacity(0.85),
                     letterSpacing: 1.5,
                   ),
                 ),
@@ -139,10 +139,10 @@ class _LockScreenWidgets extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.18),
+          color: Colors.white.withOpacity(0.18),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-              color: Colors.white.withValues(alpha: 0.25), width: 1),
+              color: Colors.white.withOpacity(0.25), width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -157,7 +157,7 @@ class _LockScreenWidgets extends StatelessWidget {
                   'Belleville',
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: palette.statusBarFg.withValues(alpha: 0.85),
+                    color: palette.statusBarFg.withOpacity(0.85),
                   ),
                 ),
                 Text(

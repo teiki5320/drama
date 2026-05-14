@@ -124,7 +124,7 @@ class _TabPill extends StatelessWidget {
             boxShadow: selected
                 ? [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
+                      color: Colors.black.withOpacity(0.04),
                       blurRadius: 4,
                     ),
                   ]
@@ -207,7 +207,7 @@ class _CompteView extends StatelessWidget {
                 color: const Color(0xFFFFEBEE),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                    color: const Color(0xFFE53935).withValues(alpha: 0.3)),
+                    color: const Color(0xFFE53935).withOpacity(0.3)),
               ),
               child: Row(
                 children: [
