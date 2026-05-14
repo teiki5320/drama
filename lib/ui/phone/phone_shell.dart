@@ -8,6 +8,8 @@ import 'apps/messages_app.dart';
 import 'apps/notes_app.dart';
 import 'apps/photos_app.dart';
 import 'apps/shell_app.dart';
+import 'apps/telephone_app.dart';
+import 'apps/whatsapp_app.dart';
 import 'home_screen.dart';
 import 'lock_screen.dart';
 
@@ -55,6 +57,10 @@ class PhoneShell extends ConsumerWidget {
         return const PhotosApp();
       case 'banque':
         return const BanqueApp();
+      case 'telephone':
+        return const TelephoneApp();
+      case 'whatsapp':
+        return const WhatsAppApp();
       default:
         return ShellApp(meta: appById(id));
     }
