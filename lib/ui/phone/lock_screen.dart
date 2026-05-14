@@ -96,8 +96,9 @@ class _LockScreenState extends ConsumerState<LockScreen>
   }
 
   static String _frenchDay(int dayIndex) {
-    // J1 = vendredi 3 juin 2026 (canonique scenario)
-    const start = DateTime(2026, 6, 3);
+    // J1 = vendredi 3 juin 2026 (canonique scenario).
+    // DateTime n'a pas de constructeur const → final.
+    final start = DateTime(2026, 6, 3);
     final d = start.add(Duration(days: dayIndex - 1));
     const jours = [
       'lundi',
