@@ -25,7 +25,7 @@ class PhoneState {
     this.badges = const {},
     this.unlockedApps = const {
       'messages', 'telephone', 'whatsapp', 'instagram', 'banque',
-      'ubereats', 'photos', 'notes', 'calendrier', 'tinder',
+      'ubereats', 'photos', 'notes', 'calendrier', 'tinder', 'cloud',
     },
   });
 

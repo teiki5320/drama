@@ -5,6 +5,7 @@ import '../../core/phone_apps.dart';
 import '../../providers/phone_state_provider.dart';
 import 'apps/banque_app.dart';
 import 'apps/calendrier_app.dart';
+import 'apps/cloud_app.dart';
 import 'apps/instagram_app.dart';
 import 'apps/messages_app.dart';
 import 'apps/notes_app.dart';
@@ -104,6 +105,8 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         return const InstagramApp();
       case 'tinder':
         return const TinderApp();
+      case 'cloud':
+        return const CloudApp();
       default:
         return ShellApp(meta: appById(id));
     }
