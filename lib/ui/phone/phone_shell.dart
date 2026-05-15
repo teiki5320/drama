@@ -6,6 +6,7 @@ import '../../providers/incoming_call_provider.dart';
 import '../../providers/lock_notifications_provider.dart';
 import '../../providers/phone_state_provider.dart';
 import '../../providers/sent_replies_provider.dart';
+import '../../providers/transition_provider.dart';
 import 'apps/appstore_app.dart';
 import 'apps/banque_app.dart';
 import 'apps/calendrier_app.dart';
@@ -21,10 +22,12 @@ import 'apps/telephone_app.dart';
 import 'apps/tinder_app.dart';
 import 'apps/ubereats_app.dart';
 import 'apps/whatsapp_app.dart';
+import 'app_tutorial_overlay.dart';
 import 'home_screen.dart';
 import 'incoming_call_screen.dart';
 import 'lock_screen.dart';
 import 'notification_banner.dart';
+import 'transition_screen.dart';
 
 /// Contrôleur top-level du téléphone : décide quel écran afficher selon
 /// l'état (locked → LockScreen, openApp → l'app concernée, sinon Home).
@@ -110,68 +113,93 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
       body = const HomeScreen();
     }
 
+    final transition = ref.watch(beatTransitionProvider);
+
     return Scaffold(
       backgroundColor: Colors.black,
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 320),
-        switchInCurve: Curves.easeOutCubic,
-        switchOutCurve: Curves.easeInCubic,
-        transitionBuilder: (child, animation) {
-          // Scale + fade façon « zoom depuis l'icône » iOS, sauf pour
-          // l'incoming call qui apparaît brut (sensation d'urgence).
-          if (child.key != null &&
-              (child.key as ValueKey).value.toString().endsWith('-true')) {
-            return FadeTransition(opacity: animation, child: child);
-          }
-          return FadeTransition(
-            opacity: animation,
-            child: ScaleTransition(
-              scale: Tween<double>(begin: 0.92, end: 1.0).animate(animation),
-              child: child,
+      body: Stack(
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 320),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            transitionBuilder: (child, animation) {
+              if (child.key != null &&
+                  (child.key as ValueKey).value.toString().endsWith('-true')) {
+                return FadeTransition(opacity: animation, child: child);
+              }
+              return FadeTransition(
+                opacity: animation,
+                child: ScaleTransition(
+                  scale:
+                      Tween<double>(begin: 0.92, end: 1.0).animate(animation),
+                  child: child,
+                ),
+              );
+            },
+            child: KeyedSubtree(
+              key: ValueKey('${p.isLocked}-${p.openAppId}-${call != null}'),
+              child: body,
             ),
-          );
-        },
-        child: KeyedSubtree(
-          key: ValueKey('${p.isLocked}-${p.openAppId}-${call != null}'),
-          child: body,
-        ),
+          ),
+          // Écran de transition entre beats — empilé au-dessus de tout
+          if (transition != null) TransitionScreen(transition: transition),
+        ],
       ),
     );
   }
 
   /// Routing par appId vers le bon écran.
+  /// Chaque app est wrappée dans AppTutorialOverlay qui affiche un
+  /// popup d'explication à la première ouverture.
   Widget _routeApp(String id) {
+    final Widget app;
     switch (id) {
       case 'messages':
-        return const MessagesApp();
+        app = const MessagesApp();
+        break;
       case 'notes':
-        return const NotesApp();
+        app = const NotesApp();
+        break;
       case 'photos':
-        return const PhotosApp();
+        app = const PhotosApp();
+        break;
       case 'banque':
-        return const BanqueApp();
+        app = const BanqueApp();
+        break;
       case 'telephone':
-        return const TelephoneApp();
+        app = const TelephoneApp();
+        break;
       case 'whatsapp':
-        return const WhatsAppApp();
+        app = const WhatsAppApp();
+        break;
       case 'calendrier':
-        return const CalendrierApp();
+        app = const CalendrierApp();
+        break;
       case 'ubereats':
-        return const UberEatsApp();
+        app = const UberEatsApp();
+        break;
       case 'instagram':
-        return const InstagramApp();
+        app = const InstagramApp();
+        break;
       case 'tinder':
-        return const TinderApp();
+        app = const TinderApp();
+        break;
       case 'cloud':
-        return const CloudApp();
+        app = const CloudApp();
+        break;
       case 'reglages':
-        return const ReglagesApp();
+        app = const ReglagesApp();
+        break;
       case 'appstore':
-        return const AppStoreApp();
+        app = const AppStoreApp();
+        break;
       case 'camera':
-        return const CameraApp();
+        app = const CameraApp();
+        break;
       default:
         return ShellApp(meta: appById(id));
     }
+    return AppTutorialOverlay(appId: id, child: app);
   }
 }

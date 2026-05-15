@@ -30,6 +30,15 @@ const kEpisodes = <Episode>[
         hour: 8,
         minute: 17,
         label: 'Avenue Montaigne, collision',
+        transition: BeatTransition(
+          timestamp: '08:17',
+          body:
+              'Je n\'ai pas vu la voiture noire.\n'
+              'J\'ai vu le bowl en l\'air.\n'
+              'Quand j\'ai relevé la tête, l\'homme du costume\n'
+              'était déjà parti.',
+          coda: '(Une carte. Quatre morceaux. Dans la flaque.)',
+        ),
       ),
       Beat(
         idx: 2,
@@ -37,6 +46,14 @@ const kEpisodes = <Episode>[
         hour: 23,
         minute: 42,
         label: 'Carte recollée — première erreur',
+        transition: BeatTransition(
+          timestamp: '23:42',
+          body:
+              'Le scotch transparent ne tient pas.\n'
+              'Je recommence. Quatre morceaux.\n'
+              'Le « T » de Tristan refuse de se réaligner.',
+          coda: '(Dehors, le chien du voisin hurle.)',
+        ),
       ),
       Beat(
         idx: 3,
@@ -58,6 +75,13 @@ const kEpisodes = <Episode>[
         hour: 23,
         minute: 55,
         label: 'Numéro masqué — T. appelle',
+        transition: BeatTransition(
+          timestamp: '23:55',
+          body:
+              'Le téléphone vibre sur la table de nuit.\n'
+              'Numéro masqué.\n'
+              'Tu sais qui c\'est avant qu\'il parle.',
+        ),
       ),
       // — Acte B : Le contrat (J4 → J9)
       Beat(
@@ -90,6 +114,15 @@ const kEpisodes = <Episode>[
         hour: 11,
         minute: 0,
         label: 'Tour Heng — proposition trois mois',
+        transition: BeatTransition(
+          timestamp: '11:00',
+          body:
+              'L\'ascenseur monte au 47ᵉ.\n'
+              'Quand les portes s\'ouvrent,\n'
+              'il y a déjà un dossier à mon nom\n'
+              'posé sur la table en verre.',
+          coda: '(Donc il savait que je viendrais.)',
+        ),
       ),
       Beat(
         idx: 10,
@@ -97,6 +130,15 @@ const kEpisodes = <Episode>[
         hour: 11,
         minute: 30,
         label: 'Cabinet notarial — 14 pages',
+        transition: BeatTransition(
+          timestamp: '11:30',
+          body:
+              'Quatorze pages. Une plume Mont-Blanc.\n'
+              'Le notaire ne lève pas les yeux.\n'
+              'À la page 14, mon stylo tremble\n'
+              'sur le « M » de Marchand.',
+          coda: '(Personne ne le voit.)',
+        ),
       ),
       Beat(
         idx: 11,
@@ -128,6 +170,15 @@ const kEpisodes = <Episode>[
         hour: 20,
         minute: 30,
         label: 'Dîner Madame Heng — Long Jing deuxième récolte',
+        transition: BeatTransition(
+          timestamp: '20:30',
+          body:
+              'La table est dressée pour six.\n'
+              'Une pivoine blanche au centre.\n'
+              'Madame Heng te regarde t\'asseoir,\n'
+              'puis elle pose une question avec un sourire.',
+          coda: '(Tu sais qu\'elle connaît déjà la réponse.)',
+        ),
       ),
     ],
   ),

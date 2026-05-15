@@ -8,6 +8,7 @@ import '../../../models/phone_state.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../../../providers/relationships_provider.dart';
 import '../../../providers/sent_replies_provider.dart';
+import '../../../providers/app_tutorials_provider.dart';
 import '../../../services/persistence_service.dart';
 import '../onboarding_screen.dart';
 import '../status_bar.dart';
@@ -158,6 +159,7 @@ class ReglagesApp extends ConsumerWidget {
             onPressed: () async {
               await PersistenceService.reset();
               await resetOnboarding();
+              await ref.read(appsOpenedProvider.notifier).reset();
               ref.read(phoneStateProvider.notifier).hydrate(const PhoneState());
               ref.read(relationshipsProvider.notifier).reset();
               ref.read(sentRepliesProvider.notifier).reset();
