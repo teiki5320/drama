@@ -140,18 +140,27 @@ class _ThreadTile extends ConsumerWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Avatar emoji teinté
+            // Avatar : image si dispo, sinon emoji teinté
             Container(
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color:
-                    Color(int.parse('0xFF${contact.avatarTint.substring(1)}')),
+                color: contact.avatarPath == null
+                    ? Color(int.parse('0xFF${contact.avatarTint.substring(1)}'))
+                    : null,
                 shape: BoxShape.circle,
+                image: contact.avatarPath != null
+                    ? DecorationImage(
+                        image: AssetImage(contact.avatarPath!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
               alignment: Alignment.center,
-              child: Text(contact.emoji,
-                  style: const TextStyle(fontSize: 24)),
+              child: contact.avatarPath != null
+                  ? null
+                  : Text(contact.emoji,
+                      style: const TextStyle(fontSize: 24)),
             ),
             const SizedBox(width: 12),
             Expanded(
