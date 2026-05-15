@@ -20,10 +20,9 @@ Future<void> resetOnboarding() async {
   await p.remove(_kOnboardingDone);
 }
 
-/// Onboarding 3 écrans façon livre — chapitre + numéro romain, citation
-/// serif italique centrée, vignette photo, swipe horizontal entre les
-/// pages avec parallax léger. Pose la voix Shen avant d'entrer dans le
-/// téléphone.
+/// Onboarding 3 écrans façon page de livre — palette monochrome
+/// blanc/marine, pas d'accent jaune. Bouton custom (pas de TextButton
+/// pour éviter l'iOS Underline Buttons).
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key, required this.onFinished});
   final VoidCallback onFinished;
@@ -32,8 +31,7 @@ class OnboardingScreen extends ConsumerStatefulWidget {
   ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
-    with SingleTickerProviderStateMixin {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _ctrl = PageController();
   int _step = 0;
   double _page = 0;
@@ -65,8 +63,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           'Maman tousse depuis trois nuits.\n'
           'L\'infirmière a dit : « Faites attention à ce qu\'elle vous dit. »',
       attribution: 'Shen, vingt-quatre ans, livreuse à vélo',
-      gradient: [Color(0xFF0A0E1F), Color(0xFF1A2540), Color(0xFF1F2937)],
-      accent: Color(0xFFD4AF37),
+      gradient: [Color(0xFF0A0E1F), Color(0xFF14213D), Color(0xFF1F2937)],
     ),
     _OnbStep(
       chapter: 'II',
@@ -76,8 +73,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           'Les SMS de Maman, les calculs, les carnets, les comptes.\n'
           'Tu me liras à travers ce que je tape — et ce que je tais.',
       attribution: 'Mode d\'emploi',
-      gradient: [Color(0xFF1F2937), Color(0xFF2E2A40), Color(0xFF4A3A55)],
-      accent: Color(0xFFE8AC65),
+      gradient: [Color(0xFF14213D), Color(0xFF1F2937), Color(0xFF2A2E3F)],
     ),
     _OnbStep(
       chapter: 'III',
@@ -87,8 +83,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           'Six semaines.\n'
           'Quarante-deux jours.',
       attribution: 'À partir de maintenant.',
-      gradient: [Color(0xFF8FA9C2), Color(0xFFC4B499), Color(0xFFD6B98C)],
-      accent: Color(0xFFFFFFFF),
+      gradient: [Color(0xFF1F2937), Color(0xFF374151), Color(0xFF4B5563)],
     ),
   ];
 
@@ -97,7 +92,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     final step = _steps[_step];
     return Stack(
       children: [
-        // Fond animé qui s'interpole entre les gradients des étapes
+        // Fond animé monochrome
         AnimatedContainer(
           duration: const Duration(milliseconds: 700),
           curve: Curves.easeInOut,
@@ -110,10 +105,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             ),
           ),
         ),
-        // Vignette sombre sur les bords pour donner du cadre
+        // Vignette sombre sur les bords
         const _Vignette(),
-        // Bruit de pellicule subtil
-        const _FilmGrain(),
         SafeArea(
           child: Column(
             children: [
@@ -129,11 +122,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   itemBuilder: (context, i) => _OnbPage(
                     step: _steps[i],
                     parallax: (i - _page).clamp(-1.0, 1.0),
-                    isLast: i == _steps.length - 1,
                   ),
                 ),
               ),
-              // Indicateurs trait fin (au lieu des points)
+              // Indicateurs traits fins blancs (plus de jaune)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -145,72 +137,31 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(
-                          alpha: i == _step ? 0.95 : 0.30),
+                          alpha: i == _step ? 0.85 : 0.25),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 22),
-              // Bouton « Continuer / Entrer » très épuré
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: TextButton(
-                    onPressed: () async {
-                      HapticFeedback.mediumImpact();
-                      if (_step < _steps.length - 1) {
-                        await _ctrl.animateToPage(
-                          _step + 1,
-                          duration: const Duration(milliseconds: 450),
-                          curve: Curves.easeOutCubic,
-                        );
-                      } else {
-                        await _markDone();
-                        widget.onFinished();
-                      }
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor:
-                          Colors.white.withValues(alpha: 0.10),
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Colors.white.withValues(alpha: 0.30),
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                    ),
-                    child: Text(
-                      _step < _steps.length - 1 ? 'Continuer' : 'Entrer',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ),
-                ),
+              const SizedBox(height: 24),
+              // Bouton custom (pas de TextButton → pas d'iOS underline)
+              _CustomButton(
+                label: _step < _steps.length - 1 ? 'Continuer' : 'Entrer',
+                onTap: () async {
+                  HapticFeedback.mediumImpact();
+                  if (_step < _steps.length - 1) {
+                    await _ctrl.animateToPage(
+                      _step + 1,
+                      duration: const Duration(milliseconds: 450),
+                      curve: Curves.easeOutCubic,
+                    );
+                  } else {
+                    await _markDone();
+                    widget.onFinished();
+                  }
+                },
               ),
-              // Hint swipe horizontal (sauf au dernier)
-              const SizedBox(height: 14),
-              Opacity(
-                opacity: _step < _steps.length - 1 ? 0.5 : 0,
-                child: Text(
-                  'glisse →',
-                  style: GoogleFonts.crimsonPro(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 22),
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -220,25 +171,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
 }
 
 class _OnbPage extends StatelessWidget {
-  const _OnbPage({
-    required this.step,
-    required this.parallax,
-    required this.isLast,
-  });
+  const _OnbPage({required this.step, required this.parallax});
   final _OnbStep step;
   final double parallax;
-  final bool isLast;
 
   @override
   Widget build(BuildContext context) {
-    // Le contenu se décale légèrement en sens inverse du swipe pour
-    // donner une profondeur (parallax léger).
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 36),
       child: Column(
         children: [
-          const SizedBox(height: 24),
-          // Chapitre romain en filigrane
+          const SizedBox(height: 32),
+          // Chapitre romain — blanc tamisé (plus de jaune)
           Transform.translate(
             offset: Offset(parallax * 12, 0),
             child: Text(
@@ -247,27 +191,23 @@ class _OnbPage extends StatelessWidget {
                 fontSize: 92,
                 fontWeight: FontWeight.w300,
                 fontStyle: FontStyle.italic,
-                color: step.accent.withValues(alpha: 0.50),
+                color: Colors.white.withValues(alpha: 0.40),
                 height: 1.0,
                 letterSpacing: 6,
+                decoration: TextDecoration.none,
               ),
             ),
           ),
-          const SizedBox(height: 8),
-          // Trait or
-          Container(
-            width: 36,
-            height: 1,
-            color: step.accent.withValues(alpha: 0.6),
-          ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 18),
+          // Titre du chapitre — petit, large lettering, blanc
           Text(
             step.title.toUpperCase(),
             style: GoogleFonts.inter(
               fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: Colors.white.withValues(alpha: 0.85),
+              fontWeight: FontWeight.w400,
+              color: Colors.white.withValues(alpha: 0.70),
               letterSpacing: 4,
+              decoration: TextDecoration.none,
             ),
           ),
           const Spacer(),
@@ -284,19 +224,21 @@ class _OnbPage extends StatelessWidget {
                 color: Colors.white,
                 height: 1.55,
                 letterSpacing: 0.2,
+                decoration: TextDecoration.none,
               ),
             ),
           ),
-          const SizedBox(height: 24),
-          // Attribution petite
+          const SizedBox(height: 26),
+          // Attribution discrète
           Text(
             '— ${step.attribution}',
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
               fontSize: 11,
               fontWeight: FontWeight.w400,
-              color: Colors.white.withValues(alpha: 0.65),
+              color: Colors.white.withValues(alpha: 0.50),
               letterSpacing: 0.6,
+              decoration: TextDecoration.none,
             ),
           ),
           const Spacer(flex: 2),
@@ -306,7 +248,49 @@ class _OnbPage extends StatelessWidget {
   }
 }
 
-/// Vignette sombre sur les bords (radial gradient transparent → noir 40 %).
+/// Bouton custom — GestureDetector + Container, pas de TextButton
+/// pour éviter que iOS « Underline Buttons » ne dessine un trait
+/// jaune sous le libellé.
+class _CustomButton extends StatelessWidget {
+  const _CustomButton({required this.label, required this.onTap});
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 36),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(32),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.30),
+              width: 0.5,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+              letterSpacing: 1.2,
+              decoration: TextDecoration.none,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Vignette sombre sur les bords (radial gradient transparent → noir).
 class _Vignette extends StatelessWidget {
   const _Vignette();
 
@@ -331,55 +315,12 @@ class _Vignette extends StatelessWidget {
   }
 }
 
-/// Bruit de pellicule subtil — petits dots blancs très transparents
-/// répartis aléatoirement (seedés sur position, pas sur le temps pour
-/// ne pas faire vibrer). Statique mais texturé.
-class _FilmGrain extends StatelessWidget {
-  const _FilmGrain();
-
-  @override
-  Widget build(BuildContext context) {
-    return IgnorePointer(
-      child: CustomPaint(
-        size: Size.infinite,
-        painter: _GrainPainter(),
-      ),
-    );
-  }
-}
-
-class _GrainPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.025)
-      ..strokeCap = StrokeCap.round;
-    // Distribution déterministe : 600 points pseudo-aléatoires.
-    var seed = 1729;
-    int next() {
-      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-      return seed;
-    }
-
-    for (var i = 0; i < 600; i++) {
-      final dx = (next() % 1000) / 1000 * size.width;
-      final dy = (next() % 1000) / 1000 * size.height;
-      final r = ((next() % 100) / 100) * 0.8 + 0.2;
-      canvas.drawCircle(Offset(dx, dy), r, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
 class _OnbStep {
   final String chapter;
   final String title;
   final String epigraph;
   final String attribution;
   final List<Color> gradient;
-  final Color accent;
 
   const _OnbStep({
     required this.chapter,
@@ -387,6 +328,5 @@ class _OnbStep {
     required this.epigraph,
     required this.attribution,
     required this.gradient,
-    required this.accent,
   });
 }
