@@ -428,13 +428,17 @@ class _InvestissementView extends StatelessWidget {
   }
 }
 
-class _StockRow extends StatelessWidget {
+class _StockRow extends ConsumerWidget {
   const _StockRow({required this.stock});
   final StockPosition stock;
 
   @override
-  Widget build(BuildContext context) {
-    final up = stock.change24h >= 0;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    final price = priceAt(stock, day);
+    final change = change24hAt(stock, day);
+    final history = priceHistory(stock, day);
+    final up = change >= 0;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
@@ -463,12 +467,26 @@ class _StockRow extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(width: 12),
+          // Sparkline 14j
+          SizedBox(
+            width: 70,
+            height: 28,
+            child: CustomPaint(
+              painter: _SparklinePainter(
+                points: history,
+                color: up
+                    ? const Color(0xFF2E7D32)
+                    : const Color(0xFFE53935),
+              ),
+            ),
+          ),
           const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                stock.price.toStringAsFixed(2),
+                price.toStringAsFixed(2),
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -476,7 +494,7 @@ class _StockRow extends StatelessWidget {
                 ),
               ),
               Text(
-                '${up ? "+" : ""}${stock.change24h.toStringAsFixed(1)}%',
+                '${up ? "+" : ""}${change.toStringAsFixed(1)}%',
                 style: GoogleFonts.inter(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
@@ -780,4 +798,42 @@ String _formatMoney(int v) {
   }
   final prefix = v < 0 ? '- ' : '';
   return '$prefix$buf €';
+}
+
+/// Sparkline minimaliste pour l'historique de prix d'une action.
+/// Trace une polyline simple sur le canvas, sans grille, à 1px.
+class _SparklinePainter extends CustomPainter {
+  _SparklinePainter({required this.points, required this.color});
+  final List<double> points;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (points.length < 2) return;
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2
+      ..strokeCap = StrokeCap.round;
+    final minV = points.reduce((a, b) => a < b ? a : b);
+    final maxV = points.reduce((a, b) => a > b ? a : b);
+    final range = (maxV - minV).abs();
+    final dx = size.width / (points.length - 1);
+    final path = Path();
+    for (var i = 0; i < points.length; i++) {
+      final t = range == 0 ? 0.5 : (points[i] - minV) / range;
+      final y = size.height - t * size.height;
+      final x = i * dx;
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _SparklinePainter old) =>
+      old.points != points || old.color != color;
 }
