@@ -714,19 +714,38 @@ class _ShopCard extends ConsumerWidget {
             ),
           // Bouton acheter
           InkWell(
-            onTap: canBuy
-                ? () {
-                    HapticFeedback.mediumImpact();
-                    ref.read(phoneStateProvider.notifier).buyItem(
-                          id: item.id,
-                          name: item.name,
-                          emoji: item.emoji,
-                          price: item.price,
-                          moodGain: item.moodGain,
-                          reputationGain: item.reputationGain,
-                        );
-                  }
-                : null,
+            onTap: () {
+              if (canBuy) {
+                HapticFeedback.mediumImpact();
+                ref.read(phoneStateProvider.notifier).buyItem(
+                      id: item.id,
+                      name: item.name,
+                      emoji: item.emoji,
+                      price: item.price,
+                      moodGain: item.moodGain,
+                      reputationGain: item.reputationGain,
+                    );
+              } else {
+                HapticFeedback.heavyImpact();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    duration: const Duration(milliseconds: 1600),
+                    backgroundColor: const Color(0xFF1F2937),
+                    content: Text(
+                      owned
+                          ? 'Tu possèdes déjà cet objet.'
+                          : tooExpensive
+                              ? 'Solde insuffisant : il manque ${_formatMoney(item.price - balance)}.'
+                              : lockedByMood
+                                  ? 'Mood ${state.mood} → requis ${item.requiredMood}.'
+                                  : '⭐ ${state.reputation} → requis ${item.requiredReputation}.',
+                      style: GoogleFonts.inter(fontSize: 13),
+                    ),
+                  ),
+                );
+              }
+            },
             borderRadius: BorderRadius.circular(8),
             child: Container(
               width: double.infinity,

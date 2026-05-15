@@ -112,9 +112,24 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 280),
-        switchInCurve: Curves.easeOut,
-        switchOutCurve: Curves.easeIn,
+        duration: const Duration(milliseconds: 320),
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        transitionBuilder: (child, animation) {
+          // Scale + fade façon « zoom depuis l'icône » iOS, sauf pour
+          // l'incoming call qui apparaît brut (sensation d'urgence).
+          if (child.key != null &&
+              (child.key as ValueKey).value.toString().endsWith('-true')) {
+            return FadeTransition(opacity: animation, child: child);
+          }
+          return FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(
+              scale: Tween<double>(begin: 0.92, end: 1.0).animate(animation),
+              child: child,
+            ),
+          );
+        },
         child: KeyedSubtree(
           key: ValueKey('${p.isLocked}-${p.openAppId}-${call != null}'),
           child: body,

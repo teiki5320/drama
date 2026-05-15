@@ -19,12 +19,35 @@ class TinderApp extends ConsumerStatefulWidget {
 class _TinderAppState extends ConsumerState<TinderApp> {
   final List<_Match> _deck = List.from(_kInitialDeck);
   Offset _drag = Offset.zero;
+  bool _returning = false;
 
   void _resolve(bool liked) {
     HapticFeedback.mediumImpact();
     setState(() {
       _drag = Offset.zero;
+      _returning = false;
       if (_deck.isNotEmpty) _deck.removeAt(0);
+    });
+  }
+
+  /// Animation spring de retour quand on relâche avant le seuil.
+  void _springBack() async {
+    if (_drag == Offset.zero) return;
+    setState(() => _returning = true);
+    final start = _drag;
+    const duration = Duration(milliseconds: 220);
+    final steps = 14;
+    for (var i = 1; i <= steps; i++) {
+      await Future.delayed(Duration(milliseconds: duration.inMilliseconds ~/ steps));
+      if (!mounted) return;
+      final t = i / steps;
+      final eased = Curves.easeOutBack.transform(t);
+      setState(() => _drag = Offset.lerp(start, Offset.zero, eased)!);
+    }
+    if (!mounted) return;
+    setState(() {
+      _drag = Offset.zero;
+      _returning = false;
     });
   }
 
@@ -80,13 +103,15 @@ class _TinderAppState extends ConsumerState<TinderApp> {
                               ),
                             // Carte du haut, suit le drag
                             GestureDetector(
-                              onPanUpdate: (d) =>
-                                  setState(() => _drag += d.delta),
+                              onPanUpdate: (d) {
+                                if (_returning) return;
+                                setState(() => _drag += d.delta);
+                              },
                               onPanEnd: (_) {
                                 if (_drag.dx.abs() > 100) {
                                   _resolve(_drag.dx > 0);
                                 } else {
-                                  setState(() => _drag = Offset.zero);
+                                  _springBack();
                                 }
                               },
                               child: _Card(match: _deck.first, drag: _drag),

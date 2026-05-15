@@ -92,7 +92,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         child: Column(
           children: [
             const PhoneStatusBar(foreground: Colors.white),
-            const SizedBox(height: 28),
+            // Pad supplémentaire pour ne pas heurter la Dynamic Island
+            // du device_frame iPad.
+            const SizedBox(height: 36),
             Text(
               step.date.toUpperCase(),
               style: GoogleFonts.inter(

@@ -10,11 +10,21 @@ import '../status_bar.dart';
 /// App Photos — galerie regroupée par mois, filtrée par jour courant.
 /// Pour l'instant les photos sont des placeholders gradient (les vraies
 /// images seront générées plus tard si besoin).
-class PhotosApp extends ConsumerWidget {
+class PhotosApp extends ConsumerStatefulWidget {
   const PhotosApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PhotosApp> createState() => _PhotosAppState();
+}
+
+class _PhotosAppState extends ConsumerState<PhotosApp> {
+  /// 1, 3 ou 5 colonnes. Toggle via pinch (geste mobile) ou bouton
+  /// segmenté en haut. Default 3 comme iOS.
+  int _cols = 3;
+  double _pinchStart = 1.0;
+
+  @override
+  Widget build(BuildContext context) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
     final visible = kPhotos.where((p) => p.day <= day).toList();
 
@@ -57,22 +67,55 @@ class PhotosApp extends ConsumerWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 16, 12),
-            child: Text(
-              '${visible.length} photo${visible.length > 1 ? "s" : ""}',
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                color: Colors.grey.shade400,
-              ),
+            child: Row(
+              children: [
+                Text(
+                  '${visible.length} photo${visible.length > 1 ? "s" : ""}',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+                const Spacer(),
+                _GridSwitcher(
+                  cols: _cols,
+                  onChange: (c) => setState(() => _cols = c),
+                ),
+              ],
             ),
           ),
           Expanded(
-            child: ListView(
-              children: byMonth.entries.map((entry) {
-                return _MonthSection(
-                  monthLabel: entry.key,
-                  photos: entry.value,
-                );
-              }).toList(),
+            child: GestureDetector(
+              onScaleStart: (_) {
+                _pinchStart = _cols.toDouble();
+              },
+              onScaleUpdate: (d) {
+                if (d.pointerCount < 2) return;
+                // Pinch out (scale > 1) → moins de colonnes (zoom).
+                // Pinch in (scale < 1) → plus de colonnes (vue d'ensemble).
+                final target = (_pinchStart / d.scale).clamp(1.0, 5.0);
+                int newCols;
+                if (target < 1.8) {
+                  newCols = 1;
+                } else if (target < 4.0) {
+                  newCols = 3;
+                } else {
+                  newCols = 5;
+                }
+                if (newCols != _cols) {
+                  HapticFeedback.selectionClick();
+                  setState(() => _cols = newCols);
+                }
+              },
+              child: ListView(
+                children: byMonth.entries.map((entry) {
+                  return _MonthSection(
+                    monthLabel: entry.key,
+                    photos: entry.value,
+                    cols: _cols,
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ],
@@ -81,10 +124,53 @@ class PhotosApp extends ConsumerWidget {
   }
 }
 
+class _GridSwitcher extends StatelessWidget {
+  const _GridSwitcher({required this.cols, required this.onChange});
+  final int cols;
+  final void Function(int) onChange;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [1, 3, 5].map((c) {
+        final active = cols == c;
+        return GestureDetector(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            onChange(c);
+          },
+          child: Container(
+            margin: const EdgeInsets.only(left: 6),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: active ? Colors.white24 : Colors.transparent,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Icon(
+              c == 1
+                  ? Icons.crop_din
+                  : (c == 3 ? Icons.grid_view : Icons.grid_3x3),
+              color: active ? Colors.white : Colors.white38,
+              size: 16,
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
 class _MonthSection extends StatelessWidget {
-  const _MonthSection({required this.monthLabel, required this.photos});
+  const _MonthSection({
+    required this.monthLabel,
+    required this.photos,
+    required this.cols,
+  });
   final String monthLabel;
   final List<PhotoItem> photos;
+  final int cols;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +195,7 @@ class _MonthSection extends StatelessWidget {
             child: GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
+              crossAxisCount: cols,
               mainAxisSpacing: 2,
               crossAxisSpacing: 2,
               children: photos.map((p) => _PhotoTile(photo: p)).toList(),
