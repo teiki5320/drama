@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../data/notes_data.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../status_bar.dart';
+import 'carnet_view.dart';
 
 /// App Notes — journal intime de Shen, fond papier crème, serif Crimson
 /// Pro, bic vert. Liste de notes triées du plus récent au plus ancien
@@ -51,6 +52,18 @@ class NotesApp extends ConsumerWidget {
                   ),
                 ),
                 const Spacer(),
+                IconButton(
+                  tooltip: 'Mode Carnet',
+                  icon: const Icon(Icons.menu_book_outlined,
+                      color: Color(0xFFD97757), size: 22),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (_) => const CarnetView()),
+                    );
+                  },
+                ),
                 Icon(Icons.create, color: const Color(0xFFD97757), size: 22),
               ],
             ),
