@@ -36,6 +36,8 @@ class PhoneState {
   /// Mouvements bancaires dynamiques (achats / virements en cours de jeu).
   /// Format : (label, amount, day, time, emoji).
   final List<DynamicMovement> dynamicMovements;
+  /// Photos prises par le joueur via la Caméra.
+  final List<UserPhoto> userPhotos;
 
   const PhoneState({
     this.currentDay = 1,
@@ -50,14 +52,15 @@ class PhoneState {
     this.unlockedApps = const {
       'messages', 'telephone', 'whatsapp', 'instagram', 'banque',
       'ubereats', 'photos', 'notes', 'calendrier', 'tinder', 'cloud',
-      'reglages', 'appstore',
+      'reglages', 'appstore', 'camera',
     },
-    this.currentEpisodeId = 'collision',
+    this.currentEpisodeId = 'avant_la_lumiere',
     this.currentBeatIdx = 0,
     this.mood = 5,
     this.reputation = 0,
     this.ownedItems = const {},
     this.dynamicMovements = const [],
+    this.userPhotos = const [],
   });
 
   /// Période visuelle pour le skin (palette qui réchauffe ou refroidit).
@@ -93,6 +96,7 @@ class PhoneState {
     int? reputation,
     Set<String>? ownedItems,
     List<DynamicMovement>? dynamicMovements,
+    List<UserPhoto>? userPhotos,
   }) =>
       PhoneState(
         currentDay: currentDay ?? this.currentDay,
@@ -111,7 +115,34 @@ class PhoneState {
         reputation: (reputation ?? this.reputation).clamp(0, 9999),
         ownedItems: ownedItems ?? this.ownedItems,
         dynamicMovements: dynamicMovements ?? this.dynamicMovements,
+        userPhotos: userPhotos ?? this.userPhotos,
       );
+}
+
+/// Photo prise par le joueur via l'app Caméra (au lieu d'apparaître
+/// canoniquement). On stocke uniquement les métadonnées + un gradient
+/// auto-généré et un emoji selon le contexte (heure, mood, lieu).
+class UserPhoto {
+  final int day;
+  final int hour;
+  final int minute;
+  final String emoji;
+  /// Deux couleurs hex pour le gradient de placeholder.
+  final List<int> gradient;
+  /// Notes courtes auto-générées (souvenir).
+  final String caption;
+
+  const UserPhoto({
+    required this.day,
+    required this.hour,
+    required this.minute,
+    required this.emoji,
+    required this.gradient,
+    required this.caption,
+  });
+
+  String get timeLabel =>
+      '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
 }
 
 /// Mouvement bancaire ajouté en cours de jeu (achat, virement…).

@@ -9,6 +9,7 @@ import '../../../providers/phone_state_provider.dart';
 import '../../../providers/relationships_provider.dart';
 import '../../../providers/sent_replies_provider.dart';
 import '../../../services/persistence_service.dart';
+import '../onboarding_screen.dart';
 import '../status_bar.dart';
 
 /// App Réglages — iOS-like, fond gris perle. Quelques sections d'info
@@ -79,6 +80,11 @@ class ReglagesApp extends ConsumerWidget {
                   _Row(
                     label: 'Items achetés',
                     value: '${p.ownedItems.length}',
+                  ),
+                  _Row(
+                    label: 'Total dépensé',
+                    value:
+                        '${p.dynamicMovements.where((m) => m.amount < 0).fold<int>(0, (s, m) => s + (-m.amount))} €',
                   ),
                 ]),
                 const SizedBox(height: 18),
@@ -151,6 +157,7 @@ class ReglagesApp extends ConsumerWidget {
           TextButton(
             onPressed: () async {
               await PersistenceService.reset();
+              await resetOnboarding();
               ref.read(phoneStateProvider.notifier).hydrate(const PhoneState());
               ref.read(relationshipsProvider.notifier).reset();
               ref.read(sentRepliesProvider.notifier).reset();

@@ -9,6 +9,7 @@ import '../../providers/sent_replies_provider.dart';
 import 'apps/appstore_app.dart';
 import 'apps/banque_app.dart';
 import 'apps/calendrier_app.dart';
+import 'apps/camera_app.dart';
 import 'apps/cloud_app.dart';
 import 'apps/instagram_app.dart';
 import 'apps/messages_app.dart';
@@ -46,12 +47,14 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
     Future.microtask(() {
       ref.listenManual(lastTriggeredEventProvider, (_, next) {
         if (next == null) return;
-        // Pousse la notif dans l'historique du lock screen.
+        // Pousse la notif dans l'historique du lock screen (toujours,
+        // même en DND — la pile lock garde la trace).
         ref.read(lockNotificationsProvider.notifier).push(
               LockNotif.fromEvent(next),
             );
         // Cas spécial : un event tagué « appel entrant » déclenche
         // l'écran plein d'appel à la place du banner.
+        // Les appels passent même en DND (comportement iOS « urgence »).
         if (next.notifAppId == 'telephone' &&
             next.notifTitle.toLowerCase().contains('appel')) {
           ref.read(incomingCallProvider.notifier).state = IncomingCall(
@@ -65,6 +68,8 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         }
         final phone = ref.read(phoneStateProvider);
         if (phone.isLocked) return; // pas de banner sur lock screen
+        // DND : on supprime le banner mais on garde la notif sur lock.
+        if (phone.dndEnabled) return;
         if (!mounted) return;
         showPhoneNotification(
           context,
@@ -108,9 +113,24 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 280),
-        switchInCurve: Curves.easeOut,
-        switchOutCurve: Curves.easeIn,
+        duration: const Duration(milliseconds: 320),
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        transitionBuilder: (child, animation) {
+          // Scale + fade façon « zoom depuis l'icône » iOS, sauf pour
+          // l'incoming call qui apparaît brut (sensation d'urgence).
+          if (child.key != null &&
+              (child.key as ValueKey).value.toString().endsWith('-true')) {
+            return FadeTransition(opacity: animation, child: child);
+          }
+          return FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(
+              scale: Tween<double>(begin: 0.92, end: 1.0).animate(animation),
+              child: child,
+            ),
+          );
+        },
         child: KeyedSubtree(
           key: ValueKey('${p.isLocked}-${p.openAppId}-${call != null}'),
           child: body,
@@ -148,6 +168,8 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         return const ReglagesApp();
       case 'appstore':
         return const AppStoreApp();
+      case 'camera':
+        return const CameraApp();
       default:
         return ShellApp(meta: appById(id));
     }

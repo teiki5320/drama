@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../data/notes_data.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../status_bar.dart';
+import 'carnet_view.dart';
 
 /// App Notes — journal intime de Shen, fond papier crème, serif Crimson
 /// Pro, bic vert. Liste de notes triées du plus récent au plus ancien
@@ -51,6 +52,18 @@ class NotesApp extends ConsumerWidget {
                   ),
                 ),
                 const Spacer(),
+                IconButton(
+                  tooltip: 'Mode Carnet',
+                  icon: const Icon(Icons.menu_book_outlined,
+                      color: Color(0xFFD97757), size: 22),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (_) => const CarnetView()),
+                    );
+                  },
+                ),
                 Icon(Icons.create, color: const Color(0xFFD97757), size: 22),
               ],
             ),
@@ -124,10 +137,34 @@ class _NoteCard extends StatelessWidget {
                     style: GoogleFonts.crimsonPro(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF1A1A1A),
+                      color: note.draft
+                          ? const Color(0xFFB0A89A)
+                          : const Color(0xFF1A1A1A),
+                      decoration: note.draft
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                      decorationColor: const Color(0xFFB0A89A),
                     ),
                   ),
                 ),
+                if (note.draft)
+                  Container(
+                    margin: const EdgeInsets.only(right: 6),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE5E0D5),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      'brouillon',
+                      style: GoogleFonts.inter(
+                        fontSize: 9,
+                        color: const Color(0xFF8B8480),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                 Text(
                   'J${note.day} · ${note.time}',
                   style: GoogleFonts.inter(
@@ -139,12 +176,16 @@ class _NoteCard extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              note.body,
+              note.draft ? '${note.body}…' : note.body,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.crimsonPro(
                 fontSize: 14,
-                color: const Color(0xFF3A3A3A),
+                color: note.draft
+                    ? const Color(0xFF9A938A)
+                    : const Color(0xFF3A3A3A),
+                fontStyle:
+                    note.draft ? FontStyle.italic : FontStyle.normal,
                 height: 1.4,
               ),
             ),

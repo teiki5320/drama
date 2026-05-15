@@ -108,6 +108,12 @@ const List<AppMeta> kAllApps = [
     icon: Icons.apps,
     color: Color(0xFF007AFF),
   ),
+  AppMeta(
+    id: 'camera',
+    label: 'Caméra',
+    icon: Icons.camera,
+    color: Color(0xFF2A2A2A),
+  ),
   // ─── Apps installables (vides au démarrage, débloquées via App Store)
   AppMeta(
     id: 'spotify',

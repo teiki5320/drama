@@ -51,10 +51,10 @@ class UberEatsApp extends ConsumerWidget {
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF06C167).withOpacity(0.15),
+              color: const Color(0xFF06C167).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                  color: const Color(0xFF06C167).withOpacity(0.3)),
+                  color: const Color(0xFF06C167).withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
@@ -159,7 +159,7 @@ class _CourseCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: failed
             ? Border.all(
-                color: const Color(0xFFE53935).withOpacity(0.5))
+                color: const Color(0xFFE53935).withValues(alpha: 0.5))
             : null,
       ),
       child: Column(

@@ -14,6 +14,12 @@ Future<bool> isOnboardingDone() async {
   return p.getBool(_kOnboardingDone) ?? false;
 }
 
+/// Efface le flag — utilisé par Réglages > Reset partie.
+Future<void> resetOnboarding() async {
+  final p = await SharedPreferences.getInstance();
+  await p.remove(_kOnboardingDone);
+}
+
 /// Onboarding 3 écrans — apparaît une seule fois au premier lancement.
 /// Chaque écran est un faux lock screen avec un message de Shen qui
 /// pose le ton (1re personne, ironie sèche, dignité).
@@ -86,13 +92,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         child: Column(
           children: [
             const PhoneStatusBar(foreground: Colors.white),
-            const SizedBox(height: 28),
+            // Pad supplémentaire pour ne pas heurter la Dynamic Island
+            // du device_frame iPad.
+            const SizedBox(height: 36),
             Text(
               step.date.toUpperCase(),
               style: GoogleFonts.inter(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: Colors.white.withOpacity(0.85),
+                color: Colors.white.withValues(alpha: 0.85),
                 letterSpacing: 1.4,
               ),
             ),
@@ -128,7 +136,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 step.body,
                 style: GoogleFonts.crimsonPro(
                   fontSize: 16,
-                  color: Colors.white.withOpacity(0.92),
+                  color: Colors.white.withValues(alpha: 0.92),
                   height: 1.5,
                 ),
               ),
@@ -144,7 +152,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   height: 7,
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(i == _step ? 1.0 : 0.4),
+                    color: Colors.white.withValues(alpha: i == _step ? 1.0 : 0.4),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -166,7 +174,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     }
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white.withOpacity(0.20),
+                    backgroundColor: Colors.white.withValues(alpha: 0.20),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
