@@ -262,6 +262,61 @@ class _TinderAppState extends ConsumerState<TinderApp> {
                     color: const Color(0xFFFD297B),
                   ),
                 ),
+                const Spacer(),
+                // Idée 7 — Tinder Gold gimmick
+                GestureDetector(
+                  onTap: () {
+                    HapticFeedback.heavyImpact();
+                    showDialog<void>(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        backgroundColor: const Color(0xFFFFF8E1),
+                        title: Text(
+                          '⭐ Tinder Gold',
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w800,
+                            color: const Color(0xFFD4AF37),
+                          ),
+                        ),
+                        content: Text(
+                          '147 personnes t\'ont likée.\n\n'
+                          'Débloque qui avec Tinder Gold — 9,99 €/mois.\n\n'
+                          'Ou bois un thé. C\'est gratuit.',
+                          style: GoogleFonts.inter(fontSize: 14),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(ctx).pop(),
+                            child: Text(
+                              'Thé',
+                              style: GoogleFonts.inter(
+                                color: const Color(0xFFD97757),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD4AF37),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'GOLD',
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -409,6 +464,12 @@ class _Match {
   /// Si true, un match s'affiche après un swipe right. Sert au gag :
   /// quelques profils « It's a match! Ne réponds pas » qui dégagent.
   final bool autoMatch;
+  /// Si true, profil canon spécial (Vincent / Tristan bug) — diffère
+  /// le visuel et le comportement (carte tremblante, glitch fond).
+  final bool isCanonGag;
+  /// Si true, profil « fantôme » Tristan — non swipeable, juste pour
+  /// le malaise.
+  final bool ghost;
   const _Match({
     required this.name,
     required this.age,
@@ -418,6 +479,8 @@ class _Match {
     required this.emoji,
     this.longBio,
     this.autoMatch = false,
+    this.isCanonGag = false,
+    this.ghost = false,
   });
 }
 
@@ -533,6 +596,36 @@ const _kInitialDeck = <_Match>[
     longBio:
         'Thèse sur Levinas. Boursier ED. Je gagne 1 380 €.\n'
         'L\'ironie est mon outil. La précarité, ma méthode.',
+  ),
+  // Idée 3 — Vincent en match gag (sur-réel, futur beau-frère)
+  _Match(
+    name: 'Vincent',
+    age: 36,
+    bio: '« Closing · Yachts · Brunch dominical »',
+    location: 'À 0.1 km',
+    gradient: [0xFFE89B7F, 0xFFFCC9A1],
+    emoji: '💼',
+    longBio:
+        'Senior Sales chez Heng International.\n'
+        'Brother à mon frère Tristan. Cherche une « real one ».\n'
+        'Anglicismes assumés. Closing, deal, no problemo.',
+    autoMatch: true, // Match gag → écran « Ne réponds pas. »
+    isCanonGag: true,
+  ),
+  // Idée 4 — Tristan en bug, apparition fantôme
+  _Match(
+    name: 'T. ?',
+    age: 32,
+    bio: '« Profil indisponible · vu une fois dans ta zone »',
+    location: 'Disparu',
+    gradient: [0xFF0A0E1F, 0xFF1F2937],
+    emoji: '👻',
+    longBio:
+        'Ce profil n\'existe pas vraiment.\n'
+        'L\'algorithme dit qu\'il est passé une fois dans ton secteur, '
+        'à 11h47 mardi dernier.\n\n'
+        'Tu l\'as su autrement.',
+    ghost: true,
   ),
 ];
 
