@@ -129,6 +129,7 @@ class PersistenceService {
                   'emoji': p.emoji,
                   'gradient': p.gradient,
                   'caption': p.caption,
+                  'imagePath': p.imagePath,
                 })
             .toList(),
       };
@@ -193,6 +194,7 @@ class PersistenceService {
                       .map((e) => e as int)
                       .toList(),
                   caption: m['caption'] as String,
+                  imagePath: m['imagePath'] as String?,
                 ))
             .toList(),
       );

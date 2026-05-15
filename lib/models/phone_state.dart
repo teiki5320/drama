@@ -131,6 +131,9 @@ class UserPhoto {
   final List<int> gradient;
   /// Notes courtes auto-générées (souvenir).
   final String caption;
+  /// Image asset path : si non-null, on rend la vraie image au lieu
+  /// du gradient + emoji. Set par takePhoto() depuis un pool d'images.
+  final String? imagePath;
 
   const UserPhoto({
     required this.day,
@@ -139,6 +142,7 @@ class UserPhoto {
     required this.emoji,
     required this.gradient,
     required this.caption,
+    this.imagePath,
   });
 
   String get timeLabel =>

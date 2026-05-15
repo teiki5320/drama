@@ -281,16 +281,26 @@ class _LastPhotoVignette extends StatelessWidget {
       width: 56,
       height: 56,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: photo!.gradient.map((h) => Color(h)).toList(),
-        ),
+        gradient: photo!.imagePath == null
+            ? LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: photo!.gradient.map((h) => Color(h)).toList(),
+              )
+            : null,
+        image: photo!.imagePath != null
+            ? DecorationImage(
+                image: AssetImage(photo!.imagePath!),
+                fit: BoxFit.cover,
+              )
+            : null,
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: Colors.white24, width: 0.5),
       ),
       alignment: Alignment.center,
-      child: Text(
+      child: photo!.imagePath != null
+          ? null
+          : Text(
         photo!.emoji,
         style: const TextStyle(fontSize: 22),
       ),

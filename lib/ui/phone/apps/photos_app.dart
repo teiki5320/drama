@@ -37,6 +37,7 @@ class _PhotosAppState extends ConsumerState<PhotosApp> {
           subtitle: '📷 ${up.timeLabel} · ${up.caption}',
           gradient: up.gradient,
           isScreenshot: false,
+          imagePath: up.imagePath,
         ));
     final visible = [...canonVisible, ...userVisible];
 
