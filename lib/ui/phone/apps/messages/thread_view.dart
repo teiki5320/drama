@@ -113,13 +113,24 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Color(int.parse(
-                                '0xFF${widget.contact.avatarTint.substring(1)}')),
+                            color: widget.contact.avatarPath == null
+                                ? Color(int.parse(
+                                    '0xFF${widget.contact.avatarTint.substring(1)}'))
+                                : null,
                             shape: BoxShape.circle,
+                            image: widget.contact.avatarPath != null
+                                ? DecorationImage(
+                                    image:
+                                        AssetImage(widget.contact.avatarPath!),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
                           ),
                           alignment: Alignment.center,
-                          child: Text(widget.contact.emoji,
-                              style: const TextStyle(fontSize: 20)),
+                          child: widget.contact.avatarPath != null
+                              ? null
+                              : Text(widget.contact.emoji,
+                                  style: const TextStyle(fontSize: 20)),
                         ),
                         const SizedBox(height: 2),
                         Text(

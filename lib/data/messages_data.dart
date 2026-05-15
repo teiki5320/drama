@@ -14,6 +14,9 @@ class MsgContact {
   final String emoji;
   final String avatarTint; // couleur hex
   final bool isFavorite;
+  /// Chemin asset de l'avatar (ex: `assets/photos/avatars/shen.webp`).
+  /// Si null, on retombe sur l'emoji + cercle teinté.
+  final String? avatarPath;
 
   const MsgContact({
     required this.id,
@@ -21,6 +24,7 @@ class MsgContact {
     required this.emoji,
     required this.avatarTint,
     this.isFavorite = false,
+    this.avatarPath,
   });
 }
 
@@ -31,6 +35,7 @@ const kContacts = <MsgContact>[
     emoji: '👩',
     avatarTint: '#FCE6D8',
     isFavorite: true,
+    avatarPath: 'assets/photos/avatars/maman.webp',
   ),
   MsgContact(
     id: 'camille',
@@ -38,12 +43,14 @@ const kContacts = <MsgContact>[
     emoji: '🥐',
     avatarTint: '#FCE6D8',
     isFavorite: true,
+    avatarPath: 'assets/photos/avatars/camille.webp',
   ),
   MsgContact(
     id: 'tristan',
     displayName: 'Tristan H.',
     emoji: '🧊',
     avatarTint: '#D7DEE5',
+    avatarPath: 'assets/photos/avatars/tristan.webp',
   ),
   MsgContact(
     id: 'banque',
