@@ -234,12 +234,19 @@ class _PhotoTile extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors:
-                photo.gradient.map((hex) => Color(hex)).toList(),
-          ),
+          gradient: photo.imagePath == null
+              ? LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: photo.gradient.map((hex) => Color(hex)).toList(),
+                )
+              : null,
+          image: photo.imagePath != null
+              ? DecorationImage(
+                  image: AssetImage(photo.imagePath!),
+                  fit: BoxFit.cover,
+                )
+              : null,
         ),
         child: Stack(
           children: [
@@ -320,29 +327,37 @@ class _PhotoFullViewState extends State<_PhotoFullView> {
                   builder: (context, c) {
                     return Stack(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: photo.gradient
-                                  .map((hex) => Color(hex))
-                                  .toList(),
+                        if (photo.imagePath != null)
+                          Positioned.fill(
+                            child: Image.asset(
+                              photo.imagePath!,
+                              fit: BoxFit.cover,
                             ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              photo.subtitle,
-                              style: GoogleFonts.crimsonPro(
-                                fontSize: 36,
-                                color: Colors.white,
-                                shadows: const [
-                                  Shadow(color: Colors.black, blurRadius: 12),
-                                ],
+                          )
+                        else
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: photo.gradient
+                                    .map((hex) => Color(hex))
+                                    .toList(),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                photo.subtitle,
+                                style: GoogleFonts.crimsonPro(
+                                  fontSize: 36,
+                                  color: Colors.white,
+                                  shadows: const [
+                                    Shadow(color: Colors.black, blurRadius: 12),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
                         if (showHotspots)
                           for (final h in photo.hotspots)
                             Positioned(

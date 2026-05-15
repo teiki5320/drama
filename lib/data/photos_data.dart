@@ -11,6 +11,9 @@ class PhotoItem {
   final String subtitle; // emoji ou détail
   final List<int> gradient; // [topHex, bottomHex]
   final bool isScreenshot;
+  /// Chemin asset de l'image réelle (ex: `assets/photos/ep1/j01_08h17_velo_casse.jpg`).
+  /// Si null, on retombe sur le gradient + emoji.
+  final String? imagePath;
   /// Indices cachés révélés au zoom — chaque hotspot a une position
   /// relative (0..1) sur la photo et un texte Shen-style qui sort
   /// quand on tape dessus.
@@ -23,6 +26,7 @@ class PhotoItem {
     required this.subtitle,
     required this.gradient,
     this.isScreenshot = false,
+    this.imagePath,
     this.hotspots = const [],
   });
 }
