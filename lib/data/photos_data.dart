@@ -11,6 +11,10 @@ class PhotoItem {
   final String subtitle; // emoji ou détail
   final List<int> gradient; // [topHex, bottomHex]
   final bool isScreenshot;
+  /// Indices cachés révélés au zoom — chaque hotspot a une position
+  /// relative (0..1) sur la photo et un texte Shen-style qui sort
+  /// quand on tape dessus.
+  final List<PhotoHotspot> hotspots;
 
   const PhotoItem({
     required this.day,
@@ -19,6 +23,23 @@ class PhotoItem {
     required this.subtitle,
     required this.gradient,
     this.isScreenshot = false,
+    this.hotspots = const [],
+  });
+}
+
+/// Indice révélé quand on zoome sur la photo et qu'on tape un point
+/// pulsant. Voix Shen — courte, sèche, parfois ironique.
+class PhotoHotspot {
+  /// Position relative dans la photo (0..1).
+  final double x;
+  final double y;
+  /// Texte révélé. Garde-le court (1-3 lignes).
+  final String detail;
+
+  const PhotoHotspot({
+    required this.x,
+    required this.y,
+    required this.detail,
   });
 }
 
@@ -37,6 +58,19 @@ const kPhotos = <PhotoItem>[
     title: 'Vélo cassé',
     subtitle: '🚲 08h17 · Avenue Montaigne',
     gradient: [0xFF3A4555, 0xFF6B7385],
+    hotspots: [
+      PhotoHotspot(
+        x: 0.32,
+        y: 0.45,
+        detail: 'Le bowl açaï, écrasé. Violet sur le bitume gris.',
+      ),
+      PhotoHotspot(
+        x: 0.68,
+        y: 0.72,
+        detail:
+            'Une carte de visite. Quatre morceaux. Je n\'ai vu le nom qu\'en la ramassant.',
+      ),
+    ],
   ),
   PhotoItem(
     day: 1,
@@ -52,6 +86,19 @@ const kPhotos = <PhotoItem>[
     subtitle: '📇 23h42',
     gradient: [0xFFE8E0D0, 0xFFF5EFE2],
     isScreenshot: true,
+    hotspots: [
+      PhotoHotspot(
+        x: 0.50,
+        y: 0.45,
+        detail: 'Tristan HENG. Heng International. 47ᵉ étage.',
+      ),
+      PhotoHotspot(
+        x: 0.62,
+        y: 0.78,
+        detail:
+            'Le « T » de Tristan refuse de se réaligner. J\'ai recommencé deux fois.',
+      ),
+    ],
   ),
   // J2
   PhotoItem(
