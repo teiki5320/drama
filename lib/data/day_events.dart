@@ -43,7 +43,7 @@ const kDayEvents = <DayEvent>[
     apps: ['messages'],
     notifAppId: 'messages',
     notifTitle: 'Maman ❤️',
-    notifBody: 'Tu pars livrer dans combien ?',
+    notifBody: 'Tu pars livrer dans combien de temps ?',
     summary: 'SMS Maman avant départ',
   ),
   DayEvent(
@@ -53,7 +53,7 @@ const kDayEvents = <DayEvent>[
     apps: ['messages', 'ubereats'],
     notifAppId: 'ubereats',
     notifTitle: 'Course #14872',
-    notifBody: 'Bowl Açaí — Avenue Montaigne. 8,40 €.',
+    notifBody: 'Bowl Açaí — Avenue Montaigne. 8,40 €.',
     summary: 'Course Uber Eats acceptée',
   ),
   DayEvent(
@@ -73,7 +73,7 @@ const kDayEvents = <DayEvent>[
     apps: ['messages', 'banque', 'ubereats'],
     notifAppId: 'ubereats',
     notifTitle: 'Incident · pénalité',
-    notifBody: 'Course #14872 non livrée. − 38,00 €.',
+    notifBody: 'Course #14872 non livrée. − 38,00 €.',
     summary: 'Pénalité plateforme + alerte banque',
   ),
   DayEvent(
@@ -115,7 +115,7 @@ const kDayEvents = <DayEvent>[
     apps: ['messages', 'banque'],
     notifAppId: 'banque',
     notifTitle: 'Crédit refusé',
-    notifBody: 'BNP : demande n°7842 refusée. Pas de garant.',
+    notifBody: 'BNP : demande n°7842 refusée. Pas de garant.',
     summary: 'Une porte. Fermée.',
   ),
   DayEvent(
@@ -137,6 +137,37 @@ const kDayEvents = <DayEvent>[
     notifTitle: 'Appel manqué',
     notifBody: 'Numéro masqué · 23:55',
     summary: 'T. appelle (numéro masqué)',
+  ),
+  // ─── J14 ────────────────────────────────────────────────────────
+  DayEvent(
+    day: 14,
+    hour: 18,
+    minute: 42,
+    apps: ['telephone'],
+    notifAppId: 'telephone',
+    notifTitle: 'Maman ❤️',
+    notifBody: 'Messagerie · 38 s',
+    summary: 'Voicemail Maman avant le dîner',
+  ),
+  DayEvent(
+    day: 14,
+    hour: 22,
+    minute: 5,
+    apps: ['instagram'],
+    notifAppId: 'instagram',
+    notifTitle: 'heng_lihua',
+    notifBody: 'Vous a identifiée dans une story.',
+    summary: 'Madame Heng tag Shen publiquement',
+  ),
+  DayEvent(
+    day: 14,
+    hour: 22,
+    minute: 48,
+    apps: ['messages'],
+    notifAppId: 'messages',
+    notifTitle: 'Tristan H.',
+    notifBody: '« Elle ne dit "ma fille" qu\'aux personnes... »',
+    summary: 'Tristan commente le dîner',
   ),
 ];
 

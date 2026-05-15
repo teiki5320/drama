@@ -89,7 +89,7 @@ const kNotes = <NoteEntry>[
         'Six semaines.\n'
         'Quarante-deux jours.\n'
         'Le compteur démarre maintenant.\n\n'
-        'Sur mon compte courant : 2 384 €. C\'est déjà un miracle de fin de mois.\n\n'
+        'Sur mon compte courant : 2 384 €. C\'est déjà un miracle de fin de mois.\n\n'
         'L\'infirmière a dit : « Faites attention à ce qu\'elle vous dit. »\n'
         'Maman ne dit pas tout. Maman ne dit pas tout.',
     starred: true,
@@ -104,7 +104,7 @@ const kNotes = <NoteEntry>[
         'café froid des poubelles. Trois personnes qui font semblant '
         'de dormir debout.\n\n'
         'Couloir K, niveau 2, Tenon. Néons qui clignotent sur la deuxième '
-        'rangée. La carrelage sent le savon noir. La femme du ménage a '
+        'rangée. Le carrelage sent le savon noir. La femme du ménage a '
         'détourné les yeux quand je suis passée.\n\n'
         'Ce sont les détails qui restent. Pas les mots du médecin.',
   ),
@@ -114,11 +114,11 @@ const kNotes = <NoteEntry>[
     title: 'Trois colonnes',
     body:
         'Calculs. Calculs. Calculs.\n\n'
-        'Doubler les livraisons : +400 €/mois.\n'
-        'Service de nuit : +600 €. Je ne dormirais plus.\n'
+        'Doubler les livraisons : +400 €/mois.\n'
+        'Service de nuit : +600 €. Je ne dormirais plus.\n'
         'Vendre le piano de Maman : hors de question.\n\n'
-        'Total potentiel sur six mois : 6 000 €.\n'
-        'Manque : 12 000 €.\n'
+        'Total potentiel sur six mois : 6 000 €.\n'
+        'Manque : 12 000 €.\n'
         'Marge d\'erreur : zéro.',
   ),
   NoteEntry(
@@ -168,14 +168,26 @@ const kNotes = <NoteEntry>[
         '« Tu vas plaider ta propre affaire. »\n\n'
         'Le miroir me dit quelqu\'un d\'autre. Pas plus belle, pas moins. '
         'Juste plus coupée. Plus tranchante.\n\n'
-        'Demain 11h. Tour Heng. 47ᵉ étage.',
+        'Demain 11h. Tour Heng. 47e étage.',
     starred: true,
+  ),
+  // J7 — Brouillon abandonné le soir, après la Tour Heng
+  NoteEntry(
+    day: 7,
+    time: '21:00',
+    title: 'Trois mois',
+    body:
+        'Trois mois.\n'
+        'Comme un stage.\n'
+        'Sans la prime. Sans rien.\n'
+        'Si je signe, je',
+    draft: true,
   ),
   // J7 — après la Tour Heng
   NoteEntry(
     day: 7,
     time: '12:48',
-    title: 'Ce que j\'avais pas prévu',
+    title: 'Ce que je n\'avais pas prévu',
     body:
         'Il avait préparé un dossier AVANT que j\'arrive.\n'
         'Donc il savait que je viendrais.\n\n'
@@ -194,12 +206,25 @@ const kNotes = <NoteEntry>[
     body:
         'Article 7. Clause de discrétion absolue. Dix ans après la fin.\n'
         'Article 11. Aucune contestation publique, civile, professionnelle.\n'
-        'Article 14. En cas de rupture unilatérale, indemnité de 30 000 €.\n\n'
+        'Article 14. En cas de rupture unilatérale, indemnité de 30 000 €.\n\n'
         'J\'ai signé. Mon stylo a tremblé sur le « M » de Marchand.\n'
         'Personne n\'a vu.',
     starred: true,
   ),
 
+  // J9 — Soir d'emménagement Avenue Foch
+  NoteEntry(
+    day: 9,
+    time: '23:18',
+    title: 'Penderie',
+    body:
+        'Trois affaires posées dans une penderie qui en accueillait '
+        'cinquante. Le silence, ici, n\'est pas le même qu\'à Belleville. '
+        'Il a été acheté.\n\n'
+        'Maman ne saura pas avant J11. Je dors sur l\'oreiller de droite, '
+        'celui qui sent le neuf.',
+    starred: true,
+  ),
   // J11 — premier mensonge à Maman
   NoteEntry(
     day: 11,
@@ -218,7 +243,7 @@ const kNotes = <NoteEntry>[
     time: '22:08',
     title: 'Pages jaunes',
     body:
-        'Elle a cherché Lao Chen sur les pages jaunes.\n'
+        'Elle a cherché Lao Chen dans l\'annuaire.\n'
         'Elle a cherché.\n\n'
         'Je n\'ai pas réfléchi quand j\'ai inventé un nom. '
         'Elle, oui.',
@@ -232,7 +257,7 @@ const kNotes = <NoteEntry>[
     title: 'Long Jing, deuxième récolte',
     body:
         'Six personnes autour de la table.\n'
-        'Madame Heng m\'a regardé porter la tasse à mes lèvres.\n\n'
+        'Madame Heng m\'a regardée porter la tasse à mes lèvres.\n\n'
         '— Je crois que c\'est de la deuxième.\n\n'
         'Silence. Elle repose sa tasse.\n'
         '— Tu as raison, ma fille.\n\n'

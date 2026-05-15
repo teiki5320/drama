@@ -280,7 +280,7 @@ class _TinderAppState extends ConsumerState<TinderApp> {
                         ),
                         content: Text(
                           '147 personnes t\'ont likée.\n\n'
-                          'Débloque qui avec Tinder Gold — 9,99 €/mois.\n\n'
+                          'Débloque-les avec Tinder Gold — 9,99 €/mois.\n\n'
                           'Ou bois un thé. C\'est gratuit.',
                           style: GoogleFonts.inter(fontSize: 14),
                         ),
@@ -403,7 +403,7 @@ class _TinderAppState extends ConsumerState<TinderApp> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
             child: Text(
-              'Long-press pour voir le profil. Glisse vers le haut pour ⭐.\nTu n\'es pas obligée d\'être là ce soir.',
+              'Appui long pour voir le profil. Glisse vers le haut pour ⭐.\nTu n\'es pas obligée d\'être là ce soir.',
               textAlign: TextAlign.center,
               style: GoogleFonts.crimsonPro(
                 fontSize: 12,
@@ -516,7 +516,7 @@ const _kInitialDeck = <_Match>[
     gradient: [0xFFE89B7F, 0xFFFCC9A1],
     emoji: '🌴',
     longBio:
-        'Surf, yoga, ayahuasca. Investit dans les NFT et la beauté intérieure.\n'
+        'Surf, yoga, ayahuasca. J\'investis dans les NFT et la beauté intérieure.\n'
         '« Pas pressé » = je ne réponds pas avant 3 jours.',
   ),
   _Match(
@@ -533,7 +533,7 @@ const _kInitialDeck = <_Match>[
   _Match(
     name: 'Hugo',
     age: 33,
-    bio: '« Père divorcé · 2 enfants weekend sur 2 »',
+    bio: '« Père divorcé · 2 enfants week-end sur 2 »',
     location: 'À 6 km',
     gradient: [0xFF6E94B5, 0xFFAEC4D8],
     emoji: '👨‍👧',
@@ -549,13 +549,13 @@ const _kInitialDeck = <_Match>[
     gradient: [0xFF3A4555, 0xFF6B7385],
     emoji: '⚖️',
     longBio:
-        'Cabinet d\'affaires rue de Rivoli. Yacht 18m basé à Antibes.\n'
+        'Cabinet d\'affaires rue de Rivoli. Yacht 18 m basé à Antibes.\n'
         'Ma bio est honnête, vous voyez ce que vous achetez.',
   ),
   _Match(
     name: 'Sébastien',
     age: 28,
-    bio: '« Sapio-sexuel · Médite 2h/jour »',
+    bio: '« Sapio-sexuel · Médite 2 h/jour »',
     location: 'À 9 km',
     gradient: [0xFF2E7D32, 0xFF66BB6A],
     emoji: '🧘',
@@ -573,7 +573,7 @@ const _kInitialDeck = <_Match>[
     emoji: '📷',
     longBio:
         'Reportage, mariage, mode. Je voyage 3 semaines par mois.\n'
-        'Hong Kong me manque. Tu connais ?',
+        'Hong Kong me manque. Tu connais ?',
   ),
   _Match(
     name: 'Pierre-Édouard',
@@ -583,7 +583,7 @@ const _kInitialDeck = <_Match>[
     gradient: [0xFFE7E1D2, 0xFFCFC8B5],
     emoji: '🎩',
     longBio:
-        'XIIIe génération de notaires. Polo le dimanche. Tea time strict 17h.\n'
+        '13e génération de notaires. Polo le dimanche. Tea time strict 17h.\n'
         'Trois prénoms, on peut commencer par le premier.',
   ),
   _Match(
@@ -594,7 +594,7 @@ const _kInitialDeck = <_Match>[
     gradient: [0xFFFAEAD0, 0xFFFCEED4],
     emoji: '📚',
     longBio:
-        'Thèse sur Levinas. Boursier ED. Je gagne 1 380 €.\n'
+        'Thèse sur Levinas. Boursier ED. Je gagne 1 380 €.\n'
         'L\'ironie est mon outil. La précarité, ma méthode.',
   ),
   // Idée 3 — Vincent en match gag (sur-réel, futur beau-frère)
@@ -607,7 +607,7 @@ const _kInitialDeck = <_Match>[
     emoji: '💼',
     longBio:
         'Senior Sales chez Heng International.\n'
-        'Brother à mon frère Tristan. Cherche une « real one ».\n'
+        'Frère de Tristan, le DG. Cherche une « real one ».\n'
         'Anglicismes assumés. Closing, deal, no problemo.',
     autoMatch: true, // Match gag → écran « Ne réponds pas. »
     isCanonGag: true,

@@ -148,7 +148,7 @@ const kStocks = <StockPosition>[
     price: 139.20,
     change24h: 0.8,
     description:
-        'Conglomérat de NeoCity. Action solide, croissance steady.',
+        'Conglomérat de NeoCity. Action solide, croissance régulière.',
   ),
   StockPosition(
     ticker: 'NCT',
@@ -181,7 +181,7 @@ const kStocks = <StockPosition>[
   StockPosition(
     ticker: 'HAN',
     name: 'Hanami Café Co.',
-    sector: 'Food & Beverage',
+    sector: 'Restauration',
     price: 12.40,
     change24h: 2.1,
     description:

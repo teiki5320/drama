@@ -70,7 +70,7 @@ const kCalls = <CallEntry>[
     avatarPath: 'assets/photos/avatars/maman.webp',
     voicemailNote:
         'Shen ? Reviens vite, ne t\'inquiète pas pour moi. '
-        'Le médecin a dit que tout allait bien aller. Je t\'aime ma fille.',
+        'Le médecin a dit que tout irait bien. Je t\'aime ma fille.',
   ),
   CallEntry(
     day: 3,
@@ -100,7 +100,7 @@ const kCalls = <CallEntry>[
     duration: '00:38',
     avatarPath: 'assets/photos/avatars/maman.webp',
     voicemailNote:
-        'Ma fille, je sais que tu dînes ce soir avec ses parents. '
+        'Ma fille, je sais que tu dînes ce soir chez ces gens. '
         'Je ne te demande pas où tu vas. Je ne te demande pas qui '
         'tu vois. Je te demande juste de manger. Couvre-toi.',
   ),
@@ -115,9 +115,8 @@ const kCalls = <CallEntry>[
     avatarPath: 'assets/photos/avatars/madame_heng.webp',
     voicemailNote:
         'Mademoiselle Marchand. J\'aurais pu écrire. Mais une voix '
-        'tient mieux qu\'un message. Vous savez ce que les Chinois '
-        'disent : ce qui n\'est pas dit reste vrai. Jeudi 20h30. '
-        'À demain.',
+        'tient mieux qu\'un message. Un proverbe de chez nous dit : '
+        'ce qui n\'est pas dit reste vrai. Jeudi 20h30. À demain.',
   ),
   // Idée 7 — Voicemail Tristan J3 23:58, 3 minutes après l'appel raté.
   // Avatar volontairement non rendu (juste emoji ❓) pour ne pas
@@ -131,6 +130,6 @@ const kCalls = <CallEntry>[
     duration: '00:14',
     voicemailNote:
         'Mlle Marchand. Vous avez gardé ma carte. Rappelez quand vous '
-        'voudrez parler chiffres. C\'est moi qui ai du temps.',
+        'voudrez parler chiffres. Du temps, j\'en ai.',
   ),
 ];

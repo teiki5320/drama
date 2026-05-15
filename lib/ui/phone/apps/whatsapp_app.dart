@@ -127,20 +127,20 @@ const _allGroups = <_WAGroup>[
       _WAMsg(
         sender: '阿姨梅',
         text:
-            '别说"一点点"。"一点点"是大人的话。\n'
-            '(Ne dis pas « un peu ». « Un peu » est le mot des adultes.)',
+            '别说「一点点」。「一点点」是大人的话。\n'
+            '(Ne dis pas « un peu ». « Un peu », c\'est ce que disent les adultes.)',
         time: '21:18',
         day: 3,
       ),
       _WAMsg(
         sender: '阿姨梅',
-        text: '什么时候你来福建？',
+        text: '你什么时候来福建？',
         time: '21:18',
         day: 3,
       ),
       _WAMsg(
         sender: '伯伯文',
-        text: '梅，让她。她忙。',
+        text: '梅，让她吧。她忙。',
         time: '21:24',
         day: 3,
       ),
@@ -156,14 +156,14 @@ const _allGroups = <_WAGroup>[
       _WAMsg(
         sender: 'Camille',
         text:
-            'Je sais que tu réponds plus à Maman sur iMessage parce qu\'elle screenshot.\n'
+            'Je sais que tu réponds plus à Maman sur iMessage parce qu\'elle fait des captures.\n'
             'Ici on est tranquilles. Disparition après 7 jours.',
         time: '14:12',
         day: 4,
       ),
       _WAMsg(
         sender: 'moi',
-        text: 'Tu me prêtes 600 ?',
+        text: 'Tu me prêtes 600 ?',
         time: '14:13',
         day: 4,
       ),
@@ -203,7 +203,7 @@ const _allGroups = <_WAGroup>[
     messages: [
       _WAMsg(
         sender: 'Léo',
-        text: 'Quelqu\'un a le doc de M. Aubert ?',
+        text: 'Quelqu\'un a le doc de M. Aubert ?',
         time: '11:42',
         day: 1,
       ),
