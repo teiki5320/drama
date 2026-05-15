@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/mood_overlay.dart';
 import '../../core/phone_apps.dart';
 import '../../core/phone_theme.dart';
 import '../../providers/phone_state_provider.dart';
@@ -17,21 +18,44 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final p = ref.watch(phoneStateProvider);
     final palette = PhonePalette.forBand(p.band);
+
+    return Stack(
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 400),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [palette.wallpaperTop, palette.wallpaperBottom],
+            ),
+          ),
+        ),
+        // Voile mood — assombrit / réchauffe selon l'état de Shen.
+        IgnorePointer(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 600),
+            color: moodOverlay(p.mood),
+          ),
+        ),
+        _HomeContent(palette: palette),
+      ],
+    );
+  }
+}
+
+class _HomeContent extends ConsumerWidget {
+  const _HomeContent({required this.palette});
+  final PhonePalette palette;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final p = ref.watch(phoneStateProvider);
     final dockApps = kAllApps.where((a) => a.inDock).toList();
     final gridApps = kAllApps
         .where((a) => !a.inDock && p.unlockedApps.contains(a.id))
         .toList();
-
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 400),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [palette.wallpaperTop, palette.wallpaperBottom],
-        ),
-      ),
-      child: Column(
+    return Column(
         children: [
           PhoneStatusBar(foreground: palette.statusBarFg),
           // Ligne de widgets (météo, photo Maman, calendrier, time skip)
@@ -94,7 +118,6 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 }

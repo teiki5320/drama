@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/mood_overlay.dart';
 import '../../core/phone_apps.dart';
 import '../../core/phone_theme.dart';
 import '../../providers/lock_notifications_provider.dart';
@@ -40,32 +41,41 @@ class _LockScreenState extends ConsumerState<LockScreen>
       onVerticalDragUpdate: (d) =>
           setState(() => _dragY = (_dragY + d.delta.dy).clamp(-400, 0)),
       onVerticalDragEnd: _onDragEnd,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 400),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [palette.wallpaperTop, palette.wallpaperBottom],
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [palette.wallpaperTop, palette.wallpaperBottom],
+              ),
+            ),
           ),
-        ),
-        child: Transform.translate(
-          offset: Offset(0, _dragY),
-          child: SafeArea(
-            child: Column(
-              children: [
-                PhoneStatusBar(foreground: palette.statusBarFg),
-                const SizedBox(height: 30),
-                // Date courte
-                Text(
-                  dayLabel.toUpperCase(),
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: palette.statusBarFg.withOpacity(0.85),
-                    letterSpacing: 1.5,
+          IgnorePointer(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 600),
+              color: moodOverlay(p.mood),
+            ),
+          ),
+          Transform.translate(
+            offset: Offset(0, _dragY),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  PhoneStatusBar(foreground: palette.statusBarFg),
+                  const SizedBox(height: 30),
+                  // Date courte + tier réputation
+                  Text(
+                    '${dayLabel.toUpperCase()}  ·  ${reputationTier(p.reputation).toUpperCase()}',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: palette.statusBarFg.withOpacity(0.85),
+                      letterSpacing: 1.5,
+                    ),
                   ),
-                ),
                 const SizedBox(height: 8),
                 // Grande horloge
                 Text(
@@ -93,6 +103,7 @@ class _LockScreenState extends ConsumerState<LockScreen>
             ),
           ),
         ),
+        ],
       ),
     );
   }
