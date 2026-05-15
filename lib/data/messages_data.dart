@@ -300,6 +300,15 @@ const Map<String, List<Msg>> kThreads = {
       time: '14:23',
       day: 3,
     ),
+    // Idée 11 — Spam ironique 9h après le refus
+    Msg(
+      sender: 'banque',
+      text:
+          'BNP Paribas Jeunes — découvrez le PEA Avenir, à partir de 50 €/mois. '
+          'Préparez votre avenir dès aujourd\'hui ! STOP au 36173.',
+      time: '23:12',
+      day: 3,
+    ),
   ],
   'numericable': [
     Msg(
