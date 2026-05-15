@@ -11,6 +11,7 @@ import 'apps/instagram_app.dart';
 import 'apps/messages_app.dart';
 import 'apps/notes_app.dart';
 import 'apps/photos_app.dart';
+import 'apps/reglages_app.dart';
 import 'apps/shell_app.dart';
 import 'apps/telephone_app.dart';
 import 'apps/tinder_app.dart';
@@ -119,6 +120,8 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         return const TinderApp();
       case 'cloud':
         return const CloudApp();
+      case 'reglages':
+        return const ReglagesApp();
       default:
         return ShellApp(meta: appById(id));
     }

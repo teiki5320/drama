@@ -50,6 +50,7 @@ class PhoneState {
     this.unlockedApps = const {
       'messages', 'telephone', 'whatsapp', 'instagram', 'banque',
       'ubereats', 'photos', 'notes', 'calendrier', 'tinder', 'cloud',
+      'reglages',
     },
     this.currentEpisodeId = 'collision',
     this.currentBeatIdx = 0,
