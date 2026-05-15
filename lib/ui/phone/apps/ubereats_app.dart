@@ -137,7 +137,7 @@ class _LivreurMode extends StatelessWidget {
               Expanded(
                 child: _StatCard(
                   label: 'Gains du jour',
-                  value: '${earnings.toStringAsFixed(2)} €',
+                  value: '${earnings.toStringAsFixed(2)} €',
                   hint: '${accepted.length} courses',
                   emphasize: earnings >= 20,
                 ),
@@ -204,7 +204,7 @@ class _LivreurMode extends StatelessWidget {
         id: 'c_j1_07h15',
         time: '07:15',
         from: 'Boulangerie Wong',
-        to: 'Bureau 8ᵉ',
+        to: 'Bureau 8e',
         distance: '3.2 km',
         payout: 8.40,
         penalty: 0,
@@ -306,7 +306,7 @@ class _OrderMode extends ConsumerWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Pénalités cumulées · 412 € à rembourser '
+                        'Pénalités cumulées · 412 € à rembourser '
                         'avant réactivation. Mode commande uniquement.',
                         style: GoogleFonts.inter(
                           fontSize: 12,
@@ -360,16 +360,16 @@ class _OrderMode extends ConsumerWidget {
         restaurant: 'Maison Wong · Belleville',
         item: 'Nouilles + soupe d\'orge pour Maman',
         price: 12.50,
-        note: 'Livré 75019, sans signature à la porte.',
+        note: 'Livraison 75019. À déposer devant la porte.',
       ),
       if (day >= 9) ...[
         _OrderItem(
           id: 'sushi_tristan',
           emoji: '🍣',
-          restaurant: 'Yasu · 8ᵉ',
+          restaurant: 'Yasu · 8e',
           item: 'Plateau omakase 12 pièces pour Tristan',
           price: 80.00,
-          note: 'Wasabi à part. À la table de bureau.',
+          note: 'Wasabi à part. À livrer au bureau.',
           requiresAvenueFoch: true,
         ),
         _OrderItem(
@@ -643,7 +643,7 @@ class _CourseCard extends StatelessWidget {
               const Spacer(),
               if (failed)
                 Text(
-                  '− ${course.penalty.toStringAsFixed(0)} €',
+                  '− ${course.penalty.toStringAsFixed(0)} €',
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -652,7 +652,7 @@ class _CourseCard extends StatelessWidget {
                 )
               else
                 Text(
-                  '+ ${effectivePayout.toStringAsFixed(2)} €',
+                  '+ ${effectivePayout.toStringAsFixed(2)} €',
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

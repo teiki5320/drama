@@ -124,7 +124,7 @@ const Map<String, List<Msg>> kThreads = {
     ),
     Msg(
       sender: 'moi',
-      text: 'Dix minutes. Vélo, pluie, le 8ᵉ.',
+      text: 'Dix minutes. Vélo, pluie, le 8e.',
       time: '07:49',
       day: 1,
     ),
@@ -137,7 +137,7 @@ const Map<String, List<Msg>> kThreads = {
     ),
     Msg(
       sender: 'maman',
-      text: 'Couvre-toi. Et mange un truc avant de monter sur ce vélo.',
+      text: 'Couvre-toi. Et mange quelque chose avant de prendre ce vélo.',
       time: '07:50',
       day: 1,
     ),
@@ -147,7 +147,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'maman',
       text:
-          '« Oui ». Tu réponds « oui » depuis trois jours. Donne-moi un détail.',
+          '« Oui. » Tu réponds « oui » depuis trois jours. Donne-moi un détail.',
       time: '08:15',
       day: 1,
       beatId: 'maman_petit_dej_j1',
@@ -184,7 +184,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'maman',
       text:
-          '« Bien ». Tu écris « bien » depuis trois jours. Donne-moi un détail.',
+          '« Bien. » Tu écris « bien » depuis trois jours. Donne-moi un détail.',
       time: '21:10',
       day: 11,
       beatId: 'maman_stage_j11',
@@ -193,7 +193,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'maman',
       text:
-          'J\'ai cherché Lao Chen sur les pages jaunes. Aucun résultat. '
+          'J\'ai cherché Lao Chen dans l\'annuaire. Aucun résultat. '
           'C\'est un petit cabinet ?',
       time: '14:24',
       day: 12,
@@ -241,7 +241,7 @@ const Map<String, List<Msg>> kThreads = {
       day: 4,
     ),
     Msg(sender: 'moi', text: 'Non.', time: '14:02', day: 4),
-    Msg(sender: 'camille', text: 'Shen. Dix-huit mille. Ta mère.', time: '14:03', day: 4),
+    Msg(sender: 'camille', text: 'Shen. 18 000. Ta mère.', time: '14:03', day: 4),
     Msg(sender: 'moi', text: 'Je ne mendie pas chez les Heng.', time: '14:03', day: 4),
     Msg(sender: 'camille', text: 'C\'est pas mendier si tu rends. C\'est emprunter.', time: '14:04', day: 4),
     Msg(
@@ -261,13 +261,13 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'camille',
       text:
-          'Tu vas plaider ta propre affaire. Habille-toi comme telle.',
+          'Tu vas plaider ta propre cause. Habille-toi comme telle.',
       time: '17:43',
       day: 6,
     ),
     Msg(
       sender: 'camille',
-      text: 'Et révise ton mandarin. Au cas où il glisse dedans.',
+      text: 'Et révise ton mandarin. Au cas où il y bascule.',
       time: '17:44',
       day: 6,
       beatId: 'camille_tailleur_j6',
@@ -295,7 +295,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'camille',
       text:
-          'Mauvaise question. La vraie c\'est : QUEL THÉ ?',
+          'Mauvaise question. La vraie c\'est : QUEL THÉ ?',
       time: '15:09',
       day: 13,
       beatId: 'camille_quel_the_j13',
@@ -320,7 +320,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'tristan',
       text:
-          'Heng International. Mlle Marchand, j\'ai votre demande. Jeudi 11h, 47ᵉ étage, Tour Heng. Confirmation ?',
+          'Heng International. Mlle Marchand. Jeudi 11h, 47e étage, Tour Heng. Confirmez ?',
       time: '14:12',
       day: 6,
       beatId: 'tristan_rdv_j6',
@@ -329,7 +329,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'tristan',
       text:
-          'J\'ai laissé la moitié de la penderie et la salle de bain attenante. Bureau pour moi. Vous êtes libre de réorganiser.',
+          'Penderie partagée, salle de bain attenante pour vous. Bureau pour moi. Réaménagez à votre goût.',
       time: '17:22',
       day: 9,
     ),
@@ -349,7 +349,7 @@ const Map<String, List<Msg>> kThreads = {
       sender: 'madame_heng',
       text:
           'Mademoiselle Marchand. Mon fils m\'a transmis votre numéro. '
-          'Le couvert sera mis à 20h30 jeudi. Le thé sera servi au salon.',
+          'Jeudi, le couvert sera mis à 20h30. Le thé sera servi au salon.',
       time: '09:42',
       day: 12,
     ),
@@ -388,14 +388,14 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'banque',
       text:
-          'BNP : 50 € sur votre compte mardi grâce à notre offre parrainage. Code PARRAIN-2026. STOP au 36173.',
+          'BNP : 50 € sur votre compte mardi grâce à notre offre parrainage. Code PARRAIN-2026. STOP au 36173.',
       time: '06:12',
       day: 1,
     ),
     Msg(
       sender: 'banque',
       text:
-          'INFO BNP : votre demande de crédit personnel n°7842 a été REFUSÉE. Motif : pas de garant éligible. Détails sur l\'app.',
+          'INFO BNP : votre demande de crédit personnel n°7842 a été REFUSÉE. Motif : pas de garant éligible. Détails sur l\'app.',
       time: '14:23',
       day: 3,
     ),
@@ -403,8 +403,8 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'banque',
       text:
-          'BNP Paribas Jeunes — découvrez le PEA Avenir, à partir de 50 €/mois. '
-          'Préparez votre avenir dès aujourd\'hui ! STOP au 36173.',
+          'BNP Paribas Jeunes — découvrez le PEA Avenir, à partir de 50 €/mois. '
+          'Préparez votre avenir dès aujourd\'hui ! STOP au 36173.',
       time: '23:12',
       day: 3,
     ),
@@ -422,14 +422,14 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'plateforme',
       text:
-          'Course #14872 — Bowl Açaí — Avenue Montaigne. Acceptez dans 30s. 8,40 €.',
+          'Course #14872 — Bowl Açaí — Avenue Montaigne. Acceptez dans 30 s. 8,40 €.',
       time: '07:52',
       day: 1,
     ),
     Msg(
       sender: 'plateforme',
       text:
-          'INCIDENT — Course #14872 marquée comme non livrée. Pénalité de 38,00 € appliquée sur la prochaine paie. Conseil : reprenez une course tout de suite.',
+          'INCIDENT — Course #14872 marquée comme non livrée. Pénalité de 38,00 € appliquée sur la prochaine paie. Conseil : reprenez une course tout de suite.',
       time: '08:31',
       day: 1,
     ),

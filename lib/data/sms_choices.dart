@@ -84,7 +84,7 @@ const Map<String, SmsChoice> kSmsChoices = {
       ),
       SmsChoiceOption(
         label: 'Inquiète',
-        reply: 'Tu as bien pris tes gélules de 16h hier ?',
+        reply: 'Tu as bien pris tes gélules de 16h hier ?',
         delta: RelationshipDelta(dependency: 4, suspicion: 2, trust: 1),
       ),
     ],
@@ -107,7 +107,7 @@ const Map<String, SmsChoice> kSmsChoices = {
       ),
       SmsChoiceOption(
         label: 'Vanne',
-        reply: '38, sérieux ? Je l\'épouse pas, je négocie un prêt.',
+        reply: '38, sérieux ? Je l\'épouse pas, je négocie un prêt.',
         delta: RelationshipDelta(attraction: 3, loyalty: 2),
       ),
     ],
@@ -153,7 +153,7 @@ const Map<String, SmsChoice> kSmsChoices = {
       ),
       SmsChoiceOption(
         label: 'Reverse',
-        reply: 'Et toi, comment tu te sens vraiment ?',
+        reply: 'Et toi, comment tu te sens vraiment ?',
         delta: RelationshipDelta(trust: 5, attraction: 4, suspicion: -2),
       ),
     ],

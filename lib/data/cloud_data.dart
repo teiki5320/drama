@@ -81,7 +81,7 @@ const kCloudItems = <CloudItem>[
     folder: 'Famille',
     day: 1,
     body:
-        'Papa, Maman a toussé encore cette nuit. Je crois que c\'est plus '
+        'Papa, Maman a encore toussé cette nuit. Je crois que c\'est plus '
         'grave qu\'elle ne le dit. Je voudrais que tu sois là pour qu\'elle '
         'arrête de mentir.',
   ),
@@ -106,7 +106,7 @@ const kCloudItems = <CloudItem>[
     folder: 'Hôpital',
     day: 2,
     body:
-        '18 000 € sur six mois.\nProtocole expérimental.\n'
+        '18 000 € sur six mois.\nProtocole expérimental.\n'
         'À commencer sous six semaines.\nDr Aubin — Tenon Néphrologie.',
   ),
 
@@ -120,9 +120,9 @@ const kCloudItems = <CloudItem>[
     day: 3,
     body:
         'Mademoiselle Marchand,\n\n'
-        'Suite à l\'étude de votre demande de crédit personnel n°7842, '
+        'À la suite de l\'étude de votre demande de crédit personnel n°7842, '
         'celle-ci est REFUSÉE.\n\n'
-        'Motifs : revenus insuffisants, absence de garant éligible.\n\n'
+        'Motifs : revenus insuffisants, absence de garant éligible.\n\n'
         'Cordialement, BNP Paribas Belleville.',
   ),
   // ── Idée 2 : Demande de crédit initiale (J-20) ────────────────
@@ -134,10 +134,10 @@ const kCloudItems = <CloudItem>[
     folder: 'Banque',
     day: 1,
     body:
-        'Bénéficiaire : Marchand Shen, née le 12 novembre 2001.\n\n'
-        'Montant demandé : 12 000 €.\n'
-        'Durée : 36 mois.\n'
-        'Garant : sans (case « ne pas inclure ma mère » cochée).\n\n'
+        'Bénéficiaire : Marchand Shen, née le 12 novembre 2001.\n\n'
+        'Montant demandé : 18 000 €.\n'
+        'Durée : 36 mois.\n'
+        'Garant : sans (case « ne pas inclure ma mère » cochée).\n\n'
         'Document envoyé en ligne le 14 mai. Sans en parler à personne.',
   ),
   // ── Idée 9 : Photo Maman J-30 bien portante ───────────────────
@@ -173,8 +173,8 @@ const kCloudItems = <CloudItem>[
     folder: 'Banque',
     day: 1,
     body:
-        '127 courses effectuées.\nBrut : 1 058 €.\n'
-        'Pénalités : 412 €.\nNet : 646 €.',
+        '127 courses effectuées.\nBrut : 1 058 €.\n'
+        'Pénalités : 412 €.\nNet : 646 €.',
   ),
 
   // ─── Items supprimés (récupérables) ───────────────────────────
