@@ -66,7 +66,7 @@ const kCloudItems = <CloudItem>[
     id: 'lettre_papa_1',
     kind: CloudKind.document,
     title: 'Lettre n°127',
-    subtitle: 'Janvier 2018 · 14 ans',
+    subtitle: 'Décembre 2015 · 14 ans',
     folder: 'Famille',
     day: 1,
     body:

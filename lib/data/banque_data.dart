@@ -95,6 +95,29 @@ const kMovements = <BankMovement>[
       amount: -50,
       category: 'banque',
       emoji: '🏦'),
+  // J5 — petite vie ordinaire (samedi)
+  BankMovement(
+      day: 5,
+      time: '09:42',
+      label: 'Boulangerie Wong',
+      amount: -4,
+      category: 'courses',
+      emoji: '🥐'),
+  BankMovement(
+      day: 5,
+      time: '18:18',
+      label: 'Plateforme — course matin',
+      amount: 10,
+      category: 'travail',
+      emoji: '🛵'),
+  // J8 — densifier la signature
+  BankMovement(
+      day: 8,
+      time: '18:02',
+      label: 'Virement Heng International',
+      amount: 30000,
+      category: 'autre',
+      emoji: '⚠️'),
 ];
 
 class StockPosition {

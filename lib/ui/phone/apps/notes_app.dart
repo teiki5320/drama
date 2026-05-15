@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/notes_data.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/relationships_provider.dart';
 import '../status_bar.dart';
 import 'carnet_view.dart';
 
@@ -18,7 +19,16 @@ class NotesApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
     final mood = ref.watch(phoneStateProvider.select((s) => s.mood));
-    final notes = kNotes.where((n) => n.day <= day).toList().reversed.toList();
+    final suspicionMaman =
+        ref.watch(relationshipsProvider)['maman']?.suspicion ?? 0;
+    final notes = kNotes
+        .where((n) =>
+            n.day <= day &&
+            (n.requiresSuspicionMaman == null ||
+                suspicionMaman >= n.requiresSuspicionMaman!))
+        .toList()
+        .reversed
+        .toList();
     // Fond papier crème en mood neutre+ ; refroidit / grisaille en bas mood.
     final bg = mood >= 5
         ? const Color(0xFFFBF7EF)

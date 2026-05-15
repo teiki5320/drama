@@ -10,6 +10,10 @@ class NoteEntry {
   /// True quand Shen a commencé la note puis l'a abandonnée — affichée
   /// barrée + tag « brouillon » + 3 points hésitants en fin de body.
   final bool draft;
+  /// Si non-null, la note n'apparaît que si la suspicion Maman est
+  /// >= ce seuil. Sert aux notes « la mère a cherché » qui ne sont
+  /// déclenchées que si Shen a menti.
+  final int? requiresSuspicionMaman;
 
   const NoteEntry({
     required this.day,
@@ -18,6 +22,7 @@ class NoteEntry {
     required this.body,
     this.starred = false,
     this.draft = false,
+    this.requiresSuspicionMaman,
   });
 }
 
@@ -141,6 +146,18 @@ const kNotes = <NoteEntry>[
         'Le numéro est lisible.',
     starred: true,
   ),
+  // J5 — Combler la journée vide (samedi 7 juin)
+  NoteEntry(
+    day: 5,
+    time: '11:24',
+    title: 'Vingt-quatre heures',
+    body:
+        'J\'ai passé hier à dire à Camille que je ne rappellerai pas.\n'
+        'J\'ai passé ce matin à composer le numéro trois fois sans appuyer.\n\n'
+        'Le scotch sur la carte tient encore. Le « T » de Tristan, lui, '
+        'n\'a jamais voulu se réaligner.',
+  ),
+
   // J6 — la veille du rendez-vous Tour Heng
   NoteEntry(
     day: 6,
@@ -169,6 +186,20 @@ const kNotes = <NoteEntry>[
         'J\'ai dit oui avec des clauses au stylo dans la marge.',
     starred: true,
   ),
+  // J8 — Signature notariale, voix sèche
+  NoteEntry(
+    day: 8,
+    time: '12:48',
+    title: 'Quatorze pages',
+    body:
+        'Article 7. Clause de discrétion absolue. Dix ans après la fin.\n'
+        'Article 11. Aucune contestation publique, civile, professionnelle.\n'
+        'Article 14. En cas de rupture unilatérale, indemnité de 30 000 €.\n\n'
+        'J\'ai signé. Mon stylo a tremblé sur le « M » de Marchand.\n'
+        'Personne n\'a vu.',
+    starred: true,
+  ),
+
   // J11 — premier mensonge à Maman
   NoteEntry(
     day: 11,
@@ -181,6 +212,19 @@ const kNotes = <NoteEntry>[
         'Ou alors elle ne me croit pas et elle joue le jeu pour me protéger.\n\n'
         'Je ne sais plus laquelle des deux je préfère.',
   ),
+  // J12 — Note conditionnelle si suspicion Maman ≥ 30 (Idée 14)
+  NoteEntry(
+    day: 12,
+    time: '22:08',
+    title: 'Pages jaunes',
+    body:
+        'Elle a cherché Lao Chen sur les pages jaunes.\n'
+        'Elle a cherché.\n\n'
+        'Je n\'ai pas réfléchi quand j\'ai inventé un nom. '
+        'Elle, oui.',
+    requiresSuspicionMaman: 30,
+  ),
+
   // J14 — après le premier dîner Madame Heng
   NoteEntry(
     day: 14,
@@ -194,5 +238,15 @@ const kNotes = <NoteEntry>[
         '— Tu as raison, ma fille.\n\n'
         'Elle a dit *ma fille*. En français. Ce n\'est pas anodin.',
     starred: true,
+  ),
+  // J14 — Brouillon final du cliffhanger Ep 1
+  NoteEntry(
+    day: 14,
+    time: '23:58',
+    title: 'Pour Maman',
+    body:
+        'Maman.\n'
+        'Je ne sais plus comment te dire que',
+    draft: true,
   ),
 ];
