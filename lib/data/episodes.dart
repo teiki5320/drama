@@ -1,19 +1,21 @@
 import '../models/episode.dart';
 
-/// Catalogue des 6 épisodes — calque les 6 actes de la roadmap.
-///
-/// État au commit : les 3 premiers épisodes sont remplis avec les beats
-/// qui correspondent au contenu narratif déjà écrit (J1 → J14). Les 3
-/// derniers sont des scaffolds : structure prête, beats à compléter
-/// quand on étendra le scénario.
+/// Catalogue des 5 épisodes — découpage validé pour le funnel gratuit /
+/// payant : Ep 1 gratuit (J1 → J14, deux premières semaines complètes
+/// avec collision, contrat, vie commune, premier dîner Madame Heng).
+/// Le paywall tombe sur le cliffhanger « ma fille » de Long Jing
+/// deuxième récolte. Les 4 épisodes suivants sont payants.
+
 const kEpisodes = <Episode>[
-  // ── Épisode 1 ── Vendredi 3 juin → dimanche 5 juin ───────────────
+  // ── Épisode 1 ── GRATUIT — J1 → J14 ──────────────────────────────
   Episode(
-    id: 'collision',
+    id: 'avant_la_lumiere',
     number: 1,
-    title: 'Collision',
-    subtitle: 'Vendredi 3 juin, Avenue Montaigne. Un acaï renversé.',
+    title: 'Avant la lumière',
+    subtitle:
+        'Deux semaines. La collision, le contrat, le premier thé chez Madame Heng.',
     beats: [
+      // — Acte A : Collision (J1 → J3)
       Beat(
         idx: 0,
         day: 1,
@@ -57,18 +59,9 @@ const kEpisodes = <Episode>[
         minute: 55,
         label: 'Numéro masqué — T. appelle',
       ),
-    ],
-  ),
-
-  // ── Épisode 2 ── Lundi 6 juin → vendredi 10 juin ─────────────────
-  Episode(
-    id: 'contrat',
-    number: 2,
-    title: 'Le contrat',
-    subtitle: '47ᵉ étage de la Tour Heng. Trente mille euros, trois mois.',
-    beats: [
+      // — Acte B : Le contrat (J4 → J9)
       Beat(
-        idx: 0,
+        idx: 6,
         day: 4,
         hour: 14,
         minute: 2,
@@ -76,7 +69,7 @@ const kEpisodes = <Episode>[
         requiresChoice: 'camille_carte_j4',
       ),
       Beat(
-        idx: 1,
+        idx: 7,
         day: 6,
         hour: 14,
         minute: 12,
@@ -84,7 +77,7 @@ const kEpisodes = <Episode>[
         requiresChoice: 'tristan_rdv_j6',
       ),
       Beat(
-        idx: 2,
+        idx: 8,
         day: 6,
         hour: 17,
         minute: 42,
@@ -92,38 +85,29 @@ const kEpisodes = <Episode>[
         requiresChoice: 'camille_tailleur_j6',
       ),
       Beat(
-        idx: 3,
+        idx: 9,
         day: 7,
         hour: 11,
         minute: 0,
         label: 'Tour Heng — proposition trois mois',
       ),
       Beat(
-        idx: 4,
+        idx: 10,
         day: 8,
         hour: 11,
         minute: 30,
         label: 'Cabinet notarial — 14 pages',
       ),
       Beat(
-        idx: 5,
+        idx: 11,
         day: 9,
         hour: 17,
         minute: 22,
         label: 'Emménagement — Avenue Foch',
       ),
-    ],
-  ),
-
-  // ── Épisode 3 ── Lundi 13 juin → samedi 18 juin ──────────────────
-  Episode(
-    id: 'vie_commune',
-    number: 3,
-    title: 'Vie commune',
-    subtitle: 'Long Jing deuxième récolte. Madame Heng dit « ma fille ».',
-    beats: [
+      // — Acte C : Vie commune (J11 → J14, cliffhanger Long Jing)
       Beat(
-        idx: 0,
+        idx: 12,
         day: 11,
         hour: 21,
         minute: 8,
@@ -131,7 +115,7 @@ const kEpisodes = <Episode>[
         requiresChoice: 'maman_stage_j11',
       ),
       Beat(
-        idx: 1,
+        idx: 13,
         day: 13,
         hour: 15,
         minute: 8,
@@ -139,35 +123,42 @@ const kEpisodes = <Episode>[
         requiresChoice: 'camille_quel_the_j13',
       ),
       Beat(
-        idx: 2,
+        idx: 14,
         day: 14,
         hour: 20,
         minute: 30,
-        label: 'Dîner Madame Heng — Long Jing',
+        label: 'Dîner Madame Heng — Long Jing deuxième récolte',
       ),
     ],
   ),
 
-  // ── Épisodes 4-6 — Scaffolds, beats à écrire ────────────────────
+  // ── Épisodes 2-5 — PAYANTS, scaffolds à écrire ───────────────────
+  Episode(
+    id: 'routine_du_mensonge',
+    number: 2,
+    title: 'La routine du mensonge',
+    subtitle: 'J15 → J30. Shen tient deux vies. Maman commence à douter.',
+    beats: [],
+  ),
   Episode(
     id: 'hong_kong',
-    number: 4,
+    number: 3,
     title: 'Hong Kong',
-    subtitle: 'Le voyage. Le secret remonte à la surface.',
+    subtitle: 'J30 → J50. Le voyage. Le secret remonte à la surface.',
     beats: [],
   ),
   Episode(
     id: 'retour',
-    number: 5,
+    number: 4,
     title: 'Retour',
-    subtitle: 'Paris, Maman en crise, Camille à distance.',
+    subtitle: 'J50 → J80. Paris, Maman en crise, Camille à distance.',
     beats: [],
   ),
   Episode(
     id: 'fujian',
-    number: 6,
+    number: 5,
     title: 'Fujian',
-    subtitle: 'Le parc. L\'épilogue.',
+    subtitle: 'J80 → J112. Le parc. L\'épilogue.',
     beats: [],
   ),
 ];

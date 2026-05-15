@@ -2,9 +2,19 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../data/episodes.dart';
 import '../models/phone_state.dart';
 import '../models/relationship.dart';
 import '../providers/sent_replies_provider.dart';
+
+/// Mapping des anciens ids d'épisode (3 actes pré-fusion) vers les ids
+/// actuels (5 épisodes, fusion en « Avant la lumière »). Permet de
+/// récupérer les sauvegardes d'anciennes versions sans crash.
+const _kEpisodeMigration = <String, ({String id, int beatOffset})>{
+  'collision': (id: 'avant_la_lumiere', beatOffset: 0),
+  'contrat': (id: 'avant_la_lumiere', beatOffset: 6),
+  'vie_commune': (id: 'avant_la_lumiere', beatOffset: 12),
+};
 
 /// Persiste les 3 sources de vérité du jeu dans shared_preferences :
 /// PhoneState, relationships, sentReplies. On rejoue exactement où le
@@ -113,7 +123,25 @@ class PersistenceService {
             .toList(),
       };
 
-  static PhoneState _phoneStateFromMap(Map<String, dynamic> j) => PhoneState(
+  static PhoneState _phoneStateFromMap(Map<String, dynamic> j) {
+    // Migration d'épisodes : ancienne save → ids actuels.
+    var epId = j['currentEpisodeId'] as String? ?? 'avant_la_lumiere';
+    var beatIdx = j['currentBeatIdx'] as int? ?? 0;
+    final migration = _kEpisodeMigration[epId];
+    if (migration != null) {
+      epId = migration.id;
+      beatIdx = beatIdx + migration.beatOffset;
+    }
+    // Si l'id n'existe toujours pas dans kEpisodes ou que beatIdx est
+    // hors limites, on retombe proprement au début.
+    final ep = episodeById(epId);
+    if (ep == null) {
+      epId = 'avant_la_lumiere';
+      beatIdx = 0;
+    } else if (beatIdx < 0 || beatIdx >= ep.beats.length) {
+      beatIdx = 0;
+    }
+    return PhoneState(
         currentDay: j['currentDay'] as int? ?? 1,
         hour: j['hour'] as int? ?? 7,
         minute: j['minute'] as int? ?? 30,
@@ -127,8 +155,8 @@ class PersistenceService {
         unlockedApps: ((j['unlockedApps'] as List<dynamic>?) ?? [])
             .map((e) => e as String)
             .toSet(),
-        currentEpisodeId: j['currentEpisodeId'] as String? ?? 'collision',
-        currentBeatIdx: j['currentBeatIdx'] as int? ?? 0,
+        currentEpisodeId: epId,
+        currentBeatIdx: beatIdx,
         mood: j['mood'] as int? ?? 5,
         reputation: j['reputation'] as int? ?? 0,
         ownedItems: ((j['ownedItems'] as List<dynamic>?) ?? [])
@@ -145,6 +173,7 @@ class PersistenceService {
                 ))
             .toList(),
       );
+  }
 
   static Map<String, dynamic> _relToMap(Relationship r) => {
         'trust': r.trust,

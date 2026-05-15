@@ -52,7 +52,7 @@ class PhoneState {
       'ubereats', 'photos', 'notes', 'calendrier', 'tinder', 'cloud',
       'reglages', 'appstore',
     },
-    this.currentEpisodeId = 'collision',
+    this.currentEpisodeId = 'avant_la_lumiere',
     this.currentBeatIdx = 0,
     this.mood = 5,
     this.reputation = 0,
