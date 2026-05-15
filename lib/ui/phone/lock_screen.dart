@@ -72,7 +72,7 @@ class _LockScreenState extends ConsumerState<LockScreen>
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: palette.statusBarFg.withOpacity(0.85),
+                      color: palette.statusBarFg.withValues(alpha: 0.85),
                       letterSpacing: 1.5,
                     ),
                   ),
@@ -153,10 +153,10 @@ class _LockScreenWidgets extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.18),
+          color: Colors.white.withValues(alpha: 0.18),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-              color: Colors.white.withOpacity(0.25), width: 1),
+              color: Colors.white.withValues(alpha: 0.25), width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -171,7 +171,7 @@ class _LockScreenWidgets extends StatelessWidget {
                   'Belleville',
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: palette.statusBarFg.withOpacity(0.85),
+                    color: palette.statusBarFg.withValues(alpha: 0.85),
                   ),
                 ),
                 Text(
@@ -222,9 +222,9 @@ class _NotifCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 9, 12, 10),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.20),
+        color: Colors.white.withValues(alpha: 0.20),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withOpacity(0.22), width: 0.5),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.22), width: 0.5),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,7 +260,7 @@ class _NotifCard extends StatelessWidget {
                       n.timeLabel,
                       style: GoogleFonts.inter(
                         fontSize: 10,
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withValues(alpha: 0.85),
                       ),
                     ),
                   ],
@@ -272,7 +272,7 @@ class _NotifCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.inter(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.92),
+                    color: Colors.white.withValues(alpha: 0.92),
                     height: 1.3,
                   ),
                 ),

@@ -82,7 +82,7 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: avatarColor.withOpacity(0.4),
+                    color: avatarColor.withValues(alpha: 0.4),
                     blurRadius: 30,
                     spreadRadius: 4,
                   ),
@@ -111,7 +111,7 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen> {
                 c.subtitle!,
                 style: GoogleFonts.inter(
                   fontSize: 15,
-                  color: Colors.white.withOpacity(0.65),
+                  color: Colors.white.withValues(alpha: 0.65),
                 ),
               ),
             ],
@@ -172,7 +172,7 @@ class _CallButton extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.5),
+                  color: color.withValues(alpha: 0.5),
                   blurRadius: 20,
                   spreadRadius: 2,
                 ),

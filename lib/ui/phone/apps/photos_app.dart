@@ -302,7 +302,7 @@ class _PhotoFullViewState extends State<_PhotoFullView> {
                         key: ValueKey(_activeDetail),
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.65),
+                          color: Colors.black.withValues(alpha: 0.65),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                               color: Colors.white24, width: 0.5),
@@ -405,7 +405,7 @@ class _PulseDotState extends State<_PulseDot>
                 height: 30,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.18),
+                  color: Colors.white.withValues(alpha: 0.18),
                 ),
               ),
             ),

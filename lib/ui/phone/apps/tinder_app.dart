@@ -246,7 +246,7 @@ class _Card extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -329,7 +329,7 @@ class _Card extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.55),
+                        Colors.black.withValues(alpha: 0.55),
                       ],
                     ),
                     borderRadius: const BorderRadius.vertical(
@@ -365,7 +365,7 @@ class _Card extends StatelessWidget {
                         match.bio,
                         style: GoogleFonts.inter(
                           fontSize: 13,
-                          color: Colors.white.withOpacity(0.85),
+                          color: Colors.white.withValues(alpha: 0.85),
                         ),
                       ),
                     ],
@@ -399,7 +399,7 @@ class _ActionBtn extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),

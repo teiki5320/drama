@@ -91,7 +91,7 @@ class _SignalIcon extends StatelessWidget {
             width: 3,
             height: 4.0 + i * 2.5,
             decoration: BoxDecoration(
-              color: on ? color : color.withOpacity(0.35),
+              color: on ? color : color.withValues(alpha: 0.35),
               borderRadius: BorderRadius.circular(0.5),
             ),
           );
@@ -128,7 +128,7 @@ class _BatteryIcon extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(3),
-                  border: Border.all(color: color.withOpacity(0.6)),
+                  border: Border.all(color: color.withValues(alpha: 0.6)),
                 ),
               ),
               Positioned(
@@ -138,7 +138,7 @@ class _BatteryIcon extends StatelessWidget {
                   width: 2,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.6),
+                    color: color.withValues(alpha: 0.6),
                     borderRadius:
                         const BorderRadius.horizontal(right: Radius.circular(1)),
                   ),

@@ -103,10 +103,10 @@ class _HomeContent extends ConsumerWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.18),
+                  color: Colors.white.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(28),
                   border: Border.all(
-                      color: Colors.white.withOpacity(0.18), width: 1),
+                      color: Colors.white.withValues(alpha: 0.18), width: 1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

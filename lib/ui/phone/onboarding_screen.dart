@@ -98,7 +98,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               style: GoogleFonts.inter(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: Colors.white.withOpacity(0.85),
+                color: Colors.white.withValues(alpha: 0.85),
                 letterSpacing: 1.4,
               ),
             ),
@@ -134,7 +134,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 step.body,
                 style: GoogleFonts.crimsonPro(
                   fontSize: 16,
-                  color: Colors.white.withOpacity(0.92),
+                  color: Colors.white.withValues(alpha: 0.92),
                   height: 1.5,
                 ),
               ),
@@ -150,7 +150,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   height: 7,
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(i == _step ? 1.0 : 0.4),
+                    color: Colors.white.withValues(alpha: i == _step ? 1.0 : 0.4),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -172,7 +172,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     }
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white.withOpacity(0.20),
+                    backgroundColor: Colors.white.withValues(alpha: 0.20),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
