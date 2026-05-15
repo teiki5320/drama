@@ -21,9 +21,14 @@ class IncomingCallScreen extends ConsumerStatefulWidget {
       _IncomingCallScreenState();
 }
 
-class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen> {
+class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
+    with SingleTickerProviderStateMixin {
   Timer? _vibrate;
   Timer? _timeout;
+  late final AnimationController _pulseCtrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1500),
+  )..repeat(reverse: true);
 
   @override
   void initState() {
@@ -44,6 +49,7 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen> {
   void dispose() {
     _vibrate?.cancel();
     _timeout?.cancel();
+    _pulseCtrl.dispose();
     super.dispose();
   }
 
@@ -73,25 +79,57 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            // Avatar
-            Container(
-              width: 110,
-              height: 110,
-              decoration: BoxDecoration(
-                color: avatarColor,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: avatarColor.withValues(alpha: 0.4),
-                    blurRadius: 30,
-                    spreadRadius: 4,
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                c.emoji,
-                style: const TextStyle(fontSize: 56),
+            // Avatar avec halo pulsant
+            AnimatedBuilder(
+              animation: _pulseCtrl,
+              builder: (context, child) {
+                final t = _pulseCtrl.value;
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Halo extérieur 1
+                    Container(
+                      width: 110 + 60 * t,
+                      height: 110 + 60 * t,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: avatarColor
+                            .withValues(alpha: (1 - t) * 0.25),
+                      ),
+                    ),
+                    // Halo extérieur 2
+                    Container(
+                      width: 110 + 30 * t,
+                      height: 110 + 30 * t,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: avatarColor
+                            .withValues(alpha: (1 - t) * 0.40),
+                      ),
+                    ),
+                    if (child != null) child,
+                  ],
+                );
+              },
+              child: Container(
+                width: 110,
+                height: 110,
+                decoration: BoxDecoration(
+                  color: avatarColor,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: avatarColor.withValues(alpha: 0.4),
+                      blurRadius: 30,
+                      spreadRadius: 4,
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  c.emoji,
+                  style: const TextStyle(fontSize: 56),
+                ),
               ),
             ),
             const SizedBox(height: 22),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -510,7 +512,7 @@ class _StoryFrame {
   });
 }
 
-class _StoryView extends StatelessWidget {
+class _StoryView extends StatefulWidget {
   const _StoryView({
     required this.story,
     required this.viewed,
@@ -521,52 +523,87 @@ class _StoryView extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
+  State<_StoryView> createState() => _StoryViewState();
+}
+
+class _StoryViewState extends State<_StoryView>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _rotateCtrl = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 8),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _rotateCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final ringActive =
+        !widget.story.isMe && !widget.viewed && widget.story.frames.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: GestureDetector(
         onTap: () {
           HapticFeedback.selectionClick();
-          onTap();
+          widget.onTap();
         },
         child: Column(
           children: [
-            Container(
-              width: 64,
-              height: 64,
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: story.isMe
-                    ? null
-                    : (viewed
-                        ? null
-                        : const LinearGradient(
-                            colors: [Color(0xFFFD297B), Color(0xFFFF5722)])),
-                color: story.isMe
-                    ? Colors.grey.shade300
-                    : (viewed ? Colors.grey.shade400 : null),
-              ),
+            // Ring rotative quand active (= non vue + a des frames)
+            AnimatedBuilder(
+              animation: _rotateCtrl,
+              builder: (context, child) {
+                return Transform.rotate(
+                  angle: ringActive ? _rotateCtrl.value * 6.283 : 0,
+                  child: child,
+                );
+              },
               child: Container(
+                width: 64,
+                height: 64,
                 padding: const EdgeInsets.all(2),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
+                  gradient: widget.story.isMe
+                      ? null
+                      : (widget.viewed
+                          ? null
+                          : const SweepGradient(
+                              colors: [
+                                Color(0xFFFD297B),
+                                Color(0xFFFF5722),
+                                Color(0xFFFFC837),
+                                Color(0xFFFD297B),
+                              ],
+                            )),
+                  color: widget.story.isMe
+                      ? Colors.grey.shade300
+                      : (widget.viewed ? Colors.grey.shade400 : null),
                 ),
                 child: Container(
+                  padding: const EdgeInsets.all(2),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFFEFEFEF),
+                    color: Colors.white,
                   ),
-                  alignment: Alignment.center,
-                  child:
-                      Text(story.emoji, style: const TextStyle(fontSize: 28)),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFEFEFEF),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(widget.story.emoji,
+                        style: const TextStyle(fontSize: 28)),
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              story.name,
+              widget.story.name,
               style: GoogleFonts.inter(
                 fontSize: 10,
                 color: const Color(0xFF1A1A1A),
@@ -935,17 +972,26 @@ class _PostCardState extends State<_PostCard>
                 animation: _heartCtrl,
                 builder: (_, __) {
                   if (_heartCtrl.value == 0) return const SizedBox.shrink();
-                  final scale = 0.6 + (1.4 * _heartCtrl.value);
-                  return Opacity(
-                    opacity: 1 - _heartCtrl.value,
-                    child: Transform.scale(
-                      scale: scale,
-                      child: const Icon(
-                        Icons.favorite,
-                        color: Colors.white,
-                        size: 110,
+                  final t = _heartCtrl.value;
+                  final scale = 0.6 + (1.4 * t);
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Opacity(
+                        opacity: 1 - t,
+                        child: Transform.scale(
+                          scale: scale,
+                          child: const Icon(
+                            Icons.favorite,
+                            color: Colors.white,
+                            size: 110,
+                          ),
+                        ),
                       ),
-                    ),
+                      // Particules cœur qui s'envolent dans 6 directions
+                      for (var i = 0; i < 6; i++)
+                        _HeartParticle(progress: t, angleIndex: i),
+                    ],
                   );
                 },
               ),
@@ -1058,6 +1104,38 @@ class _PostCardState extends State<_PostCard>
               onTap: () => Navigator.of(ctx).pop(),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Petit cœur rouge qui s'envole en arc selon un angle (6 particules
+/// se répartissent autour du cœur central au double-tap).
+class _HeartParticle extends StatelessWidget {
+  const _HeartParticle({required this.progress, required this.angleIndex});
+  final double progress;
+  final int angleIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    // Angles : 6 particules → 60° d'écart, partant du haut.
+    final angle = (-90 + angleIndex * 60) * 3.14159 / 180;
+    final dist = 80 * progress;
+    final dx = dist * cos(angle);
+    final dy = dist * sin(angle) - (40 * progress * progress); // gravité inverse
+    final scale = 0.4 + 0.4 * (1 - progress);
+    return Transform.translate(
+      offset: Offset(dx, dy),
+      child: Opacity(
+        opacity: (1 - progress).clamp(0.0, 1.0),
+        child: Transform.scale(
+          scale: scale,
+          child: const Icon(
+            Icons.favorite,
+            color: Color(0xFFFF3B5C),
+            size: 24,
+          ),
         ),
       ),
     );

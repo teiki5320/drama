@@ -77,89 +77,11 @@ class _CarnetViewState extends ConsumerState<CarnetView> {
                 child: CustomPaint(painter: _RuledPaperPainter()),
               ),
             ),
-            // Contenu
+            // Contenu — PageView avec courbure 3D légère pour donner
+            // la sensation de tourner les pages d'un cahier.
             Padding(
-              padding:
-                  const EdgeInsets.fromLTRB(110, 50, 50, 30),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: notes.length,
-                itemBuilder: (context, i) {
-                  final n = notes[i];
-                  return Container(
-                    width: 380,
-                    margin: const EdgeInsets.only(right: 40),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              'J${n.day}',
-                              style: GoogleFonts.crimsonPro(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                color: const Color(0xFFD97757),
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              n.time,
-                              style: GoogleFonts.inter(
-                                fontSize: 11,
-                                color: const Color(0xFF6B6B6B),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          n.title,
-                          style: GoogleFonts.crimsonPro(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.italic,
-                            color: const Color(0xFF1A1A1A),
-                            height: 1.1,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Text(
-                              n.body,
-                              style: GoogleFonts.crimsonPro(
-                                fontSize: 15,
-                                color: const Color(0xFF2C2A26),
-                                fontStyle: FontStyle.italic,
-                                height: 1.7,
-                              ),
-                            ),
-                          ),
-                        ),
-                        // Numéro de page façon carnet à la main
-                        Padding(
-                          padding: const EdgeInsets.only(top: 6),
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              '— ${i + 1} —',
-                              style: GoogleFonts.crimsonPro(
-                                fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                                color: const Color(0xFF8B8480),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+              padding: const EdgeInsets.fromLTRB(110, 50, 50, 30),
+              child: _PageCurlView(notes: notes),
             ),
             // Indication de geste
             Positioned(
@@ -195,4 +117,134 @@ class _RuledPaperPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+/// PageView avec courbure 3D légère — chaque page « se tourne »
+/// avec un Transform.rotateY proportionnel à sa distance de la page
+/// active. Donne la sensation tactile d'un vrai cahier.
+class _PageCurlView extends StatefulWidget {
+  const _PageCurlView({required this.notes});
+  final List<NoteEntry> notes;
+
+  @override
+  State<_PageCurlView> createState() => _PageCurlViewState();
+}
+
+class _PageCurlViewState extends State<_PageCurlView> {
+  final _ctrl = PageController(viewportFraction: 0.92);
+  double _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl.addListener(() {
+      setState(() => _page = _ctrl.page ?? 0);
+    });
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+      controller: _ctrl,
+      itemCount: widget.notes.length,
+      onPageChanged: (_) => HapticFeedback.lightImpact(),
+      itemBuilder: (context, i) {
+        final delta = (i - _page).clamp(-1.0, 1.0);
+        final angle = delta * 0.35; // radians
+        final n = widget.notes[i];
+        return Transform(
+          alignment: delta < 0 ? Alignment.centerRight : Alignment.centerLeft,
+          transform: Matrix4.identity()
+            ..setEntry(3, 2, 0.001)
+            ..rotateY(angle),
+          child: Container(
+            margin: const EdgeInsets.only(right: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 12,
+                  offset: Offset(delta < 0 ? -4 : 4, 0),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      'J${n.day}',
+                      style: GoogleFonts.crimsonPro(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFFD97757),
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      n.time,
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        color: const Color(0xFF6B6B6B),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  n.title,
+                  style: GoogleFonts.crimsonPro(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
+                    color: const Color(0xFF1A1A1A),
+                    height: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Text(
+                      n.body,
+                      style: GoogleFonts.crimsonPro(
+                        fontSize: 15,
+                        color: const Color(0xFF2C2A26),
+                        fontStyle: FontStyle.italic,
+                        height: 1.7,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      '— ${i + 1} —',
+                      style: GoogleFonts.crimsonPro(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                        color: const Color(0xFF8B8480),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

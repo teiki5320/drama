@@ -202,14 +202,53 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     state = state.copyWith(unlockedApps: apps);
   }
 
-  /// Le joueur prend une photo via la Caméra. On génère une métadonnée
-  /// avec un emoji + gradient qui dépend du moment (heure, mood) — pas
-  /// de vraie image, juste un placeholder narratif.
+  /// Pool d'images réelles assignées selon contexte mood/heure.
+  /// Quand le joueur prend une photo via la Caméra, on choisit dans
+  /// ce pool plutôt que de juste générer un placeholder gradient.
+  static const _kPhotoPool = <String, List<String>>{
+    'night_low': [
+      'assets/photos/camera_pool/night_low_1.webp',
+      'assets/photos/camera_pool/night_low_2.webp',
+    ],
+    'night_high': [
+      'assets/photos/camera_pool/night_high_1.webp',
+    ],
+    'day_low': [
+      'assets/photos/camera_pool/day_low_1.webp',
+      'assets/photos/camera_pool/day_low_2.webp',
+    ],
+    'day_high': [
+      'assets/photos/camera_pool/day_high_1.webp',
+      'assets/photos/camera_pool/day_high_2.webp',
+    ],
+    'day_mid': [
+      'assets/photos/camera_pool/day_mid_1.webp',
+      'assets/photos/camera_pool/day_mid_2.webp',
+    ],
+  };
+
+  /// Le joueur prend une photo via la Caméra. Sélectionne une image
+  /// réelle depuis le pool selon (mood, heure), avec emoji + caption
+  /// fallback narratif si aucune image disponible.
   UserPhoto takePhoto() {
     final hour = state.hour;
     final mood = state.mood;
     final isNight = hour >= 20 || hour < 6;
-    // Emoji selon contexte
+    final String key;
+    if (isNight) {
+      key = mood <= 4 ? 'night_low' : 'night_high';
+    } else if (mood <= 4) {
+      key = 'day_low';
+    } else if (mood >= 8) {
+      key = 'day_high';
+    } else {
+      key = 'day_mid';
+    }
+    final pool = _kPhotoPool[key] ?? [];
+    final imagePath = pool.isEmpty
+        ? null
+        : pool[state.userPhotos.length % pool.length];
+    // Emoji + gradient fallback
     final String emoji;
     if (mood <= 3) {
       emoji = isNight ? '🌑' : '🌫️';
@@ -218,7 +257,6 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     } else {
       emoji = isNight ? '🌃' : '📷';
     }
-    // Gradient assombri si mood bas
     final gradient = mood <= 4
         ? [0xFF1F2937, 0xFF374151]
         : (isNight
@@ -239,6 +277,7 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       emoji: emoji,
       gradient: gradient,
       caption: caption,
+      imagePath: imagePath,
     );
     state = state.copyWith(
       userPhotos: [...state.userPhotos, photo],

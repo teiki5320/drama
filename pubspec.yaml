@@ -29,6 +29,7 @@ flutter:
     - assets/data/insta_seed.json
     - assets/photos/ep1/
     - assets/photos/avatars/
+    - assets/photos/camera_pool/
 
 flutter_launcher_icons:
   image_path: "assets/icon/icon.png"
