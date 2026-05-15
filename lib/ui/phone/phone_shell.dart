@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/phone_apps.dart';
+import '../../providers/incoming_call_provider.dart';
 import '../../providers/lock_notifications_provider.dart';
 import '../../providers/phone_state_provider.dart';
 import '../../providers/sent_replies_provider.dart';
@@ -19,6 +20,7 @@ import 'apps/tinder_app.dart';
 import 'apps/ubereats_app.dart';
 import 'apps/whatsapp_app.dart';
 import 'home_screen.dart';
+import 'incoming_call_screen.dart';
 import 'lock_screen.dart';
 import 'notification_banner.dart';
 
@@ -47,6 +49,19 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         ref.read(lockNotificationsProvider.notifier).push(
               LockNotif.fromEvent(next),
             );
+        // Cas spécial : un event tagué « appel entrant » déclenche
+        // l'écran plein d'appel à la place du banner.
+        if (next.notifAppId == 'telephone' &&
+            next.notifTitle.toLowerCase().contains('appel')) {
+          ref.read(incomingCallProvider.notifier).state = IncomingCall(
+            displayName: next.notifBody.split('·').first.trim(),
+            subtitle: next.notifTitle,
+            masked: next.notifBody.toLowerCase().contains('masqué'),
+            emoji: '📞',
+            avatarColor: 0xFF6B7385,
+          );
+          return;
+        }
         final phone = ref.read(phoneStateProvider);
         if (phone.isLocked) return; // pas de banner sur lock screen
         if (!mounted) return;
@@ -76,9 +91,12 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
   @override
   Widget build(BuildContext context) {
     final p = ref.watch(phoneStateProvider);
+    final call = ref.watch(incomingCallProvider);
 
     Widget body;
-    if (p.isLocked) {
+    if (call != null) {
+      body = IncomingCallScreen(call: call);
+    } else if (p.isLocked) {
       body = const LockScreen();
     } else if (p.openAppId != null) {
       body = _routeApp(p.openAppId!);
@@ -93,7 +111,7 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         switchInCurve: Curves.easeOut,
         switchOutCurve: Curves.easeIn,
         child: KeyedSubtree(
-          key: ValueKey('${p.isLocked}-${p.openAppId}'),
+          key: ValueKey('${p.isLocked}-${p.openAppId}-${call != null}'),
           child: body,
         ),
       ),
