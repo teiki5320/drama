@@ -6,6 +6,7 @@ import '../../core/phone_apps.dart';
 import '../../core/phone_theme.dart';
 import '../../providers/phone_state_provider.dart';
 import 'app_icon.dart';
+import 'spotlight_search.dart';
 import 'status_bar.dart';
 import 'widgets/home_widgets.dart';
 
@@ -19,27 +20,39 @@ class HomeScreen extends ConsumerWidget {
     final p = ref.watch(phoneStateProvider);
     final palette = PhonePalette.forBand(p.band);
 
-    return Stack(
-      children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 400),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [palette.wallpaperTop, palette.wallpaperBottom],
+    return GestureDetector(
+      // Pull-down depuis le haut → Spotlight (style iOS).
+      onVerticalDragUpdate: (d) {
+        if (d.delta.dy > 8 && d.globalPosition.dy < 200) {
+          showDialog<void>(
+            context: context,
+            barrierColor: Colors.transparent,
+            builder: (_) => const SpotlightSearch(),
+          );
+        }
+      },
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [palette.wallpaperTop, palette.wallpaperBottom],
+              ),
             ),
           ),
-        ),
-        // Voile mood — assombrit / réchauffe selon l'état de Shen.
-        IgnorePointer(
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 600),
-            color: moodOverlay(p.mood),
+          // Voile mood — assombrit / réchauffe selon l'état de Shen.
+          IgnorePointer(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 600),
+              color: moodOverlay(p.mood),
+            ),
           ),
-        ),
-        _HomeContent(palette: palette),
-      ],
+          _HomeContent(palette: palette),
+        ],
+      ),
     );
   }
 }
