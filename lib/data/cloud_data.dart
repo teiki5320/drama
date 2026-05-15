@@ -13,6 +13,8 @@ class CloudItem {
   final int day; // jour à partir duquel l'item est visible
   final bool isDeleted; // file marked deleted, only visible via "récupérer"
   final String? body; // contenu du document (texte)
+  /// Chemin asset image si l'item est une photo.
+  final String? imagePath;
 
   const CloudItem({
     required this.id,
@@ -23,6 +25,7 @@ class CloudItem {
     this.folder,
     this.isDeleted = false,
     this.body,
+    this.imagePath,
   });
 }
 
@@ -35,6 +38,24 @@ const kCloudItems = <CloudItem>[
     subtitle: 'Belleville, balcon, été',
     folder: 'Famille',
     day: 1,
+  ),
+  CloudItem(
+    id: 'photo_papa_5ans',
+    kind: CloudKind.photo,
+    title: 'Papa · J\'avais 5 ans',
+    subtitle: 'Cour de Yongchun, été 2007',
+    folder: 'Famille',
+    day: 1,
+    imagePath: 'assets/photos/ep1/pj_papa_shen_5ans.webp',
+  ),
+  CloudItem(
+    id: 'photo_billets_mei',
+    kind: CloudKind.photo,
+    title: 'Enveloppe Tante Mei',
+    subtitle: '« Pour ma fille » · novembre 2025',
+    folder: 'Famille',
+    day: 1,
+    imagePath: 'assets/photos/ep1/pj_tante_mei_billets.webp',
   ),
   CloudItem(
     id: 'lettre_papa_1',

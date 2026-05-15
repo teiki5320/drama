@@ -338,6 +338,7 @@ const _allPosts = <_Post>[
     gradient: [0xFFFCE6D8, 0xFFFAE0CC],
     likes: 47,
     atDay: 1,
+    imagePath: 'assets/photos/ep1/post_camille_bureau_droit.webp',
     comments: [
       _Comment(
         author: 'helene_paris',
@@ -356,6 +357,18 @@ const _allPosts = <_Post>[
     ],
   ),
   _Post(
+    id: 'camille_cafe_j4',
+    author: 'camille_rx',
+    emoji: '☕',
+    when: 'il y a 4h',
+    body: 'Hanami. Long ! Long ! Long ! Espresso doppio. Toujours debout.',
+    gradient: [0xFF8B6F47, 0xFFD4A574],
+    likes: 124,
+    atDay: 4,
+    imagePath: 'assets/photos/ep1/post_camille_cafe.webp',
+    comments: [],
+  ),
+  _Post(
     id: 't_heng_j10',
     author: 't_heng',
     emoji: '🥃',
@@ -364,6 +377,7 @@ const _allPosts = <_Post>[
     gradient: [0xFF1F2937, 0xFF374151],
     likes: 982,
     atDay: 10,
+    imagePath: 'assets/photos/ep1/post_escalier_helice.webp',
     comments: [
       _Comment(
         author: 'vincent_h',
@@ -371,6 +385,38 @@ const _allPosts = <_Post>[
         avatarColor: 0xFFE89B7F,
         text: 'Closing demain. On se cale.',
         when: 'il y a 4h',
+      ),
+    ],
+  ),
+  _Post(
+    id: 'camille_montmartre_j11',
+    author: 'camille_rx',
+    emoji: '🌅',
+    when: 'il y a 2j',
+    body: 'Coucher sur Montmartre. Le code civil peut attendre dix minutes.',
+    gradient: [0xFFE89B7F, 0xFFFCC9A1],
+    likes: 156,
+    atDay: 11,
+    imagePath: 'assets/photos/ep1/post_camille_montmartre.webp',
+    comments: [],
+  ),
+  _Post(
+    id: 'shen_camille_j12',
+    author: 'shen_marchand',
+    emoji: '🥐',
+    when: 'il y a 1j',
+    body: 'Avec @camille_rx. Un croissant pour deux. Pas négociable.',
+    gradient: [0xFFFCE6D8, 0xFFFAE0CC],
+    likes: 67,
+    atDay: 12,
+    imagePath: 'assets/photos/ep1/post_shen_camille_croissants.webp',
+    comments: [
+      _Comment(
+        author: 'helene_paris',
+        emoji: '👩',
+        avatarColor: 0xFFFCE6D8,
+        text: 'Tu manges enfin.',
+        when: 'il y a 12h',
       ),
     ],
   ),
@@ -383,6 +429,7 @@ const _allPosts = <_Post>[
     gradient: [0xFFE7E1D2, 0xFFCFC8B5],
     likes: 312,
     atDay: 13,
+    imagePath: 'assets/photos/ep1/post_cartier_cadeau.webp',
     comments: [
       _Comment(
         author: 'auntmei_fj',
@@ -394,15 +441,24 @@ const _allPosts = <_Post>[
     ],
   ),
   _Post(
-    id: 'camille_j11',
-    author: 'camille_rx',
-    emoji: '🐈',
-    when: 'il y a 2j',
-    body: 'Mon chat a renversé mon café sur le PVT. Le destin parle.',
-    gradient: [0xFFCFC8B5, 0xFFE7E1D2],
-    likes: 89,
-    atDay: 11,
-    comments: [],
+    id: 'maman_plat_j14',
+    author: 'helene_paris',
+    emoji: '🍲',
+    when: 'aujourd\'hui',
+    body: 'Soupe d\'orge. Pour quand ma fille passera.',
+    gradient: [0xFFE89B7F, 0xFFFCC9A1],
+    likes: 28,
+    atDay: 14,
+    imagePath: 'assets/photos/ep1/post_maman_plat.webp',
+    comments: [
+      _Comment(
+        author: 'shen_marchand',
+        emoji: '🌿',
+        avatarColor: 0xFFFCE6D8,
+        text: 'Dimanche.',
+        when: 'il y a 2h',
+      ),
+    ],
   ),
   _Post(
     id: 't_heng_j20',
@@ -745,6 +801,8 @@ class _Post {
   final int likes;
   final int atDay;
   final List<_Comment> comments;
+  /// Chemin asset de l'image post si dispo, sinon fallback gradient.
+  final String? imagePath;
   const _Post({
     required this.id,
     required this.author,
@@ -755,6 +813,7 @@ class _Post {
     required this.likes,
     required this.atDay,
     this.comments = const [],
+    this.imagePath,
   });
 }
 
@@ -854,20 +913,23 @@ class _PostCardState extends State<_PostCard>
             children: [
               AspectRatio(
                 aspectRatio: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: p.gradient.map((h) => Color(h)).toList(),
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    p.emoji,
-                    style: const TextStyle(fontSize: 96),
-                  ),
-                ),
+                child: p.imagePath != null
+                    ? Image.asset(p.imagePath!, fit: BoxFit.cover)
+                    : Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors:
+                                p.gradient.map((h) => Color(h)).toList(),
+                          ),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          p.emoji,
+                          style: const TextStyle(fontSize: 96),
+                        ),
+                      ),
               ),
               AnimatedBuilder(
                 animation: _heartCtrl,
