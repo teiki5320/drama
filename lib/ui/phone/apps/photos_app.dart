@@ -219,12 +219,30 @@ class _MonthSection extends StatelessWidget {
   }
 }
 
-class _PhotoTile extends StatelessWidget {
+class _PhotoTile extends StatefulWidget {
   const _PhotoTile({required this.photo});
   final PhotoItem photo;
 
   @override
+  State<_PhotoTile> createState() => _PhotoTileState();
+}
+
+class _PhotoTileState extends State<_PhotoTile>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _kenBurnsCtrl = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 12),
+  )..repeat(reverse: true);
+
+  @override
+  void dispose() {
+    _kenBurnsCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final photo = widget.photo;
     return InkWell(
       onTap: () {
         HapticFeedback.selectionClick();
@@ -232,23 +250,32 @@ class _PhotoTile extends StatelessWidget {
           MaterialPageRoute(builder: (_) => _PhotoFullView(photo: photo)),
         );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: photo.imagePath == null
-              ? LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: photo.gradient.map((hex) => Color(hex)).toList(),
-                )
-              : null,
-          image: photo.imagePath != null
-              ? DecorationImage(
-                  image: AssetImage(photo.imagePath!),
-                  fit: BoxFit.cover,
-                )
-              : null,
-        ),
-        child: Stack(
+      child: ClipRect(
+        child: AnimatedBuilder(
+          animation: _kenBurnsCtrl,
+          builder: (context, child) {
+            // Zoom 1.0 → 1.08 lent, va-et-vient. Très subtil.
+            final scale = 1.0 + 0.08 * _kenBurnsCtrl.value;
+            return Transform.scale(scale: scale, child: child);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: photo.imagePath == null
+                  ? LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors:
+                          photo.gradient.map((hex) => Color(hex)).toList(),
+                    )
+                  : null,
+              image: photo.imagePath != null
+                  ? DecorationImage(
+                      image: AssetImage(photo.imagePath!),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
+            ),
+            child: Stack(
           children: [
             if (photo.isScreenshot)
               const Positioned(
@@ -274,6 +301,8 @@ class _PhotoTile extends StatelessWidget {
               ),
             ),
           ],
+            ),
+          ),
         ),
       ),
     );

@@ -18,10 +18,14 @@ class CameraApp extends ConsumerStatefulWidget {
 }
 
 class _CameraAppState extends ConsumerState<CameraApp>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _flashCtrl = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 280),
+  );
+  late final AnimationController _shutterCtrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 220),
   );
 
   UserPhoto? _lastTaken;
@@ -29,12 +33,14 @@ class _CameraAppState extends ConsumerState<CameraApp>
   @override
   void dispose() {
     _flashCtrl.dispose();
+    _shutterCtrl.dispose();
     super.dispose();
   }
 
   void _shoot() async {
     HapticFeedback.heavyImpact();
     _flashCtrl.forward(from: 0);
+    _shutterCtrl.forward(from: 0);
     final photo = ref.read(phoneStateProvider.notifier).takePhoto();
     setState(() => _lastTaken = photo);
   }
@@ -163,20 +169,45 @@ class _CameraAppState extends ConsumerState<CameraApp>
                 _LastPhotoVignette(photo: _lastTaken ?? (p.userPhotos.isNotEmpty ? p.userPhotos.last : null)),
                 GestureDetector(
                   onTap: _shoot,
-                  child: Container(
-                    width: 68,
-                    height: 68,
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 3),
-                    ),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
+                  child: AnimatedBuilder(
+                    animation: _shutterCtrl,
+                    builder: (context, child) {
+                      // Anim physique : punch in (scale 1→0.85→1) +
+                      // l'iris intérieur se referme/rouvre.
+                      final t = _shutterCtrl.value;
+                      final scale = t == 0
+                          ? 1.0
+                          : (1.0 - 0.15 * (1 - (2 * t - 1).abs()));
+                      final irisScale = t == 0
+                          ? 1.0
+                          : (1.0 - 0.4 * (1 - (2 * t - 1).abs()));
+                      return Transform.scale(
+                        scale: scale,
+                        child: Container(
+                          width: 68,
+                          height: 68,
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border:
+                                Border.all(color: Colors.white, width: 3),
+                          ),
+                          child: Center(
+                            child: Transform.scale(
+                              scale: irisScale,
+                              child: Container(
+                                width: 56,
+                                height: 56,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(
