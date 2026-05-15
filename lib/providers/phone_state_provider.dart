@@ -4,6 +4,7 @@ import '../data/day_events.dart';
 import '../data/episodes.dart';
 import '../models/episode.dart';
 import '../models/phone_state.dart';
+import 'transition_provider.dart';
 
 /// Singleton Riverpod du PhoneState.
 final phoneStateProvider =
@@ -74,6 +75,11 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
           ? (from.battery - 15).clamp(0, 100)
           : (from.battery - 1).clamp(0, 100),
     );
+    // Si le beat a une scène de transition, on l'affiche en overlay.
+    // L'écran de transition se fermera tout seul (4.5 s) ou au tap.
+    if (beat.transition != null) {
+      _ref.read(beatTransitionProvider.notifier).state = beat.transition;
+    }
     _fireEventsBetween(
       fromDay: from.currentDay,
       fromHour: from.hour,
