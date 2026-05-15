@@ -43,6 +43,14 @@ const kCalls = <CallEntry>[
     duration: '04:12',
     avatarPath: 'assets/photos/avatars/maman.webp',
   ),
+  // Idée 3 — Appel masqué J1 14:00 (Tristan testait le numéro recollé)
+  CallEntry(
+    day: 1,
+    time: '14:02',
+    contactLabel: 'Numéro masqué',
+    contactEmoji: '❓',
+    type: CallType.missed,
+  ),
   CallEntry(
     day: 2,
     time: '06:10',
@@ -50,6 +58,19 @@ const kCalls = <CallEntry>[
     contactEmoji: '🏥',
     type: CallType.incoming,
     duration: '02:48',
+  ),
+  // Idée 5 — Voicemail Maman J2 (premier mensonge officiel)
+  CallEntry(
+    day: 2,
+    time: '20:42',
+    contactLabel: 'Maman',
+    contactEmoji: '👩',
+    type: CallType.voicemail,
+    duration: '00:42',
+    avatarPath: 'assets/photos/avatars/maman.webp',
+    voicemailNote:
+        'Shen ? Reviens vite, ne t\'inquiète pas pour moi. '
+        'Le médecin a dit que tout allait bien aller. Je t\'aime ma fille.',
   ),
   CallEntry(
     day: 3,
@@ -68,5 +89,18 @@ const kCalls = <CallEntry>[
     contactEmoji: '❓',
     type: CallType.missed,
     avatarPath: 'assets/photos/avatars/tristan.webp',
+  ),
+  // Idée 7 — Voicemail Tristan J3 23:58, 3 minutes après l'appel raté
+  CallEntry(
+    day: 3,
+    time: '23:58',
+    contactLabel: 'Numéro masqué',
+    contactEmoji: '❓',
+    type: CallType.voicemail,
+    duration: '00:14',
+    avatarPath: 'assets/photos/avatars/tristan.webp',
+    voicemailNote:
+        'Mlle Marchand. Vous avez gardé ma carte. Rappelez quand vous '
+        'voudrez parler chiffres. C\'est moi qui ai du temps.',
   ),
 ];

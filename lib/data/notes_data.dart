@@ -22,6 +22,16 @@ class NoteEntry {
 }
 
 const kNotes = <NoteEntry>[
+  // ── Note préliminaire J0 (la veille du 3 juin) ────────────────
+  NoteEntry(
+    day: 1,
+    time: '23:14',
+    title: 'La veille',
+    body:
+        'Maman a toussé cette nuit.\n'
+        'Ce n\'est rien. C\'est juste la fatigue. Ce n\'est rien.\n\n'
+        'Je l\'écris pour ne plus y penser. Ça marche jamais.',
+  ),
   // ── Brouillons abandonnés (notes ratées) ───────────────────────
   NoteEntry(
     day: 1,
@@ -59,6 +69,9 @@ const kNotes = <NoteEntry>[
     body:
         'La carte est recollée sur l\'étagère. Quatre morceaux, ruban adhésif transparent.\n\n'
         'Personne — pas même moi — ne saurait dire à quel moment je l\'ai ramassée dans la flaque.\n\n'
+        'Le bruit du scotch qui se déchire. Quatre fois. Le « T » de Tristan refuse de '
+        'se réaligner ; je recommence deux fois. Le chien du voisin a hurlé pendant '
+        'quatre minutes pile à minuit.\n\n'
         'Première erreur.',
     starred: true,
   ),
@@ -75,6 +88,20 @@ const kNotes = <NoteEntry>[
         'L\'infirmière a dit : « Faites attention à ce qu\'elle vous dit. »\n'
         'Maman ne dit pas tout. Maman ne dit pas tout.',
     starred: true,
+  ),
+  // ── Note J2 charnelle : odeurs du métro, lumière Tenon ─────────
+  NoteEntry(
+    day: 2,
+    time: '06:42',
+    title: 'Couronnes',
+    body:
+        'Métro Couronnes à 6h25. L\'odeur du dépôt de bus mêlée au '
+        'café froid des poubelles. Trois personnes qui font semblant '
+        'de dormir debout.\n\n'
+        'Couloir K, niveau 2, Tenon. Néons qui clignotent sur la deuxième '
+        'rangée. La carrelage sent le savon noir. La femme du ménage a '
+        'détourné les yeux quand je suis passée.\n\n'
+        'Ce sont les détails qui restent. Pas les mots du médecin.',
   ),
   NoteEntry(
     day: 3,

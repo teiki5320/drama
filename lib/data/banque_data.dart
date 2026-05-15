@@ -42,6 +42,28 @@ const kMovements = <BankMovement>[
       amount: 240,
       category: 'travail',
       emoji: '🛵'),
+  // Idée 4 — Trace que Maman gérait déjà mal son budget
+  BankMovement(
+      day: 0,
+      time: '08:45',
+      label: 'Pharmacie Belleville',
+      amount: -15,
+      category: 'sante',
+      emoji: '💊'),
+  BankMovement(
+      day: 0,
+      time: '17:22',
+      label: 'Métro · 10 tickets',
+      amount: -16,
+      category: 'transport',
+      emoji: '🚇'),
+  BankMovement(
+      day: 0,
+      time: '19:08',
+      label: 'Carrefour Express · pain, lait, riz',
+      amount: -8,
+      category: 'courses',
+      emoji: '🛒'),
   // J1
   BankMovement(
       day: 1,

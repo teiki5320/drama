@@ -125,6 +125,46 @@ const kCloudItems = <CloudItem>[
         'Motifs : revenus insuffisants, absence de garant éligible.\n\n'
         'Cordialement, BNP Paribas Belleville.',
   ),
+  // ── Idée 2 : Demande de crédit initiale (J-20) ────────────────
+  CloudItem(
+    id: 'demande_credit_initiale',
+    kind: CloudKind.document,
+    title: 'BNP — Demande de crédit n°7842',
+    subtitle: 'Document scanné · 14 mai 2026',
+    folder: 'Banque',
+    day: 1,
+    body:
+        'Bénéficiaire : Marchand Shen, née le 12 novembre 2001.\n\n'
+        'Montant demandé : 12 000 €.\n'
+        'Durée : 36 mois.\n'
+        'Garant : sans (case « ne pas inclure ma mère » cochée).\n\n'
+        'Document envoyé en ligne le 14 mai. Sans en parler à personne.',
+  ),
+  // ── Idée 9 : Photo Maman J-30 bien portante ───────────────────
+  CloudItem(
+    id: 'photo_maman_avant',
+    kind: CloudKind.photo,
+    title: 'Maman · mai 2026',
+    subtitle: 'Marché Belleville · 7 mai',
+    folder: 'Famille',
+    day: 1,
+    imagePath: 'assets/photos/avatars/maman.webp',
+    body: 'Avant que je sache.',
+  ),
+  // ── Idée 6 : Story Insta archivée par erreur ───────────────────
+  CloudItem(
+    id: 'story_carte_recollee',
+    kind: CloudKind.photo,
+    title: 'Story · 23h47',
+    subtitle: 'Postée 30 min puis supprimée',
+    folder: 'Documents',
+    day: 2,
+    isDeleted: true,
+    imagePath: 'assets/photos/ep1/j01_23h42_carte_recollee.webp',
+    body:
+        'Je l\'ai postée par erreur. Camille a vu — elle n\'a rien dit. '
+        'Je l\'ai supprimée comme on retire un pull à la va-vite.',
+  ),
   CloudItem(
     id: 'fiche_paye_avril',
     kind: CloudKind.document,
