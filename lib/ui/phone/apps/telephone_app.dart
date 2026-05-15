@@ -88,6 +88,29 @@ class _CallRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
           children: [
+            // Avatar contact si dispo, sinon emoji + tinte
+            Container(
+              width: 38,
+              height: 38,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: call.avatarPath == null
+                    ? const Color(0xFFEFEFEF)
+                    : null,
+                image: call.avatarPath != null
+                    ? DecorationImage(
+                        image: AssetImage(call.avatarPath!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+              ),
+              alignment: Alignment.center,
+              child: call.avatarPath != null
+                  ? null
+                  : Text(call.contactEmoji ?? '📞',
+                      style: const TextStyle(fontSize: 20)),
+            ),
+            const SizedBox(width: 10),
             Icon(_iconForType(call.type),
                 color: call.type == CallType.missed
                     ? const Color(0xFFE53935)
@@ -99,7 +122,7 @@ class _CallRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${call.contactEmoji ?? "📞"} ${call.contactLabel}',
+                    call.contactLabel,
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

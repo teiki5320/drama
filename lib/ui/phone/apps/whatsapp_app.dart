@@ -79,12 +79,15 @@ class _WAGroup {
   final String emoji;
   final int fromDay;
   final List<_WAMsg> messages;
+  /// Avatar de groupe (ou principal participant). Fallback emoji si null.
+  final String? avatarPath;
   const _WAGroup({
     required this.id,
     required this.name,
     required this.emoji,
     required this.fromDay,
     required this.messages,
+    this.avatarPath,
   });
 }
 
@@ -107,6 +110,7 @@ const _allGroups = <_WAGroup>[
     name: '家族福建 · Famille Fujian',
     emoji: '🌿',
     fromDay: 1,
+    avatarPath: 'assets/photos/avatars/tante_mei.webp',
     messages: [
       _WAMsg(
         sender: '阿姨梅',
@@ -147,6 +151,7 @@ const _allGroups = <_WAGroup>[
     name: 'Camille (off-record)',
     emoji: '🥐',
     fromDay: 4,
+    avatarPath: 'assets/photos/avatars/camille.webp',
     messages: [
       _WAMsg(
         sender: 'Camille',
@@ -245,12 +250,22 @@ class _GroupTile extends StatelessWidget {
             Container(
               width: 48,
               height: 48,
-              decoration: const BoxDecoration(
-                color: Color(0xFFEFEFEF),
+              decoration: BoxDecoration(
+                color: group.avatarPath == null
+                    ? const Color(0xFFEFEFEF)
+                    : null,
                 shape: BoxShape.circle,
+                image: group.avatarPath != null
+                    ? DecorationImage(
+                        image: AssetImage(group.avatarPath!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
               alignment: Alignment.center,
-              child: Text(group.emoji, style: const TextStyle(fontSize: 22)),
+              child: group.avatarPath != null
+                  ? null
+                  : Text(group.emoji, style: const TextStyle(fontSize: 22)),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -359,8 +374,13 @@ class _GroupThread extends StatelessWidget {
                     CircleAvatar(
                       radius: 18,
                       backgroundColor: const Color(0x44FFFFFF),
-                      child: Text(group.emoji,
-                          style: const TextStyle(fontSize: 18)),
+                      backgroundImage: group.avatarPath != null
+                          ? AssetImage(group.avatarPath!)
+                          : null,
+                      child: group.avatarPath != null
+                          ? null
+                          : Text(group.emoji,
+                              style: const TextStyle(fontSize: 18)),
                     ),
                     const SizedBox(width: 10),
                     Expanded(

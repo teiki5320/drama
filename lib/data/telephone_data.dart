@@ -10,6 +10,8 @@ class CallEntry {
   final CallType type;
   final String duration; // "12:34" ou "0:00" si raté
   final String? voicemailNote;
+  /// Avatar du contact (asset path). Fallback emoji si null.
+  final String? avatarPath;
 
   const CallEntry({
     required this.day,
@@ -19,6 +21,7 @@ class CallEntry {
     required this.type,
     this.duration = '0:00',
     this.voicemailNote,
+    this.avatarPath,
   });
 }
 
@@ -29,6 +32,7 @@ const kCalls = <CallEntry>[
     contactLabel: 'Camille',
     contactEmoji: '🥐',
     type: CallType.missed,
+    avatarPath: 'assets/photos/avatars/camille.webp',
   ),
   CallEntry(
     day: 1,
@@ -37,6 +41,7 @@ const kCalls = <CallEntry>[
     contactEmoji: '👩',
     type: CallType.outgoing,
     duration: '04:12',
+    avatarPath: 'assets/photos/avatars/maman.webp',
   ),
   CallEntry(
     day: 2,
@@ -62,5 +67,6 @@ const kCalls = <CallEntry>[
     contactLabel: 'Numéro masqué',
     contactEmoji: '❓',
     type: CallType.missed,
+    avatarPath: 'assets/photos/avatars/tristan.webp',
   ),
 ];
