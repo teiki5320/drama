@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../data/contact_states.dart';
 import '../../../../data/messages_data.dart';
 import '../../../../providers/phone_state_provider.dart';
+import '../../../../providers/relationships_provider.dart';
 import '../../../../providers/sent_replies_provider.dart';
 import 'choice_panel.dart';
 
@@ -64,10 +65,18 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
   Widget build(BuildContext context) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
     final sentReplies = ref.watch(sentRepliesProvider);
+    // Suspicion du contact (pour filtrer les messages paranoïaques).
+    final suspicion = ref
+            .watch(relationshipsProvider)[widget.contact.id]
+            ?.suspicion ??
+        0;
     // Messages canoniques du thread + réponses dynamiques de Shen
     // intercalées après chaque beat répondu.
     final canonMsgs = (kThreads[widget.contact.id] ?? [])
-        .where((m) => m.day <= day)
+        .where((m) =>
+            m.day <= day &&
+            (m.requiresSuspicionAtLeast == null ||
+                suspicion >= m.requiresSuspicionAtLeast!))
         .toList();
     final msgs = <Msg>[];
     for (final m in canonMsgs) {

@@ -87,6 +87,11 @@ class Msg {
   /// au thread et les jauges relation sont mises à jour.
   final String? beatId;
 
+  /// Si non-null, ce message n'apparaît que si la suspicion du contact
+  /// est >= ce seuil. Permet d'avoir des SMS « paranos » de Maman quand
+  /// elle commence à douter, sans casser le canon principal.
+  final int? requiresSuspicionAtLeast;
+
   const Msg({
     required this.sender,
     required this.text,
@@ -94,6 +99,7 @@ class Msg {
     required this.day,
     this.status = MsgStatus.read,
     this.beatId,
+    this.requiresSuspicionAtLeast,
   });
 }
 
@@ -160,6 +166,25 @@ const Map<String, List<Msg>> kThreads = {
       time: '21:10',
       day: 11,
       beatId: 'maman_stage_j11',
+    ),
+    // J12+ — Variantes paranoïaques (apparaissent si suspicion >= 30)
+    Msg(
+      sender: 'maman',
+      text:
+          'J\'ai cherché Lao Chen sur les pages jaunes. Aucun résultat. '
+          'C\'est un petit cabinet ?',
+      time: '14:24',
+      day: 12,
+      requiresSuspicionAtLeast: 30,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Tu portes un parfum différent quand tu passes. Je ne te juge pas. '
+          'Je te le dis.',
+      time: '18:42',
+      day: 13,
+      requiresSuspicionAtLeast: 30,
     ),
   ],
   'camille': [

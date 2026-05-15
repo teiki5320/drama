@@ -146,3 +146,52 @@ const kStocks = <StockPosition>[
 
 /// Solde de départ canonique J1.
 const int kStartingBalance = 2384;
+
+/// Events scénarisés qui poussent / cassent les prix à un jour précis.
+/// Format : ticker → { day → multiplicateur appliqué au prix de base }.
+/// Exemples canoniques :
+///  - HENG vacille J7 (annonce du contrat Tristan), monte +12 % J8.
+///  - HAN s'effondre J9 (Hanami est racheté par Lu Group, rumeur).
+///  - LUG monte J10 (NeoCity gagne un appel d'offres).
+const _kStockEvents = <String, Map<int, double>>{
+  'HENG': {7: 0.92, 8: 1.12, 14: 1.18},
+  'LUG': {10: 1.06, 13: 1.04},
+  'HAN': {9: 0.78, 11: 0.85},
+  'NCT': {6: 1.02, 12: 0.97},
+  'NCB': {3: 0.96, 10: 1.02},
+};
+
+/// Calcule le prix d'un ticker à un jour donné. Combine :
+///  - Prix de base (`StockPosition.price`).
+///  - Marche aléatoire déterministe : noise pseudo-aléatoire seedé sur
+///    (ticker, day) → ±3 % max par jour.
+///  - Events scénarisés (cf. `_kStockEvents`) qui ajoutent un kick.
+double priceAt(StockPosition s, int day) {
+  if (day <= 1) return s.price;
+  var price = s.price;
+  for (var d = 2; d <= day; d++) {
+    // Hash déterministe : ticker + day → noise [-0.03, +0.03]
+    final h = (s.ticker.hashCode * 31 + d) & 0x7fffffff;
+    final noise = ((h % 1000) / 1000.0 - 0.5) * 0.06; // ±3 %
+    price = price * (1 + noise);
+    final event = _kStockEvents[s.ticker]?[d];
+    if (event != null) price = price * event;
+  }
+  return double.parse(price.toStringAsFixed(2));
+}
+
+/// Variation 24h en pourcent (prix d-1 vs d).
+double change24hAt(StockPosition s, int day) {
+  if (day <= 1) return s.change24h;
+  final today = priceAt(s, day);
+  final yesterday = priceAt(s, day - 1);
+  if (yesterday <= 0) return 0;
+  return double.parse(
+      (((today - yesterday) / yesterday) * 100).toStringAsFixed(1));
+}
+
+/// Renvoie la liste des prix sur les `n` derniers jours pour un sparkline.
+List<double> priceHistory(StockPosition s, int day, {int n = 14}) {
+  final start = (day - n + 1).clamp(1, day);
+  return [for (var d = start; d <= day; d++) priceAt(s, d)];
+}

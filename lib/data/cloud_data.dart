@@ -15,6 +15,10 @@ class CloudItem {
   final String? body; // contenu du document (texte)
   /// Chemin asset image si l'item est une photo.
   final String? imagePath;
+  /// Si non-null, l'item n'est visible que si l'attirance Tristan
+  /// dépasse ce seuil. Sert aux items « intimes » (photos volées,
+  /// notes tendres) qui n'apparaissent que quand Shen est proche.
+  final int? requiresAttractionTristan;
 
   const CloudItem({
     required this.id,
@@ -26,6 +30,7 @@ class CloudItem {
     this.isDeleted = false,
     this.body,
     this.imagePath,
+    this.requiresAttractionTristan,
   });
 }
 
@@ -153,5 +158,31 @@ const kCloudItems = <CloudItem>[
     folder: 'Famille',
     day: 1,
     isDeleted: true,
+  ),
+
+  // ─── Items conditionnels (révélés selon jauges) ───────────────────
+  CloudItem(
+    id: 'note_tristan_tendre',
+    kind: CloudKind.document,
+    title: 'Note manuscrite — Tristan',
+    subtitle: 'Glissée sous la porte · 09:42',
+    folder: 'Documents',
+    day: 11,
+    requiresAttractionTristan: 30,
+    body:
+        'Mlle Marchand,\n\n'
+        'Le café est sur la table. Pas de sucre.\n'
+        'Vous ne dormez pas la nuit. Je l\'entends.\n\n'
+        'T.',
+  ),
+  CloudItem(
+    id: 'photo_tristan_dormant',
+    kind: CloudKind.photo,
+    title: 'Tristan · endormi',
+    subtitle: '6h12 · canapé bureau',
+    folder: 'Famille',
+    day: 13,
+    requiresAttractionTristan: 50,
+    imagePath: 'assets/photos/avatars/tristan.webp',
   ),
 ];

@@ -68,15 +68,33 @@ class NotesApp extends ConsumerWidget {
               ],
             ),
           ),
-          // Compteur
+          // Compteur + voix off intérieure si mood ≤ 3
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 16, 12),
-            child: Text(
-              '${notes.length} note${notes.length > 1 ? "s" : ""}',
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                color: const Color(0xFF6B6B6B),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${notes.length} note${notes.length > 1 ? "s" : ""}',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: const Color(0xFF6B6B6B),
+                  ),
+                ),
+                if (mood <= 3)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: Text(
+                      _moodVoiceOver(mood),
+                      style: GoogleFonts.crimsonPro(
+                        fontSize: 13,
+                        fontStyle: FontStyle.italic,
+                        color: const Color(0xFF8B8480),
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
           Expanded(
@@ -90,6 +108,16 @@ class NotesApp extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  static String _moodVoiceOver(int mood) {
+    if (mood <= 1) {
+      return 'Je n\'écris plus parce que ça compte. J\'écris parce que sinon.';
+    }
+    if (mood == 2) {
+      return 'Le carnet est moins lourd que ce qu\'il y a dedans.';
+    }
+    return 'Quelques pages. Pas pour me souvenir. Pour ne pas pleurer.';
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/cloud_data.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/relationships_provider.dart';
 import '../status_bar.dart';
 
 /// App Cloud (iCloud-like) — fichiers organisés par dossier, possibilité
@@ -23,8 +24,16 @@ class _CloudAppState extends ConsumerState<CloudApp> {
   @override
   Widget build(BuildContext context) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
-    final all =
-        kCloudItems.where((i) => i.day <= day).toList();
+    final attractionTristan =
+        ref.watch(relationshipsProvider)['tristan']?.attraction ?? 0;
+    final all = kCloudItems.where((i) {
+      if (i.day > day) return false;
+      if (i.requiresAttractionTristan != null &&
+          attractionTristan < i.requiresAttractionTristan!) {
+        return false;
+      }
+      return true;
+    }).toList();
     final visible = all.where((i) => i.isDeleted == _showDeleted).toList();
     final byFolder = <String, List<CloudItem>>{};
     for (final item in visible) {
