@@ -6,8 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../status_bar.dart';
 
-/// App Instagram — flux, stories en haut, posts du fil. Posts depuis
-/// l'app PR1 (Camille J1, autres viendront avec moteur événements).
+/// App Instagram — flux + stories interactives + commentaires. Pour
+/// que l'app vive, l'utilisateur peut liker, double-tap heart, voir les
+/// stories plein écran, lire les commentaires, ne plus suivre.
 class InstagramApp extends ConsumerStatefulWidget {
   const InstagramApp({super.key});
 
@@ -16,9 +17,11 @@ class InstagramApp extends ConsumerStatefulWidget {
 }
 
 class _InstagramAppState extends ConsumerState<InstagramApp> {
-  // État local : likes ajoutés par Shen + posts cachés (unfollow).
+  // État local : likes ajoutés par Shen, posts cachés (unfollow),
+  // stories déjà vues (le ring devient gris).
   final Set<String> _liked = {};
   final Set<String> _hidden = {};
+  final Set<String> _viewedStories = {};
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +29,20 @@ class _InstagramAppState extends ConsumerState<InstagramApp> {
     final allPosts = _allPosts.where((p) => p.atDay <= day).toList();
     final visiblePosts =
         allPosts.where((p) => !_hidden.contains(p.id)).toList();
-    final activeStories =
-        _allStories.where((s) => s.fromDay <= day && day - s.fromDay < 1).toList();
+    final activeStories = _allStories
+        .where((s) => s.fromDay <= day && day - s.fromDay < 1)
+        .toList();
     if (activeStories.where((s) => s.isMe).isEmpty) {
       activeStories.insert(
         0,
         const _Story(
-            id: 'me', name: 'Toi', emoji: '🌿', isMe: true, fromDay: 1),
+          id: 'me',
+          name: 'Toi',
+          emoji: '🌿',
+          isMe: true,
+          fromDay: 1,
+          frames: [],
+        ),
       );
     }
 
@@ -68,13 +78,17 @@ class _InstagramAppState extends ConsumerState<InstagramApp> {
               ],
             ),
           ),
-          // Stories — uniquement celles « actives » (J - fromDay < 1)
+          // Stories — fenêtre 24h. Tap = plein écran. Ring gris une fois vu.
           SizedBox(
             height: 92,
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               scrollDirection: Axis.horizontal,
-              children: activeStories.map((s) => _StoryView(story: s)).toList(),
+              children: activeStories.map((s) => _StoryView(
+                    story: s,
+                    viewed: _viewedStories.contains(s.id),
+                    onTap: () => _openStories(activeStories, s.id),
+                  )).toList(),
             ),
           ),
           const Divider(height: 0.5, color: Color(0xFFE5E5E5)),
@@ -100,6 +114,7 @@ class _InstagramAppState extends ConsumerState<InstagramApp> {
                     HapticFeedback.mediumImpact();
                     setState(() => _hidden.add(p.id));
                   },
+                  onComments: () => _openComments(p),
                 );
               },
             ),
@@ -108,14 +123,209 @@ class _InstagramAppState extends ConsumerState<InstagramApp> {
       ),
     );
   }
+
+  void _openStories(List<_Story> stories, String startId) {
+    final playable = stories
+        .where((s) => !s.isMe && s.frames.isNotEmpty)
+        .toList();
+    final startIdx = playable.indexWhere((s) => s.id == startId);
+    if (startIdx < 0) return;
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: true,
+        pageBuilder: (_, __, ___) => _StoriesViewer(
+          stories: playable,
+          startIdx: startIdx,
+          onViewed: (id) => setState(() => _viewedStories.add(id)),
+        ),
+        transitionsBuilder: (_, a, __, child) => FadeTransition(
+          opacity: a,
+          child: ScaleTransition(
+            scale: Tween<double>(begin: 0.85, end: 1.0).animate(a),
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openComments(_Post p) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+      ),
+      builder: (ctx) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.7,
+        builder: (_, scrollCtrl) => Column(
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              width: 36,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade400,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Commentaires',
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF1A1A1A),
+              ),
+            ),
+            const SizedBox(height: 4),
+            const Divider(height: 1),
+            Expanded(
+              child: ListView(
+                controller: scrollCtrl,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
+                  const SizedBox(height: 10),
+                  for (final c in p.comments)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            radius: 14,
+                            backgroundColor:
+                                Color(c.avatarColor).withValues(alpha: 0.4),
+                            child: Text(c.emoji,
+                                style: const TextStyle(fontSize: 14)),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    style: GoogleFonts.inter(
+                                      fontSize: 13,
+                                      color: const Color(0xFF1A1A1A),
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: '${c.author} ',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      TextSpan(text: c.text),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  c.when,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 10,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(Icons.favorite_border,
+                              size: 14, color: Colors.grey),
+                        ],
+                      ),
+                    ),
+                  if (p.comments.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.all(40),
+                      child: Center(
+                        child: Text(
+                          'Aucun commentaire.',
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 const _allStories = <_Story>[
-  _Story(id: 'camille', name: 'camille_rx', emoji: '🥐', fromDay: 1),
-  _Story(id: 'heng_lihua', name: 'heng_lihua', emoji: '🍵', fromDay: 13),
-  _Story(id: 't_heng', name: 't_heng', emoji: '🧊', fromDay: 9),
-  _Story(id: 'helene', name: 'helene_paris', emoji: '👩', fromDay: 1),
-  _Story(id: 'mei', name: 'mei_fujian', emoji: '🌿', fromDay: 1),
+  _Story(
+    id: 'camille',
+    name: 'camille_rx',
+    emoji: '🥐',
+    fromDay: 1,
+    frames: [
+      _StoryFrame(
+        emoji: '🥐',
+        body: 'Bus 81 — 12 mecs me regardent réviser le Code civil.',
+        gradient: [0xFFFCE6D8, 0xFFFAE0CC],
+      ),
+      _StoryFrame(
+        emoji: '☕',
+        body: 'Hanami — long ! Long ! Long ! Espresso doppio. Toujours debout.',
+        gradient: [0xFF8B6F47, 0xFFD4A574],
+      ),
+    ],
+  ),
+  _Story(
+    id: 'heng_lihua',
+    name: 'heng_lihua',
+    emoji: '🍵',
+    fromDay: 13,
+    frames: [
+      _StoryFrame(
+        emoji: '🍵',
+        body: 'Long Jing 2026, première récolte. Le thé qu\'on offre une fois.',
+        gradient: [0xFFE7E1D2, 0xFFCFC8B5],
+      ),
+    ],
+  ),
+  _Story(
+    id: 't_heng',
+    name: 't_heng',
+    emoji: '🧊',
+    fromDay: 9,
+    frames: [
+      _StoryFrame(
+        emoji: '🏢',
+        body: '47ᵉ étage. Ciel pollué. On ne voit pas la mer aujourd\'hui.',
+        gradient: [0xFFD7DEE5, 0xFFB3BFC9],
+      ),
+    ],
+  ),
+  _Story(
+    id: 'helene',
+    name: 'helene_paris',
+    emoji: '👩',
+    fromDay: 1,
+    frames: [
+      _StoryFrame(
+        emoji: '📖',
+        body: 'Duras — relu trois fois. À chaque fois plus dur.',
+        gradient: [0xFFE8E0D0, 0xFFF5EFE2],
+      ),
+    ],
+  ),
+  _Story(
+    id: 'mei',
+    name: 'mei_fujian',
+    emoji: '🌿',
+    fromDay: 1,
+    frames: [],
+  ),
 ];
 
 const _allPosts = <_Post>[
@@ -128,6 +338,41 @@ const _allPosts = <_Post>[
     gradient: [0xFFFCE6D8, 0xFFFAE0CC],
     likes: 47,
     atDay: 1,
+    comments: [
+      _Comment(
+        author: 'helene_paris',
+        emoji: '👩',
+        avatarColor: 0xFFFCE6D8,
+        text: 'Tu te tiens à carreau, ma grande.',
+        when: 'il y a 1h',
+      ),
+      _Comment(
+        author: 'antoine_blkbrd',
+        emoji: '🎧',
+        avatarColor: 0xFF1F2937,
+        text: 'On boit un verre ce week-end ?',
+        when: 'il y a 1h',
+      ),
+    ],
+  ),
+  _Post(
+    id: 't_heng_j10',
+    author: 't_heng',
+    emoji: '🥃',
+    when: 'il y a 6h',
+    body: 'La pluie au 47ᵉ étage ne fait pas le même bruit qu\'à Belleville.',
+    gradient: [0xFF1F2937, 0xFF374151],
+    likes: 982,
+    atDay: 10,
+    comments: [
+      _Comment(
+        author: 'vincent_h',
+        emoji: '💼',
+        avatarColor: 0xFFE89B7F,
+        text: 'Closing demain. On se cale.',
+        when: 'il y a 4h',
+      ),
+    ],
   ),
   _Post(
     id: 'heng_lihua_j13',
@@ -138,6 +383,26 @@ const _allPosts = <_Post>[
     gradient: [0xFFE7E1D2, 0xFFCFC8B5],
     likes: 312,
     atDay: 13,
+    comments: [
+      _Comment(
+        author: 'auntmei_fj',
+        emoji: '🌿',
+        avatarColor: 0xFFD4A574,
+        text: '小心 (fais attention).',
+        when: 'il y a 22h',
+      ),
+    ],
+  ),
+  _Post(
+    id: 'camille_j11',
+    author: 'camille_rx',
+    emoji: '🐈',
+    when: 'il y a 2j',
+    body: 'Mon chat a renversé mon café sur le PVT. Le destin parle.',
+    gradient: [0xFFCFC8B5, 0xFFE7E1D2],
+    likes: 89,
+    atDay: 11,
+    comments: [],
   ),
   _Post(
     id: 't_heng_j20',
@@ -148,6 +413,15 @@ const _allPosts = <_Post>[
     gradient: [0xFFD7DEE5, 0xFFB3BFC9],
     likes: 1284,
     atDay: 20,
+    comments: [
+      _Comment(
+        author: 'shen_marchand',
+        emoji: '🌿',
+        avatarColor: 0xFFFCE6D8,
+        text: 'Sans moi.',
+        when: 'il y a 14h',
+      ),
+    ],
   ),
 ];
 
@@ -157,65 +431,305 @@ class _Story {
   final String emoji;
   final bool isMe;
   final int fromDay;
+  final List<_StoryFrame> frames;
 
   const _Story({
     required this.id,
     required this.name,
     required this.emoji,
     required this.fromDay,
+    required this.frames,
     this.isMe = false,
   });
 }
 
+class _StoryFrame {
+  final String emoji;
+  final String body;
+  final List<int> gradient;
+  const _StoryFrame({
+    required this.emoji,
+    required this.body,
+    required this.gradient,
+  });
+}
+
 class _StoryView extends StatelessWidget {
-  const _StoryView({required this.story});
+  const _StoryView({
+    required this.story,
+    required this.viewed,
+    required this.onTap,
+  });
   final _Story story;
+  final bool viewed;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Column(
-        children: [
-          Container(
-            width: 64,
-            height: 64,
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: story.isMe
-                  ? null
-                  : const LinearGradient(
-                      colors: [Color(0xFFFD297B), Color(0xFFFF5722)]),
-              color: story.isMe ? Colors.grey.shade300 : null,
-            ),
-            child: Container(
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        child: Column(
+          children: [
+            Container(
+              width: 64,
+              height: 64,
               padding: const EdgeInsets.all(2),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white,
+                gradient: story.isMe
+                    ? null
+                    : (viewed
+                        ? null
+                        : const LinearGradient(
+                            colors: [Color(0xFFFD297B), Color(0xFFFF5722)])),
+                color: story.isMe
+                    ? Colors.grey.shade300
+                    : (viewed ? Colors.grey.shade400 : null),
               ),
               child: Container(
+                padding: const EdgeInsets.all(2),
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFEFEFEF),
+                  color: Colors.white,
                 ),
-                alignment: Alignment.center,
-                child: Text(story.emoji, style: const TextStyle(fontSize: 28)),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFFEFEFEF),
+                  ),
+                  alignment: Alignment.center,
+                  child:
+                      Text(story.emoji, style: const TextStyle(fontSize: 28)),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            story.name,
-            style: GoogleFonts.inter(
-              fontSize: 10,
-              color: const Color(0xFF1A1A1A),
+            const SizedBox(height: 4),
+            Text(
+              story.name,
+              style: GoogleFonts.inter(
+                fontSize: 10,
+                color: const Color(0xFF1A1A1A),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Visionneuse de stories plein écran — progress bar en haut, tap droit
+/// pour avancer, tap gauche pour revenir, swipe down pour fermer.
+class _StoriesViewer extends StatefulWidget {
+  const _StoriesViewer({
+    required this.stories,
+    required this.startIdx,
+    required this.onViewed,
+  });
+  final List<_Story> stories;
+  final int startIdx;
+  final void Function(String storyId) onViewed;
+
+  @override
+  State<_StoriesViewer> createState() => _StoriesViewerState();
+}
+
+class _StoriesViewerState extends State<_StoriesViewer>
+    with SingleTickerProviderStateMixin {
+  late int _storyIdx = widget.startIdx;
+  int _frameIdx = 0;
+  late final AnimationController _ctrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 4500),
+  )..addStatusListener(_onFrameDone);
+
+  _Story get _story => widget.stories[_storyIdx];
+
+  @override
+  void initState() {
+    super.initState();
+    widget.onViewed(_story.id);
+    _ctrl.forward();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  void _onFrameDone(AnimationStatus s) {
+    if (s == AnimationStatus.completed) _next();
+  }
+
+  void _next() {
+    if (_frameIdx + 1 < _story.frames.length) {
+      setState(() => _frameIdx++);
+      _ctrl
+        ..reset()
+        ..forward();
+    } else if (_storyIdx + 1 < widget.stories.length) {
+      setState(() {
+        _storyIdx++;
+        _frameIdx = 0;
+      });
+      widget.onViewed(_story.id);
+      _ctrl
+        ..reset()
+        ..forward();
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _prev() {
+    if (_frameIdx > 0) {
+      setState(() => _frameIdx--);
+      _ctrl
+        ..reset()
+        ..forward();
+    } else if (_storyIdx > 0) {
+      setState(() {
+        _storyIdx--;
+        _frameIdx = widget.stories[_storyIdx].frames.length - 1;
+      });
+      _ctrl
+        ..reset()
+        ..forward();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final frame = _story.frames[_frameIdx];
+    return GestureDetector(
+      onVerticalDragEnd: (d) {
+        if ((d.primaryVelocity ?? 0) > 200) Navigator.of(context).pop();
+      },
+      onTapUp: (d) {
+        final w = MediaQuery.of(context).size.width;
+        if (d.localPosition.dx < w / 3) {
+          _prev();
+        } else {
+          _next();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: frame.gradient.map((h) => Color(h)).toList(),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                frame.emoji,
+                style: const TextStyle(fontSize: 180),
+              ),
+            ),
+            Positioned(
+              left: 24,
+              right: 24,
+              bottom: 80,
+              child: Text(
+                frame.body,
+                style: GoogleFonts.crimsonPro(
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white,
+                  height: 1.35,
+                  shadows: const [
+                    Shadow(color: Colors.black, blurRadius: 16),
+                  ],
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: List.generate(_story.frames.length, (i) {
+                        return Expanded(
+                          child: Container(
+                            height: 2.5,
+                            margin: const EdgeInsets.symmetric(horizontal: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.white24,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            child: AnimatedBuilder(
+                              animation: _ctrl,
+                              builder: (_, __) {
+                                final pct = i < _frameIdx
+                                    ? 1.0
+                                    : (i == _frameIdx ? _ctrl.value : 0.0);
+                                return Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: FractionallySizedBox(
+                                    widthFactor: pct,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 14,
+                          backgroundColor: Colors.white24,
+                          child: Text(_story.emoji,
+                              style: const TextStyle(fontSize: 16)),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          _story.name,
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon:
+                              const Icon(Icons.close, color: Colors.white),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -230,6 +744,7 @@ class _Post {
   final List<int> gradient;
   final int likes;
   final int atDay;
+  final List<_Comment> comments;
   const _Post({
     required this.id,
     required this.author,
@@ -239,6 +754,22 @@ class _Post {
     required this.gradient,
     required this.likes,
     required this.atDay,
+    this.comments = const [],
+  });
+}
+
+class _Comment {
+  final String author;
+  final String emoji;
+  final int avatarColor;
+  final String text;
+  final String when;
+  const _Comment({
+    required this.author,
+    required this.emoji,
+    required this.avatarColor,
+    required this.text,
+    required this.when,
   });
 }
 
@@ -248,11 +779,13 @@ class _PostCard extends StatefulWidget {
     required this.liked,
     required this.onLike,
     required this.onHide,
+    required this.onComments,
   });
   final _Post post;
   final bool liked;
   final VoidCallback onLike;
   final VoidCallback onHide;
+  final VoidCallback onComments;
 
   @override
   State<_PostCard> createState() => _PostCardState();
@@ -370,7 +903,10 @@ class _PostCardState extends State<_PostCard>
                 ),
               ),
               const SizedBox(width: 14),
-              const Icon(Icons.chat_bubble_outline, size: 24),
+              GestureDetector(
+                onTap: widget.onComments,
+                child: const Icon(Icons.chat_bubble_outline, size: 24),
+              ),
               const SizedBox(width: 14),
               const Icon(Icons.send_outlined, size: 24),
               const Spacer(),
@@ -407,6 +943,20 @@ class _PostCardState extends State<_PostCard>
             ),
           ),
         ),
+        if (p.comments.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),
+            child: GestureDetector(
+              onTap: widget.onComments,
+              child: Text(
+                'Voir les ${p.comments.length} commentaire${p.comments.length > 1 ? "s" : ""}',
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+            ),
+          ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
           child: Text(
