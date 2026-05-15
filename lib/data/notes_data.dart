@@ -56,6 +56,18 @@ const kNotes = <NoteEntry>[
         'des cent trente que j\'ai',
     draft: true,
   ),
+  // Brouillon Tinder — après 10 swipes (déclenché par l'app Tinder)
+  NoteEntry(
+    day: 3,
+    time: '23:40',
+    title: 'Dix swipes',
+    body:
+        'Quentin, Antoine, Léo, Maxime, Hugo, Damien.\n'
+        'Sébastien qui médite, Karim qui photographie.\n\n'
+        'J\'ai swipé non parce que je suis encore vivante.\n'
+        'J\'ai swipé non parce que',
+    draft: true,
+  ),
   NoteEntry(
     day: 1,
     time: '07:42',
