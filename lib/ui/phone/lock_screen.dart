@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/mood_overlay.dart';
 import '../../core/phone_apps.dart';
 import '../../core/phone_theme.dart';
+import '../../data/episodes.dart';
+import '../../providers/last_open_provider.dart';
 import '../../providers/lock_notifications_provider.dart';
 import '../../providers/phone_state_provider.dart';
 import 'status_bar.dart';
@@ -88,7 +90,13 @@ class _LockScreenState extends ConsumerState<LockScreen>
                     height: 1.0,
                   ),
                 ),
-                const SizedBox(height: 22),
+                const SizedBox(height: 14),
+                // Live activity : épisode + beat courant + countdown
+                _LiveActivity(palette: palette),
+                const SizedBox(height: 12),
+                // Welcome back si plus de 6h depuis dernière ouverture
+                const _WelcomeBackBar(),
+                const SizedBox(height: 10),
                 // Météo compacte
                 _LockScreenWidgets(palette: palette),
                 const SizedBox(height: 14),
@@ -183,6 +191,173 @@ class _LockScreenWidgets extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Bandeau « live activity » iOS 17 — montre l'épisode courant + le
+/// beat courant + le countdown (en jours/heures) jusqu'au prochain.
+class _LiveActivity extends ConsumerWidget {
+  const _LiveActivity({required this.palette});
+  final PhonePalette palette;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final p = ref.watch(phoneStateProvider);
+    final ep = episodeById(p.currentEpisodeId);
+    final beat = beatAt(
+      episodeId: p.currentEpisodeId,
+      beatIdx: p.currentBeatIdx,
+    );
+    if (ep == null || beat == null) return const SizedBox.shrink();
+    final next = nextBeat(
+      episodeId: p.currentEpisodeId,
+      beatIdx: p.currentBeatIdx,
+    );
+    final nextB = beatAt(episodeId: next.episodeId, beatIdx: next.beatIdx);
+    final isLast = nextB == beat;
+
+    final countdown = isLast
+        ? 'Fin de l\'épisode'
+        : _countdownTo(p, nextB!);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.40),
+          borderRadius: BorderRadius.circular(22),
+          border:
+              Border.all(color: Colors.white.withValues(alpha: 0.10), width: 0.5),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.15),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                'EP${ep.number}',
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ep.title,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    beat.label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      color: Colors.white.withValues(alpha: 0.78),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              countdown,
+              style: GoogleFonts.inter(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFFFFCC66),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static String _countdownTo(dynamic p, dynamic next) {
+    final fromTotal =
+        (p.currentDay as int) * 24 * 60 + (p.hour as int) * 60 + (p.minute as int);
+    final toTotal = (next.day as int) * 24 * 60 +
+        (next.hour as int) * 60 +
+        (next.minute as int);
+    final dm = toTotal - fromTotal;
+    if (dm <= 0) return 'Maintenant';
+    final d = dm ~/ (24 * 60);
+    final h = (dm % (24 * 60)) ~/ 60;
+    if (d > 0) return 'Dans ${d}j ${h}h';
+    if (h > 0) return 'Dans ${h}h';
+    return 'Dans ${dm}min';
+  }
+}
+
+/// Bandeau « Tu reviens. » qui apparaît si l'utilisateur a fermé l'app
+/// depuis plus de 6h en temps réel.
+class _WelcomeBackBar extends ConsumerWidget {
+  const _WelcomeBackBar();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final prev = ref.watch(lastOpenProvider);
+    if (prev == null) return const SizedBox.shrink();
+    final gap = DateTime.now().difference(prev);
+    if (gap.inHours < 6) return const SizedBox.shrink();
+
+    String label;
+    if (gap.inDays >= 30) {
+      label = 'Six mois plus tard. Le compteur n\'a pas bougé.';
+    } else if (gap.inDays >= 7) {
+      label = 'Tu reviens. Tu as eu le temps de respirer.';
+    } else if (gap.inDays >= 1) {
+      label = 'Tu reviens. Maman a écrit deux fois cette nuit.';
+    } else {
+      label = 'Tu reviens. Quelques heures seulement.';
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(12),
+          border:
+              Border.all(color: Colors.white.withValues(alpha: 0.16), width: 0.5),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.history, color: Colors.white70, size: 14),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                label,
+                style: GoogleFonts.crimsonPro(
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white,
+                  height: 1.3,
+                ),
+              ),
             ),
           ],
         ),

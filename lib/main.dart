@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'providers/last_open_provider.dart';
 import 'providers/phone_state_provider.dart';
 import 'providers/relationships_provider.dart';
 import 'providers/sent_replies_provider.dart';
@@ -71,6 +72,15 @@ class _DramaAppState extends ConsumerState<DramaApp> {
     if (mounted) {
       setState(() => _showOnboarding = !done);
     }
+
+    // 4) Last open : on lit l'ancien, on persiste le nouveau, on
+    //    expose l'ancien au provider pour que LockScreen puisse
+    //    afficher « Tu reviens. »
+    final prevOpen = await loadLastOpen();
+    if (mounted && prevOpen != null) {
+      ref.read(lastOpenProvider.notifier).state = prevOpen;
+    }
+    await saveLastOpen(DateTime.now());
   }
 
   @override
