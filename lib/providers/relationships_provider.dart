@@ -23,4 +23,10 @@ class RelationshipsNotifier
   Relationship of(String contactId) =>
       state[contactId] ??
       const Relationship(trust: 50, loyalty: 50);
+
+  /// Hydrate depuis shared_preferences au démarrage.
+  void hydrate(Map<String, Relationship> rels) => state = rels;
+
+  /// Reset (Réglages > Reset partie).
+  void reset() => state = Map.from(kInitialRelationships);
 }

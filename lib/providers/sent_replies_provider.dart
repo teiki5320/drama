@@ -44,4 +44,10 @@ class SentRepliesNotifier extends StateNotifier<Map<String, SentReply>> {
   /// Renvoie les réponses pour un contact donné.
   Iterable<SentReply> forContact(String contactId) =>
       state.values.where((r) => r.contactId == contactId);
+
+  /// Hydrate depuis shared_preferences au démarrage.
+  void hydrate(Map<String, SentReply> r) => state = r;
+
+  /// Reset (Réglages > Reset partie).
+  void reset() => state = const {};
 }

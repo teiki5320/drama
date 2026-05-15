@@ -22,6 +22,9 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
   /// (notifs, badges).
   final Ref _ref;
 
+  /// Recharge l'état depuis shared_preferences au démarrage.
+  void hydrate(PhoneState s) => state = s;
+
   /// Avance l'heure de `minutes`. Roule sur 24h. Déclenche les
   /// événements DayEvent qui tombent dans l'intervalle franchi.
   void advanceTime(int minutes) {
