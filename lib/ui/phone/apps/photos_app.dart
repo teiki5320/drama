@@ -26,7 +26,19 @@ class _PhotosAppState extends ConsumerState<PhotosApp> {
   @override
   Widget build(BuildContext context) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
-    final visible = kPhotos.where((p) => p.day <= day).toList();
+    final userPhotos =
+        ref.watch(phoneStateProvider.select((s) => s.userPhotos));
+    final canonVisible = kPhotos.where((p) => p.day <= day).toList();
+    // Convertit les UserPhoto en PhotoItem pour l'affichage unifié.
+    final userVisible = userPhotos.map((up) => PhotoItem(
+          day: up.day,
+          monthLabel: 'Juin · Caméra',
+          title: 'Photo perso',
+          subtitle: '📷 ${up.timeLabel} · ${up.caption}',
+          gradient: up.gradient,
+          isScreenshot: false,
+        ));
+    final visible = [...canonVisible, ...userVisible];
 
     // Group by month label
     final Map<String, List<PhotoItem>> byMonth = {};

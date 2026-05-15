@@ -202,6 +202,51 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     state = state.copyWith(unlockedApps: apps);
   }
 
+  /// Le joueur prend une photo via la Caméra. On génère une métadonnée
+  /// avec un emoji + gradient qui dépend du moment (heure, mood) — pas
+  /// de vraie image, juste un placeholder narratif.
+  UserPhoto takePhoto() {
+    final hour = state.hour;
+    final mood = state.mood;
+    final isNight = hour >= 20 || hour < 6;
+    // Emoji selon contexte
+    final String emoji;
+    if (mood <= 3) {
+      emoji = isNight ? '🌑' : '🌫️';
+    } else if (mood >= 8) {
+      emoji = isNight ? '✨' : '☀️';
+    } else {
+      emoji = isNight ? '🌃' : '📷';
+    }
+    // Gradient assombri si mood bas
+    final gradient = mood <= 4
+        ? [0xFF1F2937, 0xFF374151]
+        : (isNight
+            ? [0xFF1E2A4A, 0xFF4A3A55]
+            : [0xFFE89B7F, 0xFFFCC9A1]);
+    final captions = [
+      'Le silence du téléphone, capturé par erreur.',
+      'Je ne sais pas pourquoi j\'ai pris ça.',
+      'Pour plus tard. Pour me souvenir.',
+      'La lumière était bizarre ce moment-là.',
+      'Je voulais le garder. Sans savoir quoi.',
+    ];
+    final caption = captions[(state.userPhotos.length) % captions.length];
+    final photo = UserPhoto(
+      day: state.currentDay,
+      hour: hour,
+      minute: state.minute,
+      emoji: emoji,
+      gradient: gradient,
+      caption: caption,
+    );
+    state = state.copyWith(
+      userPhotos: [...state.userPhotos, photo],
+      battery: (state.battery - 1).clamp(0, 100),
+    );
+    return photo;
+  }
+
   /// Achat d'un item du catalogue. Vérifie solde et seuils mood/réputation.
   /// Renvoie true si l'achat est passé.
   bool buyItem({

@@ -9,6 +9,7 @@ import '../../providers/sent_replies_provider.dart';
 import 'apps/appstore_app.dart';
 import 'apps/banque_app.dart';
 import 'apps/calendrier_app.dart';
+import 'apps/camera_app.dart';
 import 'apps/cloud_app.dart';
 import 'apps/instagram_app.dart';
 import 'apps/messages_app.dart';
@@ -167,6 +168,8 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         return const ReglagesApp();
       case 'appstore':
         return const AppStoreApp();
+      case 'camera':
+        return const CameraApp();
       default:
         return ShellApp(meta: appById(id));
     }

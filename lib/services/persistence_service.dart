@@ -121,6 +121,16 @@ class PersistenceService {
                   'emoji': m.emoji,
                 })
             .toList(),
+        'userPhotos': s.userPhotos
+            .map((p) => {
+                  'day': p.day,
+                  'hour': p.hour,
+                  'minute': p.minute,
+                  'emoji': p.emoji,
+                  'gradient': p.gradient,
+                  'caption': p.caption,
+                })
+            .toList(),
       };
 
   static PhoneState _phoneStateFromMap(Map<String, dynamic> j) {
@@ -170,6 +180,19 @@ class PersistenceService {
                   day: m['day'] as int,
                   time: m['time'] as String,
                   emoji: m['emoji'] as String,
+                ))
+            .toList(),
+        userPhotos: ((j['userPhotos'] as List<dynamic>?) ?? [])
+            .map((e) => e as Map<String, dynamic>)
+            .map((m) => UserPhoto(
+                  day: m['day'] as int,
+                  hour: m['hour'] as int,
+                  minute: m['minute'] as int,
+                  emoji: m['emoji'] as String,
+                  gradient: ((m['gradient'] as List<dynamic>?) ?? [])
+                      .map((e) => e as int)
+                      .toList(),
+                  caption: m['caption'] as String,
                 ))
             .toList(),
       );
