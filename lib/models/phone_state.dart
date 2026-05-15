@@ -1,8 +1,15 @@
 /// État global du téléphone — heure du jeu, batterie, signal, lock,
 /// app ouverte, badges par app. Tout ce qui rend le téléphone vivant
 /// passe par là.
+///
+/// La narration n'est plus calée sur 112 jours linéaires : on suit
+/// les 6 épisodes (`currentEpisodeId`, `currentBeatIdx`). Le champ
+/// `currentDay` reste exposé — il est dérivé du beat courant et sert
+/// uniquement à filtrer le contenu déjà visible dans les apps.
 class PhoneState {
-  final int currentDay;          // J1..J112
+  /// Jour gameworld atteint (= jour du beat courant). Utilisé par les
+  /// apps pour ne montrer que ce qui s'est déjà passé.
+  final int currentDay;
   final int hour;                // 0-23
   final int minute;              // 0-59
   final int battery;             // 0-100, descend selon les actions
@@ -12,6 +19,12 @@ class PhoneState {
   final String? openAppId;       // id de l'app ouverte, null = home
   final Map<String, int> badges; // notif unread par app
   final Set<String> unlockedApps; // apps visibles sur le home
+
+  // ─── Progression épisodique ─────────────────────────────────────
+  /// Identifiant de l'épisode courant (`collision`, `contrat`, …).
+  final String currentEpisodeId;
+  /// Position du beat dans l'épisode courant (0-indexed).
+  final int currentBeatIdx;
 
   // ─── Économie / vie ─────────────────────────────────────────────
   /// Mood 0-10. Démarre à 5.
@@ -26,7 +39,7 @@ class PhoneState {
 
   const PhoneState({
     this.currentDay = 1,
-    this.hour = 6,
+    this.hour = 7,
     this.minute = 30,
     this.battery = 87,
     this.signal = SignalType.wifi,
@@ -38,6 +51,8 @@ class PhoneState {
       'messages', 'telephone', 'whatsapp', 'instagram', 'banque',
       'ubereats', 'photos', 'notes', 'calendrier', 'tinder', 'cloud',
     },
+    this.currentEpisodeId = 'collision',
+    this.currentBeatIdx = 0,
     this.mood = 5,
     this.reputation = 0,
     this.ownedItems = const {},
@@ -71,6 +86,8 @@ class PhoneState {
     bool clearOpenApp = false,
     Map<String, int>? badges,
     Set<String>? unlockedApps,
+    String? currentEpisodeId,
+    int? currentBeatIdx,
     int? mood,
     int? reputation,
     Set<String>? ownedItems,
@@ -87,6 +104,8 @@ class PhoneState {
         openAppId: clearOpenApp ? null : (openAppId ?? this.openAppId),
         badges: badges ?? this.badges,
         unlockedApps: unlockedApps ?? this.unlockedApps,
+        currentEpisodeId: currentEpisodeId ?? this.currentEpisodeId,
+        currentBeatIdx: currentBeatIdx ?? this.currentBeatIdx,
         mood: (mood ?? this.mood).clamp(0, 10),
         reputation: (reputation ?? this.reputation).clamp(0, 9999),
         ownedItems: ownedItems ?? this.ownedItems,

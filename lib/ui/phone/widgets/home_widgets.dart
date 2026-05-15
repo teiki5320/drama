@@ -173,9 +173,10 @@ class CalendarWidget extends StatelessWidget {
   }
 }
 
-/// Widget « Avancer dans la journée » — c'est ainsi qu'on progresse.
-/// Tap court = +1h, tap long = passer au lendemain (animation lock screen
-/// qui revient).
+/// Widget « Prochain moment » — bouton manuel pour avancer vers le beat
+/// suivant. La progression est aussi automatique quand Shen répond au
+/// SMS-clé du beat courant ; ce widget sert quand il n'y a pas de SMS
+/// gate, ou pour reprendre la main si le joueur veut presser.
 class TimeSkipWidget extends ConsumerWidget {
   const TimeSkipWidget({super.key});
 
@@ -184,12 +185,7 @@ class TimeSkipWidget extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         HapticFeedback.selectionClick();
-        ref.read(phoneStateProvider.notifier).advanceTime(60);
-        ref.read(phoneStateProvider.notifier).consumeBattery(2);
-      },
-      onLongPress: () {
-        HapticFeedback.mediumImpact();
-        ref.read(phoneStateProvider.notifier).advanceDay();
+        ref.read(phoneStateProvider.notifier).advanceToNextBeat();
       },
       child: _GlassCard(
         child: Row(
@@ -201,7 +197,7 @@ class TimeSkipWidget extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Avancer',
+                    'Prochain moment',
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -209,7 +205,7 @@ class TimeSkipWidget extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    'Tap : +1h  ·  Long : +1 jour',
+                    'Saute au beat suivant',
                     style: GoogleFonts.inter(
                       fontSize: 10,
                       color: Colors.white.withOpacity(0.7),

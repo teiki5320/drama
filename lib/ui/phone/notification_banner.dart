@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/phone_apps.dart';
-import '../../providers/phone_state_provider.dart';
 
 /// Banner drop-down de notification — apparaît en haut de l'écran
 /// brièvement, comme iOS. Animé : slide down, hold 3.5s, slide up.

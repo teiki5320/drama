@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/day_events.dart';
+import '../data/episodes.dart';
+import '../models/episode.dart';
 import '../models/phone_state.dart';
 
 /// Singleton Riverpod du PhoneState.
@@ -35,14 +37,84 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       minute: m,
       dndEnabled: h >= 23 || h < 7,
     );
-    // Déclenche les events traversés
-    final events = eventsBetween(
+    _fireEventsBetween(
       fromDay: from.currentDay,
       fromHour: from.hour,
       fromMinute: from.minute,
       toDay: newDay,
       toHour: h,
       toMinute: m,
+    );
+  }
+
+  /// Passe au beat suivant — c'est ainsi qu'on progresse dans le scénario.
+  /// Saute le temps du beat courant à celui d'après, déclenche les events
+  /// éventuels et reverrouille l'écran si on passe une nuit.
+  void advanceToNextBeat() {
+    final from = state;
+    final next = nextBeat(
+      episodeId: from.currentEpisodeId,
+      beatIdx: from.currentBeatIdx,
+    );
+    final beat = beatAt(episodeId: next.episodeId, beatIdx: next.beatIdx);
+    if (beat == null) return; // fin de l'histoire
+    final crossesNight = beat.day > from.currentDay;
+    state = state.copyWith(
+      currentEpisodeId: next.episodeId,
+      currentBeatIdx: next.beatIdx,
+      currentDay: beat.day,
+      hour: beat.hour,
+      minute: beat.minute,
+      isLocked: crossesNight ? true : from.isLocked,
+      dndEnabled: beat.hour >= 23 || beat.hour < 7,
+      battery: crossesNight
+          ? (from.battery - 15).clamp(20, 100)
+          : (from.battery - 1).clamp(0, 100),
+    );
+    _fireEventsBetween(
+      fromDay: from.currentDay,
+      fromHour: from.hour,
+      fromMinute: from.minute,
+      toDay: beat.day,
+      toHour: beat.hour,
+      toMinute: beat.minute,
+    );
+  }
+
+  /// Si le beat courant attend une réponse SMS et que cette réponse
+  /// vient d'arriver, on passe automatiquement au beat suivant. Appelé
+  /// par PhoneShell quand `sentRepliesProvider` change.
+  void maybeAdvanceAfterReply(String repliedBeatId) {
+    final current = beatAt(
+      episodeId: state.currentEpisodeId,
+      beatIdx: state.currentBeatIdx,
+    );
+    if (current == null) return;
+    if (current.requiresChoice != repliedBeatId) return;
+    advanceToNextBeat();
+  }
+
+  /// Beat actuellement actif (utile pour le HUD plus tard).
+  Beat? get currentBeat => beatAt(
+        episodeId: state.currentEpisodeId,
+        beatIdx: state.currentBeatIdx,
+      );
+
+  void _fireEventsBetween({
+    required int fromDay,
+    required int fromHour,
+    required int fromMinute,
+    required int toDay,
+    required int toHour,
+    required int toMinute,
+  }) {
+    final events = eventsBetween(
+      fromDay: fromDay,
+      fromHour: fromHour,
+      fromMinute: fromMinute,
+      toDay: toDay,
+      toHour: toHour,
+      toMinute: toMinute,
     );
     for (final e in events) {
       _fireEvent(e);
