@@ -43,7 +43,7 @@ const kDayEvents = <DayEvent>[
     apps: ['messages'],
     notifAppId: 'messages',
     notifTitle: 'Maman ❤️',
-    notifBody: 'Tu pars livrer dans combien ?',
+    notifBody: 'Tu pars livrer dans combien de temps ?',
     summary: 'SMS Maman avant départ',
   ),
   DayEvent(

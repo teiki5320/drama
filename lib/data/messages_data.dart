@@ -118,7 +118,7 @@ const Map<String, List<Msg>> kThreads = {
   'maman': [
     Msg(
       sender: 'maman',
-      text: 'Tu pars livrer dans combien ?',
+      text: 'Tu pars livrer dans combien de temps ?',
       time: '07:48',
       day: 1,
     ),

@@ -104,7 +104,7 @@ const kNotes = <NoteEntry>[
         'café froid des poubelles. Trois personnes qui font semblant '
         'de dormir debout.\n\n'
         'Couloir K, niveau 2, Tenon. Néons qui clignotent sur la deuxième '
-        'rangée. La carrelage sent le savon noir. La femme du ménage a '
+        'rangée. Le carrelage sent le savon noir. La femme du ménage a '
         'détourné les yeux quand je suis passée.\n\n'
         'Ce sont les détails qui restent. Pas les mots du médecin.',
   ),
