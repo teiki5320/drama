@@ -200,7 +200,7 @@ const kPhotos = <PhotoItem>[
       PhotoHotspot(
         x: 0.50,
         y: 0.20,
-        detail: '47ᵉ étage. Lundi 17:47. Il avait préparé un dossier.',
+        detail: '47ᵉ étage. Jeudi 11:00. Il avait préparé un dossier.',
       ),
     ],
   ),
@@ -216,7 +216,7 @@ const kPhotos = <PhotoItem>[
     day: 7,
     monthLabel: 'Juin',
     title: 'Badge refusé',
-    subtitle: '🔒 09h08',
+    subtitle: '🔒 10h33',
     gradient: [0xFFE53935, 0xFF1F2937],
     isScreenshot: true,
     imagePath: 'assets/photos/ep1/j07_badge_47e_refuse.webp',
@@ -230,7 +230,7 @@ const kPhotos = <PhotoItem>[
       PhotoHotspot(
         x: 0.20,
         y: 0.20,
-        detail: '09:08. Trois minutes après l\'heure du rendez-vous.',
+        detail: '10:33. Trois minutes après l\'heure du rendez-vous.',
       ),
     ],
   ),

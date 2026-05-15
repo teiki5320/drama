@@ -90,7 +90,38 @@ const kCalls = <CallEntry>[
     type: CallType.missed,
     avatarPath: 'assets/photos/avatars/tristan.webp',
   ),
-  // Idée 7 — Voicemail Tristan J3 23:58, 3 minutes après l'appel raté
+  // Voicemail Maman J14 18:42 — avant le dîner Madame Heng
+  CallEntry(
+    day: 14,
+    time: '18:42',
+    contactLabel: 'Maman',
+    contactEmoji: '👩',
+    type: CallType.voicemail,
+    duration: '00:38',
+    avatarPath: 'assets/photos/avatars/maman.webp',
+    voicemailNote:
+        'Ma fille, je sais que tu dînes ce soir avec ses parents. '
+        'Je ne te demande pas où tu vas. Je ne te demande pas qui '
+        'tu vois. Je te demande juste de manger. Couvre-toi.',
+  ),
+  // Voicemail Madame Heng J13 — sentencieuse, installe la cadence
+  CallEntry(
+    day: 13,
+    time: '12:08',
+    contactLabel: 'Madame Heng',
+    contactEmoji: '🍵',
+    type: CallType.voicemail,
+    duration: '00:38',
+    avatarPath: 'assets/photos/avatars/madame_heng.webp',
+    voicemailNote:
+        'Mademoiselle Marchand. J\'aurais pu écrire. Mais une voix '
+        'tient mieux qu\'un message. Vous savez ce que les Chinois '
+        'disent : ce qui n\'est pas dit reste vrai. Jeudi 20h30. '
+        'À demain.',
+  ),
+  // Idée 7 — Voicemail Tristan J3 23:58, 3 minutes après l'appel raté.
+  // Avatar volontairement non rendu (juste emoji ❓) pour ne pas
+  // spoiler l'identité avant que Shen n'identifie la voix.
   CallEntry(
     day: 3,
     time: '23:58',
@@ -98,7 +129,6 @@ const kCalls = <CallEntry>[
     contactEmoji: '❓',
     type: CallType.voicemail,
     duration: '00:14',
-    avatarPath: 'assets/photos/avatars/tristan.webp',
     voicemailNote:
         'Mlle Marchand. Vous avez gardé ma carte. Rappelez quand vous '
         'voudrez parler chiffres. C\'est moi qui ai du temps.',

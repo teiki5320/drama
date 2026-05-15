@@ -53,6 +53,13 @@ const kContacts = <MsgContact>[
     avatarPath: 'assets/photos/avatars/tristan.webp',
   ),
   MsgContact(
+    id: 'madame_heng',
+    displayName: 'Madame Heng',
+    emoji: '🍵',
+    avatarTint: '#E7E1D2',
+    avatarPath: 'assets/photos/avatars/madame_heng.webp',
+  ),
+  MsgContact(
     id: 'banque',
     displayName: 'BANQUE INFO',
     emoji: '🏦',
@@ -152,6 +159,21 @@ const Map<String, List<Msg>> kThreads = {
       day: 1,
       beatId: 'maman_couvre_toi_j1',
     ),
+    // J5 — Dimanche. Maman tente une perche.
+    Msg(
+      sender: 'maman',
+      text: 'Tu viens dimanche ? J\'ai fait des dumplings.',
+      time: '19:08',
+      day: 5,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Camille m\'a dit que tu travailles sur un dossier important. '
+          'Je n\'ai pas demandé lequel.',
+      time: '19:14',
+      day: 5,
+    ),
     // J11 — Premier mensonge sur le « stage paysagiste »
     Msg(
       sender: 'maman',
@@ -250,10 +272,23 @@ const Map<String, List<Msg>> kThreads = {
       day: 6,
       beatId: 'camille_tailleur_j6',
     ),
+    // J8 — Après la signature, Camille devine
+    Msg(
+      sender: 'camille',
+      text: 'Tu as signé. Je le sens.',
+      time: '13:15',
+      day: 8,
+    ),
+    Msg(
+      sender: 'camille',
+      text: 'Je ne te demande pas combien. Je te demande comment tu vas.',
+      time: '13:16',
+      day: 8,
+    ),
     // J13 — Préparation dîner Madame Heng
     Msg(
       sender: 'camille',
-      text: 'Dîner Madame Heng samedi ? Tu y vas comment ?',
+      text: 'Dîner Madame Heng jeudi ? Tu y vas comment ?',
       time: '15:08',
       day: 13,
     ),
@@ -264,6 +299,20 @@ const Map<String, List<Msg>> kThreads = {
       time: '15:09',
       day: 13,
       beatId: 'camille_quel_the_j13',
+    ),
+    // J14 — Après le dîner, Camille n'attend pas le matin.
+    Msg(
+      sender: 'camille',
+      text: 'Alors ?',
+      time: '23:14',
+      day: 14,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Tu m\'écris pas. C\'est jamais bon signe.',
+      time: '23:38',
+      day: 14,
     ),
   ],
   'tristan': [
@@ -283,6 +332,56 @@ const Map<String, List<Msg>> kThreads = {
           'J\'ai laissé la moitié de la penderie et la salle de bain attenante. Bureau pour moi. Vous êtes libre de réorganiser.',
       time: '17:22',
       day: 9,
+    ),
+    // J14 — après le dîner Madame Heng, cliffhanger Ep 1
+    Msg(
+      sender: 'tristan',
+      text:
+          'Elle ne dit « ma fille » qu\'aux personnes qu\'elle compte '
+          'garder. Ou écraser.',
+      time: '22:48',
+      day: 14,
+    ),
+  ],
+  'madame_heng': [
+    // J12 — Première parole directe : sentencieuse, formelle, références
+    Msg(
+      sender: 'madame_heng',
+      text:
+          'Mademoiselle Marchand. Mon fils m\'a transmis votre numéro. '
+          'Le couvert sera mis à 20h30 jeudi. Le thé sera servi au salon.',
+      time: '09:42',
+      day: 12,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text:
+          'Mon fils n\'apporte rien. Vous non plus. C\'est la tradition.',
+      time: '09:43',
+      day: 12,
+    ),
+    Msg(
+      sender: 'moi',
+      text: 'Bien noté. Merci Madame.',
+      time: '10:08',
+      day: 12,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text:
+          'On ne dit pas « bien noté » à une mère, mademoiselle. '
+          'On dit « entendu ».',
+      time: '10:09',
+      day: 12,
+    ),
+    // J13 — relance sur le thé (donne du sens au choix Camille B13)
+    Msg(
+      sender: 'madame_heng',
+      text:
+          'À demain. J\'ouvre la boîte verte. Vous saurez laquelle quand '
+          'vous la verrez.',
+      time: '21:08',
+      day: 13,
     ),
   ],
   'banque': [

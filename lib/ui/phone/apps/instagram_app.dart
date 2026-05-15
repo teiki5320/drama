@@ -293,6 +293,12 @@ const _allStories = <_Story>[
         body: 'Long Jing 2026, première récolte. Le thé qu\'on offre une fois.',
         gradient: [0xFFE7E1D2, 0xFFCFC8B5],
       ),
+      // J14 frame — cliffhanger : photo mains Shen sur la tasse
+      _StoryFrame(
+        emoji: '🌿',
+        body: '« Ma fille a reconnu la deuxième récolte. »',
+        gradient: [0xFFCFC8B5, 0xFFE7D9C2],
+      ),
     ],
   ),
   _Story(
@@ -369,6 +375,27 @@ const _allPosts = <_Post>[
     atDay: 4,
     imagePath: 'assets/photos/ep1/post_camille_cafe.webp',
     comments: [],
+  ),
+  // J5 — Camille révise un samedi, gag léger
+  _Post(
+    id: 'camille_revisions_j5',
+    author: 'camille_rx',
+    emoji: '📚',
+    when: 'samedi soir',
+    body: 'Samedi soir. Code civil. Le chat dort sur le PVT. Je vis.',
+    gradient: [0xFFFAE0CC, 0xFFFCE6D8],
+    likes: 73,
+    atDay: 5,
+    imagePath: 'assets/photos/ep1/post_camille_bureau_droit.webp',
+    comments: [
+      _Comment(
+        author: 'shen_marchand',
+        emoji: '🌿',
+        avatarColor: 0xFFFCE6D8,
+        text: 'Je viens.',
+        when: 'il y a 12 min',
+      ),
+    ],
   ),
   _Post(
     id: 't_heng_j10',
