@@ -237,7 +237,7 @@ class _CloudRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (item.body == null) return;
+        if (item.body == null && item.imagePath == null) return;
         HapticFeedback.selectionClick();
         showModalBottomSheet(
           context: context,
@@ -250,7 +250,19 @@ class _CloudRow extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
         child: Row(
           children: [
-            Icon(_icon, color: _color, size: 28),
+            // Vignette : image réelle si dispo, sinon icône
+            if (item.imagePath != null)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.asset(
+                  item.imagePath!,
+                  width: 36,
+                  height: 36,
+                  fit: BoxFit.cover,
+                ),
+              )
+            else
+              Icon(_icon, color: _color, size: 28),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -317,14 +329,27 @@ class _DocumentSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(
-              item.body ?? '',
-              style: GoogleFonts.crimsonPro(
-                fontSize: 16,
-                color: const Color(0xFF1A1A1A),
-                height: 1.5,
+            if (item.imagePath != null)
+              Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    item.imagePath!,
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
-            ),
+            if (item.imagePath != null && item.body != null)
+              const SizedBox(height: 16),
+            if (item.body != null)
+              Text(
+                item.body!,
+                style: GoogleFonts.crimsonPro(
+                  fontSize: 16,
+                  color: const Color(0xFF1A1A1A),
+                  height: 1.5,
+                ),
+              ),
           ],
         ),
       ),
