@@ -7,6 +7,9 @@ class NoteEntry {
   final String title;
   final String body;
   final bool starred;
+  /// True quand Shen a commencé la note puis l'a abandonnée — affichée
+  /// barrée + tag « brouillon » + 3 points hésitants en fin de body.
+  final bool draft;
 
   const NoteEntry({
     required this.day,
@@ -14,10 +17,30 @@ class NoteEntry {
     required this.title,
     required this.body,
     this.starred = false,
+    this.draft = false,
   });
 }
 
 const kNotes = <NoteEntry>[
+  // ── Brouillons abandonnés (notes ratées) ───────────────────────
+  NoteEntry(
+    day: 1,
+    time: '12:18',
+    title: 'Pour le médecin',
+    body: 'Lui demander si Maman peut\n'
+        'prendre le métro encore\n'
+        'ou si elle doit',
+    draft: true,
+  ),
+  NoteEntry(
+    day: 3,
+    time: '08:04',
+    title: 'Lettre à Papa',
+    body: 'Tu ne lis pas ces lettres.\n'
+        'Tu n\'as jamais lu une seule\n'
+        'des cent trente que j\'ai',
+    draft: true,
+  ),
   NoteEntry(
     day: 1,
     time: '07:42',

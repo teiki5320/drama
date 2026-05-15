@@ -170,7 +170,16 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
                 }
                 final m = msgs[i];
                 final showStatus = m.sender == 'moi' && i == msgs.length - 1;
-                return _Bubble(msg: m, showStatus: showStatus);
+                // Le dernier message reçu (pas de Shen) se tape lettre
+                // par lettre s'il est récent (de l'épisode en cours).
+                final isLatestIncoming = m.sender != 'moi' &&
+                    i == msgs.length - 1 &&
+                    m.day == day;
+                return _Bubble(
+                  msg: m,
+                  showStatus: showStatus,
+                  animateTyping: isLatestIncoming,
+                );
               },
             ),
           ),
@@ -190,14 +199,52 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
   }
 }
 
-class _Bubble extends StatelessWidget {
-  const _Bubble({required this.msg, required this.showStatus});
+class _Bubble extends StatefulWidget {
+  const _Bubble({
+    required this.msg,
+    required this.showStatus,
+    this.animateTyping = false,
+  });
   final Msg msg;
   final bool showStatus;
+  /// Si true, le texte se tape lettre par lettre à l'ouverture.
+  final bool animateTyping;
+
+  @override
+  State<_Bubble> createState() => _BubbleState();
+}
+
+class _BubbleState extends State<_Bubble> {
+  late String _shown;
+  bool _done = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.animateTyping) {
+      _shown = '';
+      _done = false;
+      _typeOut();
+    } else {
+      _shown = widget.msg.text;
+    }
+  }
+
+  Future<void> _typeOut() async {
+    // 25 ms / char avec un cap à 1.6 s pour les longs textes.
+    final full = widget.msg.text;
+    final perChar = (1600 / full.length).clamp(15.0, 40.0).toInt();
+    for (var i = 1; i <= full.length; i++) {
+      await Future.delayed(Duration(milliseconds: perChar));
+      if (!mounted) return;
+      setState(() => _shown = full.substring(0, i));
+    }
+    if (mounted) setState(() => _done = true);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isMe = msg.sender == 'moi';
+    final isMe = widget.msg.sender == 'moi';
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Column(
@@ -216,7 +263,7 @@ class _Bubble extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
             ),
             child: Text(
-              msg.text,
+              _done ? widget.msg.text : '$_shown▍',
               style: GoogleFonts.inter(
                 fontSize: 15,
                 color: isMe ? Colors.white : const Color(0xFF1A1A1A),
@@ -224,13 +271,13 @@ class _Bubble extends StatelessWidget {
               ),
             ),
           ),
-          if (showStatus)
+          if (widget.showStatus)
             Padding(
               padding: const EdgeInsets.only(top: 2, right: 6),
               child: Text(
-                msg.status == MsgStatus.read
+                widget.msg.status == MsgStatus.read
                     ? 'Lu'
-                    : msg.status == MsgStatus.delivered
+                    : widget.msg.status == MsgStatus.delivered
                         ? 'Délivré'
                         : 'Envoi…',
                 style: GoogleFonts.inter(
