@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../data/calendar_data.dart';
+import '../../../data/messages_data.dart';
 import '../../../providers/phone_state_provider.dart';
 
 /// Widget Météo grand format pour le home screen.
@@ -60,12 +62,24 @@ class MeteoWidget extends StatelessWidget {
   }
 }
 
-/// Widget cadre photo « Maman » qui rotate quotidiennement.
-class PhotoMamanWidget extends StatelessWidget {
+/// Widget cadre photo « Maman » — lit le dernier SMS de Maman dans le
+/// fil et l'affiche. Voix Maman, mise en italique serif.
+class PhotoMamanWidget extends ConsumerWidget {
   const PhotoMamanWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    // Dernier message reçu de Maman (sender != 'moi') visible jusqu'ici.
+    final mamanMsgs = (kThreads['maman'] ?? [])
+        .where((m) => m.day <= day && m.sender == 'maman')
+        .toList();
+    final last = mamanMsgs.isNotEmpty ? mamanMsgs.last : null;
+    final body = last?.text ?? 'Couvre-toi.';
+    final stamp = last == null
+        ? '—'
+        : (last.day == day ? 'Aujourd\'hui, ${last.time}' : 'J${last.day}, ${last.time}');
+
     return _GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,15 +111,19 @@ class PhotoMamanWidget extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            'Couvre-toi.',
+            body,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.crimsonPro(
-              fontSize: 16,
+              fontSize: 14,
               fontStyle: FontStyle.italic,
               color: Colors.white,
+              height: 1.3,
             ),
           ),
+          const SizedBox(height: 2),
           Text(
-            'Hier, 22h08',
+            stamp,
             style: GoogleFonts.inter(
               fontSize: 10,
               color: Colors.white.withOpacity(0.65),
@@ -117,18 +135,26 @@ class PhotoMamanWidget extends StatelessWidget {
   }
 }
 
-/// Widget Calendrier — prochain rdv (J+1, Tenon).
-class CalendarWidget extends StatelessWidget {
+/// Widget Calendrier — montre le prochain RDV à venir (ou « aujourd'hui »).
+/// Lit `kEvents` filtré sur `currentDay`.
+class CalendarWidget extends ConsumerWidget {
   const CalendarWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    final upcoming = kEvents.where((e) => e.day >= day).toList()
+      ..sort((a, b) => a.day.compareTo(b.day));
+    final next = upcoming.isNotEmpty ? upcoming.first : null;
+
     return _GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'PROCHAIN',
+            next == null
+                ? 'CALENDRIER'
+                : (next.urgent ? 'URGENT' : 'PROCHAIN'),
             style: GoogleFonts.inter(
               fontSize: 9,
               fontWeight: FontWeight.w700,
@@ -138,7 +164,9 @@ class CalendarWidget extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Dialyse Maman',
+            next?.title ?? 'Aucun rendez-vous',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: FontWeight.w600,
@@ -147,7 +175,9 @@ class CalendarWidget extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Text(
-            'Hôpital Tenon',
+            next?.location ?? '',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.inter(
               fontSize: 11,
               color: Colors.white.withOpacity(0.75),
@@ -159,7 +189,7 @@ class CalendarWidget extends StatelessWidget {
               const Icon(Icons.access_time, size: 12, color: Colors.white70),
               const SizedBox(width: 4),
               Text(
-                'Demain 9h30',
+                _whenLabel(next, day),
                 style: GoogleFonts.inter(
                   fontSize: 11,
                   color: Colors.white.withOpacity(0.85),
@@ -170,6 +200,15 @@ class CalendarWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  static String _whenLabel(CalendarEvent? e, int day) {
+    if (e == null) return '—';
+    final delta = e.day - day;
+    final time = e.startTime;
+    if (delta == 0) return 'Aujourd\'hui $time';
+    if (delta == 1) return 'Demain $time';
+    return 'Dans $delta j · $time';
   }
 }
 

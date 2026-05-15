@@ -14,6 +14,12 @@ Future<bool> isOnboardingDone() async {
   return p.getBool(_kOnboardingDone) ?? false;
 }
 
+/// Efface le flag — utilisé par Réglages > Reset partie.
+Future<void> resetOnboarding() async {
+  final p = await SharedPreferences.getInstance();
+  await p.remove(_kOnboardingDone);
+}
+
 /// Onboarding 3 écrans — apparaît une seule fois au premier lancement.
 /// Chaque écran est un faux lock screen avec un message de Shen qui
 /// pose le ton (1re personne, ironie sèche, dignité).

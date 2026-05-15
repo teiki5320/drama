@@ -71,7 +71,7 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       isLocked: crossesNight ? true : from.isLocked,
       dndEnabled: beat.hour >= 23 || beat.hour < 7,
       battery: crossesNight
-          ? (from.battery - 15).clamp(20, 100)
+          ? (from.battery - 15).clamp(0, 100)
           : (from.battery - 1).clamp(0, 100),
     );
     _fireEventsBetween(
@@ -145,9 +145,18 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       isLocked: true,
       dndEnabled: false,
       clearOpenApp: true,
-      battery: (state.battery - 15).clamp(20, 100),
+      battery: (state.battery - 15).clamp(0, 100),
     );
   }
+
+  /// Recharge la batterie (geste diégétique, déclenché via Control Center
+  /// quand on « branche » le téléphone).
+  void plugCharger() =>
+      state = state.copyWith(battery: 100);
+
+  /// Toggle manuel du Ne Pas Déranger (Control Center).
+  void toggleDnd() =>
+      state = state.copyWith(dndEnabled: !state.dndEnabled);
 
   /// Déverrouille l'écran (swipe up depuis le lock screen).
   void unlock() => state = state.copyWith(isLocked: false);

@@ -46,12 +46,14 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
     Future.microtask(() {
       ref.listenManual(lastTriggeredEventProvider, (_, next) {
         if (next == null) return;
-        // Pousse la notif dans l'historique du lock screen.
+        // Pousse la notif dans l'historique du lock screen (toujours,
+        // même en DND — la pile lock garde la trace).
         ref.read(lockNotificationsProvider.notifier).push(
               LockNotif.fromEvent(next),
             );
         // Cas spécial : un event tagué « appel entrant » déclenche
         // l'écran plein d'appel à la place du banner.
+        // Les appels passent même en DND (comportement iOS « urgence »).
         if (next.notifAppId == 'telephone' &&
             next.notifTitle.toLowerCase().contains('appel')) {
           ref.read(incomingCallProvider.notifier).state = IncomingCall(
@@ -65,6 +67,8 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         }
         final phone = ref.read(phoneStateProvider);
         if (phone.isLocked) return; // pas de banner sur lock screen
+        // DND : on supprime le banner mais on garde la notif sur lock.
+        if (phone.dndEnabled) return;
         if (!mounted) return;
         showPhoneNotification(
           context,
