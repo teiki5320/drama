@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/phone_apps.dart';
 import '../../providers/phone_state_provider.dart';
+import '../../providers/sent_replies_provider.dart';
 import 'apps/banque_app.dart';
 import 'apps/calendrier_app.dart';
 import 'apps/cloud_app.dart';
@@ -38,7 +39,7 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
     // Le banner ne s'affiche pas si le téléphone est verrouillé ou si
     // le DND est actif (sauf pour Tristan/Maman qui passent).
     Future.microtask(() {
-      ref.listenManual(lastTriggeredEventProvider, (prev, next) {
+      ref.listenManual(lastTriggeredEventProvider, (_, next) {
         if (next == null) return;
         final phone = ref.read(phoneStateProvider);
         if (phone.isLocked) return; // pas de banner sur lock screen
@@ -51,6 +52,17 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
           onTap: () =>
               ref.read(phoneStateProvider.notifier).openApp(next.notifAppId),
         );
+      });
+      // Auto-progression : quand Shen répond au SMS-clé du beat courant,
+      // on enchaîne directement sur le beat suivant.
+      ref.listenManual(sentRepliesProvider, (prev, next) {
+        final prevKeys = prev?.keys.toSet() ?? <String>{};
+        final newKeys = next.keys.toSet().difference(prevKeys);
+        if (newKeys.isEmpty) return;
+        final notifier = ref.read(phoneStateProvider.notifier);
+        for (final beatId in newKeys) {
+          notifier.maybeAdvanceAfterReply(beatId);
+        }
       });
     });
   }

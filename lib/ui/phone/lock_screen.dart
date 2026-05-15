@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/phone_theme.dart';
-import '../../models/phone_state.dart';
 import '../../providers/phone_state_provider.dart';
 import 'status_bar.dart';
 
