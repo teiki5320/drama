@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../data/contact_states.dart';
 import '../../../../data/messages_data.dart';
 import '../../../../providers/phone_state_provider.dart';
 import '../../../../providers/sent_replies_provider.dart';
@@ -129,6 +130,17 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
                             color: const Color(0xFF1A1A1A),
                           ),
                         ),
+                        Builder(builder: (_) {
+                          final s = statusForContact(widget.contact.id, day);
+                          if (s == null) return const SizedBox.shrink();
+                          return Text(
+                            '${s.emoji ?? ''}${s.emoji != null ? ' ' : ''}${s.label}',
+                            style: GoogleFonts.inter(
+                              fontSize: 10,
+                              color: Colors.grey.shade500,
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),

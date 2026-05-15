@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../data/contact_states.dart';
 import '../../../data/messages_data.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../status_bar.dart';
@@ -216,6 +217,31 @@ class _ThreadTile extends ConsumerWidget {
                       ),
                     ],
                   ),
+                  // Statut « vivant » du contact (en ligne, hors ligne, tape…)
+                  Builder(builder: (_) {
+                    final s = statusForContact(contact.id, currentDay);
+                    if (s == null) return const SizedBox.shrink();
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 3),
+                      child: Row(
+                        children: [
+                          if (s.emoji != null) ...[
+                            Text(s.emoji!,
+                                style: const TextStyle(fontSize: 11)),
+                            const SizedBox(width: 4),
+                          ],
+                          Text(
+                            s.label,
+                            style: GoogleFonts.inter(
+                              fontSize: 11,
+                              color: Colors.grey.shade500,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),
