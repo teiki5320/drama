@@ -16,10 +16,16 @@ class NotesApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    final mood = ref.watch(phoneStateProvider.select((s) => s.mood));
     final notes = kNotes.where((n) => n.day <= day).toList().reversed.toList();
+    // Fond papier crème en mood neutre+ ; refroidit / grisaille en bas mood.
+    final bg = mood >= 5
+        ? const Color(0xFFFBF7EF)
+        : Color.lerp(const Color(0xFFFBF7EF), const Color(0xFFE6E2DC),
+            ((5 - mood) / 5).clamp(0.0, 1.0))!;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF7EF),
+      backgroundColor: bg,
       body: Column(
         children: [
           const PhoneStatusBar(foreground: Color(0xFF1A1A1A)),
