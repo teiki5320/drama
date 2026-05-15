@@ -187,6 +187,12 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     state = state.copyWith(unlockedApps: apps);
   }
 
+  /// Désinstalle une app (la cache du home, peut être réinstallée).
+  void removeApp(String appId) {
+    final apps = {...state.unlockedApps}..remove(appId);
+    state = state.copyWith(unlockedApps: apps);
+  }
+
   /// Achat d'un item du catalogue. Vérifie solde et seuils mood/réputation.
   /// Renvoie true si l'achat est passé.
   bool buyItem({

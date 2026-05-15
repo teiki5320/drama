@@ -102,6 +102,31 @@ const List<AppMeta> kAllApps = [
     icon: Icons.settings,
     color: Color(0xFF8E8E93),
   ),
+  AppMeta(
+    id: 'appstore',
+    label: 'App Store',
+    icon: Icons.apps,
+    color: Color(0xFF007AFF),
+  ),
+  // ─── Apps installables (vides au démarrage, débloquées via App Store)
+  AppMeta(
+    id: 'spotify',
+    label: 'Spotify',
+    icon: Icons.music_note,
+    color: Color(0xFF1DB954),
+  ),
+  AppMeta(
+    id: 'strava',
+    label: 'Strava',
+    icon: Icons.directions_bike,
+    color: Color(0xFFFC4C02),
+  ),
+  AppMeta(
+    id: 'maps',
+    label: 'Plans',
+    icon: Icons.map,
+    color: Color(0xFF34A853),
+  ),
 ];
 
 AppMeta appById(String id) => kAllApps.firstWhere((a) => a.id == id);

@@ -6,6 +6,7 @@ import '../../providers/incoming_call_provider.dart';
 import '../../providers/lock_notifications_provider.dart';
 import '../../providers/phone_state_provider.dart';
 import '../../providers/sent_replies_provider.dart';
+import 'apps/appstore_app.dart';
 import 'apps/banque_app.dart';
 import 'apps/calendrier_app.dart';
 import 'apps/cloud_app.dart';
@@ -145,6 +146,8 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         return const CloudApp();
       case 'reglages':
         return const ReglagesApp();
+      case 'appstore':
+        return const AppStoreApp();
       default:
         return ShellApp(meta: appById(id));
     }
