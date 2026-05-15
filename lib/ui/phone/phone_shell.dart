@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/phone_apps.dart';
+import '../../providers/lock_notifications_provider.dart';
 import '../../providers/phone_state_provider.dart';
 import '../../providers/sent_replies_provider.dart';
 import 'apps/banque_app.dart';
@@ -42,6 +43,10 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
     Future.microtask(() {
       ref.listenManual(lastTriggeredEventProvider, (_, next) {
         if (next == null) return;
+        // Pousse la notif dans l'historique du lock screen.
+        ref.read(lockNotificationsProvider.notifier).push(
+              LockNotif.fromEvent(next),
+            );
         final phone = ref.read(phoneStateProvider);
         if (phone.isLocked) return; // pas de banner sur lock screen
         if (!mounted) return;

@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/phone_apps.dart';
 import '../../core/phone_theme.dart';
+import '../../providers/lock_notifications_provider.dart';
 import '../../providers/phone_state_provider.dart';
 import 'status_bar.dart';
 
@@ -76,12 +78,13 @@ class _LockScreenState extends ConsumerState<LockScreen>
                     height: 1.0,
                   ),
                 ),
-                const SizedBox(height: 30),
-                // Espace réservé aux notifications (vide en PR 1)
+                const SizedBox(height: 22),
+                // Météo compacte
+                _LockScreenWidgets(palette: palette),
+                const SizedBox(height: 14),
+                // Pile de notifications (du plus récent au plus ancien)
                 Expanded(
-                  child: Center(
-                    child: _LockScreenWidgets(palette: palette),
-                  ),
+                  child: _NotificationsList(palette: palette),
                 ),
                 // Indicateur swipe up
                 _SwipeUpHint(palette: palette),
@@ -172,6 +175,100 @@ class _LockScreenWidgets extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Pile de notifications iOS-like sur le lock screen.
+class _NotificationsList extends ConsumerWidget {
+  const _NotificationsList({required this.palette});
+  final PhonePalette palette;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifs = ref.watch(lockNotificationsProvider);
+    if (notifs.isEmpty) return const SizedBox.shrink();
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      itemCount: notifs.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 6),
+      itemBuilder: (context, i) => _NotifCard(n: notifs[i]),
+    );
+  }
+}
+
+class _NotifCard extends StatelessWidget {
+  const _NotifCard({required this.n});
+  final LockNotif n;
+
+  @override
+  Widget build(BuildContext context) {
+    AppMeta? meta;
+    try {
+      meta = appById(n.appId);
+    } catch (_) {}
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 9, 12, 10),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.20),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white.withOpacity(0.22), width: 0.5),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              color: meta?.color ?? Colors.white24,
+              borderRadius: BorderRadius.circular(7),
+            ),
+            child: Icon(meta?.icon ?? Icons.notifications,
+                color: meta?.fgColor ?? Colors.white, size: 18),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        n.title,
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      n.timeLabel,
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        color: Colors.white.withOpacity(0.85),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  n.body,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: Colors.white.withOpacity(0.92),
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
