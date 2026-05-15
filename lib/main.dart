@@ -7,6 +7,7 @@ import 'providers/relationships_provider.dart';
 import 'providers/sent_replies_provider.dart';
 import 'services/persistence_service.dart';
 import 'ui/phone/device_frame.dart';
+import 'ui/phone/onboarding_screen.dart';
 import 'ui/phone/phone_shell.dart';
 
 /// Point d'entrée — l'app est un faux téléphone. Toute la navigation et
@@ -30,6 +31,9 @@ class DramaApp extends ConsumerStatefulWidget {
 }
 
 class _DramaAppState extends ConsumerState<DramaApp> {
+  /// null = en cours de chargement, true = afficher onboarding, false = phone.
+  bool? _showOnboarding;
+
   @override
   void initState() {
     super.initState();
@@ -61,10 +65,27 @@ class _DramaAppState extends ConsumerState<DramaApp> {
     ref.listenManual(sentRepliesProvider, (_, next) {
       PersistenceService.saveSentReplies(next);
     });
+
+    // 3) Onboarding au premier lancement uniquement.
+    final done = await isOnboardingDone();
+    if (mounted) {
+      setState(() => _showOnboarding = !done);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget body;
+    if (_showOnboarding == null) {
+      body = const ColoredBox(color: Colors.black);
+    } else if (_showOnboarding == true) {
+      body = OnboardingScreen(
+        onFinished: () => setState(() => _showOnboarding = false),
+      );
+    } else {
+      body = const PhoneShell();
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Drama',
@@ -74,7 +95,7 @@ class _DramaAppState extends ConsumerState<DramaApp> {
         splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
       ),
-      home: const DeviceFrame(child: PhoneShell()),
+      home: DeviceFrame(child: body),
     );
   }
 }
