@@ -96,6 +96,12 @@ const List<AppMeta> kAllApps = [
     icon: Icons.cloud,
     color: Color(0xFF7DA8E0),
   ),
+  AppMeta(
+    id: 'reglages',
+    label: 'Réglages',
+    icon: Icons.settings,
+    color: Color(0xFF8E8E93),
+  ),
 ];
 
 AppMeta appById(String id) => kAllApps.firstWhere((a) => a.id == id);
