@@ -130,12 +130,21 @@ class _RomanceThreadViewState extends ConsumerState<RomanceThreadView> {
                     i > 0 ? inst.playedMessages[i - 1] : null;
                 final showDateSep =
                     prev == null || prev.day != m.day;
+                // Slide-in seulement sur le tout dernier message (pour
+                // donner l'impression d'une arrivée "live" sans
+                // animer rétroactivement tout l'historique).
+                final isLastMsg = i == inst.playedMessages.length - 1;
+                final bubble =
+                    _MessageBubble(msg: m, profile: profile);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     if (showDateSep)
                       _DateSep(day: m.day),
-                    _MessageBubble(msg: m, profile: profile),
+                    if (isLastMsg)
+                      _SlideInBubble(child: bubble, key: ValueKey(i))
+                    else
+                      bubble,
                   ],
                 );
               },
@@ -257,6 +266,46 @@ class _Header extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Slide-in vertical 250 ms + fade-in pour les nouveaux messages.
+class _SlideInBubble extends StatefulWidget {
+  const _SlideInBubble({super.key, required this.child});
+  final Widget child;
+  @override
+  State<_SlideInBubble> createState() => _SlideInBubbleState();
+}
+
+class _SlideInBubbleState extends State<_SlideInBubble>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 280),
+  )..forward();
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, child) {
+        final t = Curves.easeOutCubic.transform(_ctrl.value);
+        return Opacity(
+          opacity: t,
+          child: Transform.translate(
+            offset: Offset(0, (1 - t) * 14),
+            child: child,
+          ),
+        );
+      },
+      child: widget.child,
     );
   }
 }
@@ -487,34 +536,98 @@ class _MessageBubble extends StatelessWidget {
   }
 
   Widget _ghostTyping() {
-    return Container(
-      margin: const EdgeInsets.only(right: 60, top: 4, bottom: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF1F1F3),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            '· · ·',
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              color: Colors.grey.shade400,
-              letterSpacing: 2,
-            ),
+    return const _TypingGhostBubble();
+  }
+}
+
+/// Bulle "tape… puis efface" — 3 points qui pulse pendant 4 s puis fade-out.
+/// Représente visuellement l'anxiété d'un message qui n'arrive pas.
+class _TypingGhostBubble extends StatefulWidget {
+  const _TypingGhostBubble();
+  @override
+  State<_TypingGhostBubble> createState() => _TypingGhostBubbleState();
+}
+
+class _TypingGhostBubbleState extends State<_TypingGhostBubble>
+    with TickerProviderStateMixin {
+  late final AnimationController _pulse = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1200),
+  )..repeat();
+  late final AnimationController _fade = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 600),
+    value: 1.0,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    // Après 4s, on lance le fade-out (la bulle reste affichée mais grise)
+    Future.delayed(const Duration(milliseconds: 4000), () {
+      if (mounted) _fade.reverse();
+    });
+  }
+
+  @override
+  void dispose() {
+    _pulse.dispose();
+    _fade.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _fade,
+      builder: (context, _) => Opacity(
+        opacity: 0.35 + 0.65 * _fade.value,
+        child: Container(
+          margin: const EdgeInsets.only(right: 60, top: 4, bottom: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF1F1F3),
+            borderRadius: BorderRadius.circular(18),
           ),
-          const SizedBox(width: 8),
-          Text(
-            'tape… puis efface',
-            style: GoogleFonts.inter(
-              fontSize: 10,
-              fontStyle: FontStyle.italic,
-              color: Colors.grey.shade500,
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedBuilder(
+                animation: _pulse,
+                builder: (context, _) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(3, (i) {
+                      final v =
+                          ((_pulse.value * 3) - i).clamp(0, 1).toDouble();
+                      final scale = 0.6 + 0.4 * v;
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
+                        width: 6 * scale,
+                        height: 6 * scale,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade500,
+                          shape: BoxShape.circle,
+                        ),
+                      );
+                    }),
+                  );
+                },
+              ),
+              const SizedBox(width: 10),
+              Text(
+                _fade.value > 0.95
+                    ? 'tape…'
+                    : (_fade.value > 0.3 ? '…puis efface' : 'rien'),
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
