@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../models/romance.dart';
 import '../../../../providers/phone_state_provider.dart';
 import '../../../../providers/romance_threads_provider.dart';
+import 'romance_profile_visual.dart';
 import 'romance_thread_view.dart';
 
 /// Onglet « Messages » de Tinder — liste des threads de romance (arcs
@@ -128,27 +129,10 @@ class _ThreadTile extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
         child: Row(
           children: [
-            // Avatar gradient + emoji
+            // Avatar procédural bokeh
             Opacity(
               opacity: ended ? 0.4 : 1.0,
-              child: Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(profile.gradient.first),
-                      Color(profile.gradient.last),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: Text(profile.emoji,
-                    style: const TextStyle(fontSize: 22)),
-              ),
+              child: RomanceAvatar(profile: profile),
             ),
             const SizedBox(width: 12),
             Expanded(
