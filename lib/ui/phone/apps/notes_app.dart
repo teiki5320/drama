@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../data/notes_data.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../../../providers/relationships_provider.dart';
+import '../../../providers/romance_traces_provider.dart';
 import '../status_bar.dart';
 import 'carnet_view.dart';
 
@@ -21,14 +22,24 @@ class NotesApp extends ConsumerWidget {
     final mood = ref.watch(phoneStateProvider.select((s) => s.mood));
     final suspicionMaman =
         ref.watch(relationshipsProvider)['maman']?.suspicion ?? 0;
-    final notes = kNotes
+    final canonNotes = kNotes
         .where((n) =>
             n.day <= day &&
             (n.requiresSuspicionMaman == null ||
                 suspicionMaman >= n.requiresSuspicionMaman!))
-        .toList()
-        .reversed
         .toList();
+    // Notes générées par les arcs Tinder terminés (mapping endingId →
+    // NoteEntry). Filtrées par jour comme les canoniques.
+    final traceNotes = ref
+        .watch(romanceTracesNotesProvider)
+        .where((n) => n.day <= day)
+        .toList();
+    final notes = [...canonNotes, ...traceNotes]
+      ..sort((a, b) {
+        // Tri chronologique inverse : plus récent en haut
+        if (a.day != b.day) return b.day.compareTo(a.day);
+        return b.time.compareTo(a.time);
+      });
     // Fond papier crème en mood neutre+ ; refroidit / grisaille en bas mood.
     final bg = mood >= 5
         ? const Color(0xFFFBF7EF)
