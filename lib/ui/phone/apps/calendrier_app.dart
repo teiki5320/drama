@@ -16,10 +16,21 @@ class CalendrierApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
 
-    // Group by day, only futur visible from current day
+    // Révélation progressive : on n'affiche que les events des 14 jours
+    // à venir + les rendez-vous "urgent" plus lointains (deadline J45,
+    // épilogue J112). Ça évite le fouillis de 38 events d'un coup.
+    const horizonDays = 14;
     final Map<int, List<CalendarEvent>> byDay = {};
     for (final e in kEvents) {
-      byDay.putIfAbsent(e.day, () => []).add(e);
+      final delta = e.day - day;
+      // On inclut si dans l'horizon, OU urgent < 35 jours, OU c'est
+      // un événement strictement à J45 ou J112.
+      final inHorizon = delta >= 0 && delta <= horizonDays;
+      final urgentFar = e.urgent && delta >= 0 && delta <= 35;
+      final keystone = e.day == 45 || e.day == 112;
+      if (inHorizon || urgentFar || keystone) {
+        byDay.putIfAbsent(e.day, () => []).add(e);
+      }
     }
     final visible = byDay.entries
         .where((entry) => entry.key >= day)
