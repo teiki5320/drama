@@ -4,6 +4,7 @@ import '../data/day_events.dart';
 import '../data/episodes.dart';
 import '../models/episode.dart';
 import '../models/phone_state.dart';
+import 'messages_arcs_provider.dart';
 import 'romance_threads_provider.dart';
 import 'transition_provider.dart';
 
@@ -99,9 +100,9 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     _tickRomances();
   }
 
-  /// Avance les arcs romance Tinder au temps courant. Appelé chaque
-  /// fois que l'heure ou le beat change, pour que les arcs vivent en
-  /// background sans qu'on ait à ouvrir Tinder.
+  /// Avance les arcs romance Tinder + Messages arcs au temps courant.
+  /// Appelé chaque fois que l'heure ou le beat change pour que tout
+  /// vive en background sans qu'il faille ouvrir les apps.
   void _tickRomances() {
     try {
       _ref.read(romanceThreadsProvider.notifier).tickAll(
@@ -109,9 +110,28 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
             hour: state.hour,
             minute: state.minute,
           );
-    } catch (_) {
-      // Provider pas encore prêt à l'hydrate — silencieux.
-    }
+    } catch (_) {}
+    try {
+      _ref.read(messagesArcsProvider.notifier).tickAll(
+            day: state.currentDay,
+            hour: state.hour,
+            minute: state.minute,
+          );
+      // Spawn aléatoire — petit % à chaque tick pour démarrer un arc
+      _maybeSpawnMessagesArc();
+    } catch (_) {}
+  }
+
+  /// Tente un spawn d'arc Messages quand l'heure tourne. Petit % par tick
+  /// pour ne pas inonder le joueur.
+  void _maybeSpawnMessagesArc() {
+    // ~5 % de chance par tick
+    if (DateTime.now().millisecondsSinceEpoch % 20 != 0) return;
+    _ref.read(messagesArcsProvider.notifier).spawnRandom(
+          day: state.currentDay,
+          hour: state.hour,
+          minute: state.minute,
+        );
   }
 
   /// Si le beat courant attend une réponse SMS et que cette réponse

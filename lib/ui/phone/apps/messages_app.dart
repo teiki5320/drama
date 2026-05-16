@@ -5,8 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/contact_states.dart';
 import '../../../data/messages_data.dart';
+import '../../../providers/messages_arcs_provider.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../status_bar.dart';
+import 'messages/arc_thread_view.dart';
 import 'messages/thread_view.dart';
 
 /// App Messages — liste des conversations (style iMessage). Filtre par
@@ -19,7 +21,7 @@ class MessagesApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
 
-    // Threads triés : favoris d'abord, puis les autres par activité.
+    // Threads canoniques (Maman, Camille, Tristan, Madame Heng, spam…)
     final visible = kContacts.where((c) {
       final msgs = (kThreads[c.id] ?? []).where((m) => m.day <= day).toList();
       return msgs.isNotEmpty;
@@ -29,6 +31,12 @@ class MessagesApp extends ConsumerWidget {
         if (!a.isFavorite && b.isFavorite) return 1;
         return 0;
       });
+
+    // Arcs Messages dynamiques (voisine, médecin, ami d'enfance…)
+    final arcsState = ref.watch(messagesArcsProvider);
+    final arcInstances = arcsState.instances
+        .where((i) => i.playedMessages.isNotEmpty)
+        .toList();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -95,14 +103,18 @@ class MessagesApp extends ConsumerWidget {
               },
               child: ListView.separated(
                 physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: visible.length,
+                itemCount: visible.length + arcInstances.length,
                 separatorBuilder: (_, __) => Padding(
                   padding: const EdgeInsets.only(left: 78),
                   child: Container(height: 0.5, color: Colors.grey.shade300),
                 ),
                 itemBuilder: (context, i) {
-                  final c = visible[i];
-                  return _ThreadTile(contact: c, currentDay: day);
+                  if (i < visible.length) {
+                    final c = visible[i];
+                    return _ThreadTile(contact: c, currentDay: day);
+                  }
+                  final inst = arcInstances[i - visible.length];
+                  return _ArcThreadTile(instance: inst);
                 },
               ),
             ),
@@ -260,3 +272,133 @@ class _ThreadTile extends ConsumerWidget {
     );
   }
 }
+
+class _ArcThreadTile extends ConsumerWidget {
+  const _ArcThreadTile({required this.instance});
+  final dynamic instance; // MessagesArcInstance
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(messagesArcsProvider.notifier);
+    final template = notifier.templateOf(instance);
+    final contact = template.contact;
+    final last = instance.playedMessages.isNotEmpty
+        ? instance.playedMessages.last
+        : null;
+    final hasPending =
+        instance.pendingChoiceBeatIdx != null && !instance.ended;
+    final preview = _previewOf(last);
+
+    return InkWell(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => ArcThreadView(instanceId: instance.id),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Color(int.parse(
+                    '0xFF${contact.avatarTint.substring(1)}')),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(contact.emoji,
+                  style: const TextStyle(fontSize: 24)),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          contact.displayName,
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight:
+                                hasPending ? FontWeight.w800 : FontWeight.w600,
+                            color: instance.ended
+                                ? Colors.grey.shade500
+                                : const Color(0xFF1A1A1A),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (last != null)
+                        Text(
+                          last.time,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+                      const SizedBox(width: 2),
+                      Icon(Icons.chevron_right,
+                          color: Colors.grey.shade400, size: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      if (hasPending)
+                        Container(
+                          margin: const EdgeInsets.only(right: 6),
+                          width: 9,
+                          height: 9,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF007AFF),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      Expanded(
+                        child: Text(
+                          preview,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: hasPending
+                                ? const Color(0xFF1A1A1A)
+                                : Colors.grey.shade600,
+                            fontWeight: hasPending
+                                ? FontWeight.w500
+                                : FontWeight.normal,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _previewOf(dynamic m) {
+    if (m == null) return 'Nouvelle conversation';
+    final type = m.type.toString();
+    if (type.contains('text')) {
+      return (m.fromThem ? '' : 'Vous : ') + (m.text ?? '');
+    }
+    if (type.contains('voiceNote')) return '🎙 Mémo vocal';
+    if (type.contains('photoShared')) return '📷 Photo';
+    return '';
+  }
+}
+
