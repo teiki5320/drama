@@ -53,6 +53,13 @@ const kContacts = <MsgContact>[
     avatarPath: 'assets/photos/avatars/tristan.webp',
   ),
   MsgContact(
+    id: 'vincent_heng',
+    displayName: 'Vincent Heng',
+    emoji: '💼',
+    avatarTint: '#F7E0CA',
+    avatarPath: 'assets/photos/avatars/vincent.webp',
+  ),
+  MsgContact(
     id: 'madame_heng',
     displayName: 'Madame Heng',
     emoji: '🍵',
@@ -926,6 +933,183 @@ const Map<String, List<Msg>> kThreads = {
           'garder. Ou écraser.',
       time: '22:48',
       day: 14,
+    ),
+  ],
+  'vincent_heng': [
+    // ── J10 — Premier SMS post-emménagement
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tristan m\'a parlé de toi. Welcome aux Heng officiel ce soir. '
+          'Mets ce qui te plaît — pas ce qui plaît à ma mère.',
+      time: '14:48',
+      day: 10,
+    ),
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tu sais boire le vin. Bonne soirée.',
+      time: '22:48',
+      day: 10,
+    ),
+    // ── J12 — Closing
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Closing demain. Si Tristan dort 4h cette nuit c\'est normal.',
+      time: '20:18',
+      day: 12,
+    ),
+    // ── J14 — Post-Long Jing
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tu as géré le Long Jing. Respect. Ma mère ne dit jamais « ma fille » pour rien.',
+      time: '22:42',
+      day: 14,
+    ),
+    // ── J15 — Lendemain
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Ma mère t\'aime déjà plus que moi. C\'est ridicule.',
+      time: '09:14',
+      day: 15,
+    ),
+    // ── J18 — Vincent qui flirte légèrement
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tu fais quoi ce soir, sans Tristan ?',
+      time: '21:32',
+      day: 18,
+    ),
+    Msg(sender: 'moi', text: 'Pas grand-chose, Vincent.', time: '21:38', day: 18),
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Si tu changes d\'avis je suis au Park Hyatt jusqu\'à minuit.',
+      time: '21:39',
+      day: 18,
+    ),
+    // ── J19 — Excuses
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Pardon pour hier. J\'avais trop bu. Tristan n\'en saura rien.',
+      time: '23:48',
+      day: 19,
+    ),
+    // ── J22 — Acompte tombé
+    Msg(
+      sender: 'vincent_heng',
+      text: 'L\'acompte est tombé. Si tu veux investir un peu, je peux te conseiller. '
+          'On a un fonds family office qui prend les jeunes.',
+      time: '11:08',
+      day: 22,
+    ),
+    // ── J25 — Conseil
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Je t\'avais dit que ce serait dur. Tiens bon.',
+      time: '14:32',
+      day: 25,
+    ),
+    // ── J28 — Invitation
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tristan et moi on dîne ce soir, Saint-Honoré. Tu viens ?',
+      time: '19:08',
+      day: 28,
+    ),
+    // ── J30 — Post-gala
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tu étais magnifique au gala. Ma mère est en colère contre tout le monde sauf toi.',
+      time: '23:48',
+      day: 30,
+    ),
+    // ── J32 — Vol HK
+    Msg(
+      sender: 'vincent_heng',
+      text: 'T\'embarque à HK avec Tristan ? OK. Bon voyage.\n'
+          'Petit conseil : Repulse Bay au coucher, pas avant.',
+      time: '06:14',
+      day: 32,
+    ),
+    // ── J35 — Pendant HK
+    Msg(
+      sender: 'vincent_heng',
+      text: 'À HK. Tu rentres quand ?',
+      time: '11:48',
+      day: 35,
+    ),
+    // ── J38 — Tristan ivre Lan Kwai Fong
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tristan est ivre au Lan Kwai Fong. Notre chauffeur vient le chercher. '
+          'Reste à l\'hôtel.',
+      time: '03:14',
+      day: 38,
+    ),
+    Msg(sender: 'moi', text: 'Tu es à HK ?', time: '03:18', day: 38),
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Non. Je connais nos chauffeurs. J\'ai géré à distance.',
+      time: '03:20',
+      day: 38,
+    ),
+    // ── J40 — Retour
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Vol retour aujourd\'hui je crois. Vous vous parlez peu, Tristan et toi ?',
+      time: '20:48',
+      day: 40,
+    ),
+    // ── J45 — Contrat bientôt fini
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Le contrat se termine bientôt. Tu réfléchis à la suite ? '
+          'Ma mère a une idée. Pas la mienne.',
+      time: '11:08',
+      day: 45,
+    ),
+    // ── J52 — Fin contrat
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Si tu pars de l\'appart, tu peux le dire à ma mère ? '
+          'Tristan ne sait pas comment.',
+      time: '18:42',
+      day: 52,
+    ),
+    // ── J60 — Ma mère parle encore
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Ma mère parle encore de toi. Une fois par semaine. Toujours en disant « ma fille ».',
+      time: '22:18',
+      day: 60,
+    ),
+    // ── J78 — Tante Mei Fujian
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tante Mei t\'invite à Fujian. Tu y vas avec ta mère ? '
+          'J\'ai un cousin à Xiamen qui peut vous chercher à l\'aéroport. Dis le mot.',
+      time: '14:48',
+      day: 78,
+    ),
+    // ── J95 — Tristan a perdu le contrôle
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tristan a perdu le contrôle. Tu dois savoir. Il t\'a écrit ?',
+      time: '21:48',
+      day: 95,
+    ),
+    Msg(sender: 'moi', text: '« Tu reviens ? »', time: '21:54', day: 95),
+    Msg(
+      sender: 'vincent_heng',
+      text: 'C\'est tout ce qu\'il sait dire en français.',
+      time: '21:55',
+      day: 95,
+    ),
+    // ── J110 — Avant choix final
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Tu choisis demain. Tu sais ce que je pense — pas de Paris pour toi.\n'
+          'Mais je me trompe peut-être.',
+      time: '13:08',
+      day: 110,
     ),
   ],
   'madame_heng': [
