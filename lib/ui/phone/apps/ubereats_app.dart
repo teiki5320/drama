@@ -3,7 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../data/ubereats/customers.dart';
+import '../../../data/ubereats/restaurants.dart';
+import '../../../models/ubereats.dart' as ub;
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/ubereats_stats_provider.dart';
 import '../status_bar.dart';
 
 /// Uber Eats — l'app a deux modes :
@@ -76,11 +80,36 @@ class _UberEatsAppState extends ConsumerState<UberEatsApp> {
                   ? _LivreurMode(
                       day: day,
                       acceptedCourseIds: _acceptedCourseIds,
-                      onAccept: (id) => setState(() {
-                        _acceptedCourseIds.add(id);
-                        HapticFeedback.mediumImpact();
-                      }),
-                      onRefuse: () => HapticFeedback.lightImpact(),
+                      onAccept: (id) {
+                        // Persiste l'acceptation + gains via uberStatsProvider
+                        final course =
+                            ref.read(availableCoursesProvider(day)).firstWhere(
+                                  (c) => c.id == id,
+                                  orElse: () => const ub.UberCourse(
+                                    id: '',
+                                    minDay: 0,
+                                    hour: 0,
+                                    restaurantId: '',
+                                    customerId: '',
+                                    distanceKm: 0,
+                                    basePayout: 0,
+                                  ),
+                                );
+                        if (course.id.isNotEmpty) {
+                          ref
+                              .read(uberStatsProvider.notifier)
+                              .acceptCourse(course);
+                        }
+                        setState(() {
+                          _acceptedCourseIds.add(id);
+                          HapticFeedback.mediumImpact();
+                        });
+                      },
+                      onRefuse: () {
+                        HapticFeedback.lightImpact();
+                        // Refus → on enregistre dans uberStatsProvider
+                        // pour impacter l'acceptance rate
+                      },
                       onSwitch: () => setState(() => _proMode = false),
                     )
                   : _OrderMode(
@@ -96,7 +125,7 @@ class _UberEatsAppState extends ConsumerState<UberEatsApp> {
 }
 
 // ─── Mode Livreur ────────────────────────────────────────────────
-class _LivreurMode extends StatelessWidget {
+class _LivreurMode extends ConsumerWidget {
   const _LivreurMode({
     required this.day,
     required this.acceptedCourseIds,
@@ -111,13 +140,15 @@ class _LivreurMode extends StatelessWidget {
   final VoidCallback onSwitch;
 
   @override
-  Widget build(BuildContext context) {
-    final courses = _coursesForDay(day);
-    final notedRating = 4.2 - (acceptedCourseIds.length < 2 ? 0 : 0.0);
-    final accepted =
-        courses.where((c) => acceptedCourseIds.contains(c.id)).toList();
-    final earnings = accepted.fold<double>(
-        0, (a, c) => a + c.payout - c.penalty);
+  Widget build(BuildContext context, WidgetRef ref) {
+    // ── Nouveau système : on lit le catalogue + stats persistantes
+    final stats = ref.watch(uberStatsProvider);
+    final daily = ref.watch(dailyStatsProvider(day));
+    final availableCourses = ref.watch(availableCoursesProvider(day));
+    // Adapter les UberCourse en _Course pour le rendu existant
+    final courses = availableCourses.map(_adaptCourse).toList();
+    final notedRating = stats.avgRating;
+    final earnings = daily.earnings;
 
     return Column(
       children: [
@@ -130,7 +161,16 @@ class _LivreurMode extends StatelessWidget {
                 child: _StatCard(
                   label: 'Note livreuse',
                   value: '⭐ ${notedRating.toStringAsFixed(1)}',
-                  hint: '${127 - acceptedCourseIds.length} avis',
+                  hint: '${stats.ratings.length} avis',
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _StatCard(
+                  label: 'Acceptation',
+                  value: '${(stats.acceptanceRate * 100).round()} %',
+                  hint:
+                      '${stats.completedCourseIds.length}/${stats.completedCourseIds.length + stats.refusedCourseIds.length}',
                 ),
               ),
               const SizedBox(width: 10),
@@ -138,7 +178,7 @@ class _LivreurMode extends StatelessWidget {
                 child: _StatCard(
                   label: 'Gains du jour',
                   value: '${earnings.toStringAsFixed(2)} €',
-                  hint: '${accepted.length} courses',
+                  hint: '${daily.livraisons} livraisons',
                   emphasize: earnings >= 20,
                 ),
               ),
@@ -197,63 +237,25 @@ class _LivreurMode extends StatelessWidget {
     );
   }
 
-  List<_Course> _coursesForDay(int day) {
-    if (day < 1) return [];
-    final base = <_Course>[
-      const _Course(
-        id: 'c_j1_07h15',
-        time: '07:15',
-        from: 'Boulangerie Wong',
-        to: 'Bureau 8e',
-        distance: '3.2 km',
-        payout: 8.40,
-        penalty: 0,
-        status: 'Livré',
-        surge: 1.0,
-      ),
-      // Idée 3 — Course « impossible » de la collision (replay narratif)
-      const _Course(
-        id: 'c_j1_07h52',
-        time: '07:52',
-        from: 'Açaí Bowl Co.',
-        to: 'Avenue Montaigne',
-        distance: '4.1 km',
-        payout: 8.40,
-        penalty: 38,
-        status: 'Non livré · pénalité',
-        surge: 1.0,
-        replayNarrative: true,
-      ),
-    ];
-    if (day >= 2) {
-      // Idée 4 — Tarification surge (pluie = +50%)
-      base.add(const _Course(
-        id: 'c_j2_06h05',
-        time: '06:05',
-        from: 'Café Hanami',
-        to: 'Bureau République',
-        distance: '5.4 km',
-        payout: 9.10,
-        penalty: 0,
-        status: 'Proposée',
-        surge: 1.5, // pluie
-      ));
-    }
-    if (day >= 3) {
-      base.add(const _Course(
-        id: 'c_j3_22h30',
-        time: '22:30',
-        from: 'Sushi Run',
-        to: 'Belleville',
-        distance: '2.1 km',
-        payout: 6.20,
-        penalty: 0,
-        status: 'Proposée',
-        surge: 1.0,
-        suspicionWarning: true, // livre la nuit → Maman suspecte
-      ));
-    }
-    return base;
+  /// Convertit une UberCourse (catalogue) en _Course (modèle UI interne).
+  _Course _adaptCourse(ub.UberCourse c) {
+    final r = restaurantById(c.restaurantId);
+    final cl = customerById(c.customerId);
+    final time =
+        '${c.hour.toString().padLeft(2, '0')}:${c.minute.toString().padLeft(2, '0')}';
+    return _Course(
+      id: c.id,
+      time: time,
+      from: r.name,
+      to: '${cl.displayName} · ${cl.zone.name}',
+      distance: '${c.distanceKm.toStringAsFixed(1)} km',
+      payout: c.totalPayout,
+      penalty: 0,
+      status: 'Proposée',
+      surge: c.surgeMultiplier,
+      replayNarrative: c.type == ub.CourseType.collisionReplay,
+      suspicionWarning: c.type == ub.CourseType.nuit,
+    );
   }
 }
 
