@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/phone_apps.dart';
 import '../../providers/phone_state_provider.dart';
+import '../../providers/romance_threads_provider.dart';
 
 /// Icône d'app iOS-style : carré arrondi coloré + nom dessous + badge
 /// rouge optionnel. Tap → ouvre l'app via le PhoneStateNotifier.
@@ -56,9 +57,13 @@ class _AppIconState extends ConsumerState<AppIcon>
 
   @override
   Widget build(BuildContext context) {
-    final badgeCount = ref.watch(
+    var badgeCount = ref.watch(
       phoneStateProvider.select((s) => s.badges[widget.meta.id] ?? 0),
     );
+    // Cas spécial Tinder : on ajoute les arcs romance en attente.
+    if (widget.meta.id == 'tinder') {
+      badgeCount += ref.watch(romanceUnreadCountProvider);
+    }
     // Détection : badge ↑ → pulse + scale-in
     if (badgeCount > _lastBadge) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
