@@ -26,6 +26,12 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
   /// Recharge l'état depuis shared_preferences au démarrage.
   void hydrate(PhoneState s) => state = s;
 
+  /// Force la valeur de mood (clampée 0-10). Utilisé par les arcs de
+  /// romance Tinder pour appliquer un delta après un choix Shen.
+  void setMood(int newMood) {
+    state = state.copyWith(mood: newMood.clamp(0, 10));
+  }
+
   /// Avance l'heure de `minutes`. Roule sur 24h. Déclenche les
   /// événements DayEvent qui tombent dans l'intervalle franchi.
   void advanceTime(int minutes) {
