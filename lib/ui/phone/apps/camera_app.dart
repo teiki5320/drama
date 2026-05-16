@@ -29,6 +29,17 @@ class _CameraAppState extends ConsumerState<CameraApp>
   );
 
   UserPhoto? _lastTaken;
+  String _mode = 'photo';
+  String _filter = 'naturel';
+
+  static const _modes = ['photo', 'portrait', 'rafale', 'time-lapse', 'nuit'];
+  static const _filters = {
+    'naturel': [0xFFCFCAB5, 0xFF6B6555],
+    'vivid': [0xFFE89B7F, 0xFFFCC9A1],
+    'mono': [0xFF6B7385, 0xFFB8C2CC],
+    'noir': [0xFF1A1A1A, 0xFF3A3A3A],
+    'vintage': [0xFFD7A879, 0xFF8C6F47],
+  };
 
   @override
   void dispose() {
@@ -160,9 +171,96 @@ class _CameraAppState extends ConsumerState<CameraApp>
               ),
             ),
           ),
+          // ── Filtres horizontal scroll ──
+          SizedBox(
+            height: 50,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              children: _filters.entries.map((e) {
+                final active = _filter == e.key;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: GestureDetector(
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      setState(() => _filter = e.key);
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(e.value.first),
+                            Color(e.value.last),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: active ? Colors.white : Colors.transparent,
+                          width: 2,
+                        ),
+                      ),
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 2),
+                        child: Text(
+                          e.key.substring(0, 3),
+                          style: GoogleFonts.inter(
+                            fontSize: 8,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          // ── Modes pill row ──
+          SizedBox(
+            height: 32,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              children: _modes.map((m) {
+                final active = _mode == m;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 14),
+                  child: GestureDetector(
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      setState(() => _mode = m);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
+                      child: Text(
+                        m.toUpperCase(),
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.6,
+                          color: active
+                              ? const Color(0xFFFFCC00)
+                              : Colors.white.withValues(alpha: 0.6),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
           // Vignette dernière photo + déclencheur + compteur
           Padding(
-            padding: const EdgeInsets.only(bottom: 30, top: 18),
+            padding: const EdgeInsets.only(bottom: 24, top: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
