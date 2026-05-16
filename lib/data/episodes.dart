@@ -183,34 +183,387 @@ const kEpisodes = <Episode>[
     ],
   ),
 
-  // ── Épisodes 2-5 — PAYANTS, scaffolds à écrire ───────────────────
+  // ── Épisode 2 — La routine du mensonge — J15 → J30 ─────────────
   Episode(
     id: 'routine_du_mensonge',
     number: 2,
     title: 'La routine du mensonge',
     subtitle: 'J15 → J30. Shen tient deux vies. Maman commence à douter.',
-    beats: [],
+    beats: [
+      Beat(
+        idx: 0,
+        day: 15,
+        hour: 8,
+        minute: 12,
+        label: 'Lendemain Long Jing — message Madame Heng',
+        transition: BeatTransition(
+          timestamp: '08:12',
+          body:
+              'Le téléphone vibre.\n'
+              'Madame Heng. Huit heures douze.\n'
+              '« Vous avez identifié la deuxième récolte. »',
+          coda: '(« Ma fille » n\'était pas une erreur.)',
+        ),
+      ),
+      Beat(
+        idx: 1,
+        day: 16,
+        hour: 9,
+        minute: 30,
+        label: 'Dialyse Maman — silence dans la voiture',
+      ),
+      Beat(
+        idx: 2,
+        day: 18,
+        hour: 21,
+        minute: 14,
+        label: 'Vincent débarque sans prévenir',
+        transition: BeatTransition(
+          timestamp: '21:14',
+          body:
+              'Il ouvre la porte avec sa clé.\n'
+              'Il rit. Il sent le whisky.\n'
+              'Il te demande si tu sais tenir un secret.',
+        ),
+      ),
+      Beat(
+        idx: 3,
+        day: 20,
+        hour: 20,
+        minute: 0,
+        label: 'Soirée mère Tristan — Cercle Interallié',
+        transition: BeatTransition(
+          timestamp: '20:00',
+          body:
+              'Trente personnes. Trente noms à retenir.\n'
+              'Madame Heng te présente comme « la jeune Marchand ».\n'
+              'Pas « ma fille ». Pas devant ces gens.',
+        ),
+      ),
+      Beat(
+        idx: 4,
+        day: 22,
+        hour: 10,
+        minute: 0,
+        label: '2e acompte Heng — 10 000 €',
+        transition: BeatTransition(
+          timestamp: '10:00',
+          body:
+              'Notification Banque : virement +10 000 €.\n'
+              'C\'est la moitié.\n'
+              'Tu n\'as plus besoin de mentir longtemps.',
+          coda: '(Sauf que tu mens à toi-même.)',
+        ),
+      ),
+      Beat(
+        idx: 5,
+        day: 23,
+        hour: 19,
+        minute: 32,
+        label: 'Maman trouve une boîte de Long Jing chez Shen',
+        requiresChoice: 'maman_long_jing_j23',
+      ),
+      Beat(
+        idx: 6,
+        day: 25,
+        hour: 9,
+        minute: 30,
+        label: 'Dialyse Maman — Dr Aubin attire Shen à part',
+      ),
+      Beat(
+        idx: 7,
+        day: 26,
+        hour: 22,
+        minute: 14,
+        label: 'Camille — « tu m\'as pas appelée depuis 8 jours »',
+        requiresChoice: 'camille_distance_j26',
+      ),
+      Beat(
+        idx: 8,
+        day: 28,
+        hour: 15,
+        minute: 0,
+        label: 'Dr Aubin — bilan mi-parcours',
+        transition: BeatTransition(
+          timestamp: '15:00',
+          body:
+              'Le bilan est meilleur que prévu.\n'
+              'Le Dr Aubin dit : « grâce à ce que vous faites. »\n'
+              'Il ne sait pas quoi exactement.',
+        ),
+      ),
+      Beat(
+        idx: 9,
+        day: 30,
+        hour: 19,
+        minute: 30,
+        label: 'Gala Heng International — Tristan annonce HK',
+        transition: BeatTransition(
+          timestamp: '19:30',
+          body:
+              'Hôtel particulier. Cent invités. Champagne.\n'
+              'Tristan se penche à ton oreille :\n'
+              '« Tu pars avec moi à Hong Kong jeudi. »',
+          coda: '(Tu n\'as pas le passeport sur toi.)',
+        ),
+      ),
+    ],
   ),
+  // ── Épisode 3 — Hong Kong — J30 → J50 ─────────────────────────
   Episode(
     id: 'hong_kong',
     number: 3,
     title: 'Hong Kong',
     subtitle: 'J30 → J50. Le voyage. Le secret remonte à la surface.',
-    beats: [],
+    beats: [
+      Beat(
+        idx: 0,
+        day: 32,
+        hour: 14,
+        minute: 0,
+        label: 'Vol Paris → Hong Kong',
+        transition: BeatTransition(
+          timestamp: '14:00',
+          body:
+              'Business class. Tu n\'as jamais vu autant d\'espace dans un avion.\n'
+              'Tristan dort tout le vol. Tu regardes par le hublot.\n'
+              'Tu envoies un SMS à Maman : « Stage à Lyon. Pas de réseau. »',
+          coda: '(Ton premier vol vers le pays de ton père.)',
+        ),
+      ),
+      Beat(
+        idx: 1,
+        day: 33,
+        hour: 8,
+        minute: 30,
+        label: 'Atterrissage HK — chauffeur Heng',
+      ),
+      Beat(
+        idx: 2,
+        day: 33,
+        hour: 20,
+        minute: 0,
+        label: 'Dîner Heng Causeway Bay — oncle Vincent senior',
+        transition: BeatTransition(
+          timestamp: '20:00',
+          body:
+              'Vingt étages au-dessus de la baie.\n'
+              'L\'oncle te regarde : « Tu parles mandarin ? »\n'
+              'Tu réponds en mandarin. Silence à table.',
+        ),
+      ),
+      Beat(
+        idx: 3,
+        day: 35,
+        hour: 11,
+        minute: 0,
+        label: 'Tante Mei te repère via WhatsApp Heng',
+        requiresChoice: 'mei_decouvre_j35',
+      ),
+      Beat(
+        idx: 4,
+        day: 36,
+        hour: 10,
+        minute: 0,
+        label: '3e acompte Heng — 10 000 €',
+      ),
+      Beat(
+        idx: 5,
+        day: 37,
+        hour: 21,
+        minute: 14,
+        label: 'Repulse Bay — Tristan parle de son grand-père',
+        transition: BeatTransition(
+          timestamp: '21:14',
+          body:
+              'Tu marches sur la plage. Lui n\'a jamais marché ici à pied.\n'
+              'Il dit : « Mon grand-père a été enterré ici. »\n'
+              'Tu dis : « Mon père aussi est de Fujian. »',
+          coda: '(C\'est la première fois que tu lui parles de Papa.)',
+        ),
+      ),
+      Beat(
+        idx: 6,
+        day: 38,
+        hour: 23,
+        minute: 32,
+        label: 'Lan Kwai Fong — Tristan ivre dit ton vrai prénom',
+      ),
+      Beat(
+        idx: 7,
+        day: 39,
+        hour: 7,
+        minute: 14,
+        label: 'Maman appelle 4h du matin Paris — Tante Mei a parlé',
+        requiresChoice: 'maman_decouvre_j39',
+      ),
+      Beat(
+        idx: 8,
+        day: 40,
+        hour: 8,
+        minute: 0,
+        label: 'Vol HKG → Paris — Tristan dort, toi non',
+      ),
+    ],
   ),
+  // ── Épisode 4 — Retour — J40 → J80 ─────────────────────────────
   Episode(
     id: 'retour',
     number: 4,
     title: 'Retour',
-    subtitle: 'J50 → J80. Paris, Maman en crise, Camille à distance.',
-    beats: [],
+    subtitle: 'J40 → J80. Paris, Maman en crise, Camille à distance.',
+    beats: [
+      Beat(
+        idx: 0,
+        day: 41,
+        hour: 9,
+        minute: 14,
+        label: 'CDG arrivée — Maman l\'attend',
+        transition: BeatTransition(
+          timestamp: '09:14',
+          body:
+              'Elle est là, dans le hall des arrivées.\n'
+              'Elle ne dit pas un mot. Elle te tend une enveloppe.\n'
+              'Le nom de Tristan dessus.',
+          coda: '(Tante Mei a tout dit.)',
+        ),
+      ),
+      Beat(
+        idx: 1,
+        day: 42,
+        hour: 11,
+        minute: 14,
+        label: 'Confrontation Maman — silence pendant 4h',
+        requiresChoice: 'maman_confrontation_j42',
+      ),
+      Beat(
+        idx: 2,
+        day: 44,
+        hour: 20,
+        minute: 0,
+        label: 'Camille apporte du café — pas de jugement',
+      ),
+      Beat(
+        idx: 3,
+        day: 45,
+        hour: 10,
+        minute: 0,
+        label: 'J45 — Dr Aubin décision finale',
+        transition: BeatTransition(
+          timestamp: '10:00',
+          body:
+              'Le traitement commence aujourd\'hui.\n'
+              'L\'argent est là. Le compte est plein.\n'
+              'Personne dans cette salle ne sait comment.',
+          coda: '(Tu as gagné. Tu n\'as rien gagné.)',
+        ),
+      ),
+      Beat(
+        idx: 4,
+        day: 52,
+        hour: 18,
+        minute: 8,
+        label: 'Tristan annonce la fin du contrat',
+        requiresChoice: 'tristan_fin_contrat_j52',
+      ),
+      Beat(
+        idx: 5,
+        day: 60,
+        hour: 20,
+        minute: 0,
+        label: 'Anniversaire Camille — Shen est seule',
+      ),
+      Beat(
+        idx: 6,
+        day: 70,
+        hour: 22,
+        minute: 14,
+        label: 'Bilan Maman — meilleur que prévu',
+      ),
+      Beat(
+        idx: 7,
+        day: 78,
+        hour: 19,
+        minute: 32,
+        label: 'Tante Mei rappelle — invitation Fujian',
+        requiresChoice: 'mei_invitation_j78',
+      ),
+    ],
   ),
+  // ── Épisode 5 — Fujian — J80 → J112 ────────────────────────────
   Episode(
     id: 'fujian',
     number: 5,
     title: 'Fujian',
     subtitle: 'J80 → J112. Le parc. L\'épilogue.',
-    beats: [],
+    beats: [
+      Beat(
+        idx: 0,
+        day: 80,
+        hour: 8,
+        minute: 0,
+        label: 'Vol Paris → Xiamen avec Maman',
+        transition: BeatTransition(
+          timestamp: '08:00',
+          body:
+              'Première fois que Maman remonte dans un avion.\n'
+              'Première fois qu\'elle revient depuis 1998.\n'
+              'Elle te tient la main au décollage.',
+        ),
+      ),
+      Beat(
+        idx: 1,
+        day: 82,
+        hour: 14,
+        minute: 0,
+        label: 'Village ancestral — Tante Mei a 73 ans',
+      ),
+      Beat(
+        idx: 2,
+        day: 88,
+        hour: 17,
+        minute: 0,
+        label: 'Le parc — la promesse de Papa',
+        transition: BeatTransition(
+          timestamp: '17:00',
+          body:
+              'Maman te montre le parc.\n'
+              'C\'est là que ton père lui a dit qu\'il partait à Paris.\n'
+              'Tu n\'as jamais entendu cette histoire.',
+        ),
+      ),
+      Beat(
+        idx: 3,
+        day: 95,
+        hour: 11,
+        minute: 0,
+        label: 'Tristan envoie un SMS — « tu reviens ? »',
+        requiresChoice: 'tristan_revient_j95',
+      ),
+      Beat(
+        idx: 4,
+        day: 105,
+        hour: 19,
+        minute: 32,
+        label: 'Camille — « ta place est où ? »',
+      ),
+      Beat(
+        idx: 5,
+        day: 112,
+        hour: 7,
+        minute: 14,
+        label: 'Épilogue — choix final',
+        requiresChoice: 'epilogue_j112',
+        transition: BeatTransition(
+          timestamp: '07:14',
+          body:
+              'Le bus passe à 11h pour Xiamen.\n'
+              'L\'avion décolle à 17h pour Paris.\n'
+              'Tu choisis ce que tu emportes.',
+          coda: '(L\'écho dans le parc dit : « ma fille ».)',
+        ),
+      ),
+    ],
   ),
 ];
 
