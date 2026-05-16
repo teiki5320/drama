@@ -16,6 +16,7 @@ import 'apps/instagram_app.dart';
 import 'apps/messages_app.dart';
 import 'apps/notes_app.dart';
 import 'apps/photos_app.dart';
+import 'apps/plans_app.dart';
 import 'apps/reglages_app.dart';
 import 'apps/shell_app.dart';
 import 'apps/telephone_app.dart';
@@ -196,6 +197,9 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         break;
       case 'camera':
         app = const CameraApp();
+        break;
+      case 'maps':
+        app = const PlansApp();
         break;
       default:
         return ShellApp(meta: appById(id));

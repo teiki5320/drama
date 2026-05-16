@@ -52,7 +52,7 @@ class PhoneState {
     this.unlockedApps = const {
       'messages', 'telephone', 'whatsapp', 'instagram', 'banque',
       'ubereats', 'photos', 'notes', 'calendrier', 'tinder', 'cloud',
-      'reglages', 'appstore', 'camera',
+      'reglages', 'appstore', 'camera', 'maps',
     },
     this.currentEpisodeId = 'avant_la_lumiere',
     this.currentBeatIdx = 0,
