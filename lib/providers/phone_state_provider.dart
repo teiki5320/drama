@@ -4,6 +4,7 @@ import '../data/day_events.dart';
 import '../data/episodes.dart';
 import '../models/episode.dart';
 import '../models/phone_state.dart';
+import 'romance_threads_provider.dart';
 import 'transition_provider.dart';
 
 /// Singleton Riverpod du PhoneState.
@@ -55,6 +56,7 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       toHour: h,
       toMinute: m,
     );
+    _tickRomances();
   }
 
   /// Passe au beat suivant — c'est ainsi qu'on progresse dans le scénario.
@@ -94,6 +96,22 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       toHour: beat.hour,
       toMinute: beat.minute,
     );
+    _tickRomances();
+  }
+
+  /// Avance les arcs romance Tinder au temps courant. Appelé chaque
+  /// fois que l'heure ou le beat change, pour que les arcs vivent en
+  /// background sans qu'on ait à ouvrir Tinder.
+  void _tickRomances() {
+    try {
+      _ref.read(romanceThreadsProvider.notifier).tickAll(
+            day: state.currentDay,
+            hour: state.hour,
+            minute: state.minute,
+          );
+    } catch (_) {
+      // Provider pas encore prêt à l'hydrate — silencieux.
+    }
   }
 
   /// Si le beat courant attend une réponse SMS et que cette réponse

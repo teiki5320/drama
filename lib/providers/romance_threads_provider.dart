@@ -421,3 +421,12 @@ final romanceThreadsProvider =
     return notifier;
   },
 );
+
+/// Provider dérivé : nombre d'arcs en attente de réponse Shen. Utilisé
+/// pour le badge unread sur l'icône Tinder du home.
+final romanceUnreadCountProvider = Provider<int>((ref) {
+  final state = ref.watch(romanceThreadsProvider);
+  return state.active
+      .where((i) => i.pendingChoiceBeatIdx != null)
+      .length;
+});
