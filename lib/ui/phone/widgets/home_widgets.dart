@@ -216,46 +216,99 @@ class CalendarWidget extends ConsumerWidget {
 /// suivant. La progression est aussi automatique quand Shen répond au
 /// SMS-clé du beat courant ; ce widget sert quand il n'y a pas de SMS
 /// gate, ou pour reprendre la main si le joueur veut presser.
-class TimeSkipWidget extends ConsumerWidget {
+class TimeSkipWidget extends ConsumerStatefulWidget {
   const TimeSkipWidget({super.key});
+  @override
+  ConsumerState<TimeSkipWidget> createState() => _TimeSkipWidgetState();
+}
+
+class _TimeSkipWidgetState extends ConsumerState<TimeSkipWidget>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _pulse = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1800),
+  )..repeat(reverse: true);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.selectionClick();
-        ref.read(phoneStateProvider.notifier).advanceToNextBeat();
-      },
-      child: _GlassCard(
-        child: Row(
-          children: [
-            const Icon(Icons.fast_forward, color: Colors.white, size: 24),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Prochain moment',
-                    style: GoogleFonts.inter(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    'Saute au beat suivant',
-                    style: GoogleFonts.inter(
-                      fontSize: 10,
-                      color: Colors.white.withValues(alpha: 0.7),
-                    ),
-                  ),
-                ],
-              ),
+  void dispose() {
+    _pulse.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _pulse,
+      builder: (context, _) {
+        final glow = 0.20 + 0.18 * _pulse.value;
+        final borderGlow = 0.30 + 0.40 * _pulse.value;
+        return GestureDetector(
+          onTap: () {
+            HapticFeedback.mediumImpact();
+            ref.read(phoneStateProvider.notifier).advanceToNextBeat();
+          },
+          child: Container(
+            height: 120,
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: const Color(0xFFD97757).withValues(alpha: glow),
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                  color: const Color(0xFFD97757).withValues(alpha: borderGlow),
+                  width: 1.5),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFD97757).withValues(alpha: 0.25 * _pulse.value),
+                  blurRadius: 16,
+                  spreadRadius: 1,
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+            child: Row(
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.18),
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.fast_forward,
+                      color: Colors.white, size: 22),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Avancer',
+                        style: GoogleFonts.inter(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Saute au prochain moment',
+                        style: GoogleFonts.inter(
+                          fontSize: 10,
+                          color: Colors.white.withValues(alpha: 0.85),
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
