@@ -108,8 +108,9 @@ class _HomeContent extends ConsumerWidget {
     return Column(
       children: [
         PhoneStatusBar(foreground: palette.statusBarFg),
+        const DeadlineBanner(),
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
