@@ -7,8 +7,16 @@
 library;
 
 import '../models/messages_arc.dart';
+import 'messages_arcs/dr_aubin.dart';
+import 'messages_arcs/faux_sav.dart';
+import 'messages_arcs/karim_wrong.dart';
+import 'messages_arcs/sarah_collegue.dart';
 import 'messages_arcs/voisine.dart';
 
 const kMessagesArcs = <MessagesArcTemplate>[
   voisineTemplate,
+  drAubinTemplate,
+  karimTemplate,
+  fauxSavTemplate,
+  sarahTemplate,
 ];
