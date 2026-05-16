@@ -116,6 +116,7 @@ enum MsgStatus { sent, delivered, read }
 /// liste complète des messages (Shen et l'autre) ordonnée chronologiquement.
 const Map<String, List<Msg>> kThreads = {
   'maman': [
+    // ── J1 — La pluie, le vélo, le petit déj ───────────────────
     Msg(
       sender: 'maman',
       text: 'Tu pars livrer dans combien de temps ?',
@@ -159,7 +160,102 @@ const Map<String, List<Msg>> kThreads = {
       day: 1,
       beatId: 'maman_couvre_toi_j1',
     ),
-    // J5 — Dimanche. Maman tente une perche.
+    Msg(sender: 'maman', text: 'Tu as déjeuné ?', time: '12:34', day: 1),
+    Msg(sender: 'moi', text: 'Oui un bowl.', time: '12:35', day: 1),
+    Msg(sender: 'maman', text: 'Bowl. Le café au coin de la rue ?', time: '12:35', day: 1),
+    Msg(sender: 'moi', text: 'Oui.', time: '12:36', day: 1),
+    Msg(sender: 'maman', text: 'Pas trop de sel.', time: '12:36', day: 1),
+    Msg(
+      sender: 'maman',
+      text: 'J\'ai trouvé l\'écharpe rose dans la commode. '
+          'Elle te va mieux que celle que tu portes.',
+      time: '15:48',
+      day: 1,
+    ),
+    Msg(sender: 'maman', text: 'Tu rentres ce soir ?', time: '18:22', day: 1),
+    Msg(
+      sender: 'maman',
+      text: 'Le riz est dans le rice cooker, garde-le au chaud.',
+      time: '18:42',
+      day: 1,
+    ),
+    Msg(sender: 'maman', text: 'Bonne nuit ma fille.', time: '22:12', day: 1),
+
+    // ── J2 — Tenon, le matin glacé ─────────────────────────────
+    Msg(sender: 'maman', text: 'Tu as bien dormi ?', time: '06:32', day: 2),
+    Msg(sender: 'maman', text: 'Couvre-toi, il fait 7 degrés.', time: '07:18', day: 2),
+    Msg(sender: 'maman', text: 'Tu manges où aujourd\'hui ?', time: '12:14', day: 2),
+    Msg(
+      sender: 'maman',
+      text: 'J\'ai parlé à Tante Mei. Elle dit bonjour. '
+          'Elle dit que les pluies se calment à Fujian.',
+      time: '14:32',
+      day: 2,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'Tu me ramènes du gingembre frais ? J\'en trouve plus à l\'épicerie.',
+      time: '18:42',
+      day: 2,
+    ),
+    Msg(sender: 'moi', text: 'Oui demain.', time: '18:45', day: 2),
+    Msg(
+      sender: 'maman',
+      text:
+          'Vivaldi à la radio. Ils ont passé le concerto que ton père aimait. '
+          'Tu te souviens ?',
+      time: '21:14',
+      day: 2,
+    ),
+
+    // ── J3 — Crédit refusé. Compteur démarre. ──────────────────
+    Msg(sender: 'maman', text: 'Bonne journée ma fille.', time: '07:14', day: 3),
+    Msg(sender: 'maman', text: 'Pas trop de café.', time: '12:18', day: 3),
+    Msg(
+      sender: 'maman',
+      text: 'J\'ai cherché une recette pour les niangao. Tu en veux ce dimanche ?',
+      time: '16:42',
+      day: 3,
+    ),
+    Msg(sender: 'maman', text: 'Tu manges où ?', time: '19:18', day: 3),
+    Msg(
+      sender: 'maman',
+      text: 'Ce silence me dérange. Tu vas bien ?',
+      time: '22:08',
+      day: 3,
+    ),
+    Msg(sender: 'moi', text: 'Oui Maman.', time: '22:14', day: 3),
+    Msg(sender: 'maman', text: 'D\'accord. Repose-toi.', time: '22:16', day: 3),
+
+    // ── J4 — Le numéro masqué a appelé hier ────────────────────
+    Msg(sender: 'maman', text: 'Bonjour ma fille.', time: '08:14', day: 4),
+    Msg(sender: 'maman', text: 'Tu as mangé ?', time: '12:42', day: 4),
+    Msg(sender: 'moi', text: 'Oui.', time: '12:48', day: 4),
+    Msg(sender: 'maman', text: 'Pourquoi tu réponds tard ?', time: '13:18', day: 4),
+    Msg(
+      sender: 'maman',
+      text: 'Je vais à l\'épicerie tout à l\'heure. Tu veux quoi ?',
+      time: '17:32',
+      day: 4,
+    ),
+    Msg(sender: 'moi', text: 'Rien Maman merci.', time: '17:48', day: 4),
+    Msg(sender: 'maman', text: 'Tu rentres ce soir ?', time: '19:14', day: 4),
+    Msg(
+      sender: 'maman',
+      text: 'Bonne soirée. Mets-toi au chaud.',
+      time: '21:42',
+      day: 4,
+    ),
+
+    // ── J5 — Dimanche dumplings ────────────────────────────────
+    Msg(sender: 'maman', text: 'Bonjour. C\'est dimanche.', time: '07:42', day: 5),
+    Msg(sender: 'maman', text: 'Je fais les dumplings.', time: '09:14', day: 5),
+    Msg(sender: 'maman', text: 'Tu viens à quelle heure ?', time: '11:32', day: 5),
+    Msg(sender: 'moi', text: 'Bientôt.', time: '11:33', day: 5),
+    Msg(sender: 'maman', text: 'Le four sent bon.', time: '14:42', day: 5),
+    Msg(sender: 'maman', text: 'Tu n\'es pas venue. C\'est rien.', time: '16:48', day: 5),
+    Msg(sender: 'moi', text: 'Pardon Maman, travail urgent.', time: '18:48', day: 5),
+    Msg(sender: 'maman', text: 'Ce n\'est rien. Je t\'ai dit.', time: '18:50', day: 5),
     Msg(
       sender: 'maman',
       text: 'Tu viens dimanche ? J\'ai fait des dumplings.',
@@ -174,7 +270,141 @@ const Map<String, List<Msg>> kThreads = {
       time: '19:14',
       day: 5,
     ),
-    // J11 — Premier mensonge sur le « stage paysagiste »
+    Msg(
+      sender: 'maman',
+      text: 'J\'ai mis ta part au frigo. Avec un mot dessus.',
+      time: '21:14',
+      day: 5,
+    ),
+
+    // ── J6 — Veille Tour Heng ──────────────────────────────────
+    Msg(sender: 'maman', text: 'Bonjour ma fille.', time: '09:14', day: 6),
+    Msg(sender: 'maman', text: 'Tu déjeunes où ?', time: '12:32', day: 6),
+    Msg(
+      sender: 'maman',
+      text: 'Camille a appelé. Elle dit que tu as un rendez-vous important demain.',
+      time: '16:18',
+      day: 6,
+    ),
+    Msg(sender: 'moi', text: 'Oui.', time: '16:19', day: 6),
+    Msg(
+      sender: 'maman',
+      text: 'Pourquoi tu ne me l\'as pas dit toi-même ?',
+      time: '16:20',
+      day: 6,
+    ),
+    Msg(sender: 'moi', text: 'Je voulais pas t\'inquiéter.', time: '16:22', day: 6),
+    Msg(
+      sender: 'maman',
+      text: 'Tu peux m\'inquiéter. C\'est mon métier.',
+      time: '16:32',
+      day: 6,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'Bonne chance demain. Tu sais tout.',
+      time: '19:18',
+      day: 6,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'J\'ai préparé du thé pour demain matin. Long Jing.',
+      time: '21:48',
+      day: 6,
+    ),
+
+    // ── J7 — Tour Heng + proposition trois mois ────────────────
+    Msg(sender: 'maman', text: 'Couvre-toi.', time: '07:18', day: 7),
+    Msg(sender: 'maman', text: 'Mange quelque chose avant.', time: '07:42', day: 7),
+    Msg(sender: 'maman', text: 'Alors ?', time: '11:48', day: 7),
+    Msg(sender: 'moi', text: '...', time: '11:50', day: 7),
+    Msg(sender: 'maman', text: 'Tu rentres ce soir ?', time: '12:42', day: 7),
+    Msg(
+      sender: 'maman',
+      text: 'Ne réponds pas tout de suite. Quand tu peux.',
+      time: '14:08',
+      day: 7,
+    ),
+    Msg(sender: 'maman', text: 'Tu manges ?', time: '19:18', day: 7),
+    Msg(
+      sender: 'maman',
+      text:
+          'Il y a des nuits où je préfère ne pas dormir pour pouvoir t\'écouter respirer. '
+          'Tu n\'es pas là ce soir. Je dormirai mal.',
+      time: '23:14',
+      day: 7,
+    ),
+
+    // ── J8 — Signature notariale 14 pages ──────────────────────
+    Msg(sender: 'maman', text: 'Bonjour.', time: '08:14', day: 8),
+    Msg(sender: 'maman', text: 'Tu manges ?', time: '12:32', day: 8),
+    Msg(
+      sender: 'maman',
+      text: 'Camille a appelé. Elle ne dit rien.',
+      time: '16:42',
+      day: 8,
+    ),
+    Msg(sender: 'maman', text: 'Ce silence est trop long.', time: '21:14', day: 8),
+    Msg(
+      sender: 'maman',
+      text: 'Je vais dormir. Réponds quand tu peux.',
+      time: '22:48',
+      day: 8,
+    ),
+
+    // ── J9 — Emménagement Avenue Foch ──────────────────────────
+    Msg(
+      sender: 'maman',
+      text: 'Tu n\'as pas dormi à la maison.',
+      time: '08:14',
+      day: 9,
+    ),
+    Msg(sender: 'maman', text: 'Tu vas où ?', time: '12:48', day: 9),
+    Msg(
+      sender: 'maman',
+      text: 'Camille m\'a dit que tu déménages quelque temps.',
+      time: '17:32',
+      day: 9,
+    ),
+    Msg(sender: 'moi', text: 'Oui pour un dossier.', time: '17:38', day: 9),
+    Msg(
+      sender: 'maman',
+      text: 'Un dossier qui prend l\'appartement ?',
+      time: '17:48',
+      day: 9,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'Tes affaires sont là si tu reviens.',
+      time: '21:48',
+      day: 9,
+    ),
+    Msg(sender: 'maman', text: 'Dors bien.', time: '22:14', day: 9),
+
+    // ── J10 — Premier jour absente ─────────────────────────────
+    Msg(sender: 'maman', text: 'Bonjour.', time: '07:18', day: 10),
+    Msg(sender: 'maman', text: 'Tu manges ?', time: '12:42', day: 10),
+    Msg(
+      sender: 'maman',
+      text: 'Le frigo est plein. Personne pour le finir.',
+      time: '18:48',
+      day: 10,
+    ),
+    Msg(sender: 'maman', text: 'Tu reviens dimanche ?', time: '21:14', day: 10),
+    Msg(sender: 'moi', text: 'Je sais pas encore Maman.', time: '21:22', day: 10),
+    Msg(sender: 'maman', text: 'D\'accord.', time: '21:24', day: 10),
+
+    // ── J11 — Premier mensonge « Lao Chen, paysagiste » ────────
+    Msg(sender: 'maman', text: 'Bonjour ma fille.', time: '07:42', day: 11),
+    Msg(sender: 'maman', text: 'Premier jour de quoi exactement ?', time: '12:14', day: 11),
+    Msg(sender: 'moi', text: 'Stage paysagiste. Lao Chen.', time: '12:15', day: 11),
+    Msg(
+      sender: 'maman',
+      text: 'Tu ne m\'as pas dit que tu changeais de métier.',
+      time: '12:32',
+      day: 11,
+    ),
+    Msg(sender: 'maman', text: 'Tu as eu une bonne journée ?', time: '17:48', day: 11),
     Msg(
       sender: 'maman',
       text: 'Premier jour de stage. Comment ça s\'est passé ?',
@@ -189,7 +419,10 @@ const Map<String, List<Msg>> kThreads = {
       day: 11,
       beatId: 'maman_stage_j11',
     ),
-    // J12+ — Variantes paranoïaques (apparaissent si suspicion >= 30)
+
+    // ── J12 — Maman cherche dans l'annuaire ────────────────────
+    Msg(sender: 'maman', text: 'Bonjour. Mal dormi.', time: '08:14', day: 12),
+    Msg(sender: 'maman', text: 'Tu manges où ?', time: '12:48', day: 12),
     Msg(
       sender: 'maman',
       text:
@@ -201,12 +434,61 @@ const Map<String, List<Msg>> kThreads = {
     ),
     Msg(
       sender: 'maman',
+      text: 'Camille a refusé de me dire où tu vis.',
+      time: '17:18',
+      day: 12,
+      requiresSuspicionAtLeast: 30,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'Je crois que je sais. Je préfère me tromper.',
+      time: '19:42',
+      day: 12,
+      requiresSuspicionAtLeast: 30,
+    ),
+
+    // ── J13 — Parfum différent ─────────────────────────────────
+    Msg(sender: 'maman', text: 'Bonjour.', time: '08:32', day: 13),
+    Msg(sender: 'maman', text: 'Tu manges ?', time: '12:18', day: 13),
+    Msg(
+      sender: 'maman',
       text:
           'Tu portes un parfum différent quand tu passes. Je ne te juge pas. '
           'Je te le dis.',
       time: '18:42',
       day: 13,
       requiresSuspicionAtLeast: 30,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'Tu as oublié de m\'apporter des fleurs ce matin. '
+          'C\'est la première fois en quatre mois.',
+      time: '17:48',
+      day: 13,
+      requiresSuspicionAtLeast: 30,
+    ),
+
+    // ── J14 — Dîner Madame Heng. Long Jing deuxième récolte. ──
+    Msg(sender: 'maman', text: 'Bonjour.', time: '09:32', day: 14),
+    Msg(sender: 'maman', text: 'Tu as un dîner important ce soir ?', time: '14:18', day: 14),
+    Msg(sender: 'moi', text: 'Pas spécial.', time: '14:19', day: 14),
+    Msg(
+      sender: 'maman',
+      text: 'Je sens quelque chose. Tu peux mentir si tu veux. Je ne te juge pas.',
+      time: '14:32',
+      day: 14,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'Bon courage pour ton dîner.',
+      time: '19:42',
+      day: 14,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'J\'ai mis ta part au frigo si tu rentres.',
+      time: '22:48',
+      day: 14,
     ),
   ],
   'camille': [
