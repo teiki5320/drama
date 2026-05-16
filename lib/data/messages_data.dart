@@ -804,7 +804,7 @@ const Map<String, List<Msg>> kThreads = {
     ),
   ],
   'tristan': [
-    // J7 — premier contact via la secrétaire
+    // J6 — Premier contact via la secrétaire (sec, formel)
     Msg(
       sender: 'tristan',
       text:
@@ -813,7 +813,39 @@ const Map<String, List<Msg>> kThreads = {
       day: 6,
       beatId: 'tristan_rdv_j6',
     ),
-    // J9 — premier SMS après emménagement
+    Msg(
+      sender: 'tristan',
+      text: 'Badge à mon nom à l\'accueil. Pas de retard.',
+      time: '14:14',
+      day: 6,
+    ),
+    // J7 — Le RDV, post-proposition trois mois (très sec)
+    Msg(sender: 'tristan', text: 'Vous étiez précise.', time: '13:08', day: 7),
+    Msg(sender: 'tristan', text: 'Signature demain 11h30. Étude Vidal, rue de Sèze.', time: '17:14', day: 7),
+    Msg(sender: 'moi', text: 'Reçu.', time: '17:32', day: 7),
+    Msg(
+      sender: 'tristan',
+      text: 'Lisez l\'article 14 deux fois.',
+      time: '23:08',
+      day: 7,
+    ),
+    // J8 — Jour de la signature
+    Msg(sender: 'tristan', text: 'Voiture à 11h00. Discrète.', time: '09:48', day: 8),
+    Msg(sender: 'tristan', text: 'Je serai déjà sur place.', time: '11:04', day: 8),
+    Msg(
+      sender: 'tristan',
+      text: 'Vous avez tremblé sur le « M ». Personne n\'a vu.',
+      time: '15:42',
+      day: 8,
+    ),
+    Msg(
+      sender: 'tristan',
+      text: 'Premier virement crédité demain matin. 10 000 €.',
+      time: '20:14',
+      day: 8,
+    ),
+    Msg(sender: 'moi', text: 'Compris.', time: '20:18', day: 8),
+    // J9 — Emménagement Avenue Foch
     Msg(
       sender: 'tristan',
       text:
@@ -821,7 +853,72 @@ const Map<String, List<Msg>> kThreads = {
       time: '17:22',
       day: 9,
     ),
-    // J14 — après le dîner Madame Heng, cliffhanger Ep 1
+    Msg(sender: 'tristan', text: 'Code porte 4297. Code parking B12.', time: '17:24', day: 9),
+    Msg(sender: 'tristan', text: 'Aucun étage n\'est interdit. Personne ne sera surprise.', time: '17:26', day: 9),
+    Msg(sender: 'moi', text: 'Merci.', time: '19:48', day: 9),
+    Msg(
+      sender: 'tristan',
+      text: 'Demain 19h, dîner cabinet avec mon frère Vincent. '
+          'Vous n\'êtes pas obligée d\'y être.',
+      time: '22:14',
+      day: 9,
+    ),
+    Msg(sender: 'moi', text: 'Je viens.', time: '22:18', day: 9),
+    Msg(sender: 'tristan', text: 'Bonne nuit Mlle Marchand.', time: '22:32', day: 9),
+    // J10 — Premier vrai jour ensemble
+    Msg(
+      sender: 'tristan',
+      text: 'Robe bleu nuit dans la penderie. 38. Pour ce soir.',
+      time: '14:48',
+      day: 10,
+    ),
+    Msg(sender: 'moi', text: 'Je porte ce que je veux.', time: '14:52', day: 10),
+    Msg(sender: 'tristan', text: 'Bien.', time: '14:53', day: 10),
+    Msg(
+      sender: 'tristan',
+      text: 'Vincent fait de l\'humour. Ne le prenez pas au sérieux. '
+          'Ne le contredisez pas non plus.',
+      time: '18:42',
+      day: 10,
+    ),
+    // J11 — Routine froide
+    Msg(sender: 'tristan', text: 'Petit déjeuner à 7h30. Si vous voulez.', time: '07:08', day: 11),
+    Msg(
+      sender: 'tristan',
+      text: 'Mes parents passent dimanche. Préparez-vous.',
+      time: '19:32',
+      day: 11,
+    ),
+    Msg(sender: 'moi', text: 'OK.', time: '19:48', day: 11),
+    // J12 — Madame Heng entre en scène
+    Msg(
+      sender: 'tristan',
+      text: 'Ma mère vous a écrit. Répondez sobrement.',
+      time: '09:38',
+      day: 12,
+    ),
+    Msg(
+      sender: 'tristan',
+      text: 'Elle teste. Toujours.',
+      time: '09:39',
+      day: 12,
+    ),
+    Msg(sender: 'moi', text: 'Compris.', time: '10:08', day: 12),
+    // J13 — Veille du dîner
+    Msg(
+      sender: 'tristan',
+      text: 'Demain 20h30. Premier dîner officiel. '
+          'Vous serez assise à droite de ma mère.',
+      time: '18:32',
+      day: 13,
+    ),
+    Msg(sender: 'tristan', text: 'Mon père ne parlera pas. C\'est normal.', time: '18:33', day: 13),
+    Msg(sender: 'tristan', text: 'Mon oncle parlera trop. C\'est normal aussi.', time: '18:34', day: 13),
+    Msg(sender: 'moi', text: 'Et toi ?', time: '18:48', day: 13),
+    Msg(sender: 'tristan', text: 'Je ne dirai rien.', time: '18:49', day: 13),
+    // J14 — Dîner Madame Heng, cliffhanger
+    Msg(sender: 'tristan', text: 'Vous êtes prête ?', time: '20:08', day: 14),
+    Msg(sender: 'moi', text: 'Oui.', time: '20:12', day: 14),
     Msg(
       sender: 'tristan',
       text:
@@ -848,12 +945,7 @@ const Map<String, List<Msg>> kThreads = {
       time: '09:43',
       day: 12,
     ),
-    Msg(
-      sender: 'moi',
-      text: 'Bien noté. Merci Madame.',
-      time: '10:08',
-      day: 12,
-    ),
+    Msg(sender: 'moi', text: 'Bien noté. Merci Madame.', time: '10:08', day: 12),
     Msg(
       sender: 'madame_heng',
       text:
@@ -862,7 +954,54 @@ const Map<String, List<Msg>> kThreads = {
       time: '10:09',
       day: 12,
     ),
-    // J13 — relance sur le thé (donne du sens au choix Camille B13)
+    Msg(sender: 'moi', text: 'Entendu.', time: '10:14', day: 12),
+    Msg(
+      sender: 'madame_heng',
+      text: 'Bien. Maintenant un détail : vous mangez le porc ?',
+      time: '14:32',
+      day: 12,
+    ),
+    Msg(sender: 'moi', text: 'Oui Madame.', time: '14:48', day: 12),
+    Msg(sender: 'madame_heng', text: 'Bien.', time: '14:49', day: 12),
+    Msg(
+      sender: 'madame_heng',
+      text: 'Avez-vous appris la cérémonie du thé ? '
+          'Trois infusions au maximum. La quatrième est un manque de respect.',
+      time: '19:22',
+      day: 12,
+    ),
+    Msg(
+      sender: 'moi',
+      text: 'Trois infusions. Reçu.',
+      time: '19:38',
+      day: 12,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text: 'On dit « entendu », mademoiselle. Vous oubliez vite.',
+      time: '19:39',
+      day: 12,
+    ),
+    // J13 — Veille dîner, précisions
+    Msg(
+      sender: 'madame_heng',
+      text: 'Pas de noir intégral. Une touche de pivoine. C\'est la saison.',
+      time: '08:42',
+      day: 13,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text: 'Mon mari boit du vin. Vous pouvez accepter un verre. Pas deux.',
+      time: '11:18',
+      day: 13,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text: 'Mon fils Vincent fait des plaisanteries déplacées. '
+          'Souriez sans rire. C\'est l\'usage.',
+      time: '15:48',
+      day: 13,
+    ),
     Msg(
       sender: 'madame_heng',
       text:
@@ -870,6 +1009,55 @@ const Map<String, List<Msg>> kThreads = {
           'vous la verrez.',
       time: '21:08',
       day: 13,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text: 'Vous portez la boîte verte dans la main droite, '
+          'la cuillère à thé dans la gauche. Pas l\'inverse.',
+      time: '21:09',
+      day: 13,
+    ),
+    // J14 — Le matin et l'après-dîner
+    Msg(
+      sender: 'madame_heng',
+      text: 'Bonjour mademoiselle. Pivoines blanches au centre de table. '
+          'Souvenez-vous-en.',
+      time: '08:18',
+      day: 14,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text: 'Tante Lihua arrivera la première. Elle a 81 ans. '
+          'Levez-vous quand elle entre dans la pièce.',
+      time: '14:32',
+      day: 14,
+    ),
+    Msg(sender: 'moi', text: 'Entendu Madame.', time: '14:48', day: 14),
+    Msg(
+      sender: 'madame_heng',
+      text: 'Vous apprenez vite. C\'est rare. Ça n\'est pas mauvais.',
+      time: '14:49',
+      day: 14,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text: 'À ce soir. La porte sera entrouverte. Vous saurez.',
+      time: '18:48',
+      day: 14,
+    ),
+    // J15 (lendemain matin) — Post-dîner Long Jing deuxième récolte
+    Msg(
+      sender: 'madame_heng',
+      text: 'Vous avez identifié la deuxième récolte. Personne ne le fait '
+          'à votre âge. Mon mari l\'a noté.',
+      time: '08:18',
+      day: 15,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text: 'Je vous reverrai bientôt. Ma fille.',
+      time: '08:19',
+      day: 15,
     ),
   ],
   'banque': [
