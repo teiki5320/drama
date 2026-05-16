@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../models/romance.dart';
 import '../../../../providers/phone_state_provider.dart';
 import '../../../../providers/romance_threads_provider.dart';
+import 'romance_profile_visual.dart';
 
 /// Conversation Tinder DM — bulles bleu/gris pâle (différent des
 /// Messages iMessage pour bien marquer la compartmentation mentale
@@ -191,23 +192,10 @@ class _Header extends StatelessWidget {
                   color: Color(0xFFFD297B), size: 20),
               onPressed: onClose,
             ),
-            Container(
+            SizedBox(
               width: 36,
               height: 36,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(profile.gradient.first),
-                    Color(profile.gradient.last),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                shape: BoxShape.circle,
-              ),
-              alignment: Alignment.center,
-              child: Text(profile.emoji,
-                  style: const TextStyle(fontSize: 18)),
+              child: RomanceAvatar(profile: profile),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -398,6 +386,8 @@ class _MessageBubble extends StatelessWidget {
   }
 
   Widget _photoCard(bool isMe) {
+    // Index photo basé sur le hash du label : stable, varie selon le beat.
+    final photoIdx = (msg.photoLabel?.hashCode ?? 0).abs() % 4;
     return Container(
       width: 220,
       margin: EdgeInsets.only(
@@ -406,68 +396,11 @@ class _MessageBubble extends StatelessWidget {
         top: 4,
         bottom: 4,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(14),
-        child: AspectRatio(
-          aspectRatio: 4 / 5,
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(profile.gradient.first),
-                      Color(profile.gradient.last),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: Text(profile.emoji,
-                    style: const TextStyle(fontSize: 64)),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withValues(alpha: 0.7),
-                      ],
-                    ),
-                  ),
-                  child: Text(
-                    msg.photoLabel ?? '',
-                    style: GoogleFonts.inter(
-                      fontSize: 11,
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 6,
-                right: 8,
-                child: Text(
-                  msg.time,
-                  style: GoogleFonts.inter(
-                    fontSize: 10,
-                    color: Colors.white.withValues(alpha: 0.85),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      child: RomanceSharedPhoto(
+        profile: profile,
+        caption: msg.photoLabel ?? '',
+        time: msg.time,
+        photoIdx: photoIdx,
       ),
     );
   }
