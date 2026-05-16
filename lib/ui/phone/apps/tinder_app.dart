@@ -97,6 +97,7 @@ class _TinderAppState extends ConsumerState<TinderApp>
           day: p.currentDay,
           hour: p.hour,
           minute: p.minute,
+          mood: p.mood,
         );
     if (inst != null) {
       // Tick immédiat pour faire apparaître les premiers messages.
