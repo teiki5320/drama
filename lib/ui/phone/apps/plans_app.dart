@@ -441,77 +441,158 @@ class _ParisMapPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Fond crème
-    final bgPaint = Paint()..color = const Color(0xFFEDEDED);
+    // ── Fond crème ─────────────────────────────────────────────
+    final bgPaint = Paint()..color = const Color(0xFFF2EFE8);
     canvas.drawRect(Offset.zero & size, bgPaint);
 
-    // Quelques arrondissements (cercles flous décoratifs)
-    final cityPaint = Paint()
-      ..color = const Color(0xFFE0DACA).withValues(alpha: 0.6)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18);
-    // 8e (Champs)
+    // ── Bois (Boulogne ouest, Vincennes est) ───────────────────
+    final boisPaint = Paint()
+      ..color = const Color(0xFFC8D8B8).withValues(alpha: 0.55);
     canvas.drawCircle(
-        _projectLatLng(48.873, 2.310, size), 60, cityPaint);
-    // 11e
+        _projectLatLng(48.866, 2.247, size), 38, boisPaint);
     canvas.drawCircle(
-        _projectLatLng(48.860, 2.380, size), 70, cityPaint);
-    // 20e Belleville
-    canvas.drawCircle(
-        _projectLatLng(48.870, 2.395, size), 65, cityPaint);
-    // 16e Foch
-    canvas.drawCircle(
-        _projectLatLng(48.872, 2.286, size), 55, cityPaint);
-    // 6e
-    canvas.drawCircle(
-        _projectLatLng(48.851, 2.335, size), 55, cityPaint);
+        _projectLatLng(48.842, 2.435, size), 34, boisPaint);
 
-    // La Seine (approx — courbe simplifiée)
-    final seinePaint = Paint()
-      ..color = const Color(0xFFA8C5E0)
+    // ── Périphérique (cercle complet doux) ─────────────────────
+    final periph = Paint()
+      ..color = const Color(0xFFB8B4AA).withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 14
-      ..strokeCap = StrokeCap.round;
-    final seine = Path();
-    seine.moveTo(_projectLatLng(48.832, 2.420, size).dx,
-        _projectLatLng(48.832, 2.420, size).dy);
-    seine.quadraticBezierTo(
-      _projectLatLng(48.853, 2.358, size).dx,
-      _projectLatLng(48.853, 2.358, size).dy,
-      _projectLatLng(48.864, 2.305, size).dx,
-      _projectLatLng(48.864, 2.305, size).dy,
+      ..strokeWidth = 1.2;
+    final periphCenter = _projectLatLng(48.857, 2.348, size);
+    final periphRect = Rect.fromCenter(
+      center: periphCenter,
+      width: size.width * 0.92,
+      height: size.height * 0.78,
     );
-    seine.quadraticBezierTo(
-      _projectLatLng(48.860, 2.270, size).dx,
-      _projectLatLng(48.860, 2.270, size).dy,
-      _projectLatLng(48.842, 2.235, size).dx,
-      _projectLatLng(48.842, 2.235, size).dy,
+    canvas.drawOval(periphRect, periph);
+
+    // ── 20 arrondissements (zones beiges très subtiles) ────────
+    final arrPaint = Paint()
+      ..color = const Color(0xFFE8E0CE).withValues(alpha: 0.45);
+    // Centre 1er-4e (collés autour de la Seine)
+    canvas.drawCircle(_projectLatLng(48.860, 2.341, size), 22, arrPaint);
+    // 5e-6e rive gauche
+    canvas.drawCircle(_projectLatLng(48.847, 2.345, size), 24, arrPaint);
+    canvas.drawCircle(_projectLatLng(48.851, 2.333, size), 22, arrPaint);
+    // 7e (Invalides)
+    canvas.drawCircle(_projectLatLng(48.857, 2.317, size), 24, arrPaint);
+    // 8e (Champs)
+    canvas.drawCircle(_projectLatLng(48.873, 2.310, size), 30, arrPaint);
+    // 9e (Opéra)
+    canvas.drawCircle(_projectLatLng(48.876, 2.337, size), 22, arrPaint);
+    // 10e (Gares)
+    canvas.drawCircle(_projectLatLng(48.876, 2.361, size), 24, arrPaint);
+    // 11e (Bastille / République)
+    canvas.drawCircle(_projectLatLng(48.860, 2.380, size), 30, arrPaint);
+    // 12e (Vincennes ouest)
+    canvas.drawCircle(_projectLatLng(48.840, 2.395, size), 28, arrPaint);
+    // 13e (Choisy)
+    canvas.drawCircle(_projectLatLng(48.828, 2.362, size), 28, arrPaint);
+    // 14e (Montparnasse)
+    canvas.drawCircle(_projectLatLng(48.832, 2.326, size), 26, arrPaint);
+    // 15e
+    canvas.drawCircle(_projectLatLng(48.842, 2.298, size), 30, arrPaint);
+    // 16e (Foch)
+    canvas.drawCircle(_projectLatLng(48.860, 2.275, size), 32, arrPaint);
+    // 17e
+    canvas.drawCircle(_projectLatLng(48.886, 2.305, size), 26, arrPaint);
+    // 18e (Montmartre)
+    canvas.drawCircle(_projectLatLng(48.888, 2.343, size), 28, arrPaint);
+    // 19e
+    canvas.drawCircle(_projectLatLng(48.886, 2.382, size), 28, arrPaint);
+    // 20e (Belleville)
+    canvas.drawCircle(_projectLatLng(48.870, 2.395, size), 28, arrPaint);
+
+    // ── La Seine (multi-courbes plus précises) ─────────────────
+    final seinePaint = Paint()
+      ..color = const Color(0xFF8FB4D2)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 12
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
+    final seine = Path();
+    Offset s(double lat, double lng) => _projectLatLng(lat, lng, size);
+    seine.moveTo(s(48.832, 2.420).dx, s(48.832, 2.420).dy);
+    seine.cubicTo(
+      s(48.840, 2.395).dx, s(48.840, 2.395).dy,
+      s(48.850, 2.380).dx, s(48.850, 2.380).dy,
+      s(48.852, 2.359).dx, s(48.852, 2.359).dy,
+    );
+    seine.cubicTo(
+      s(48.857, 2.347).dx, s(48.857, 2.347).dy,
+      s(48.858, 2.334).dx, s(48.858, 2.334).dy,
+      s(48.860, 2.323).dx, s(48.860, 2.323).dy,
+    );
+    seine.cubicTo(
+      s(48.865, 2.310).dx, s(48.865, 2.310).dy,
+      s(48.864, 2.296).dx, s(48.864, 2.296).dy,
+      s(48.860, 2.280).dx, s(48.860, 2.280).dy,
+    );
+    seine.cubicTo(
+      s(48.855, 2.270).dx, s(48.855, 2.270).dy,
+      s(48.848, 2.260).dx, s(48.848, 2.260).dy,
+      s(48.842, 2.235).dx, s(48.842, 2.235).dy,
     );
     canvas.drawPath(seine, seinePaint);
 
-    // Lignes axiales décoratives (Champs-Élysées, Haussmann)
+    // ── Axes principaux ────────────────────────────────────────
     final axePaint = Paint()
       ..color = const Color(0xFFD0CBC0)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    // Champs (Concorde → Étoile)
-    canvas.drawLine(
-      _projectLatLng(48.865, 2.321, size),
-      _projectLatLng(48.873, 2.295, size),
-      axePaint,
-    );
-    // Étoile → Foch
-    canvas.drawLine(
-      _projectLatLng(48.873, 2.295, size),
-      _projectLatLng(48.872, 2.282, size),
-      axePaint,
-    );
+    final axeMinor = Paint()
+      ..color = const Color(0xFFD8D2C5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2;
 
-    // Étoile (place)
-    canvas.drawCircle(
-      _projectLatLng(48.873, 2.295, size),
-      8,
-      Paint()..color = const Color(0xFFD0CBC0),
-    );
+    // Champs-Élysées (Concorde → Étoile)
+    canvas.drawLine(s(48.865, 2.321), s(48.873, 2.295), axePaint);
+    // Avenue Foch (Étoile → Bois)
+    canvas.drawLine(s(48.873, 2.295), s(48.872, 2.275), axePaint);
+    // Avenue de la Grande Armée (Étoile → Neuilly)
+    canvas.drawLine(s(48.873, 2.295), s(48.881, 2.282), axeMinor);
+    // Rue de Rivoli (Concorde → Bastille)
+    canvas.drawLine(s(48.865, 2.321), s(48.853, 2.369), axeMinor);
+    // Bd Haussmann (Saint-Lazare → Opéra)
+    canvas.drawLine(s(48.876, 2.325), s(48.876, 2.355), axeMinor);
+    // Bd de Sébastopol
+    canvas.drawLine(s(48.860, 2.350), s(48.873, 2.351), axeMinor);
+    // Bd Magenta (République → Nord)
+    canvas.drawLine(s(48.867, 2.363), s(48.880, 2.355), axeMinor);
+    // Bd Saint-Germain
+    canvas.drawLine(s(48.853, 2.323), s(48.851, 2.358), axeMinor);
+    // Bd de Belleville
+    canvas.drawLine(s(48.871, 2.378), s(48.872, 2.391), axeMinor);
+    // Boulevard du Montparnasse
+    canvas.drawLine(s(48.842, 2.323), s(48.842, 2.336), axeMinor);
+
+    // ── Places principales (cercle gris) ───────────────────────
+    void place(double lat, double lng, double r) {
+      canvas.drawCircle(
+        s(lat, lng),
+        r,
+        Paint()..color = const Color(0xFFD0CBC0),
+      );
+    }
+    place(48.873, 2.295, 7);  // Étoile
+    place(48.865, 2.321, 6);  // Concorde
+    place(48.867, 2.363, 5);  // République
+    place(48.853, 2.369, 5);  // Bastille
+    place(48.876, 2.355, 4);  // Opéra
+    place(48.842, 2.321, 4);  // Montparnasse
+    place(48.880, 2.355, 4);  // Gare du Nord
+
+    // ── Gares (petits carrés) ──────────────────────────────────
+    void gare(double lat, double lng) {
+      final rect = Rect.fromCenter(
+          center: s(lat, lng), width: 6, height: 6);
+      canvas.drawRect(rect, Paint()..color = const Color(0xFF8B6F47));
+    }
+    gare(48.880, 2.355);  // Nord
+    gare(48.876, 2.359);  // Est
+    gare(48.876, 2.325);  // Saint-Lazare
+    gare(48.844, 2.374);  // Lyon
+    gare(48.842, 2.321);  // Montparnasse
 
     // Pins par catégorie (visités = pleins, repérés = creux)
     for (final p in places) {
@@ -555,7 +636,75 @@ class _ParisMapPainter extends CustomPainter {
       }
     }
 
-    // Label « Paris » discret dans un coin
+    // ── Labels arrondissements numérotés ──────────────────────
+    void arr(int n, double lat, double lng) {
+      final tp = TextPainter(
+        text: TextSpan(
+          text: '${n}e',
+          style: TextStyle(
+            color: Colors.grey.shade500,
+            fontSize: 8,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final pt = _projectLatLng(lat, lng, size);
+      tp.paint(canvas, Offset(pt.dx - tp.width / 2, pt.dy - tp.height / 2));
+    }
+    arr(1, 48.860, 2.341);
+    arr(2, 48.866, 2.343);
+    arr(3, 48.862, 2.362);
+    arr(4, 48.857, 2.360);
+    arr(5, 48.846, 2.349);
+    arr(6, 48.851, 2.333);
+    arr(7, 48.857, 2.317);
+    arr(8, 48.873, 2.310);
+    arr(9, 48.876, 2.337);
+    arr(10, 48.876, 2.361);
+    arr(11, 48.860, 2.380);
+    arr(12, 48.840, 2.395);
+    arr(13, 48.828, 2.362);
+    arr(14, 48.832, 2.326);
+    arr(15, 48.842, 2.298);
+    arr(16, 48.860, 2.275);
+    arr(17, 48.886, 2.305);
+    arr(18, 48.888, 2.343);
+    arr(19, 48.886, 2.382);
+    arr(20, 48.870, 2.395);
+
+    // ── Noms de quartiers en filigrane ────────────────────────
+    void quartier(String name, double lat, double lng) {
+      final tp = TextPainter(
+        text: TextSpan(
+          text: name,
+          style: TextStyle(
+            color: Colors.grey.shade400,
+            fontSize: 7,
+            fontStyle: FontStyle.italic,
+            letterSpacing: 0.5,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final pt = _projectLatLng(lat, lng, size);
+      tp.paint(canvas, Offset(pt.dx - tp.width / 2, pt.dy + 8));
+    }
+    quartier('Belleville', 48.870, 2.395);
+    quartier('Foch', 48.872, 2.286);
+    quartier('Marais', 48.860, 2.362);
+    quartier('Bastille', 48.853, 2.378);
+    quartier('Montmartre', 48.886, 2.342);
+    quartier('Montparnasse', 48.838, 2.323);
+    quartier('Saint-Germain', 48.853, 2.334);
+    quartier('Champs-Élysées', 48.871, 2.305);
+    quartier('Pigalle', 48.882, 2.336);
+
+    // ── Bois (labels) ─────────────────────────────────────────
+    quartier('Bois de Boulogne', 48.866, 2.247);
+    quartier('Vincennes', 48.842, 2.435);
+
+    // Label « PARIS » dans un coin
     final labelPainter = TextPainter(
       text: TextSpan(
         text: 'PARIS',
