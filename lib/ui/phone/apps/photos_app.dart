@@ -28,7 +28,9 @@ class _PhotosAppState extends ConsumerState<PhotosApp> {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
     final userPhotos =
         ref.watch(phoneStateProvider.select((s) => s.userPhotos));
-    final canonVisible = kPhotos.where((p) => p.day <= day).toList();
+    // On exclut les photos taggées hidden (album Papa) du flux principal.
+    final canonVisible =
+        kPhotos.where((p) => p.day <= day && !p.hidden).toList();
     // Convertit les UserPhoto en PhotoItem pour l'affichage unifié.
     final userVisible = userPhotos.map((up) => PhotoItem(
           day: up.day,
@@ -97,6 +99,70 @@ class _PhotosAppState extends ConsumerState<PhotosApp> {
               ],
             ),
           ),
+          // ── Bandeau Albums horizontal ──────────────────────
+          SizedBox(
+            height: 84,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              children: kAlbums.map((al) {
+                final count = kPhotos
+                    .where((p) =>
+                        p.tags.contains(al.tagFilter) && p.day <= day)
+                    .length;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: GestureDetector(
+                    onTap: () => _openAlbum(context, al),
+                    child: SizedBox(
+                      width: 74,
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(al.gradient.first),
+                                  Color(al.gradient.last),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(al.emoji,
+                                style: const TextStyle(fontSize: 28)),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            al.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.inter(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            al.requiresCode ? '🔒' : '$count',
+                            style: GoogleFonts.inter(
+                              fontSize: 9,
+                              color: Colors.grey.shade500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          const SizedBox(height: 4),
           Expanded(
             child: GestureDetector(
               onScaleStart: (_) {
@@ -130,6 +196,209 @@ class _PhotosAppState extends ConsumerState<PhotosApp> {
                 }).toList(),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openAlbum(BuildContext context, PhotoAlbum al) {
+    HapticFeedback.selectionClick();
+    if (al.requiresCode) {
+      _showCodePrompt(context, al);
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => _AlbumDetailScreen(album: al),
+      ));
+    }
+  }
+
+  void _showCodePrompt(BuildContext context, PhotoAlbum al) {
+    showDialog<void>(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (ctx) {
+        final controller = TextEditingController();
+        return AlertDialog(
+          backgroundColor: const Color(0xFF1A1A1A),
+          title: Row(
+            children: [
+              Text(al.emoji, style: const TextStyle(fontSize: 24)),
+              const SizedBox(width: 8),
+              Text('Album ${al.title}',
+                  style: GoogleFonts.inter(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700)),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Code à 4 chiffres',
+                style: GoogleFonts.inter(
+                    fontSize: 12, color: Colors.grey.shade400),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                obscureText: true,
+                maxLength: 4,
+                style: GoogleFonts.inter(
+                    fontSize: 22,
+                    color: Colors.white,
+                    letterSpacing: 8),
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                  counterText: '',
+                  border: UnderlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text('Annuler',
+                  style: GoogleFonts.inter(color: Colors.white70)),
+            ),
+            TextButton(
+              onPressed: () {
+                if (controller.text == '1402') {
+                  Navigator.of(ctx).pop();
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => _AlbumDetailScreen(album: al),
+                  ));
+                } else {
+                  HapticFeedback.heavyImpact();
+                  ScaffoldMessenger.of(ctx).showSnackBar(
+                    const SnackBar(
+                      duration: Duration(milliseconds: 1400),
+                      content: Text('Code incorrect'),
+                    ),
+                  );
+                }
+              },
+              child: Text('Ouvrir',
+                  style: GoogleFonts.inter(
+                      color: const Color(0xFFFF6B6B),
+                      fontWeight: FontWeight.w700)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// Écran album détail — filtre les photos par tag + montre la note narrative.
+class _AlbumDetailScreen extends ConsumerWidget {
+  const _AlbumDetailScreen({required this.album});
+  final PhotoAlbum album;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    final photos = kPhotos
+        .where((p) => p.tags.contains(album.tagFilter) && p.day <= day)
+        .toList();
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Column(
+        children: [
+          const PhoneStatusBar(foreground: Colors.white),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 4, 16, 8),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new,
+                      color: Color(0xFFFF6B6B), size: 20),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    Navigator.of(context).pop();
+                  },
+                ),
+                const SizedBox(width: 4),
+                Text(album.emoji, style: const TextStyle(fontSize: 24)),
+                const SizedBox(width: 8),
+                Text(
+                  album.title,
+                  style: GoogleFonts.crimsonPro(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (album.note != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+              child: Text(
+                album.note!,
+                style: GoogleFonts.crimsonPro(
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey.shade400,
+                ),
+              ),
+            ),
+          Expanded(
+            child: photos.isEmpty
+                ? Center(
+                    child: Text(
+                      'Album vide pour l\'instant.',
+                      style: GoogleFonts.inter(
+                          fontSize: 12, color: Colors.grey.shade600),
+                    ),
+                  )
+                : GridView.builder(
+                    padding: const EdgeInsets.all(2),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 2,
+                    ),
+                    itemCount: photos.length,
+                    itemBuilder: (_, i) {
+                      final p = photos[i];
+                      return Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(p.gradient.first),
+                              Color(p.gradient.last),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          image: p.imagePath != null
+                              ? DecorationImage(
+                                  image: AssetImage(p.imagePath!),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                        ),
+                        child: p.imagePath == null
+                            ? Center(
+                                child: Text(
+                                  p.subtitle,
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 9,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                              )
+                            : null,
+                      );
+                    },
+                  ),
           ),
         ],
       ),

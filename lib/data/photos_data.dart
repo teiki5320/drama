@@ -14,6 +14,12 @@ class PhotoItem {
   /// Indices cachés révélés au zoom — chaque hotspot a une position
   /// relative (0..1) sur la photo et un texte Shen-style.
   final List<PhotoHotspot> hotspots;
+  /// Tags pour grouper en albums dynamiques :
+  /// 'maman', 'papa', 'camille', 'foch', 'belleville', 'heng', 'hk',
+  /// 'fujian', 'memories' (il y a 1 an).
+  final List<String> tags;
+  /// Si true, la photo n'apparaît que dans l'album caché (FaceID 1402).
+  final bool hidden;
 
   const PhotoItem({
     required this.day,
@@ -24,8 +30,91 @@ class PhotoItem {
     this.isScreenshot = false,
     this.imagePath,
     this.hotspots = const [],
+    this.tags = const [],
+    this.hidden = false,
   });
 }
+
+/// Album dynamique calculé depuis les tags des PhotoItem.
+class PhotoAlbum {
+  final String id;
+  final String title;
+  final String emoji;
+  final String tagFilter;
+  final List<int> gradient;
+  final bool requiresCode;
+  final String? note;
+
+  const PhotoAlbum({
+    required this.id,
+    required this.title,
+    required this.emoji,
+    required this.tagFilter,
+    required this.gradient,
+    this.requiresCode = false,
+    this.note,
+  });
+}
+
+const kAlbums = <PhotoAlbum>[
+  PhotoAlbum(
+    id: 'al_maman',
+    title: 'Maman',
+    emoji: '👩',
+    tagFilter: 'maman',
+    gradient: [0xFFFCE6D8, 0xFFE7B5C8],
+    note: 'Toutes les photos de toi avec elle.',
+  ),
+  PhotoAlbum(
+    id: 'al_papa_cache',
+    title: 'Papa',
+    emoji: '🔒',
+    tagFilter: 'papa',
+    gradient: [0xFF1A1A1A, 0xFF3D2A1E],
+    requiresCode: true,
+    note: 'Album verrouillé. Code 1402.',
+  ),
+  PhotoAlbum(
+    id: 'al_camille',
+    title: 'Camille',
+    emoji: '🥐',
+    tagFilter: 'camille',
+    gradient: [0xFFFCE6D8, 0xFFFAE0CC],
+    note: 'Croissants, fous rires, codes civils.',
+  ),
+  PhotoAlbum(
+    id: 'al_foch',
+    title: 'Avenue Foch',
+    emoji: '🪞',
+    tagFilter: 'foch',
+    gradient: [0xFF1F2937, 0xFF3D4858],
+    note: 'L\'appartement. Les couloirs. Les fenêtres qui regardent vers Belleville.',
+  ),
+  PhotoAlbum(
+    id: 'al_belleville',
+    title: 'Belleville',
+    emoji: '🏠',
+    tagFilter: 'belleville',
+    gradient: [0xFFD7A879, 0xFF8C6F47],
+    note: 'Le studio. La fenêtre. La cuisine de Maman.',
+  ),
+  PhotoAlbum(
+    id: 'al_heng',
+    title: 'Heng',
+    emoji: '🍵',
+    tagFilter: 'heng',
+    gradient: [0xFFCFC8B5, 0xFFE7D9C2],
+    note: 'Tour, dîners, gala. Le costume noir.',
+  ),
+  PhotoAlbum(
+    id: 'al_memories',
+    title: 'Il y a 1 an',
+    emoji: '🌸',
+    tagFilter: 'memories',
+    gradient: [0xFFE89B7F, 0xFFFCC9A1],
+    note: 'Souvenirs auto-générés. Tu n\'avais pas demandé.',
+  ),
+];
 
 /// Indice révélé quand on zoome sur la photo et qu'on tape un point
 /// pulsant. Voix Shen — courte, sèche, parfois ironique.
@@ -335,5 +424,145 @@ const kPhotos = <PhotoItem>[
             'Bracelet de jade. Elle l\'a touché trois fois pendant le repas.',
       ),
     ],
+  ),
+  // ─── Album Papa (caché — code 1402) ───────────────────────────
+  PhotoItem(
+    day: 1,
+    monthLabel: 'Archives',
+    title: 'Papa, 5 ans, Fujian',
+    subtitle: '📷 1991. Papa avec Shen sur ses épaules.',
+    gradient: [0xFF8C6F47, 0xFF3D2A1E],
+    imagePath: 'assets/photos/ep1/pj_papa_shen_5ans.webp',
+    tags: ['papa'],
+    hidden: true,
+  ),
+  PhotoItem(
+    day: 1,
+    monthLabel: 'Archives',
+    title: 'Papa à Paris',
+    subtitle: '📷 1995. Devant la Tour Eiffel. Sans Maman.',
+    gradient: [0xFF8C6F47, 0xFF553C2A],
+    tags: ['papa'],
+    hidden: true,
+  ),
+  PhotoItem(
+    day: 1,
+    monthLabel: 'Archives',
+    title: 'Lettre',
+    subtitle: '📷 Une lettre de Papa, écriture chinoise.',
+    gradient: [0xFFFCE6D8, 0xFFE7B5C8],
+    tags: ['papa'],
+    hidden: true,
+  ),
+  PhotoItem(
+    day: 1,
+    monthLabel: 'Archives',
+    title: 'Mariage Papa-Maman',
+    subtitle: '📷 1996. Robe rouge brodée. Maman souriait encore.',
+    gradient: [0xFFB85A7C, 0xFF5C2A40],
+    tags: ['papa'],
+    hidden: true,
+  ),
+  PhotoItem(
+    day: 1,
+    monthLabel: 'Archives',
+    title: 'Enterrement',
+    subtitle: '📷 Février 2009. Maman au Père-Lachaise.',
+    gradient: [0xFF1F2937, 0xFF3D4858],
+    tags: ['papa'],
+    hidden: true,
+  ),
+  // ─── Memories — J-365 (« Il y a 1 an aujourd'hui ») ─────────
+  PhotoItem(
+    day: 1,
+    monthLabel: 'Souvenirs',
+    title: 'Il y a 1 an aujourd\'hui',
+    subtitle: '📷 Mai 2025. Premier jour de Shen seule à Belleville.',
+    gradient: [0xFFE89B7F, 0xFFFCC9A1],
+    tags: ['memories'],
+  ),
+  PhotoItem(
+    day: 30,
+    monthLabel: 'Souvenirs',
+    title: 'Il y a 1 an · juin',
+    subtitle: '📷 Soutenance de master. Camille à l\'arrière.',
+    gradient: [0xFFFCE6D8, 0xFFE7C5A8],
+    tags: ['memories'],
+  ),
+  // ─── Album Maman (photos avec / de Maman) ────────────────────
+  PhotoItem(
+    day: 5,
+    monthLabel: 'Juin',
+    title: 'Maman pelant un gingembre',
+    subtitle: '📷 Belleville, dimanche, 11h30.',
+    gradient: [0xFFFCE6D8, 0xFFE7B5C8],
+    imagePath: 'assets/photos/ep1/post_maman_plat.webp',
+    tags: ['maman', 'belleville'],
+  ),
+  PhotoItem(
+    day: 11,
+    monthLabel: 'Juin',
+    title: 'Maman à la fenêtre',
+    subtitle: '📷 19:42. Elle regardait dehors. Je n\'ai pas pu lui parler.',
+    gradient: [0xFFE89B7F, 0xFFFCC9A1],
+    imagePath: 'assets/photos/ep1/j11_maman_fenetre_paris.webp',
+    tags: ['maman', 'belleville'],
+  ),
+  // ─── Album Foch ─────────────────────────────────────────────
+  PhotoItem(
+    day: 9,
+    monthLabel: 'Juin',
+    title: 'Cuisine — 17:22',
+    subtitle: '📷 Premier soir à Foch. Plan de travail vide.',
+    gradient: [0xFF1F2937, 0xFF3D4858],
+    imagePath: 'assets/photos/ep1/j09_17h22_avenue_foch_cuisine.webp',
+    tags: ['foch', 'heng'],
+  ),
+  PhotoItem(
+    day: 9,
+    monthLabel: 'Juin',
+    title: 'Chambre Foch',
+    subtitle: '📷 Penderie partagée. Oreiller de droite, sent le neuf.',
+    gradient: [0xFF1F2937, 0xFF553C2A],
+    imagePath: 'assets/photos/ep1/j09_avenue_foch_chambre.webp',
+    tags: ['foch'],
+  ),
+  // ─── Album Heng ─────────────────────────────────────────────
+  PhotoItem(
+    day: 7,
+    monthLabel: 'Juin',
+    title: 'Tour Heng extérieur',
+    subtitle: '📷 11h00. L\'ascenseur monte au 47ᵉ.',
+    gradient: [0xFF1F2937, 0xFF111827],
+    imagePath: 'assets/photos/ep1/j07_11h00_tour_heng_exterieur.webp',
+    tags: ['heng'],
+  ),
+  PhotoItem(
+    day: 14,
+    monthLabel: 'Juin',
+    title: 'Long Jing gaiwan',
+    subtitle: '📷 20h30. Première infusion. Mes mains tremblent un peu.',
+    gradient: [0xFFCFC8B5, 0xFFE7D9C2],
+    imagePath: 'assets/photos/ep1/j14_long_jing_gaiwan.webp',
+    tags: ['heng'],
+  ),
+  // ─── Album Camille ──────────────────────────────────────────
+  PhotoItem(
+    day: 5,
+    monthLabel: 'Juin',
+    title: 'Croissants samedi matin',
+    subtitle: '📷 Le boulanger nous reconnaît. C\'est notre rituel.',
+    gradient: [0xFFFCE6D8, 0xFFFAE0CC],
+    imagePath: 'assets/photos/ep1/post_shen_camille_croissants.webp',
+    tags: ['camille'],
+  ),
+  PhotoItem(
+    day: 11,
+    monthLabel: 'Juin',
+    title: 'Camille sur Montmartre',
+    subtitle: '📷 Coucher de soleil. Le Code civil pouvait attendre.',
+    gradient: [0xFFE89B7F, 0xFFFCC9A1],
+    imagePath: 'assets/photos/ep1/post_camille_montmartre.webp',
+    tags: ['camille'],
   ),
 ];
