@@ -94,7 +94,71 @@ class ReglagesApp extends ConsumerWidget {
                   _Row(label: 'Signal', value: _signalLabel(p.signal)),
                   _Row(
                     label: 'Ne Pas Déranger',
-                    value: p.dndEnabled ? 'Activé' : 'Désactivé',
+                    value: p.dndEnabled ? 'Activé · 23h-7h' : 'Désactivé',
+                  ),
+                ]),
+                const SizedBox(height: 18),
+                // ── BATTERIE — santé qui décroît avec le jour
+                _Section(title: 'BATTERIE', children: [
+                  _Row(
+                    label: 'Capacité maximale',
+                    value: '${(98 - p.currentDay ~/ 4).clamp(70, 100)} %',
+                  ),
+                  _Row(
+                    label: 'Cycles de charge',
+                    value: '${312 + p.currentDay * 2}',
+                  ),
+                  _Row(
+                    label: 'Recharge optimisée',
+                    value: 'Activée',
+                  ),
+                ]),
+                const SizedBox(height: 18),
+                // ── TEMPS D'ÉCRAN
+                _Section(title: "TEMPS D'ÉCRAN · cette semaine", children: [
+                  _Row(label: 'Tinder', value: '${(2 + p.currentDay * 0.18).toStringAsFixed(1)} h'),
+                  _Row(label: 'Instagram', value: '${(3.4 + p.currentDay * 0.21).toStringAsFixed(1)} h'),
+                  _Row(label: 'Messages', value: '${(1.6 + p.currentDay * 0.09).toStringAsFixed(1)} h'),
+                  _Row(label: 'Spotify', value: '${(0.8 + p.currentDay * 0.05).toStringAsFixed(1)} h'),
+                  _Row(label: 'UberEats', value: '${(1.2 + p.currentDay * 0.08).toStringAsFixed(1)} h'),
+                  _Row(
+                      label: 'Total quotidien moyen',
+                      value: '${(4.2 + p.currentDay * 0.12).toStringAsFixed(1)} h'),
+                ]),
+                const SizedBox(height: 18),
+                // ── FACE ID & code
+                _Section(title: 'FACE ID & CODE', children: [
+                  const _Row(label: 'Face ID', value: 'Configuré'),
+                  const _Row(label: 'Code', value: '4 chiffres'),
+                  _Row(
+                    label: 'Échecs Face ID (24h)',
+                    value: '${(p.currentDay % 4)}',
+                  ),
+                ]),
+                const SizedBox(height: 18),
+                // ── MISE À JOUR
+                _Section(title: 'MISE À JOUR LOGICIELLE', children: [
+                  _Row(
+                    label: 'iOS actuel',
+                    value: p.currentDay < 6 ? '18.4' : '18.5',
+                  ),
+                  _Row(
+                    label: p.currentDay < 6
+                        ? 'Mise à jour disponible'
+                        : 'À jour',
+                    value: p.currentDay < 6 ? 'iOS 18.5 · 1,82 Go' : '✓',
+                  ),
+                ]),
+                const SizedBox(height: 18),
+                // ── À PROPOS
+                _Section(title: 'À PROPOS', children: [
+                  const _Row(label: 'Nom', value: 'iPhone de Shen'),
+                  const _Row(label: 'Modèle', value: 'iPhone 15 Pro'),
+                  const _Row(label: 'Capacité', value: '128 Go'),
+                  const _Row(label: 'IMEI', value: '359 247 081 642 195'),
+                  const _Row(
+                    label: 'Numéro de série',
+                    value: 'X2K9Q7L4MNTP',
                   ),
                 ]),
                 const SizedBox(height: 24),
