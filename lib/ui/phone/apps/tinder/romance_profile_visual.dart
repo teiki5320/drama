@@ -59,7 +59,8 @@ class RomanceAvatar extends StatelessWidget {
 
 /// Carte rectangulaire (4:5) utilisée pour les photos partagées dans
 /// les threads DM. Gradient + emoji + caption overlay en bas.
-class RomanceSharedPhoto extends StatelessWidget {
+/// Affiche un shimmer 600 ms à l'initialisation pour simuler un chargement.
+class RomanceSharedPhoto extends StatefulWidget {
   const RomanceSharedPhoto({
     super.key,
     required this.profile,
@@ -73,10 +74,40 @@ class RomanceSharedPhoto extends StatelessWidget {
   final int photoIdx;
 
   @override
+  State<RomanceSharedPhoto> createState() => _RomanceSharedPhotoState();
+}
+
+class _RomanceSharedPhotoState extends State<RomanceSharedPhoto>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _shimmer = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1000),
+  )..repeat();
+  bool _loaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 600), () {
+      if (mounted) {
+        setState(() => _loaded = true);
+        _shimmer.stop();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _shimmer.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final emoji = profile.photoEmojis.isNotEmpty
-        ? profile.photoEmojis[photoIdx % profile.photoEmojis.length]
-        : profile.emoji;
+    final emoji = widget.profile.photoEmojis.isNotEmpty
+        ? widget.profile
+            .photoEmojis[widget.photoIdx % widget.profile.photoEmojis.length]
+        : widget.profile.emoji;
     return AspectRatio(
       aspectRatio: 4 / 5,
       child: ClipRRect(
@@ -85,12 +116,34 @@ class RomanceSharedPhoto extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             _GradientCard(
-              gradient: profile.gradient,
+              gradient: widget.profile.gradient,
               emoji: emoji,
-              initial: profile.name.isNotEmpty ? profile.name[0] : '?',
+              initial:
+                  widget.profile.name.isNotEmpty ? widget.profile.name[0] : '?',
               size: RomanceAvatarSize.large,
               showInitial: false,
             ),
+            // Shimmer overlay tant que pas "chargé"
+            if (!_loaded)
+              AnimatedBuilder(
+                animation: _shimmer,
+                builder: (context, _) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment(-1 + _shimmer.value * 2, -1),
+                        end: Alignment(_shimmer.value * 2, 1),
+                        colors: [
+                          Colors.white.withValues(alpha: 0.0),
+                          Colors.white.withValues(alpha: 0.25),
+                          Colors.white.withValues(alpha: 0.0),
+                        ],
+                        stops: const [0.0, 0.5, 1.0],
+                      ),
+                    ),
+                  );
+                },
+              ),
             // Vignette + caption en bas
             Positioned(
               bottom: 0,
@@ -110,7 +163,7 @@ class RomanceSharedPhoto extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  caption,
+                  widget.caption,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.crimsonPro(
@@ -134,7 +187,7 @@ class RomanceSharedPhoto extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  time,
+                  widget.time,
                   style: GoogleFonts.inter(
                     fontSize: 9,
                     color: Colors.white,
