@@ -14,21 +14,27 @@ import 'phone_state_provider.dart';
 @immutable
 class RomanceThreadsState {
   final List<RomanceInstance> instances;
-  /// id template → jour du dernier spawn (pour cooldown).
+  /// id template → jour du dernier spawn (pour cooldown par archétype).
   final Map<String, int> lastSpawnDay;
+  /// Total minutes du dernier spawn quelconque (pour cooldown global 6h).
+  final int? lastGlobalSpawnTotal;
 
   const RomanceThreadsState({
     this.instances = const [],
     this.lastSpawnDay = const {},
+    this.lastGlobalSpawnTotal,
   });
 
   RomanceThreadsState copyWith({
     List<RomanceInstance>? instances,
     Map<String, int>? lastSpawnDay,
+    int? lastGlobalSpawnTotal,
   }) =>
       RomanceThreadsState(
         instances: instances ?? this.instances,
         lastSpawnDay: lastSpawnDay ?? this.lastSpawnDay,
+        lastGlobalSpawnTotal:
+            lastGlobalSpawnTotal ?? this.lastGlobalSpawnTotal,
       );
 
   /// Instances actives (non terminées).
@@ -71,6 +77,7 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
             .map((e) => RomanceInstance.fromJson(e as Map<String, dynamic>))
             .toList(),
         lastSpawnDay: spawn,
+        lastGlobalSpawnTotal: j['lastGlobalSpawnTotal'] as int?,
       );
     } catch (_) {
       // silencieux : on repart de zéro si le JSON est cassé
@@ -84,6 +91,7 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
       jsonEncode({
         'instances': state.instances.map((i) => i.toJson()).toList(),
         'lastSpawnDay': state.lastSpawnDay,
+        'lastGlobalSpawnTotal': state.lastGlobalSpawnTotal,
       }),
     );
   }
@@ -121,18 +129,39 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
     state = state.copyWith(
       instances: [...state.instances, instance],
       lastSpawnDay: {...state.lastSpawnDay, templateId: day},
+      lastGlobalSpawnTotal: day * 24 * 60 + hour * 60 + minute,
     );
     _persist();
     return instance;
   }
 
+  /// Cooldown global : minimum 6h game-time entre 2 spawns, peu importe
+  /// l'archétype. Évite de générer 3 arcs en 5 minutes si le joueur
+  /// swipe en rafale.
+  static const int _globalCooldownMinutes = 6 * 60;
+
   /// Spawn aléatoire pondéré — pioche un template éligible.
+  ///
+  /// Pondération mood-aware :
+  ///  - mood ≤ 3  → +50 % sur tons "noirs" (predator, manipulative,
+  ///                escort, ambiguous, catfish), -50 % sur "sains"
+  ///                (refuge, sincere, queer, fragile)
+  ///  - mood ≥ 7 → l'inverse
+  ///  - mood 4-6 → tirage neutre
   RomanceInstance? spawnRandom({
     required int day,
     required int hour,
     required int minute,
+    int mood = 5,
   }) {
     if (state.active.length >= _kMaxParallelArcs) return null;
+    // Cooldown global
+    if (state.lastGlobalSpawnTotal != null) {
+      final nowTotal = day * 24 * 60 + hour * 60 + minute;
+      if (nowTotal - state.lastGlobalSpawnTotal! < _globalCooldownMinutes) {
+        return null;
+      }
+    }
     final eligible = kRomanceTemplates.where((t) {
       if (day < t.minStartDay) return false;
       if (t.maxStartDay != null && day > t.maxStartDay!) return false;
@@ -141,11 +170,52 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
       return true;
     }).toList();
     if (eligible.isEmpty) return null;
-    // Tirage pondéré
-    final totalW = eligible.fold<double>(0, (s, t) => s + t.spawnWeight);
+    // Tirage pondéré mood-aware
+    double moodMultiplier(RomanceTone tone) {
+      if (mood <= 3) {
+        // Mood très bas : tons noirs amplifiés, tons sains réduits
+        switch (tone) {
+          case RomanceTone.predator:
+          case RomanceTone.manipulative:
+          case RomanceTone.escort:
+          case RomanceTone.ambiguous:
+          case RomanceTone.catfish:
+            return 1.5;
+          case RomanceTone.refuge:
+          case RomanceTone.sincere:
+          case RomanceTone.queer:
+          case RomanceTone.fragile:
+            return 0.5;
+          default:
+            return 1.0;
+        }
+      } else if (mood >= 7) {
+        // Mood élevé : l'inverse
+        switch (tone) {
+          case RomanceTone.refuge:
+          case RomanceTone.sincere:
+          case RomanceTone.queer:
+          case RomanceTone.fragile:
+            return 1.5;
+          case RomanceTone.predator:
+          case RomanceTone.manipulative:
+          case RomanceTone.escort:
+          case RomanceTone.catfish:
+            return 0.5;
+          default:
+            return 1.0;
+        }
+      }
+      return 1.0;
+    }
+
+    final totalW = eligible.fold<double>(
+      0,
+      (s, t) => s + t.spawnWeight * moodMultiplier(t.tone),
+    );
     var roll = _rng.nextDouble() * totalW;
     for (final t in eligible) {
-      roll -= t.spawnWeight;
+      roll -= t.spawnWeight * moodMultiplier(t.tone);
       if (roll <= 0) {
         return spawn(
             templateId: t.id, day: day, hour: hour, minute: minute);
