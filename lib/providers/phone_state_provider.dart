@@ -34,6 +34,25 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     state = state.copyWith(mood: newMood.clamp(0, 10));
   }
 
+  /// Ajoute un mouvement bancaire dynamique. Utilisé par UberEats pour
+  /// créditer Shen à chaque course livrée (course + tip).
+  void addBankMovement({
+    required String label,
+    required int amount,
+    required String emoji,
+  }) {
+    final mvt = DynamicMovement(
+      label: label,
+      amount: amount,
+      day: state.currentDay,
+      time: state.timeLabel,
+      emoji: emoji,
+    );
+    state = state.copyWith(
+      dynamicMovements: [...state.dynamicMovements, mvt],
+    );
+  }
+
   /// Avance l'heure de `minutes`. Roule sur 24h. Déclenche les
   /// événements DayEvent qui tombent dans l'intervalle franchi.
   void advanceTime(int minutes) {
