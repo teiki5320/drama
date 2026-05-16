@@ -58,6 +58,8 @@ class AppStoreApp extends ConsumerWidget {
           Expanded(
             child: ListView(
               children: [
+                // ── Today : carte éditoriale featured ────────────
+                _TodayFeaturedCard(),
                 _SectionHeader(title: 'À DÉCOUVRIR'),
                 if (notInstalled.isEmpty)
                   Padding(
@@ -181,13 +183,20 @@ class _AppRow extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 56,
-            height: 56,
+            width: 60,
+            height: 60,
             decoration: BoxDecoration(
               color: meta.color,
-              borderRadius: BorderRadius.circular(13),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: Icon(meta.icon, color: meta.fgColor, size: 30),
+            child: Icon(meta.icon, color: meta.fgColor, size: 32),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -197,7 +206,7 @@ class _AppRow extends StatelessWidget {
                 Text(
                   meta.label,
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: const Color(0xFF1A1A1A),
                   ),
@@ -208,10 +217,34 @@ class _AppRow extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.inter(
-                    fontSize: 11,
+                    fontSize: 12,
                     color: Colors.grey.shade600,
                     height: 1.3,
                   ),
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    const Icon(Icons.star,
+                        color: Color(0xFFFF9500), size: 11),
+                    const SizedBox(width: 2),
+                    Text(
+                      _ratingFor(meta.id),
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        color: Colors.grey.shade500,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '· ${_reviewsFor(meta.id)}',
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
                 ),
                 if (secondaryAction != null)
                   Padding(
@@ -259,4 +292,217 @@ class _AppRow extends StatelessWidget {
       ),
     );
   }
+}
+
+String _ratingFor(String id) {
+  return switch (id) {
+    'tinder' => '4.2',
+    'instagram' => '4.6',
+    'spotify' => '4.8',
+    'whatsapp' => '4.7',
+    'banque' => '4.1',
+    'ubereats' => '3.8',
+    'photos' => '4.5',
+    'notes' => '4.6',
+    'maps' => '4.4',
+    'cloud' => '3.9',
+    _ => '4.3',
+  };
+}
+
+String _reviewsFor(String id) {
+  return switch (id) {
+    'tinder' => '8,4 M',
+    'instagram' => '12,8 M',
+    'spotify' => '6,2 M',
+    'whatsapp' => '14,1 M',
+    'banque' => '482 K',
+    'ubereats' => '1,2 M',
+    'maps' => '892 K',
+    _ => '128 K',
+  };
+}
+
+/// Carte « Today » éditoriale au-dessus de la liste — change selon le
+/// jour pour évoquer le rythme d'une vraie page d'accueil App Store.
+class _TodayFeaturedCard extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    final featured = _featuredFor(day);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 14),
+      child: Container(
+        height: 220,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(featured.gradient.first),
+              Color(featured.gradient.last),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.12),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              featured.eyebrow.toUpperCase(),
+              style: GoogleFonts.inter(
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                color: Colors.white.withValues(alpha: 0.8),
+                letterSpacing: 2,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              featured.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.crimsonPro(
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+                fontStyle: FontStyle.italic,
+                color: Colors.white,
+                height: 1.05,
+              ),
+            ),
+            const Spacer(),
+            Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.25),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(featured.emoji,
+                      style: const TextStyle(fontSize: 24)),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        featured.app,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        featured.tagline,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          color: Colors.white.withValues(alpha: 0.85),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Text(
+                    'OBTENIR',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      color: const Color(0xFF007AFF),
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _Featured _featuredFor(int day) {
+    // Rotation hebdomadaire pour donner l'impression d'une vraie homepage
+    final pool = <_Featured>[
+      _Featured(
+        eyebrow: 'app du jour',
+        title: 'Comprendre le silence d\'une mère',
+        app: 'Notes',
+        emoji: '📔',
+        tagline: 'Écrire sans envoyer. Bic vert recommandé.',
+        gradient: [0xFFD97757, 0xFF6B3D2A],
+      ),
+      _Featured(
+        eyebrow: 'sélection éditoriale',
+        title: 'Investir à 24 ans, sans paniquer',
+        app: 'Banque',
+        emoji: '🏦',
+        tagline: 'PEA, sparkline, plus-value latente.',
+        gradient: [0xFF1F4F8B, 0xFF0E2A50],
+      ),
+      _Featured(
+        eyebrow: 'collection',
+        title: 'Soirs où Paris s\'éteint sans toi',
+        app: 'Spotify',
+        emoji: '🎻',
+        tagline: 'Playlists pour pluvieux fonctionnels.',
+        gradient: [0xFF1DB954, 0xFF0F5E2A],
+      ),
+      _Featured(
+        eyebrow: 'jeu du jour',
+        title: 'Quand tu swipes pour ne pas pleurer',
+        app: 'Tinder',
+        emoji: '🔥',
+        tagline: '27 archétypes. Aucun ne te sauvera.',
+        gradient: [0xFFFD297B, 0xFF8B164A],
+      ),
+      _Featured(
+        eyebrow: 'app à découvrir',
+        title: 'La carte de tes silences',
+        app: 'Plans',
+        emoji: '🗺️',
+        tagline: 'Lieux visités, lieux fuis, lieux jamais nommés.',
+        gradient: [0xFF34A853, 0xFF1B5E2C],
+      ),
+    ];
+    return pool[(day ~/ 3) % pool.length];
+  }
+}
+
+class _Featured {
+  final String eyebrow;
+  final String title;
+  final String app;
+  final String emoji;
+  final String tagline;
+  final List<int> gradient;
+  const _Featured({
+    required this.eyebrow,
+    required this.title,
+    required this.app,
+    required this.emoji,
+    required this.tagline,
+    required this.gradient,
+  });
 }
