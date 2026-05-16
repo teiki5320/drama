@@ -497,6 +497,143 @@ class _InvestissementView extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: 8),
               child: _StockRow(stock: s),
             )),
+        const SizedBox(height: 16),
+        const _MarketNewsFeed(),
+        const SizedBox(height: 24),
+      ],
+    );
+  }
+}
+
+/// Feed de news bourse — affiche les 8 dernières news jusqu'à `currentDay`.
+class _MarketNewsFeed extends ConsumerWidget {
+  const _MarketNewsFeed();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    final news = kMarketNews
+        .where((n) => n.day <= day)
+        .toList()
+        .reversed
+        .take(8)
+        .toList();
+    if (news.isEmpty) return const SizedBox.shrink();
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.newspaper,
+                  color: Color(0xFF1A1A1A), size: 18),
+              const SizedBox(width: 8),
+              Text(
+                'Actualités marché',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF1A1A1A),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          for (final n in news) ...[
+            _NewsRow(news: n),
+            if (n != news.last)
+              Divider(height: 16, color: Colors.grey.shade200),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _NewsRow extends StatelessWidget {
+  const _NewsRow({required this.news});
+  final MarketNews news;
+
+  @override
+  Widget build(BuildContext context) {
+    Color sentimentColor() {
+      switch (news.sentiment) {
+        case '+':
+          return const Color(0xFF2E7D32);
+        case '-':
+          return const Color(0xFFE53935);
+        default:
+          return Colors.grey.shade500;
+      }
+    }
+    IconData sentimentIcon() {
+      switch (news.sentiment) {
+        case '+':
+          return Icons.trending_up;
+        case '-':
+          return Icons.trending_down;
+        default:
+          return Icons.trending_flat;
+      }
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          decoration: BoxDecoration(
+            color: sentimentColor().withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(
+            news.ticker,
+            style: GoogleFonts.inter(
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              color: sentimentColor(),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                news.headline,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF1A1A1A),
+                  height: 1.3,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                news.snippet,
+                style: GoogleFonts.inter(
+                  fontSize: 11,
+                  color: Colors.grey.shade600,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                'J${news.day} · ${news.time}',
+                style: GoogleFonts.inter(
+                  fontSize: 9,
+                  color: Colors.grey.shade400,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Icon(sentimentIcon(), color: sentimentColor(), size: 14),
       ],
     );
   }

@@ -324,6 +324,7 @@ class StockPosition {
 }
 
 const kStocks = <StockPosition>[
+  // ── Actions « stables » fictives ───────────────────────────────
   StockPosition(
     ticker: 'LUG',
     name: 'Lu Group',
@@ -348,9 +349,9 @@ const kStocks = <StockPosition>[
     sector: 'Banque',
     price: 69.10,
     change24h: 0.1,
-    description:
-        'Banque commerciale historique. Stable, peu de croissance.',
+    description: 'Banque commerciale historique. Stable, peu de croissance.',
   ),
+  // ── Actions de l'écosystème Heng ───────────────────────────────
   StockPosition(
     ticker: 'HENG',
     name: 'Heng International',
@@ -362,13 +363,88 @@ const kStocks = <StockPosition>[
         'Le groupe de Tristan. Volatile, dépend des contrats asiatiques.',
   ),
   StockPosition(
-    ticker: 'HAN',
+    ticker: 'HANA',
     name: 'Hanami Café Co.',
     sector: 'Restauration',
     price: 12.40,
     change24h: 2.1,
     description:
         'Chaîne de cafés artisanaux. Action pas chère. Opportunité ou piège.',
+  ),
+  // ── Nouvelles actions PR79 ─────────────────────────────────────
+  StockPosition(
+    ticker: 'PCC',
+    name: 'Le Petit Cambodge Restau Group',
+    sector: 'Restauration',
+    price: 24.80,
+    change24h: 0.4,
+    description: 'Holding 12 restos asiatiques Paris. Croissance lente régulière.',
+  ),
+  StockPosition(
+    ticker: 'UEAT',
+    name: 'UberFood',
+    sector: 'Tech / Livraison',
+    price: 67.20,
+    change24h: -1.2,
+    description: 'Plateforme de livraison. Volatile. Investissez-vous en vous-même.',
+  ),
+  StockPosition(
+    ticker: 'TND',
+    name: 'Tinder Match Holdings',
+    sector: 'Tech / Réseaux',
+    price: 38.40,
+    change24h: 0.7,
+    description: 'Match Group. Recurring revenue via Platinum.',
+  ),
+  StockPosition(
+    ticker: 'TENO',
+    name: 'Tenon Médical SA',
+    sector: 'Santé',
+    price: 156.80,
+    change24h: 0.2,
+    description: 'Groupement hospitalier privé. Le traitement de Maman les enrichit.',
+  ),
+  StockPosition(
+    ticker: 'BNPL',
+    name: 'BNP Paribas',
+    sector: 'Banque',
+    price: 64.50,
+    change24h: 0.3,
+    description: 'La banque qui vous a refusé un crédit. Vous pouvez prendre votre revanche.',
+  ),
+  StockPosition(
+    ticker: 'LVMH',
+    name: 'LVMH',
+    sector: 'Luxe',
+    price: 728.00,
+    change24h: -0.5,
+    unlockedAtDay: 9,
+    description: 'Mme Heng investit là-dedans. Action chère, dividendes solides.',
+  ),
+  StockPosition(
+    ticker: 'AAPL',
+    name: 'Apple Inc.',
+    sector: 'Tech US',
+    price: 192.30,
+    change24h: 0.6,
+    description: 'L\'entreprise qui fait votre téléphone. Méta-référence.',
+  ),
+  StockPosition(
+    ticker: 'NTFX',
+    name: 'Netflix',
+    sector: 'Tech / Streaming',
+    price: 612.50,
+    change24h: 1.1,
+    description: 'Streaming. Volatile sur les annonces de séries.',
+  ),
+  StockPosition(
+    ticker: 'AIRF',
+    name: 'Air France-KLM',
+    sector: 'Transport',
+    price: 11.40,
+    change24h: 2.4,
+    unlockedAtDay: 30,
+    description: 'Action très volatile. Tristan voyage. Vous voyagerez bientôt.',
   ),
 ];
 
@@ -382,12 +458,165 @@ const int kStartingBalance = 2384;
 ///  - HAN s'effondre J9 (Hanami est racheté par Lu Group, rumeur).
 ///  - LUG monte J10 (NeoCity gagne un appel d'offres).
 const _kStockEvents = <String, Map<int, double>>{
-  'HENG': {7: 0.92, 8: 1.12, 14: 1.18},
-  'LUG': {10: 1.06, 13: 1.04},
-  'HAN': {9: 0.78, 11: 0.85},
-  'NCT': {6: 1.02, 12: 0.97},
+  'HENG': {7: 0.92, 8: 1.12, 14: 1.18, 22: 1.08, 30: 1.22, 36: 0.94, 45: 0.86},
+  'LUG': {10: 1.06, 13: 1.04, 25: 0.95},
+  'HANA': {9: 0.78, 11: 0.85, 20: 1.15, 35: 0.92},
+  'NCT': {6: 1.02, 12: 0.97, 28: 1.04},
   'NCB': {3: 0.96, 10: 1.02},
+  'PCC': {12: 1.05, 28: 1.08},
+  'UEAT': {3: 0.93, 14: 1.06, 20: 0.88, 45: 0.95},
+  'TND': {7: 1.04, 25: 0.92},
+  'TENO': {2: 1.03, 9: 1.05, 28: 1.07, 45: 1.12},
+  'BNPL': {3: 1.02, 22: 0.98},
+  'LVMH': {20: 1.04, 30: 1.06, 45: 0.97},
+  'AAPL': {15: 1.03},
+  'NTFX': {18: 1.08, 35: 0.92},
+  'AIRF': {32: 1.15, 40: 0.88, 80: 1.10},
 };
+
+/// News bourse scénarisées — déclenchées à des jours précis. Affichées
+/// dans le feed news de l'onglet Investissement.
+class MarketNews {
+  final int day;
+  final String time;
+  final String ticker;
+  final String headline;
+  final String snippet;
+  /// '+' positive, '-' negative, '=' neutre.
+  final String sentiment;
+
+  const MarketNews({
+    required this.day,
+    required this.time,
+    required this.ticker,
+    required this.headline,
+    required this.snippet,
+    this.sentiment = '=',
+  });
+}
+
+const kMarketNews = <MarketNews>[
+  MarketNews(
+    day: 2,
+    time: '09:14',
+    ticker: 'TENO',
+    headline: 'TENO Médical : résultats trimestriels au-dessus des attentes',
+    snippet: '+8 % sur le segment oncologie privé.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 3,
+    time: '14:42',
+    ticker: 'BNPL',
+    headline: 'BNP : refus crédits jeunes en hausse',
+    snippet: 'Politique de risque resserrée. -3 % côté image.',
+    sentiment: '-',
+  ),
+  MarketNews(
+    day: 6,
+    time: '08:32',
+    ticker: 'HENG',
+    headline: 'Heng International : rumeur de gros contrat asiatique',
+    snippet: 'Source : Bloomberg. Marché en attente.',
+    sentiment: '=',
+  ),
+  MarketNews(
+    day: 7,
+    time: '11:14',
+    ticker: 'HENG',
+    headline: 'HENG : -8 % en intra-day, annonce reportée',
+    snippet: 'Le marché vacille. Acheter le creux ?',
+    sentiment: '-',
+  ),
+  MarketNews(
+    day: 8,
+    time: '17:48',
+    ticker: 'HENG',
+    headline: 'HENG : contrat signé. +12 % à la clôture.',
+    snippet: 'Le marché rattrape la déception d\'hier.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 9,
+    time: '10:32',
+    ticker: 'HANA',
+    headline: 'Hanami Café : rumeur de rachat par Lu Group',
+    snippet: '-22 % en deux jours. Panique.',
+    sentiment: '-',
+  ),
+  MarketNews(
+    day: 10,
+    time: '14:18',
+    ticker: 'LUG',
+    headline: 'Lu Group : appel d\'offres remporté NeoCity',
+    snippet: '+6 %. Valorisation revue à la hausse.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 14,
+    time: '23:08',
+    ticker: 'HENG',
+    headline: 'HENG : annonce d\'une expansion Hong Kong',
+    snippet: '+18 %. Tristan Heng cité par Le Figaro.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 20,
+    time: '09:14',
+    ticker: 'HANA',
+    headline: 'Hanami Café : rebond, démentis du rachat',
+    snippet: '+15 %. Les courageux récupèrent.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 22,
+    time: '10:08',
+    ticker: 'HENG',
+    headline: 'HENG : 2e acompte versé par les Heng aux familles',
+    snippet: '+8 %. Dossier propre.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 30,
+    time: '18:48',
+    ticker: 'HENG',
+    headline: 'HENG : gala caritatif, photos viralement reprises',
+    snippet: '+22 %. La femme qui était à droite de Mme Heng.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 32,
+    time: '14:00',
+    ticker: 'AIRF',
+    headline: 'Air France : nouvelle ligne Paris-Hong Kong daily',
+    snippet: '+15 %. Vous prenez le premier vol.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 36,
+    time: '11:14',
+    ticker: 'HENG',
+    headline: 'HENG : profit-warning sur le segment européen',
+    snippet: '-6 %. Le marché s\'inquiète.',
+    sentiment: '-',
+  ),
+  MarketNews(
+    day: 45,
+    time: '08:42',
+    ticker: 'TENO',
+    headline: 'TENO Médical : record d\'admissions oncologie',
+    snippet: '+12 %. Sans ironie : c\'est votre traitement.',
+    sentiment: '+',
+  ),
+  MarketNews(
+    day: 45,
+    time: '14:32',
+    ticker: 'HENG',
+    headline: 'HENG : Tristan Heng démissionne du board',
+    snippet: '-14 %. Surprise totale du marché.',
+    sentiment: '-',
+  ),
+];
 
 /// Calcule le prix d'un ticker à un jour donné. Combine :
 ///  - Prix de base (`StockPosition.price`).
