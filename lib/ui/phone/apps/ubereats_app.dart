@@ -99,6 +99,16 @@ class _UberEatsAppState extends ConsumerState<UberEatsApp> {
                           ref
                               .read(uberStatsProvider.notifier)
                               .acceptCourse(course);
+                          // Crédite Banque
+                          final restaurant =
+                              restaurantById(course.restaurantId);
+                          final cents = (course.totalPayout * 100).round();
+                          ref.read(phoneStateProvider.notifier).addBankMovement(
+                                label:
+                                    'UberEats · ${restaurant.name}',
+                                amount: cents ~/ 100,
+                                emoji: '🛵',
+                              );
                         }
                         setState(() {
                           _acceptedCourseIds.add(id);
@@ -107,8 +117,6 @@ class _UberEatsAppState extends ConsumerState<UberEatsApp> {
                       },
                       onRefuse: () {
                         HapticFeedback.lightImpact();
-                        // Refus → on enregistre dans uberStatsProvider
-                        // pour impacter l'acceptance rate
                       },
                       onSwitch: () => setState(() => _proMode = false),
                     )

@@ -7,6 +7,7 @@ import '../../../data/notes_data.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../../../providers/relationships_provider.dart';
 import '../../../providers/romance_traces_provider.dart';
+import '../../../providers/ubereats_traces_provider.dart';
 import '../status_bar.dart';
 import 'carnet_view.dart';
 
@@ -34,7 +35,12 @@ class NotesApp extends ConsumerWidget {
         .watch(romanceTracesNotesProvider)
         .where((n) => n.day <= day)
         .toList();
-    final notes = [...canonNotes, ...traceNotes]
+    // Notes générées par les courses UberEats notables.
+    final uberNotes = ref
+        .watch(ubereatsTracesNotesProvider)
+        .where((n) => n.day <= day)
+        .toList();
+    final notes = [...canonNotes, ...traceNotes, ...uberNotes]
       ..sort((a, b) {
         // Tri chronologique inverse : plus récent en haut
         if (a.day != b.day) return b.day.compareTo(a.day);
