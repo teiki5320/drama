@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/phone_apps.dart';
+import '../../providers/messages_arcs_provider.dart';
 import '../../providers/phone_state_provider.dart';
 import '../../providers/romance_threads_provider.dart';
 
@@ -63,6 +64,10 @@ class _AppIconState extends ConsumerState<AppIcon>
     // Cas spécial Tinder : on ajoute les arcs romance en attente.
     if (widget.meta.id == 'tinder') {
       badgeCount += ref.watch(romanceUnreadCountProvider);
+    }
+    // Cas spécial Messages : on ajoute les arcs Messages en attente.
+    if (widget.meta.id == 'messages') {
+      badgeCount += ref.watch(messagesArcsUnreadCountProvider);
     }
     // Détection : badge ↑ → pulse + scale-in
     if (badgeCount > _lastBadge) {
