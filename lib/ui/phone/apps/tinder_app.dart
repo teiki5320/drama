@@ -5,8 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../data/romance_templates.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/romance_threads_provider.dart';
 import '../status_bar.dart';
+import 'tinder/romance_threads_list.dart';
 
 /// Tinder — version jeu-dans-le-jeu. Trois onglets : Feed (swipe),
 /// Likes reçus (dynamique), Profil (Shen elle-même éditable selon
@@ -30,7 +33,7 @@ class _TinderAppState extends ConsumerState<TinderApp>
   int _superLikes = 0;
   int _swipesRestants = 50;
   int _currentPhotoIdx = 0; // photo affichée sur la carte du haut
-  int _tabIdx = 0; // 0=feed, 1=likes reçus, 2=profil
+  int _tabIdx = 0; // 0=feed, 1=likes reçus, 2=messages, 3=profil
   bool _platinumPopupShown = false;
   bool _noteAfter10Sent = false;
   final _rng = Random();
@@ -60,6 +63,11 @@ class _TinderAppState extends ConsumerState<TinderApp>
 
   void _onMyProfileTap() {
     HapticFeedback.selectionClick();
+    setState(() => _tabIdx = 3);
+  }
+
+  void _onMessagesTap() {
+    HapticFeedback.selectionClick();
     setState(() => _tabIdx = 2);
   }
 
@@ -71,6 +79,49 @@ class _TinderAppState extends ConsumerState<TinderApp>
   void _onFeedTap() {
     HapticFeedback.selectionClick();
     setState(() => _tabIdx = 0);
+  }
+
+  /// Probabilité qu'un right-swipe sur un profil non-canon spawn un
+  /// arc de romance. Pondéré pour qu'on en ait régulièrement sans
+  /// noyer le joueur.
+  static const double _romanceSpawnProba = 0.45;
+
+  void _maybeSpawnRomance(_Match m) {
+    // Pas pour les gags / ghosts
+    if (m.isCanonGag || m.ghost) return;
+    if (_rng.nextDouble() > _romanceSpawnProba) return;
+    final p = ref.read(phoneStateProvider);
+    // Pioche aléatoire pondérée parmi les templates éligibles. Pour PR1
+    // on n'a qu'un seul template ; il sera spawn si cooldown ok.
+    final inst = ref.read(romanceThreadsProvider.notifier).spawnRandom(
+          day: p.currentDay,
+          hour: p.hour,
+          minute: p.minute,
+        );
+    if (inst != null) {
+      // Tick immédiat pour faire apparaître les premiers messages.
+      ref.read(romanceThreadsProvider.notifier).tickAll(
+            day: p.currentDay,
+            hour: p.hour,
+            minute: p.minute,
+          );
+      // Toast discret pour notifier
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(milliseconds: 1800),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color(0xFFFD297B),
+          content: Text(
+            'Nouvelle conversation — onglet Messages',
+            style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+          ),
+        ),
+      );
+    }
+    // Sinon : silencieux (cooldown ou max parallèle atteint)
+    // ignore: avoid_print
+    assert(kRomanceTemplates.isNotEmpty);
   }
 
   void _resolve(bool liked, {bool superLike = false}) {
@@ -111,6 +162,11 @@ class _TinderAppState extends ConsumerState<TinderApp>
     });
     if (triggerMatch) _showMatch(m);
     if (invisibleSwipe) _showInvisible();
+    // Si le swipe right n'est pas tombé sur l'invisible 80 %, on
+    // tente un spawn de romance — c'est l'entrée des arcs.
+    if (liked && !invisibleSwipe && !m.ghost && !m.isCanonGag) {
+      _maybeSpawnRomance(m);
+    }
     // Note Shen brouillon après 10 swipes
     final totalSwipes = _likes + _nopes + _superLikes;
     if (totalSwipes >= 10 && !_noteAfter10Sent) {
@@ -362,22 +418,24 @@ class _TinderAppState extends ConsumerState<TinderApp>
               ref.read(phoneStateProvider.notifier).closeApp();
             },
           ),
-          // 3 tabs : Flamme / Cœur (likes) / Profil
+          // 4 tabs : Flamme / Cœur / Messages / Profil
           _TinderTabs(
             tabIdx: _tabIdx,
             onFeed: _onFeedTap,
             onLikes: _onLikesTap,
+            onMessages: _onMessagesTap,
             onProfile: _onMyProfileTap,
           ),
           Expanded(
-            child: _tabIdx == 0
-                ? _buildFeed()
-                : _tabIdx == 1
-                    ? _LikesReceivedView(
-                        likesRecus: _computeLikesRecus(p.currentDay),
-                        onPlatinum: _showPlatinumPopup,
-                      )
-                    : _MyProfileView(mood: p.mood, day: p.currentDay),
+            child: switch (_tabIdx) {
+              0 => _buildFeed(),
+              1 => _LikesReceivedView(
+                  likesRecus: _computeLikesRecus(p.currentDay),
+                  onPlatinum: _showPlatinumPopup,
+                ),
+              2 => const RomanceThreadsList(),
+              _ => _MyProfileView(mood: p.mood, day: p.currentDay),
+            },
           ),
         ],
       ),
@@ -597,11 +655,13 @@ class _TinderTabs extends StatelessWidget {
     required this.tabIdx,
     required this.onFeed,
     required this.onLikes,
+    required this.onMessages,
     required this.onProfile,
   });
   final int tabIdx;
   final VoidCallback onFeed;
   final VoidCallback onLikes;
+  final VoidCallback onMessages;
   final VoidCallback onProfile;
 
   @override
@@ -616,7 +676,11 @@ class _TinderTabs extends StatelessWidget {
               active: tabIdx == 0,
               onTap: onFeed),
           _TabIcon(icon: Icons.favorite, active: tabIdx == 1, onTap: onLikes),
-          _TabIcon(icon: Icons.person, active: tabIdx == 2, onTap: onProfile),
+          _TabIcon(
+              icon: Icons.chat_bubble,
+              active: tabIdx == 2,
+              onTap: onMessages),
+          _TabIcon(icon: Icons.person, active: tabIdx == 3, onTap: onProfile),
         ],
       ),
     );
