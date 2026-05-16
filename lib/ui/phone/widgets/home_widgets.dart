@@ -313,6 +313,70 @@ class _TimeSkipWidgetState extends ConsumerState<TimeSkipWidget>
   }
 }
 
+/// Bandeau « J-X · Traitement Maman » qui s'affiche en haut du home.
+/// Couleur qui s'intensifie à mesure que J45 approche.
+class DeadlineBanner extends ConsumerWidget {
+  const DeadlineBanner({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    const targetDay = 45;
+    final delta = targetDay - day;
+    if (delta < -5) return const SizedBox.shrink();
+    final isPast = delta < 0;
+    final isUrgent = delta >= 0 && delta <= 14;
+    final color = isPast
+        ? const Color(0xFF1F2937)
+        : isUrgent
+            ? const Color(0xFFC62828)
+            : const Color(0xFFD97757);
+    final label = isPast
+        ? 'Deadline dépassée'
+        : delta == 0
+            ? 'AUJOURD\'HUI · Traitement Maman'
+            : delta == 1
+                ? 'DEMAIN · Traitement Maman'
+                : 'J-$delta · Traitement Maman';
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withValues(alpha: 0.5), width: 1),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.hourglass_bottom, color: color, size: 16),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                label,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 0.3,
+                ),
+              ),
+            ),
+            Text(
+              '18 000 €',
+              style: GoogleFonts.inter(
+                fontSize: 11,
+                color: Colors.white.withValues(alpha: 0.85),
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// Carte glassmorphism semi-transparente commune à tous les widgets.
 class _GlassCard extends StatelessWidget {
   const _GlassCard({required this.child});
