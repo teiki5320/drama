@@ -70,7 +70,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       title: 'Ce téléphone',
       epigraph:
           'Tout passe par là.\n'
-          'Les SMS de Maman, les calculs, les carnets, les comptes.\n'
+          'Les SMS de Maman, les calculs, les carnets, les comptes —\n'
+          'au fur et à mesure que la vie s\'ouvre.\n'
           'Tu me liras à travers ce que je tape — et ce que je tais.',
       attribution: 'Mode d\'emploi',
       gradient: [Color(0xFF14213D), Color(0xFF1F2937), Color(0xFF2A2E3F)],

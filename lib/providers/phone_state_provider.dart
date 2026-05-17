@@ -91,6 +91,11 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     final beat = beatAt(episodeId: next.episodeId, beatIdx: next.beatIdx);
     if (beat == null) return; // fin de l'histoire
     final crossesNight = beat.day > from.currentDay;
+    // Si le beat débloque des apps (premier appel → telephone,
+    // premier carnet → notes…), on les ajoute au set unlockedApps.
+    final newUnlocked = beat.unlocksApps.isEmpty
+        ? from.unlockedApps
+        : {...from.unlockedApps, ...beat.unlocksApps};
     state = state.copyWith(
       currentEpisodeId: next.episodeId,
       currentBeatIdx: next.beatIdx,
@@ -102,6 +107,7 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       battery: crossesNight
           ? (from.battery - 15).clamp(0, 100)
           : (from.battery - 1).clamp(0, 100),
+      unlockedApps: newUnlocked,
     );
     // Si le beat a une scène de transition canonique, on l'affiche.
     // Sinon, quand on traverse une nuit, on génère une transition
@@ -408,9 +414,13 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       caption: caption,
       imagePath: imagePath,
     );
+    // La première photo prise débloque l'app Photos (galerie) sur le
+    // home. Ensuite le set inclut déjà l'id, donc l'ajout est no-op.
+    final unlocked = {...state.unlockedApps, 'photos'};
     state = state.copyWith(
       userPhotos: [...state.userPhotos, photo],
       battery: (state.battery - 1).clamp(0, 100),
+      unlockedApps: unlocked,
     );
     return photo;
   }
