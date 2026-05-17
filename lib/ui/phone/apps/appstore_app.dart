@@ -417,22 +417,9 @@ class _TodayFeaturedCard extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Text(
-                    'OBTENIR',
-                    style: GoogleFonts.inter(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF007AFF),
-                      letterSpacing: 0.4,
-                    ),
-                  ),
+                _FeaturedInstallButton(
+                  appId: featured.appId,
+                  appLabel: featured.app,
                 ),
               ],
             ),
@@ -449,6 +436,7 @@ class _TodayFeaturedCard extends ConsumerWidget {
         eyebrow: 'app du jour',
         title: 'Comprendre le silence d\'une mère',
         app: 'Notes',
+        appId: 'notes',
         emoji: '📔',
         tagline: 'Écrire sans envoyer. Bic vert recommandé.',
         gradient: [0xFFD97757, 0xFF6B3D2A],
@@ -457,6 +445,7 @@ class _TodayFeaturedCard extends ConsumerWidget {
         eyebrow: 'sélection éditoriale',
         title: 'Investir à 24 ans, sans paniquer',
         app: 'Banque',
+        appId: 'banque',
         emoji: '🏦',
         tagline: 'PEA, sparkline, plus-value latente.',
         gradient: [0xFF1F4F8B, 0xFF0E2A50],
@@ -465,6 +454,7 @@ class _TodayFeaturedCard extends ConsumerWidget {
         eyebrow: 'collection',
         title: 'Soirs où Paris s\'éteint sans toi',
         app: 'Spotify',
+        appId: 'spotify',
         emoji: '🎻',
         tagline: 'Playlists pour pluvieux fonctionnels.',
         gradient: [0xFF1DB954, 0xFF0F5E2A],
@@ -473,6 +463,7 @@ class _TodayFeaturedCard extends ConsumerWidget {
         eyebrow: 'jeu du jour',
         title: 'Quand tu swipes pour ne pas pleurer',
         app: 'Tinder',
+        appId: 'tinder',
         emoji: '🔥',
         tagline: '27 archétypes. Aucun ne te sauvera.',
         gradient: [0xFFFD297B, 0xFF8B164A],
@@ -481,6 +472,7 @@ class _TodayFeaturedCard extends ConsumerWidget {
         eyebrow: 'app à découvrir',
         title: 'La carte de tes silences',
         app: 'Plans',
+        appId: 'maps',
         emoji: '🗺️',
         tagline: 'Lieux visités, lieux fuis, lieux jamais nommés.',
         gradient: [0xFF34A853, 0xFF1B5E2C],
@@ -494,6 +486,8 @@ class _Featured {
   final String eyebrow;
   final String title;
   final String app;
+  /// Id interne (`kAllApps`) à débloquer quand le joueur tape OBTENIR.
+  final String appId;
   final String emoji;
   final String tagline;
   final List<int> gradient;
@@ -501,8 +495,63 @@ class _Featured {
     required this.eyebrow,
     required this.title,
     required this.app,
+    required this.appId,
     required this.emoji,
     required this.tagline,
     required this.gradient,
   });
+}
+
+/// Bouton OBTENIR/OUVRIR du Today featured card. Installé = ouvre l'app,
+/// pas encore installé = unlockApp + snack confirmation.
+class _FeaturedInstallButton extends ConsumerWidget {
+  const _FeaturedInstallButton({required this.appId, required this.appLabel});
+  final String appId;
+  final String appLabel;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final installed = ref.watch(
+      phoneStateProvider.select((s) => s.unlockedApps.contains(appId)),
+    );
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        final notifier = ref.read(phoneStateProvider.notifier);
+        if (installed) {
+          notifier.openApp(appId);
+        } else {
+          notifier.unlockApp(appId);
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '$appLabel installée.',
+                style: GoogleFonts.inter(fontSize: 13),
+              ),
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(milliseconds: 1400),
+              backgroundColor: const Color(0xFF1A1A1A),
+            ),
+          );
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Text(
+          installed ? 'OUVRIR' : 'OBTENIR',
+          style: GoogleFonts.inter(
+            fontSize: 11,
+            fontWeight: FontWeight.w800,
+            color: const Color(0xFF007AFF),
+            letterSpacing: 0.4,
+          ),
+        ),
+      ),
+    );
+  }
 }

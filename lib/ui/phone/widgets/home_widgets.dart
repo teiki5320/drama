@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../data/calendar_data.dart';
 import '../../../data/messages_data.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/sent_replies_provider.dart';
 
 /// Widget Météo grand format pour le home screen.
 class MeteoWidget extends StatelessWidget {
@@ -212,10 +213,15 @@ class CalendarWidget extends ConsumerWidget {
   }
 }
 
-/// Widget « Prochain moment » — bouton manuel pour avancer vers le beat
-/// suivant. La progression est aussi automatique quand Shen répond au
-/// SMS-clé du beat courant ; ce widget sert quand il n'y a pas de SMS
-/// gate, ou pour reprendre la main si le joueur veut presser.
+/// Widget « Avancer / Terminer la journée » — bouton manuel pour avancer
+/// vers le beat suivant. Deux états visuels :
+///   - **Avancer** (orange pulse) tant que le prochain beat reste dans
+///     la journée courante.
+///   - **Terminer J{X}** (indigo nuit) quand le prochain beat tombe
+///     sur le lendemain — c'est là qu'on déclenche la transition de
+///     jour plein écran.
+/// Le bouton est désactivé (grisé) si le beat courant attend une
+/// réponse SMS-clé non encore donnée : il faut d'abord répondre.
 class TimeSkipWidget extends ConsumerStatefulWidget {
   const TimeSkipWidget({super.key});
   @override
@@ -237,74 +243,138 @@ class _TimeSkipWidgetState extends ConsumerState<TimeSkipWidget>
 
   @override
   Widget build(BuildContext context) {
+    // On regarde l'état du téléphone et les réponses envoyées pour
+    // décider du mode (avancer / fin de journée / verrouillé).
+    final p = ref.watch(phoneStateProvider);
+    final notifier = ref.read(phoneStateProvider.notifier);
+    final replies = ref.watch(sentRepliesProvider);
+
+    final atEnd = notifier.isAtEndOfStory;
+    final endsDay = notifier.nextBeatChangesDay;
+
+    // Bloqué si le beat courant attend une réponse SMS pas encore
+    // donnée : on veut d'abord conclure la conversation en cours.
+    final requiresId = notifier.currentBeat?.requiresChoice;
+    final waitingReply = requiresId != null && !replies.containsKey(requiresId);
+
+    final disabled = atEnd || waitingReply;
+
+    final color = disabled
+        ? const Color(0xFF6B6B6B)
+        : endsDay
+            ? const Color(0xFF4A3F6E)
+            : const Color(0xFFD97757);
+    final label = atEnd
+        ? 'Fin de l\'histoire'
+        : waitingReply
+            ? 'Réponds d\'abord'
+            : endsDay
+                ? 'Terminer J${p.currentDay}'
+                : 'Avancer';
+    final sub = atEnd
+        ? '—'
+        : waitingReply
+            ? 'Une conversation t\'attend'
+            : endsDay
+                ? 'La nuit va passer'
+                : 'Prochain moment';
+    final icon = endsDay ? Icons.bedtime : Icons.fast_forward;
+
     return AnimatedBuilder(
       animation: _pulse,
       builder: (context, _) {
-        final glow = 0.20 + 0.18 * _pulse.value;
-        final borderGlow = 0.30 + 0.40 * _pulse.value;
+        // Pas de pulse quand grisé.
+        final pulseT = disabled ? 0.0 : _pulse.value;
+        final glow = 0.20 + 0.18 * pulseT;
+        final borderGlow = 0.30 + 0.40 * pulseT;
         return GestureDetector(
           onTap: () {
+            if (disabled) {
+              HapticFeedback.selectionClick();
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    waitingReply
+                        ? 'Réponds au message en cours d\'abord.'
+                        : 'L\'histoire est terminée.',
+                    style: GoogleFonts.inter(fontSize: 13),
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(milliseconds: 1600),
+                  backgroundColor: const Color(0xFF1A1A1A),
+                ),
+              );
+              return;
+            }
             HapticFeedback.mediumImpact();
-            ref.read(phoneStateProvider.notifier).advanceToNextBeat();
+            notifier.advanceToNextBeat();
           },
-          child: Container(
-            height: 120,
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: const Color(0xFFD97757).withValues(alpha: glow),
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                  color: const Color(0xFFD97757).withValues(alpha: borderGlow),
-                  width: 1.5),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFFD97757).withValues(alpha: 0.25 * _pulse.value),
-                  blurRadius: 16,
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.18),
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
-                  child: const Icon(Icons.fast_forward,
-                      color: Colors.white, size: 22),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Avancer',
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                          letterSpacing: 0.3,
+          child: Opacity(
+            opacity: disabled ? 0.55 : 1.0,
+            child: Container(
+              height: 120,
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: glow),
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(
+                    color: color.withValues(alpha: borderGlow), width: 1.5),
+                boxShadow: disabled
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: color.withValues(alpha: 0.25 * pulseT),
+                          blurRadius: 16,
+                          spreadRadius: 1,
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'Saute au prochain moment',
-                        style: GoogleFonts.inter(
-                          fontSize: 10,
-                          color: Colors.white.withValues(alpha: 0.85),
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ],
+                      ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.18),
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(icon, color: Colors.white, size: 22),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          sub,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.inter(
+                            fontSize: 10,
+                            color: Colors.white.withValues(alpha: 0.85),
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

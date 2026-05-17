@@ -20,11 +20,16 @@ class AppIcon extends ConsumerStatefulWidget {
     required this.meta,
     this.size = 56,
     this.showLabel = true,
+    this.locked = false,
   });
 
   final AppMeta meta;
   final double size;
   final bool showLabel;
+  /// Quand `true`, l'app apparaît grisée (saturation 0, opacité réduite)
+  /// et le tap déclenche un snack « Pas encore disponible » au lieu
+  /// d'ouvrir l'app.
+  final bool locked;
 
   @override
   ConsumerState<AppIcon> createState() => _AppIconState();
@@ -80,48 +85,82 @@ class _AppIconState extends ConsumerState<AppIcon>
     }
     _lastBadge = badgeCount;
 
+    final iconTile = Container(
+      width: widget.size,
+      height: widget.size,
+      decoration: BoxDecoration(
+        color: widget.locked
+            ? const Color(0xFF6B6B6B)
+            : widget.meta.color,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: widget.locked
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.15),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+      ),
+      child: Icon(widget.meta.icon,
+          color: widget.locked
+              ? Colors.white.withValues(alpha: 0.55)
+              : widget.meta.fgColor,
+          size: widget.size * 0.55),
+    );
+
     return InkWell(
       onTap: () {
+        if (widget.locked) {
+          HapticFeedback.selectionClick();
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Installe-la depuis l\'App Store.',
+                style: GoogleFonts.inter(fontSize: 13),
+              ),
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(milliseconds: 1600),
+              backgroundColor: const Color(0xFF1A1A1A),
+              action: SnackBarAction(
+                label: 'Ouvrir',
+                textColor: const Color(0xFF1DB1FF),
+                onPressed: () {
+                  ref.read(phoneStateProvider.notifier).openApp('appstore');
+                },
+              ),
+            ),
+          );
+          return;
+        }
         HapticFeedback.selectionClick();
         ref.read(phoneStateProvider.notifier).openApp(widget.meta.id);
         ref.read(phoneStateProvider.notifier).clearBadge(widget.meta.id);
       },
       borderRadius: BorderRadius.circular(14),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              AnimatedBuilder(
-                animation: _pulseCtrl,
-                builder: (_, child) {
-                  // Pulse : 0 → 1 → 0 sur la durée. Pic à 0.5.
-                  final t = _pulseCtrl.value;
-                  final pulse = t == 0
-                      ? 1.0
-                      : 1.0 + 0.12 * (1 - (2 * t - 1).abs());
-                  return Transform.scale(scale: pulse, child: child);
-                },
-                child: Container(
-                  width: widget.size,
-                  height: widget.size,
-                  decoration: BoxDecoration(
-                    color: widget.meta.color,
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.15),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Icon(widget.meta.icon,
-                      color: widget.meta.fgColor, size: widget.size * 0.55),
+      child: Opacity(
+        opacity: widget.locked ? 0.55 : 1.0,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                AnimatedBuilder(
+                  animation: _pulseCtrl,
+                  builder: (_, child) {
+                    // Pulse : 0 → 1 → 0 sur la durée. Pic à 0.5.
+                    final t = _pulseCtrl.value;
+                    final pulse = t == 0
+                        ? 1.0
+                        : 1.0 + 0.12 * (1 - (2 * t - 1).abs());
+                    return Transform.scale(scale: pulse, child: child);
+                  },
+                  child: iconTile,
                 ),
-              ),
-              if (badgeCount > 0)
+                if (!widget.locked && badgeCount > 0)
                 Positioned(
                   right: -4,
                   top: -4,
@@ -151,6 +190,25 @@ class _AppIconState extends ConsumerState<AppIcon>
                     ),
                   ),
                 ),
+                if (widget.locked)
+                  Positioned(
+                    right: -2,
+                    bottom: -2,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1A1A1A).withValues(alpha: 0.85),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.6),
+                            width: 1),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.lock,
+                          color: Colors.white, size: 11),
+                    ),
+                  ),
             ],
           ),
           if (widget.showLabel) ...[
@@ -168,6 +226,7 @@ class _AppIconState extends ConsumerState<AppIcon>
             ),
           ],
         ],
+      ),
       ),
     );
   }

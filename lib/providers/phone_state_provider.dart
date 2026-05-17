@@ -103,10 +103,13 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
           ? (from.battery - 15).clamp(0, 100)
           : (from.battery - 1).clamp(0, 100),
     );
-    // Si le beat a une scène de transition, on l'affiche en overlay.
-    // L'écran de transition se fermera tout seul (4.5 s) ou au tap.
-    if (beat.transition != null) {
-      _ref.read(beatTransitionProvider.notifier).state = beat.transition;
+    // Si le beat a une scène de transition canonique, on l'affiche.
+    // Sinon, quand on traverse une nuit, on génère une transition
+    // « Jour X » minimaliste pour marquer le passage du temps.
+    final transition = beat.transition ??
+        (crossesNight ? _buildDayTransition(beat.day, beat.hour, beat.minute) : null);
+    if (transition != null) {
+      _ref.read(beatTransitionProvider.notifier).state = transition;
     }
     _fireEventsBetween(
       fromDay: from.currentDay,
@@ -172,6 +175,58 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
         beatIdx: state.currentBeatIdx,
       );
 
+  /// Génère une transition « lendemain » minimaliste quand on traverse
+  /// une nuit sans transition canonique. Quelques variantes selon le
+  /// jour pour éviter la répétition. Le timestamp est explicite (« JOUR X »)
+  /// pour ancrer le passage du temps, et la `coda` rappelle l'heure.
+  BeatTransition _buildDayTransition(int day, int hour, int minute) {
+    final stamp = '${hour.toString().padLeft(2, '0')}:'
+        '${minute.toString().padLeft(2, '0')}';
+    final bodies = <String>[
+      'Une nuit passe.\nLe matin est plus froid.\nTu te réveilles.',
+      'Belleville dort encore.\nLe radiateur claque deux fois.\nC\'est déjà demain.',
+      'Pas vraiment dormi.\nLa fenêtre est grise.\nLa journée commence.',
+      'Tu n\'as pas rêvé.\nOu tu ne t\'en souviens pas.\nLe téléphone vibre.',
+      'La rue s\'allume sans bruit.\nLe café est froid de la veille.\nIl faut y aller.',
+    ];
+    final body = bodies[day % bodies.length];
+    return BeatTransition(
+      timestamp: 'JOUR $day',
+      body: body,
+      coda: '($stamp · Belleville)',
+    );
+  }
+
+  /// Renvoie true si le beat suivant tombe sur un autre jour gameworld.
+  /// Le bouton « Avancer » s'en sert pour basculer en mode « Terminer
+  /// la journée » plutôt que simple avancement.
+  bool get nextBeatChangesDay {
+    final next = nextBeat(
+      episodeId: state.currentEpisodeId,
+      beatIdx: state.currentBeatIdx,
+    );
+    final nextB = beatAt(episodeId: next.episodeId, beatIdx: next.beatIdx);
+    if (nextB == null) return false;
+    // Si nextBeat() renvoie le même couple (fin de l'histoire), pas
+    // de changement de jour à signaler.
+    if (next.episodeId == state.currentEpisodeId &&
+        next.beatIdx == state.currentBeatIdx) {
+      return false;
+    }
+    return nextB.day > state.currentDay;
+  }
+
+  /// Renvoie true si on est en fin de scénario (plus aucun beat à
+  /// jouer après le beat courant).
+  bool get isAtEndOfStory {
+    final next = nextBeat(
+      episodeId: state.currentEpisodeId,
+      beatIdx: state.currentBeatIdx,
+    );
+    return next.episodeId == state.currentEpisodeId &&
+        next.beatIdx == state.currentBeatIdx;
+  }
+
   void _fireEventsBetween({
     required int fromDay,
     required int fromHour,
@@ -233,8 +288,13 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
   /// Reverrouille (bouton power, ou auto-lock après inactivité).
   void lock() => state = state.copyWith(isLocked: true, clearOpenApp: true);
 
-  /// Ouvre une app (depuis le home screen).
-  void openApp(String id) => state = state.copyWith(openAppId: id);
+  /// Ouvre une app. Si l'app est encore verrouillée (notif d'une app
+  /// pas encore débloquée, par exemple), on ignore silencieusement —
+  /// l'UI grise garde la cohérence.
+  void openApp(String id) {
+    if (!state.unlockedApps.contains(id)) return;
+    state = state.copyWith(openAppId: id);
+  }
 
   /// Ferme l'app courante (retour home).
   void closeApp() => state = state.copyWith(clearOpenApp: true);
