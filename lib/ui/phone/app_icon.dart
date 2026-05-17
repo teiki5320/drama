@@ -46,18 +46,27 @@ class _AppIconState extends ConsumerState<AppIcon>
     duration: const Duration(milliseconds: 350),
     value: 1.0,
   );
+  /// Anim de déverrouillage : flash blanc + pulse quand l'app passe
+  /// de locked à unlocked (story moment).
+  late final AnimationController _unlockCtrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 900),
+  );
   int _lastBadge = 0;
+  bool _lastLocked = false;
 
   @override
   void initState() {
     super.initState();
     _lastBadge = ref.read(phoneStateProvider).badges[widget.meta.id] ?? 0;
+    _lastLocked = widget.locked;
   }
 
   @override
   void dispose() {
     _pulseCtrl.dispose();
     _badgeCtrl.dispose();
+    _unlockCtrl.dispose();
     super.dispose();
   }
 
@@ -84,6 +93,18 @@ class _AppIconState extends ConsumerState<AppIcon>
       });
     }
     _lastBadge = badgeCount;
+
+    // Détection : locked → unlocked → flash + pulse de déverrouillage.
+    if (_lastLocked && !widget.locked) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          HapticFeedback.lightImpact();
+          _unlockCtrl.forward(from: 0);
+          _pulseCtrl.forward(from: 0);
+        }
+      });
+    }
+    _lastLocked = widget.locked;
 
     final iconTile = Container(
       width: widget.size,
@@ -159,6 +180,31 @@ class _AppIconState extends ConsumerState<AppIcon>
                     return Transform.scale(scale: pulse, child: child);
                   },
                   child: iconTile,
+                ),
+                // Flash blanc « déverrouillage » par-dessus l'icône.
+                // Toujours présent dans l'arbre — l'AnimatedBuilder tick
+                // pendant l'animation et masque tout en dehors.
+                AnimatedBuilder(
+                  animation: _unlockCtrl,
+                  builder: (_, __) {
+                    final t = _unlockCtrl.value;
+                    if (t == 0) return const SizedBox.shrink();
+                    // Fade-in rapide jusqu'à 0.3, puis fade-out long.
+                    final flashOpacity = t < 0.3
+                        ? (t / 0.3) * 0.85
+                        : (1 - (t - 0.3) / 0.7) * 0.85;
+                    return IgnorePointer(
+                      child: Container(
+                        width: widget.size,
+                        height: widget.size,
+                        decoration: BoxDecoration(
+                          color: Colors.white
+                              .withValues(alpha: flashOpacity.clamp(0.0, 1.0)),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 if (!widget.locked && badgeCount > 0)
                 Positioned(

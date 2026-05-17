@@ -30,6 +30,9 @@ const kEpisodes = <Episode>[
         hour: 8,
         minute: 17,
         label: 'Avenue Montaigne, collision',
+        // Le choc révèle le carnet (notes) et la réalité financière
+        // (banque). Les deux apps apparaissent sur le home après ce beat.
+        unlocksApps: ['notes', 'banque'],
         transition: BeatTransition(
           timestamp: '08:17',
           body:
@@ -61,6 +64,9 @@ const kEpisodes = <Episode>[
         hour: 6,
         minute: 30,
         label: 'Tenon — bureau du Dr Aubin',
+        // Aubin dit le montant. Il faut gagner — Shen démarre les
+        // courses Uber Eats l'après-midi même.
+        unlocksApps: ['ubereats'],
       ),
       Beat(
         idx: 4,
@@ -75,6 +81,8 @@ const kEpisodes = <Episode>[
         hour: 23,
         minute: 55,
         label: 'Numéro masqué — T. appelle',
+        // Premier appel entrant → l'app Téléphone apparaît.
+        unlocksApps: ['telephone'],
         transition: BeatTransition(
           timestamp: '23:55',
           body:
@@ -359,6 +367,8 @@ const kEpisodes = <Episode>[
         minute: 0,
         label: 'Tante Mei te repère via WhatsApp Heng',
         requiresChoice: 'mei_decouvre_j35',
+        // Premier contact Tante Mei → WhatsApp apparaît.
+        unlocksApps: ['whatsapp'],
       ),
       Beat(
         idx: 4,

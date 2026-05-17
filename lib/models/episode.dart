@@ -56,6 +56,11 @@ class Beat {
   /// Sert à montrer ce qui se passe ENTRE deux beats (collision, etc.).
   final BeatTransition? transition;
 
+  /// Liste d'app ids à débloquer (`unlockApp`) à l'arrivée sur ce beat.
+  /// Sert à révéler progressivement les apps au fil du scénario
+  /// (notes au premier carnet, telephone au premier appel, etc.).
+  final List<String> unlocksApps;
+
   const Beat({
     required this.idx,
     required this.day,
@@ -64,6 +69,7 @@ class Beat {
     required this.label,
     this.requiresChoice,
     this.transition,
+    this.unlocksApps = const [],
   });
 
   int get totalMinutes => day * 24 * 60 + hour * 60 + minute;
