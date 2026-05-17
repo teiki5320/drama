@@ -12,6 +12,7 @@ import 'apps/banque_app.dart';
 import 'apps/calendrier_app.dart';
 import 'apps/camera_app.dart';
 import 'apps/cloud_app.dart';
+import 'apps/contacts_app.dart';
 import 'apps/instagram_app.dart';
 import 'apps/messages_app.dart';
 import 'apps/notes_app.dart';
@@ -192,6 +193,9 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         break;
       case 'reglages':
         app = const ReglagesApp();
+        break;
+      case 'contacts':
+        app = const ContactsApp();
         break;
       case 'appstore':
         app = const AppStoreApp();
