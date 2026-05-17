@@ -118,12 +118,19 @@ class _AppIconState extends ConsumerState<AppIcon>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                'Pas encore disponible.',
+                'Installe-la depuis l\'App Store.',
                 style: GoogleFonts.inter(fontSize: 13),
               ),
               behavior: SnackBarBehavior.floating,
-              duration: const Duration(milliseconds: 1400),
+              duration: const Duration(milliseconds: 1600),
               backgroundColor: const Color(0xFF1A1A1A),
+              action: SnackBarAction(
+                label: 'Ouvrir',
+                textColor: const Color(0xFF1DB1FF),
+                onPressed: () {
+                  ref.read(phoneStateProvider.notifier).openApp('appstore');
+                },
+              ),
             ),
           );
           return;
@@ -183,6 +190,25 @@ class _AppIconState extends ConsumerState<AppIcon>
                     ),
                   ),
                 ),
+                if (widget.locked)
+                  Positioned(
+                    right: -2,
+                    bottom: -2,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1A1A1A).withValues(alpha: 0.85),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.6),
+                            width: 1),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.lock,
+                          color: Colors.white, size: 11),
+                    ),
+                  ),
             ],
           ),
           if (widget.showLabel) ...[

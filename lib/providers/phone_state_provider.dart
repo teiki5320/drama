@@ -177,21 +177,23 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
 
   /// Génère une transition « lendemain » minimaliste quand on traverse
   /// une nuit sans transition canonique. Quelques variantes selon le
-  /// jour pour éviter la répétition.
+  /// jour pour éviter la répétition. Le timestamp est explicite (« JOUR X »)
+  /// pour ancrer le passage du temps, et la `coda` rappelle l'heure.
   BeatTransition _buildDayTransition(int day, int hour, int minute) {
     final stamp = '${hour.toString().padLeft(2, '0')}:'
         '${minute.toString().padLeft(2, '0')}';
     final bodies = <String>[
       'Une nuit passe.\nLe matin est plus froid.\nTu te réveilles.',
       'Belleville dort encore.\nLe radiateur claque deux fois.\nC\'est déjà demain.',
-      'Pas vraiment dormi.\nLa fenêtre est grise.\nJ$day commence.',
+      'Pas vraiment dormi.\nLa fenêtre est grise.\nLa journée commence.',
       'Tu n\'as pas rêvé.\nOu tu ne t\'en souviens pas.\nLe téléphone vibre.',
       'La rue s\'allume sans bruit.\nLe café est froid de la veille.\nIl faut y aller.',
     ];
     final body = bodies[day % bodies.length];
     return BeatTransition(
-      timestamp: 'J$day · $stamp',
+      timestamp: 'JOUR $day',
       body: body,
+      coda: '($stamp · Belleville)',
     );
   }
 
