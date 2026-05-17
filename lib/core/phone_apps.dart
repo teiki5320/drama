@@ -103,6 +103,12 @@ const List<AppMeta> kAllApps = [
     color: Color(0xFF8E8E93),
   ),
   AppMeta(
+    id: 'contacts',
+    label: 'Contacts',
+    icon: Icons.contact_page,
+    color: Color(0xFFA0A0A8),
+  ),
+  AppMeta(
     id: 'appstore',
     label: 'App Store',
     icon: Icons.apps,
