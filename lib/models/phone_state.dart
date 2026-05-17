@@ -52,9 +52,11 @@ class PhoneState {
     // Au démarrage seules ces apps sont accessibles. Les autres
     // apparaissent grisées sur le home et lèvent un snack
     // « Pas encore disponible ». Elles se débloquent au fil du
-    // scénario via `unlockApp(id)`.
+    // scénario via `unlockApp(id)`, ou via l'App Store (qui est
+    // accessible dès le départ pour permettre les installations).
     this.unlockedApps = const {
       'messages', 'calendrier', 'reglages', 'instagram', 'camera',
+      'appstore',
     },
     this.currentEpisodeId = 'avant_la_lumiere',
     this.currentBeatIdx = 0,
