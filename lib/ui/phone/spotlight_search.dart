@@ -33,12 +33,18 @@ class _SpotlightSearchState extends ConsumerState<SpotlightSearch> {
   @override
   Widget build(BuildContext context) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    final unlocked = ref.watch(
+      phoneStateProvider.select((s) => s.unlockedApps),
+    );
     final q = _q.trim().toLowerCase();
 
+    // Spotlight ne montre que les apps débloquées — pas de fuite des
+    // apps grisées via la recherche.
     final apps = q.isEmpty
         ? <AppMeta>[]
         : kAllApps
-            .where((a) => a.label.toLowerCase().contains(q))
+            .where((a) =>
+                a.label.toLowerCase().contains(q) && unlocked.contains(a.id))
             .toList();
     final notes = q.isEmpty
         ? <NoteEntry>[]
@@ -154,7 +160,7 @@ class _SpotlightSearchState extends ConsumerState<SpotlightSearch> {
                                 },
                               ),
                           ]),
-                        if (notes.isNotEmpty)
+                        if (notes.isNotEmpty && unlocked.contains('notes'))
                           _Section(title: 'NOTES', children: [
                             for (final n in notes)
                               _Hit(
@@ -171,7 +177,7 @@ class _SpotlightSearchState extends ConsumerState<SpotlightSearch> {
                                 },
                               ),
                           ]),
-                        if (msgs.isNotEmpty)
+                        if (msgs.isNotEmpty && unlocked.contains('messages'))
                           _Section(title: 'MESSAGES', children: [
                             for (final h in msgs.take(8))
                               _Hit(
@@ -188,7 +194,7 @@ class _SpotlightSearchState extends ConsumerState<SpotlightSearch> {
                                 },
                               ),
                           ]),
-                        if (photos.isNotEmpty)
+                        if (photos.isNotEmpty && unlocked.contains('photos'))
                           _Section(title: 'PHOTOS', children: [
                             for (final p in photos)
                               _Hit(
@@ -205,7 +211,7 @@ class _SpotlightSearchState extends ConsumerState<SpotlightSearch> {
                                 },
                               ),
                           ]),
-                        if (events.isNotEmpty)
+                        if (events.isNotEmpty && unlocked.contains('calendrier'))
                           _Section(title: 'CALENDRIER', children: [
                             for (final e in events)
                               _Hit(

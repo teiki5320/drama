@@ -102,9 +102,10 @@ class _HomeContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final p = ref.watch(phoneStateProvider);
     final dockApps = kAllApps.where((a) => a.inDock).toList();
-    final gridApps = kAllApps
-        .where((a) => !a.inDock && p.unlockedApps.contains(a.id))
-        .toList();
+    // Toutes les apps hors dock sont affichées ; celles non débloquées
+    // s'affichent en mode grisé (la grille reste stable d'une partie
+    // à l'autre, et le joueur voit ce qui pourra arriver).
+    final gridApps = kAllApps.where((a) => !a.inDock).toList();
     return Column(
       children: [
         PhoneStatusBar(foreground: palette.statusBarFg),
@@ -140,7 +141,12 @@ class _HomeContent extends ConsumerWidget {
               mainAxisSpacing: 18,
               crossAxisSpacing: 12,
               physics: const BouncingScrollPhysics(),
-              children: gridApps.map((m) => AppIcon(meta: m)).toList(),
+              children: gridApps
+                  .map((m) => AppIcon(
+                        meta: m,
+                        locked: !p.unlockedApps.contains(m.id),
+                      ))
+                  .toList(),
             ),
           ),
         ),
@@ -160,7 +166,11 @@ class _HomeContent extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: dockApps
-                    .map((m) => AppIcon(meta: m, showLabel: false))
+                    .map((m) => AppIcon(
+                          meta: m,
+                          showLabel: false,
+                          locked: !p.unlockedApps.contains(m.id),
+                        ))
                     .toList(),
               ),
             ),

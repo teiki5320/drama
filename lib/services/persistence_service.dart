@@ -163,9 +163,14 @@ class PersistenceService {
         openAppId: j['openAppId'] as String?,
         badges: (j['badges'] as Map<String, dynamic>? ?? {})
             .map((k, v) => MapEntry(k, v as int)),
-        unlockedApps: ((j['unlockedApps'] as List<dynamic>?) ?? [])
-            .map((e) => e as String)
-            .toSet(),
+        // Fallback : si la clé manque (ancien save), on retombe sur
+        // le set initial défini dans PhoneState() (5 apps de démarrage).
+        unlockedApps: () {
+          final raw = j['unlockedApps'] as List<dynamic>?;
+          if (raw == null) return const PhoneState().unlockedApps;
+          final set = raw.map((e) => e as String).toSet();
+          return set.isEmpty ? const PhoneState().unlockedApps : set;
+        }(),
         currentEpisodeId: epId,
         currentBeatIdx: beatIdx,
         mood: j['mood'] as int? ?? 5,
