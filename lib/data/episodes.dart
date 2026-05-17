@@ -37,10 +37,10 @@ const kEpisodes = <Episode>[
           timestamp: '08:17',
           body:
               'Je n\'ai pas vu la voiture noire.\n'
-              'J\'ai vu le bowl en l\'air.\n'
-              'Quand j\'ai relevé la tête, l\'homme du costume\n'
-              'était déjà parti.',
-          coda: '(Une carte. Quatre morceaux. Dans la flaque.)',
+              'J\'ai vu mon bol d\'açaï en l\'air.\n'
+              'L\'homme du costume est descendu.\n'
+              'Il m\'a tendu une carte.\n'
+              'J\'ai pris la carte. J\'ai dit non pour le reste.',
         ),
       ),
       Beat(
@@ -48,13 +48,14 @@ const kEpisodes = <Episode>[
         day: 1,
         hour: 23,
         minute: 42,
-        label: 'Carte recollée — première erreur',
+        label: 'Carte déchirée — première erreur',
         transition: BeatTransition(
           timestamp: '23:42',
           body:
-              'Le scotch transparent ne tient pas.\n'
-              'Je recommence. Quatre morceaux.\n'
-              'Le « T » de Tristan refuse de se réaligner.',
+              'La carte tient sur ma paume.\n'
+              '« Tristan Heng ». Trois mots, un numéro.\n'
+              'Je déchire en deux. Puis en quatre.\n'
+              'Les morceaux tombent dans l\'évier.',
           coda: '(Dehors, le chien du voisin hurle.)',
         ),
       ),
@@ -78,9 +79,39 @@ const kEpisodes = <Episode>[
       Beat(
         idx: 5,
         day: 3,
+        hour: 17,
+        minute: 8,
+        label: 'Camille — « rappelle-le »',
+        transition: BeatTransition(
+          timestamp: '17:08',
+          body:
+              'Vocal de Camille, trente-deux secondes.\n'
+              '« T\'as quoi à perdre, là ?\n'
+              'Tu rappelles, tu dis oui une fois,\n'
+              'tu ressors avec ce qu\'il faut pour ta mère. »',
+        ),
+      ),
+      Beat(
+        idx: 6,
+        day: 3,
+        hour: 23,
+        minute: 30,
+        label: 'Carte recollée — quatre morceaux',
+        transition: BeatTransition(
+          timestamp: '23:30',
+          body:
+              'Le scotch transparent ne tient pas.\n'
+              'Je recommence. Quatre morceaux.\n'
+              'Le « T » de Tristan refuse de se réaligner.',
+          coda: '(Mais le numéro, lui, est lisible.)',
+        ),
+      ),
+      Beat(
+        idx: 7,
+        day: 3,
         hour: 23,
         minute: 55,
-        label: 'Numéro masqué — T. appelle',
+        label: 'Numéro masqué — T. rappelle',
         // Premier appel entrant → l'app Téléphone apparaît.
         unlocksApps: ['telephone'],
         transition: BeatTransition(
@@ -93,15 +124,15 @@ const kEpisodes = <Episode>[
       ),
       // — Acte B : Le contrat (J4 → J9)
       Beat(
-        idx: 6,
+        idx: 8,
         day: 4,
         hour: 14,
         minute: 2,
-        label: 'Camille pousse à rappeler',
+        label: 'Camille — « tu as gardé sa carte, hein »',
         requiresChoice: 'camille_carte_j4',
       ),
       Beat(
-        idx: 7,
+        idx: 9,
         day: 6,
         hour: 14,
         minute: 12,
@@ -109,7 +140,7 @@ const kEpisodes = <Episode>[
         requiresChoice: 'tristan_rdv_j6',
       ),
       Beat(
-        idx: 8,
+        idx: 10,
         day: 6,
         hour: 17,
         minute: 42,
@@ -117,7 +148,7 @@ const kEpisodes = <Episode>[
         requiresChoice: 'camille_tailleur_j6',
       ),
       Beat(
-        idx: 9,
+        idx: 11,
         day: 7,
         hour: 11,
         minute: 0,
@@ -133,7 +164,7 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 10,
+        idx: 12,
         day: 8,
         hour: 11,
         minute: 30,
@@ -149,7 +180,7 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 11,
+        idx: 13,
         day: 9,
         hour: 17,
         minute: 22,
@@ -157,7 +188,7 @@ const kEpisodes = <Episode>[
       ),
       // — Acte C : Vie commune (J11 → J14, cliffhanger Long Jing)
       Beat(
-        idx: 12,
+        idx: 14,
         day: 11,
         hour: 21,
         minute: 8,
@@ -165,7 +196,7 @@ const kEpisodes = <Episode>[
         requiresChoice: 'maman_stage_j11',
       ),
       Beat(
-        idx: 13,
+        idx: 15,
         day: 13,
         hour: 15,
         minute: 8,
@@ -173,7 +204,7 @@ const kEpisodes = <Episode>[
         requiresChoice: 'camille_quel_the_j13',
       ),
       Beat(
-        idx: 14,
+        idx: 16,
         day: 14,
         hour: 20,
         minute: 30,
