@@ -65,6 +65,38 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       attribution: 'Shen, vingt-quatre ans, livreuse à vélo',
       gradient: [Color(0xFF0A0E1F), Color(0xFF14213D), Color(0xFF1F2937)],
     ),
+    // ── Présentation des personnages ────────────────────────────
+    _OnbStep(
+      chapter: 'Shen',
+      title: 'Shen Marchand',
+      epigraph:
+          'Je n\'écris pas pour me souvenir.\n'
+          'J\'écris pour ne pas pleurer.',
+      attribution: 'Vingt-quatre ans · Livreuse à vélo · Belleville',
+      gradient: [Color(0xFF14213D), Color(0xFF1F2937), Color(0xFF2A3142)],
+      avatarPath: 'assets/photos/avatars/shen.webp',
+    ),
+    _OnbStep(
+      chapter: 'Maman',
+      title: 'Hélène, dite Maman',
+      epigraph:
+          'Tu as mis ton écharpe ?\n'
+          'Tes vingt-quatre ans ne tiendront pas la pluie\n'
+          'aussi longtemps que tu le crois.',
+      attribution: 'Cinquante ans · Toux depuis trois nuits',
+      gradient: [Color(0xFF1F2937), Color(0xFF2A3142), Color(0xFF3A2E3F)],
+      avatarPath: 'assets/photos/avatars/maman.webp',
+    ),
+    _OnbStep(
+      chapter: 'Camille',
+      title: 'Camille Roux',
+      epigraph:
+          'Tu n\'es pas un héros,\n'
+          't\'es une fille avec un téléphone.',
+      attribution: 'Étudiante en droit · Croissants · Fidèle',
+      gradient: [Color(0xFF2A2E3F), Color(0xFF3A2E3F), Color(0xFF3F2A35)],
+      avatarPath: 'assets/photos/avatars/camille.webp',
+    ),
     _OnbStep(
       chapter: 'II',
       title: 'Ce téléphone',
@@ -178,36 +210,63 @@ class _OnbPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isCharacterCard = step.avatarPath != null;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36),
       child: Column(
         children: [
           const SizedBox(height: 32),
-          // Chapitre romain — blanc tamisé (plus de jaune)
+          // Slide perso : avatar circulaire à la place du chiffre romain.
+          // Slide narrative : chiffre romain (Crimson Pro italique).
           Transform.translate(
             offset: Offset(parallax * 12, 0),
-            child: Text(
-              step.chapter,
-              style: GoogleFonts.crimsonPro(
-                fontSize: 92,
-                fontWeight: FontWeight.w300,
-                fontStyle: FontStyle.italic,
-                color: Colors.white.withValues(alpha: 0.40),
-                height: 1.0,
-                letterSpacing: 6,
-                decoration: TextDecoration.none,
-              ),
-            ),
+            child: isCharacterCard
+                ? Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.45),
+                          width: 1.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.35),
+                          blurRadius: 24,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                      image: DecorationImage(
+                        image: AssetImage(step.avatarPath!),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                : Text(
+                    step.chapter,
+                    style: GoogleFonts.crimsonPro(
+                      fontSize: 92,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white.withValues(alpha: 0.40),
+                      height: 1.0,
+                      letterSpacing: 6,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
           ),
           const SizedBox(height: 18),
-          // Titre du chapitre — petit, large lettering, blanc
+          // Titre — petit, large lettering, blanc. Pour les slides perso
+          // c'est le nom complet ; pour les chapitres, le titre canonique.
           Text(
             step.title.toUpperCase(),
             style: GoogleFonts.inter(
-              fontSize: 11,
-              fontWeight: FontWeight.w400,
-              color: Colors.white.withValues(alpha: 0.70),
-              letterSpacing: 4,
+              fontSize: isCharacterCard ? 13 : 11,
+              fontWeight:
+                  isCharacterCard ? FontWeight.w600 : FontWeight.w400,
+              color: Colors.white
+                  .withValues(alpha: isCharacterCard ? 0.95 : 0.70),
+              letterSpacing: isCharacterCard ? 3 : 4,
               decoration: TextDecoration.none,
             ),
           ),
@@ -322,6 +381,10 @@ class _OnbStep {
   final String epigraph;
   final String attribution;
   final List<Color> gradient;
+  /// Si non-null, la slide affiche cet avatar circulaire à la place
+  /// du chiffre romain — utilisé pour les pages de présentation des
+  /// personnages (Shen, Maman, Camille).
+  final String? avatarPath;
 
   const _OnbStep({
     required this.chapter,
@@ -329,5 +392,6 @@ class _OnbStep {
     required this.epigraph,
     required this.attribution,
     required this.gradient,
+    this.avatarPath,
   });
 }
