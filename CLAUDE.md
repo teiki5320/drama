@@ -2,22 +2,61 @@
 
 ## État actuel (mai 2026)
 
-**Le projet est en pleine refonte.** L'app Flutter complète (carnet + ACE +
-4 onglets) a été retirée le 14 mai 2026. Ce qui reste dans le repo :
+**Architecture « faux iPhone ».** L'app simule un téléphone avec home screen,
+status bar, lock screen et 16+ apps intégrées. La narration est distribuée
+dans les apps au fil des jours via un système d'épisodes/beats.
 
-- **Histoire pure** dans `ROADMAP.md` (pitch, bible narrative, structure
-  16 semaines, scènes non-négociables, scénario J1→J112, 5 épilogues).
-- **Données canoniques** dans `assets/data/` :
-  - `scenario.json` (J1-J14 encodés)
-  - `shop_catalog.json` (27 items)
-  - `investments.json` (5 actions bourse)
-  - `insta_seed.json` (8 posts initiaux)
-- **Squelette Flutter minimal** pour ne pas casser le pipeline Xcode Cloud :
-  `pubspec.yaml`, `lib/main.dart` (placeholder « Refonte en cours »),
-  projets `ios/` et `android/` intacts.
+### Structure du code
 
-L'ancien code (lib/ui/, lib/engine/, lib/providers/, lib/models/, assets/photos/,
-refs/) reste **récupérable via git history** mais n'est plus dans le repo.
+```
+lib/
+  core/          phone_apps.dart (catalogue AppMeta, kAllApps)
+  data/          episodes.dart, messages_data.dart, sms_choices.dart,
+                 telephone_data.dart, contacts_data.dart, …
+  models/        phone_state.dart (état global), episode.dart (Beat, Episode)
+  providers/     phone_state_provider.dart (Riverpod StateNotifier),
+                 transition_provider.dart, messages_arcs_provider.dart, …
+  ui/phone/      phone_shell.dart (routeur), home_screen.dart, lock_screen.dart,
+                 apps/ (un fichier par app : messages_app.dart, banque_app.dart, …)
+                 onboarding_screen.dart (6 slides : 3 pitch + 3 perso)
+assets/
+  data/          scenario.json, shop_catalog.json, investments.json, insta_seed.json
+  photos/        avatars/, ep1/, camera_pool/, …
+```
+
+### Apps disponibles
+
+**Dock** (permanent) : Messages, Photos, Banque, Téléphone.
+**Page 1** (débloquées au départ) : Calendrier, Instagram, Réglages,
+Contacts, Caméra, App Store.
+**Débloquées par le scénario** : Notes + Banque (collision J1), Uber Eats
+(Tenon J2), Téléphone (T. appelle J3), WhatsApp (Tante Mei J35), Tinder,
+Cloud, Spotify, Plans, Strava (via App Store ou beats).
+
+### Narration
+
+- **5 épisodes** dans `lib/data/episodes.dart`. Ep 1 gratuit (J1→J14),
+  Ep 2-5 payants (J15→J112).
+- Chaque épisode contient des **beats** horodatés (jour + heure). La
+  progression auto-avance quand le joueur répond au SMS-clé du beat
+  (`requiresChoice`).
+- Les beats peuvent porter une `BeatTransition` (écran poétique entre
+  deux moments) et des `unlocksApps` (apps débloquées après le beat).
+- **Séquence canonique Ep1 Acte A** (PR #159) :
+  Collision (Tristan descend, tend carte) → Carte déchirée chez Shen →
+  Tenon (montant) → BNP refus → Camille « rappelle-le » → Carte recollée →
+  T. rappelle.
+
+### Onboarding
+
+6 slides (PR #158) : 3 slides de pitch (I/II/III) + 3 slides de
+présentation personnage (Shen, Maman, Camille) avec avatar + épigraphe.
+L'onboarding se joue une seule fois avant le lock screen.
+
+### Histoire
+
+`ROADMAP.md` contient la bible narrative complète : pitch, structure
+16 semaines, scènes non-négociables, scénario J1→J112, 5 épilogues.
 
 ## Cible TestFlight = `main`
 
@@ -36,13 +75,6 @@ principal `https://github.com/teiki5320/drama.git`, projet
 - Exception : s'arrêter avant le merge si la PR contient quelque chose de
   destructif (suppression de données, migration risquée) ou si les tests
   flottent — dans ces cas, demander confirmation.
-
-## Prochaine architecture
-
-Direction probable : **version téléphone** — l'app devient un faux iPhone
-avec un home screen et des apps (Messages, Notes, Photos, Téléphone, Banque,
-Insta). Plus de tabs ACE/CARNET. La narration sera distribuée dans les apps
-au fil des jours. À valider avec l'utilisateur avant de coder.
 
 ## Conventions linguistiques (à respecter partout)
 
@@ -71,5 +103,18 @@ au fil des jours. À valider avec l'utilisateur avant de coder.
 
 ## Avant de toucher au contenu narratif
 
-Toucher au scénario (`assets/data/scenario.json`, `ROADMAP.md`) sans
-confirmation explicite de l'utilisateur — la voix de Shen est sensible.
+**NE JAMAIS inventer de texte narratif** (quotes, transitions, répliques,
+épigraphes) sans confirmation **mot pour mot** de l'utilisateur. La voix de
+Shen est sensible — mais toutes les voix le sont.
+
+Fichiers concernés :
+- `lib/data/episodes.dart` (transitions, labels de beats)
+- `lib/data/messages_data.dart`, `lib/data/sms_choices.dart` (SMS, répliques)
+- `lib/ui/phone/onboarding_screen.dart` (slides perso avec épigraphes)
+- `lib/data/contacts_data.dart` (fiches personnages avec quotes)
+- `assets/data/scenario.json`, `ROADMAP.md`
+
+**Workflow obligatoire** : proposer le texte en clair dans la conversation,
+attendre la validation explicite (« ok » / « reformule » / « j'écris
+moi-même »), puis seulement écrire dans le fichier. Ne jamais commit + push
+du texte inventé sans validation préalable.
