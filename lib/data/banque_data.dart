@@ -419,7 +419,7 @@ const kStocks = <StockPosition>[
     price: 728.00,
     change24h: -0.5,
     unlockedAtDay: 9,
-    description: 'Mme Heng investit là-dedans. Action chère, dividendes solides.',
+    description: 'Madame Heng investit là-dedans. Action chère, dividendes solides.',
   ),
   StockPosition(
     ticker: 'AAPL',
@@ -581,7 +581,7 @@ const kMarketNews = <MarketNews>[
     time: '18:48',
     ticker: 'HENG',
     headline: 'HENG : gala caritatif, photos viralement reprises',
-    snippet: '+22 %. La femme qui était à droite de Mme Heng.',
+    snippet: '+22 %. La femme qui était à droite de Madame Heng.',
     sentiment: '+',
   ),
   MarketNews(

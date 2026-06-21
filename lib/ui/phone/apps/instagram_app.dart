@@ -445,7 +445,7 @@ const _allStories = <_Story>[
       _StoryFrame(
         emoji: '🛋️',
         body: 'Salon · Long Jing au bar dressé.\n'
-            '« La cliente, Mme Heng, choisit elle-même les fleurs. »',
+            '« La cliente, Madame Heng, choisit elle-même les fleurs. »',
         gradient: [0xFFCFC8B5, 0xFFE8E0D0],
       ),
     ],
