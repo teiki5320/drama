@@ -41,6 +41,24 @@ class SmsChoiceOption {
   });
 }
 
+/// Réponses « pivots » : celles qui décident de l'épilogue (voir
+/// `resolveEpilogue` dans epilogues.dart). Déclarées en const pour que
+/// le résolveur compare des chaînes canoniques, pas des copies.
+const String kReplyJ52LeaveToCamille =
+    'Je pars ce soir. Camille m\'ouvre son canapé. Merci d\'avoir tenu parole.';
+const String kReplyJ95HongKong =
+    'Non. Mais toi, viens. Retrouve-moi à Hong Kong le mois prochain. '
+    'Terrain neutre, baie de Repulse.';
+const String kReplyJ112Fujian =
+    'Je reste. Le temps qu\'il faut, pas plus. Maman regarde le parc tous '
+    'les soirs et je commence à voir ce qu\'elle voit.';
+const String kReplyJ112Paris =
+    'L\'avion de 17h. Ma vie est à Paris. Garde-moi un croissant, '
+    'j\'atterris affamée.';
+const String kReplyJ112HongKong =
+    'Ni bus ni Paris. Hong Kong. J\'ai promis à quelqu\'un un terrain '
+    'neutre, baie de Repulse.';
+
 /// Catalogue de choix indexés par `beatId`. Plus de choix s'ajouteront
 /// quand on étendra le scénario.
 const Map<String, SmsChoice> kSmsChoices = {
@@ -201,6 +219,249 @@ const Map<String, SmsChoice> kSmsChoices = {
         label: 'Détourner',
         reply: 'Camille. La vraie question c\'est : 18 000 euros.',
         delta: RelationshipDelta(trust: 1, dependency: -1),
+      ),
+    ],
+  ),
+
+  // J23 — Maman a trouvé la boîte de Long Jing dans le sac de Shen
+  'maman_long_jing_j23': SmsChoice(
+    beatId: 'maman_long_jing_j23',
+    contactId: 'maman',
+    options: [
+      SmsChoiceOption(
+        label: 'Demi-vérité',
+        reply:
+            'Une cliente. Je fais des livraisons spéciales pour une '
+            'grande maison. Elle offre du thé, pas des explications.',
+        delta: RelationshipDelta(trust: -2, suspicion: 6),
+      ),
+      SmsChoiceOption(
+        label: 'Dimanche',
+        reply:
+            'Dimanche. Je viens avec la boîte, on la goûte ensemble et '
+            'je te raconte ce que je peux.',
+        delta: RelationshipDelta(trust: 4, dependency: 3, suspicion: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Mensonge sec',
+        reply: 'C\'est Camille. Un cadeau d\'un stage traiteur.',
+        delta: RelationshipDelta(trust: -5, suspicion: 9, loyalty: -1),
+      ),
+    ],
+  ),
+
+  // J26 — Camille : huit jours sans nouvelles
+  'camille_distance_j26': SmsChoice(
+    beatId: 'camille_distance_j26',
+    contactId: 'camille',
+    options: [
+      SmsChoiceOption(
+        label: 'Excuse vraie',
+        reply:
+            'T\'as raison. Je me noie un peu là-haut. Demain 19h, '
+            'croissants sur moi ?',
+        delta: RelationshipDelta(trust: 5, loyalty: 3),
+      ),
+      SmsChoiceOption(
+        label: 'Vanne défensive',
+        reply:
+            'J\'étais occupée à devenir une femme du monde. Ça prend du '
+            'temps, tu peux pas savoir.',
+        delta: RelationshipDelta(attraction: 2, trust: -2, suspicion: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Minimiser',
+        reply: 'Huit jours c\'est rien. Tu exagères toujours.',
+        delta: RelationshipDelta(trust: -6, loyalty: -3, suspicion: 3),
+      ),
+    ],
+  ),
+
+  // J35 — Tante Mei : « es-tu sa fille ? »
+  'mei_decouvre_j35': SmsChoice(
+    beatId: 'mei_decouvre_j35',
+    contactId: 'tante_mei',
+    options: [
+      SmsChoiceOption(
+        label: 'C\'est moi',
+        reply:
+            'Je m\'appelle Shen. Mon père s\'appelait Shen Wenbo. Je ne '
+            'l\'ai jamais connu. Vous ne vous trompez pas.',
+        delta: RelationshipDelta(trust: 6, dependency: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Prudence',
+        reply:
+            'Qui vous a donné ce numéro ? Je ne réponds pas aux '
+            'inconnus qui parlent de mon père.',
+        delta: RelationshipDelta(suspicion: 5, trust: 1),
+      ),
+      SmsChoiceOption(
+        label: 'Refus poli',
+        reply: 'Vous faites erreur. Bonne journée.',
+        delta: RelationshipDelta(trust: -6, loyalty: -2),
+      ),
+    ],
+  ),
+
+  // J39 — Maman sait pour Hong Kong (« tu m'avais dit Lyon »)
+  'maman_decouvre_j39': SmsChoice(
+    beatId: 'maman_decouvre_j39',
+    contactId: 'maman',
+    options: [
+      SmsChoiceOption(
+        label: 'Tout avouer',
+        reply:
+            'Je suis à Hong Kong. Je rentre vendredi et je te raconte '
+            'tout : le contrat, l\'argent, le traitement. Tout.',
+        delta: RelationshipDelta(trust: 8, suspicion: -5, dependency: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Rassurer sans dire',
+        reply:
+            'Je suis à Hong Kong pour le travail. Je vais bien. Je '
+            't\'expliquerai, mais pas par SMS.',
+        delta: RelationshipDelta(trust: -2, suspicion: 6),
+      ),
+      SmsChoiceOption(
+        label: 'Éluder',
+        reply:
+            'Maman, il est 4h chez toi. Prends tes gélules, dors. On '
+            's\'appelle à mon retour.',
+        delta: RelationshipDelta(trust: -6, suspicion: 8, attraction: -2),
+      ),
+    ],
+  ),
+
+  // J42 — la question posée dans le silence de la cuisine
+  'maman_confrontation_j42': SmsChoice(
+    beatId: 'maman_confrontation_j42',
+    contactId: 'maman',
+    options: [
+      SmsChoiceOption(
+        label: 'Oui. Son argent.',
+        reply:
+            'Oui. C\'est son argent. C\'était le seul moyen d\'arriver à '
+            'J45 devant le Dr Aubin avec le compte plein. Je le referais.',
+        delta: RelationshipDelta(trust: 7, suspicion: -8, dependency: 1),
+      ),
+      SmsChoiceOption(
+        label: 'Mon argent.',
+        reply:
+            'C\'est mon argent. Je l\'ai gagné. Un contrat, un travail, '
+            'des règles. Personne ne m\'a rien donné.',
+        delta: RelationshipDelta(trust: -3, suspicion: 4, attraction: 1),
+      ),
+      SmsChoiceOption(
+        label: 'Pardon',
+        reply:
+            'Pardon. Pas pour l\'avoir fait. Pour t\'avoir laissée '
+            'l\'apprendre par quelqu\'un d\'autre.',
+        delta: RelationshipDelta(trust: 5, suspicion: -3, loyalty: 2),
+      ),
+    ],
+  ),
+
+  // J52 — Tristan annonce la fin du contrat (pivot d'épilogue)
+  'tristan_fin_contrat_j52': SmsChoice(
+    beatId: 'tristan_fin_contrat_j52',
+    contactId: 'tristan',
+    options: [
+      SmsChoiceOption(
+        label: 'Rester, sans contrat',
+        reply:
+            'Déchirez la clause 21. Je reste. Pas pour un contrat, '
+            'cette fois.',
+        delta: RelationshipDelta(attraction: 8, trust: 5, suspicion: -5),
+      ),
+      SmsChoiceOption(
+        label: 'Partir chez Camille',
+        reply: kReplyJ52LeaveToCamille,
+        delta: RelationshipDelta(trust: 2, attraction: -6, dependency: -5),
+      ),
+      SmsChoiceOption(
+        label: 'Du temps',
+        reply:
+            'Je ne sais pas encore. Laissez-moi quelques semaines. '
+            'Je vous écrirai.',
+        delta: RelationshipDelta(trust: 1, attraction: 1),
+      ),
+    ],
+  ),
+
+  // J78 — Tante Mei : « venez avant l'hiver »
+  'mei_invitation_j78': SmsChoice(
+    beatId: 'mei_invitation_j78',
+    contactId: 'tante_mei',
+    options: [
+      SmsChoiceOption(
+        label: 'On vient',
+        reply:
+            'On vient. Je m\'occupe des billets cette semaine. Maman '
+            'remontera dans un avion pour vous.',
+        delta: RelationshipDelta(trust: 7, dependency: 3),
+      ),
+      SmsChoiceOption(
+        label: 'Moi d\'abord',
+        reply:
+            'Je viens d\'abord seule. Si c\'est ce que je crois, je veux '
+            'le lire avant elle.',
+        delta: RelationshipDelta(trust: 3, suspicion: 2, loyalty: 1),
+      ),
+      SmsChoiceOption(
+        label: 'Pas encore',
+        reply:
+            'Pas encore. Maman sort à peine du traitement. Donnez-nous '
+            'du temps.',
+        delta: RelationshipDelta(trust: -2, dependency: -2),
+      ),
+    ],
+  ),
+
+  // J95 — Tristan : « Tu reviens ? » (pivot d'épilogue)
+  'tristan_revient_j95': SmsChoice(
+    beatId: 'tristan_revient_j95',
+    contactId: 'tristan',
+    options: [
+      SmsChoiceOption(
+        label: 'Je rentre',
+        reply: 'Je rentre. Pas pour la clause 21. Pour toi. Le 17, vol de 17h.',
+        delta: RelationshipDelta(attraction: 8, trust: 4),
+      ),
+      SmsChoiceOption(
+        label: 'Rejoins-moi',
+        reply: kReplyJ95HongKong,
+        delta: RelationshipDelta(attraction: 5, suspicion: -2),
+      ),
+      SmsChoiceOption(
+        label: 'Je ne sais pas',
+        reply:
+            'Je ne sais pas encore. Ici j\'apprends des choses sur mon '
+            'père que tu n\'imagines pas. Laisse-moi finir.',
+        delta: RelationshipDelta(trust: 2, dependency: -2),
+      ),
+    ],
+  ),
+
+  // J112 — Camille : « Tu emportes quoi ? » (décide l'épilogue)
+  'epilogue_j112': SmsChoice(
+    beatId: 'epilogue_j112',
+    contactId: 'camille',
+    options: [
+      SmsChoiceOption(
+        label: 'Je reste',
+        reply: kReplyJ112Fujian,
+        delta: RelationshipDelta(trust: 4, loyalty: 3),
+      ),
+      SmsChoiceOption(
+        label: 'Paris',
+        reply: kReplyJ112Paris,
+        delta: RelationshipDelta(trust: 3, attraction: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Hong Kong',
+        reply: kReplyJ112HongKong,
+        delta: RelationshipDelta(attraction: 2, suspicion: 2),
       ),
     ],
   ),

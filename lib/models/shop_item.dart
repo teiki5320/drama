@@ -49,4 +49,8 @@ const kShopCategories = <String, String>{
   'tech': '📱 Tech',
   'deco': '🌿 Déco',
   'beaute': '🌸 Beauté',
+  'bouffe': '🍽️ Gastronomie',
+  'art': '🎨 Art',
+  'immobilier': '🏠 Immobilier',
+  'mecenat': '🎗️ Mécénat',
 };

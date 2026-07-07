@@ -45,6 +45,10 @@ const Map<String, List<ContactStatus>> kContactStatuses = {
     ContactStatus(fromDay: 1, label: 'Livraisons Pro'),
     ContactStatus(fromDay: 9, label: 'Compte suspendu', emoji: '⚠️'),
   ],
+  'tante_mei': [
+    ContactStatus(fromDay: 35, label: 'Fuzhou · GMT+8', emoji: '🍊'),
+    ContactStatus(fromDay: 78, label: 'En ligne', emoji: '🏮'),
+  ],
 };
 
 /// Renvoie le statut applicable au jour donné — le plus récent ≤ day.

@@ -67,6 +67,13 @@ const kContacts = <MsgContact>[
     avatarPath: 'assets/photos/avatars/madame_heng.webp',
   ),
   MsgContact(
+    id: 'tante_mei',
+    displayName: 'Tante Mei',
+    emoji: '🍊',
+    avatarTint: '#F2E3C8',
+    avatarPath: 'assets/photos/avatars/tante_mei.webp',
+  ),
+  MsgContact(
     id: 'banque',
     displayName: 'BANQUE INFO',
     emoji: '🏦',
@@ -497,6 +504,112 @@ const Map<String, List<Msg>> kThreads = {
       time: '22:48',
       day: 14,
     ),
+
+    // ── J23 — la boîte de Long Jing (Ep2, beat à choix) ──
+    Msg(
+      sender: 'maman',
+      text: 'Ma fille, j\'ai rangé ton sac qui traînait depuis dimanche.',
+      time: '19:12',
+      day: 23,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Une boîte de thé en est tombée. Long Jing. Première récolte, '
+          'dit le couvercle.',
+      time: '19:14',
+      day: 23,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'C\'est un thé qui coûte une semaine de tes livraisons. Je le '
+          'sais parce que ton grand-père en achetait une fois par an, '
+          'pour le nouvel an.',
+      time: '19:18',
+      day: 23,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Je ne fouillais pas, je t\'assure. Excuse-moi. Mais dis-moi '
+          'juste : qui t\'offre du thé d\'empereur ?',
+      time: '19:32',
+      day: 23,
+      status: MsgStatus.delivered,
+      beatId: 'maman_long_jing_j23',
+    ),
+
+    // ── J39 — l'appel de 4h du matin (Tante Mei a parlé) ──
+    Msg(
+      sender: 'maman',
+      text:
+          'Je t\'ai appelée trois fois. Je sais qu\'il est tôt là-bas. '
+          'Ou tard. Je ne sais plus.',
+      time: '07:02',
+      day: 39,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Une femme du Fujian m\'a écrit cette nuit. Mei. '
+          'La sœur de ton père.',
+      time: '07:05',
+      day: 39,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Elle m\'a envoyé une photo de toi à Hong Kong. À la table de '
+          'la famille Heng. Tu m\'avais dit Lyon, ma fille.',
+      time: '07:09',
+      day: 39,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Je ne suis pas en colère. Je suis perdue. Dis-moi où tu es. '
+          'Dis-moi avec qui. Dis-moi pourquoi Lyon.',
+      time: '07:14',
+      day: 39,
+      status: MsgStatus.delivered,
+      beatId: 'maman_decouvre_j39',
+    ),
+
+    // ── J42 — la confrontation silencieuse, à trois mètres ──
+    Msg(
+      sender: 'maman',
+      text: 'Tu es dans ma cuisine et je t\'écris. Nous en sommes là.',
+      time: '11:02',
+      day: 42,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'J\'ai lu ce qu\'il y avait dans l\'enveloppe. Quatorze pages. '
+          'Ton nom à côté du sien.',
+      time: '11:06',
+      day: 42,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Duras dit qu\'on écrit ce qu\'on ne peut pas dire. Je n\'avais '
+          'jamais compris cette phrase avant ce matin.',
+      time: '11:10',
+      day: 42,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Une seule question, ma fille. L\'argent du traitement, c\'est '
+          'son argent ? Réponds-moi ici, dans le silence. Après on '
+          'parlera à voix haute.',
+      time: '11:14',
+      day: 42,
+      status: MsgStatus.delivered,
+      beatId: 'maman_confrontation_j42',
+    ),
   ],
   'camille': [
     Msg(
@@ -809,6 +922,74 @@ const Map<String, List<Msg>> kThreads = {
       time: '23:38',
       day: 14,
     ),
+
+    // ── J26 — huit jours de silence (Ep2, beat à choix) ──
+    Msg(
+      sender: 'camille',
+      text: 'T\'es vivante ?',
+      time: '21:58',
+      day: 26,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Je demande parce que ton dernier message date d\'il y a 8 '
+          'jours. J\'ai compté. Enfin, mon boulanger a compté.',
+      time: '22:02',
+      day: 26,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Il met un croissant de côté tous les matins « pour ton '
+          'amie ». Il commence à me regarder avec pitié.',
+      time: '22:07',
+      day: 26,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Sérieux, Shen. Huit jours. Je dis pas ça pour te '
+          'culpabiliser. Si. Un peu.',
+      time: '22:14',
+      day: 26,
+      status: MsgStatus.delivered,
+      beatId: 'camille_distance_j26',
+    ),
+
+    // ── J112 — le choix final : bus, avion, ou ni l'un ni l'autre ──
+    Msg(
+      sender: 'camille',
+      text:
+          'Il paraît que le bus pour Xiamen passe à 11h. Et que l\'avion '
+          'pour Paris décolle à 17h.',
+      time: '07:02',
+      day: 112,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Je dis ça, je surveille pas tes horaires. Si. Ton téléphone '
+          'me manque. Toi aussi, accessoirement.',
+      time: '07:05',
+      day: 112,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Quoi que tu choisisses, je gère les croissants. À Paris j\'en '
+          'ai. À Xiamen j\'en apporte. À Hong Kong j\'en invente.',
+      time: '07:09',
+      day: 112,
+    ),
+    Msg(
+      sender: 'camille',
+      text: 'Alors, ma poule. Tu emportes quoi ?',
+      time: '07:14',
+      day: 112,
+      status: MsgStatus.delivered,
+      beatId: 'epilogue_j112',
+    ),
   ],
   'tristan': [
     // J6 — Premier contact via la secrétaire (sec, formel)
@@ -933,6 +1114,70 @@ const Map<String, List<Msg>> kThreads = {
           'garder. Ou écraser.',
       time: '22:48',
       day: 14,
+    ),
+
+    // ── J52 — la fin du contrat, annoncée par écrit (Ep4, beat à choix) ──
+    Msg(
+      sender: 'tristan',
+      text: 'Le conseil a voté ce matin. Vincent a perdu.',
+      time: '17:54',
+      day: 52,
+    ),
+    Msg(
+      sender: 'tristan',
+      text:
+          'Le contrat prévoyait une sortie au versement final. '
+          'Le virement part demain.',
+      time: '17:58',
+      day: 52,
+    ),
+    Msg(
+      sender: 'tristan',
+      text: 'Vous êtes libre. C\'est la clause 21. Je la respecte.',
+      time: '18:03',
+      day: 52,
+    ),
+    Msg(
+      sender: 'tristan',
+      text: 'Dites-moi ce que vous voulez faire.',
+      time: '18:08',
+      day: 52,
+      status: MsgStatus.delivered,
+      beatId: 'tristan_fin_contrat_j52',
+    ),
+
+    // ── J95 — depuis le Fujian : la question simple (premier tutoiement) ──
+    Msg(
+      sender: 'tristan',
+      text:
+          'Camille me dit que vous allez bien. Je n\'ai rien demandé. '
+          'Elle me l\'a dit quand même.',
+      time: '10:48',
+      day: 95,
+    ),
+    Msg(
+      sender: 'tristan',
+      text:
+          'Le bureau est calme. Vincent est à Genève. Ma tante demande '
+          'de vos nouvelles à chaque thé.',
+      time: '10:53',
+      day: 95,
+    ),
+    Msg(
+      sender: 'tristan',
+      text:
+          'Je ne sais pas écrire ces choses. Alors je pose la question '
+          'simple.',
+      time: '10:57',
+      day: 95,
+    ),
+    Msg(
+      sender: 'tristan',
+      text: 'Tu reviens ?',
+      time: '11:00',
+      day: 95,
+      status: MsgStatus.delivered,
+      beatId: 'tristan_revient_j95',
     ),
   ],
   'vincent_heng': [
@@ -1292,6 +1537,76 @@ const Map<String, List<Msg>> kThreads = {
           'INCIDENT — Course #14872 marquée comme non livrée. Pénalité de 38,00 € appliquée sur la prochaine paie. Conseil : reprenez une course tout de suite.',
       time: '08:31',
       day: 1,
+    ),
+  ],
+  'tante_mei': [
+    // ── J35 — Tante Mei repère Shen sur une photo du groupe Heng ──
+    Msg(
+      sender: 'tante_mei',
+      text: 'Bonjour. Je m\'appelle Mei. Je crois que je connais ton visage.',
+      time: '10:41',
+      day: 35,
+    ),
+    Msg(
+      sender: 'tante_mei',
+      text:
+          'Une photo de toi circule dans le groupe de la famille Heng. '
+          'Le dîner de Causeway Bay. La jeune femme qui répond en '
+          'mandarin.',
+      time: '10:46',
+      day: 35,
+    ),
+    Msg(
+      sender: 'tante_mei',
+      text:
+          'Ton visage, c\'est le visage de mon frère. Shen Wenbo. '
+          '你是他的女儿吗 ?',
+      time: '10:52',
+      day: 35,
+    ),
+    Msg(
+      sender: 'tante_mei',
+      text:
+          'Si je me trompe, pardonne une vieille femme. Si je ne me '
+          'trompe pas, réponds-moi.',
+      time: '11:00',
+      day: 35,
+      status: MsgStatus.delivered,
+      beatId: 'mei_decouvre_j35',
+    ),
+
+    // ── J78 — l'invitation au Fujian (Ep4, beat à choix) ──
+    Msg(
+      sender: 'tante_mei',
+      text:
+          'C\'est encore Mei. Je t\'écris depuis la cour. Le kaki donne '
+          'trop de fruits cette année.',
+      time: '19:18',
+      day: 78,
+    ),
+    Msg(
+      sender: 'tante_mei',
+      text:
+          'Ta mère et moi nous écrivons chaque semaine maintenant. Elle '
+          'corrige mon français. Je lui apprends le nom des plantes.',
+      time: '19:22',
+      day: 78,
+    ),
+    Msg(
+      sender: 'tante_mei',
+      text:
+          'Il y a une chose qui ne peut pas s\'écrire. Elle est ici, '
+          'dans la maison de ton père. Elle t\'attend depuis 2017.',
+      time: '19:27',
+      day: 78,
+    ),
+    Msg(
+      sender: 'tante_mei',
+      text: 'Venez. Toi et ta mère. Avant l\'hiver. 家里等你们。',
+      time: '19:32',
+      day: 78,
+      status: MsgStatus.delivered,
+      beatId: 'mei_invitation_j78',
     ),
   ],
 };
