@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../data/contact_states.dart';
 import '../../../../data/messages_data.dart';
+import '../../../../data/sms_choices.dart';
 import '../../../../providers/phone_state_provider.dart';
 import '../../../../providers/relationships_provider.dart';
 import '../../../../providers/sent_replies_provider.dart';
@@ -86,14 +87,22 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
         msgs.add(r.toMsg());
       }
     }
-    // Détecte si le dernier message attend une réponse de Shen
-    final last = msgs.isNotEmpty ? msgs.last : null;
-    final pendingBeat = (last != null &&
-            last.sender != 'moi' &&
-            last.beatId != null &&
-            !sentReplies.containsKey(last.beatId!))
-        ? last.beatId!
-        : null;
+    // Détecte le choix en attente : le PREMIER message reçu (ordre
+    // chronologique) qui porte un beatId avec un SmsChoice défini et
+    // auquel Shen n'a pas encore répondu. Ne pas se limiter au dernier
+    // message du fil : les SMS d'ambiance arrivés après le message-clé
+    // masquaient le panneau et bloquaient toute la progression.
+    Msg? pendingMsg;
+    for (final m in msgs) {
+      if (m.sender != 'moi' &&
+          m.beatId != null &&
+          choiceForBeat(m.beatId!) != null &&
+          !sentReplies.containsKey(m.beatId!)) {
+        pendingMsg = m;
+        break;
+      }
+    }
+    final pendingBeat = pendingMsg?.beatId;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -208,8 +217,8 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
           if (pendingBeat != null)
             ChoicePanel(
               beatId: pendingBeat,
-              lastMessageTime: last!.time,
-              lastMessageDay: last.day,
+              lastMessageTime: pendingMsg!.time,
+              lastMessageDay: pendingMsg.day,
             )
           else
             _InputBar(),

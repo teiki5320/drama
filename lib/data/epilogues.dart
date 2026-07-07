@@ -1,3 +1,5 @@
+import 'sms_choices.dart';
+
 /// Les 5 épilogues canoniques de Drama. Sélectionnés à J112 selon
 /// l'état final (suspicion Maman, balance Banque, choix Shen sur les
 /// beats-clés Ep 2-5).
@@ -151,4 +153,38 @@ Epilogue selectEpilogue({
   if (wentToFujian) return kEpilogues[0]; // parc
   if (stayedWithTristan) return kEpilogues[1]; // foch
   return kEpilogues[0]; // par défaut
+}
+
+/// Dérive les drapeaux d'épilogue depuis les réponses réellement envoyées
+/// (beatId → texte de la réponse), puis délègue à [selectEpilogue].
+///
+/// Règles :
+///  - le solde final < 18 000 € écrase tout (deuil) — géré par selectEpilogue ;
+///  - `epilogue_j112` (SMS final de Camille) porte la destination :
+///    rester au Fujian / rentrer à Paris / partir à Hong Kong ;
+///  - rentrer à Paris mène chez Camille si Shen a quitté l'avenue Foch à
+///    J52 (`tristan_fin_contrat_j52`), sinon chez Tristan (foch_encore) ;
+///  - sans réponse à J112 (sécurité), la réponse de J95 à Tristan sert de
+///    repli pour Hong Kong.
+Epilogue resolveEpilogue({
+  required int finalBalance,
+  required Map<String, String> repliesByBeat,
+}) {
+  final j52 = repliesByBeat['tristan_fin_contrat_j52'] ?? '';
+  final j95 = repliesByBeat['tristan_revient_j95'] ?? '';
+  final j112 = repliesByBeat['epilogue_j112'] ?? '';
+
+  final leftAtJ52 = j52 == kReplyJ52LeaveToCamille;
+  final choseParis = j112 == kReplyJ112Paris;
+  final choseHK = j112 == kReplyJ112HongKong ||
+      (j112.isEmpty && j95 == kReplyJ95HongKong);
+  final choseFujian = j112 == kReplyJ112Fujian;
+
+  return selectEpilogue(
+    finalBalance: finalBalance,
+    stayedWithTristan: choseParis && !leftAtJ52,
+    wentToHK: choseHK,
+    wentToFujian: choseFujian,
+    atCamille: choseParis && leftAtJ52,
+  );
 }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/phone_apps.dart';
+import '../../data/banque_data.dart';
+import '../../data/epilogues.dart';
+import '../../providers/epilogue_provider.dart';
 import '../../providers/incoming_call_provider.dart';
 import '../../providers/lock_notifications_provider.dart';
 import '../../providers/phone_state_provider.dart';
@@ -29,6 +32,7 @@ import 'home_screen.dart';
 import 'incoming_call_screen.dart';
 import 'lock_screen.dart';
 import 'notification_banner.dart';
+import 'screens/epilogue_screen.dart';
 import 'transition_screen.dart';
 
 /// Contrôleur top-level du téléphone : décide quel écran afficher selon
@@ -95,17 +99,49 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         for (final beatId in newKeys) {
           notifier.maybeAdvanceAfterReply(beatId);
         }
+        // Fin de partie : la réponse au SMS final de Camille (J112)
+        // déclenche l'épilogue calculé depuis l'état réel de la partie.
+        if (newKeys.contains('epilogue_j112')) {
+          _showEpilogue(next);
+        }
       });
     });
+  }
+
+  /// Calcule l'épilogue mérité (solde réel + choix pivots) et l'affiche.
+  /// Le solde reprend la formule de la Banque : départ + mouvements
+  /// canoniques échus + mouvements dynamiques (achats/gains du joueur).
+  void _showEpilogue(Map<String, SentReply> replies) {
+    final p = ref.read(phoneStateProvider);
+    var balance = kStartingBalance;
+    for (final m in kMovements) {
+      if (m.day <= p.currentDay) balance += m.amount;
+    }
+    for (final m in p.dynamicMovements) {
+      if (m.day <= p.currentDay) balance += m.amount;
+    }
+    final epilogue = resolveEpilogue(
+      finalBalance: balance,
+      repliesByBeat: {
+        for (final e in replies.entries) e.key: e.value.text,
+      },
+    );
+    ref.read(epilogueProvider.notifier).state = epilogue;
   }
 
   @override
   Widget build(BuildContext context) {
     final p = ref.watch(phoneStateProvider);
     final call = ref.watch(incomingCallProvider);
+    final epilogue = ref.watch(epilogueProvider);
 
     Widget body;
-    if (call != null) {
+    if (epilogue != null) {
+      body = EpilogueScreen(
+        epilogue: epilogue,
+        onClose: () => ref.read(epilogueProvider.notifier).state = null,
+      );
+    } else if (call != null) {
       body = IncomingCallScreen(call: call);
     } else if (p.isLocked) {
       body = const LockScreen();

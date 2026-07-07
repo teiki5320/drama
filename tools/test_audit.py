@@ -115,8 +115,8 @@ run_full_audit()
 case("repo réel : 0 FAIL", len(audit.FAILS) == 0)
 case("repo réel : conventions sans violation",
      any("aucune violation de convention" in m for m in audit.OKS))
-case("repo réel : choix Ep2+ surfacés en EDITORIAL",
-     any("choix d'épisode à écrire" in m for m in audit.EDITORIAL))
+case("repo réel : tous les choix d'épisode écrits (plus de mur J23)",
+     any("choix d'épisode tous écrits" in m for m in audit.OKS))
 case("repo réel : couverture narrative surfacée",
      any("[coverage]" in m for m in audit.EDITORIAL))
 
