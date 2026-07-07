@@ -214,7 +214,9 @@ BANNED = [
     (re.compile(r"\bMme Heng\b"), "« Mme Heng » interdit -> « Madame Heng »"),
     (re.compile(r"\bMadame HENG\b"), "« Madame HENG » interdit -> « Madame Heng »"),
     (re.compile(r"\bPnL\b"), "« PnL » interdit -> « Plus-value latente »"),
-    (re.compile(r"[0-9] ?ème\b"), "« Xème » interdit -> « Xe »"),
+    # Arrondissements / etages : borne 1-2 chiffres pour NE PAS flagger les
+    # decomptes canoniques « 312eme/313eme/314eme lettre » (scenes non-negociables).
+    (re.compile(r"\b[0-9]{1,2} ?ème\b"), "« Xème » interdit -> « Xe »"),
     (re.compile(r"[0-9](?:€|€)"), "montant collé au € -> espace insécable avant €"),
     (re.compile(r"[’]"), "apostrophe typographique -> apostrophe droite '"),
 ]
