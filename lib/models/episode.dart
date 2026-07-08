@@ -1,5 +1,6 @@
 /// Bascule architecturale : le scénario n'est plus calé sur 112 jours
-/// rigides mais sur 6 épisodes qui suivent les 6 actes de la roadmap.
+/// rigides mais sur 5 épisodes (kEpisodes) qui condensent les 6 actes
+/// de la roadmap.
 /// Chaque épisode contient une liste de Beats — moments narratifs
 /// précis horodatés dans le gameworld (jour/heure/minute).
 ///
@@ -11,7 +12,7 @@ class Episode {
   /// Identifiant stable (`collision`, `contrat`, …).
   final String id;
 
-  /// Numéro d'épisode 1..6.
+  /// Numéro d'épisode 1..5.
   final int number;
 
   /// Titre court affiché à l'écran.

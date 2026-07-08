@@ -14,12 +14,17 @@ class IncomingCall {
   /// Si true, l'appel est marqué « masqué » et le nom n'est pas révélé.
   final bool masked;
 
+  /// Ce que dit l'appelant si Shen décroche — affiché ligne à ligne
+  /// pendant l'appel. Vide = l'appelant se tait et raccroche vite.
+  final List<String> transcript;
+
   const IncomingCall({
     required this.displayName,
     this.subtitle,
     this.emoji = '👤',
     this.avatarColor = 0xFFCCCCCC,
     this.masked = false,
+    this.transcript = const [],
   });
 }
 

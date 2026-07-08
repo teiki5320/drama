@@ -184,7 +184,7 @@ const kEpisodes = <Episode>[
         day: 9,
         hour: 17,
         minute: 22,
-        label: 'Emménagement — Avenue Foch',
+        label: 'Emménagement — rue de Berri',
       ),
       // — Acte C : Vie commune (J11 → J14, cliffhanger Long Jing)
       Beat(

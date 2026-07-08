@@ -65,3 +65,28 @@ contenu — légendes — est déjà écrit dans `shop_catalog.json`).
 - Montants : aucun « collé au € » dans les chaînes affichées (la règle
   « espace insécable » du CLAUDE.md reste aspirationnelle — même les fichiers
   de l'auteur utilisent un espace normal ; non touché par cohérence).
+
+
+---
+
+# Addendum — juillet 2026 : toutes les décisions tranchées
+
+État après la campagne « corrige tout » (PR #161) :
+**0 FAIL, 0 WARN, 1 EDITORIAL** (densité d'écriture, non bloquant).
+
+| Décision d'auteur (juin) | Tranché | Fait |
+|---|---|---|
+| Doublon J8-J14 dans `scenario.json` | branche `voie2` supprimée, ligne principale canonique | dédoublonné + toute résurgence = FAIL |
+| Adresse appartement Tristan (Foch 16e vs Berri 8e) | **rue de Berri (8e)** | ~50 réfs migrées (prose, ids, GPS, assets renommés) ; garde anti-régression FAIL |
+| Choix Ep2-5 à écrire | écrits (PR #160) | 15/15 choix d'épisode câblés |
+| Achat → post Instagram | câblé | `buyItem` publie dans le feed + profil, persisté |
+| Couverture narrative | densifiée | 43/43 jours de beats couverts (carnet, photos, banque, téléphone, notifs) |
+
+Également purgés : `investments.json` / `insta_seed.json` (vestiges supprimés,
+pubspec allégé), appels entrants structurés (`isIncomingCall` + « Accepter »
+fonctionnel), interactions Instagram persistées, gameplay déterministe
+(horloge diégétique + RNG seedés), acomptes bancaires alignés sur les beats
+(4 × 10 000 €, traitement débité à J45 — solde final canonique 22 621 €).
+
+Outils : `tools/audit.py` (gate) · `tools/simulate.py` (partie complète,
+26 checks) · `tools/test_audit.py` (27 cas).

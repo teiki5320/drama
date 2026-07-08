@@ -151,10 +151,13 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
   }
 
   /// Tente un spawn d'arc Messages quand l'heure tourne. Petit % par tick
-  /// pour ne pas inonder le joueur.
+  /// pour ne pas inonder le joueur. DÉTERMINISTE : la décision dépend du
+  /// temps gameworld (même partie => mêmes spawns), pas de l'horloge réelle.
   void _maybeSpawnMessagesArc() {
-    // ~5 % de chance par tick
-    if (DateTime.now().millisecondsSinceEpoch % 20 != 0) return;
+    // ~5 % des ticks : hash multiplicatif du temps diégétique.
+    final tick =
+        state.currentDay * 1440 + state.hour * 60 + state.minute;
+    if ((tick * 2654435761) % 20 != 0) return;
     _ref.read(messagesArcsProvider.notifier).spawnRandom(
           day: state.currentDay,
           hour: state.hour,
@@ -434,6 +437,8 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     required int price,
     required int moodGain,
     required int reputationGain,
+    String? instaCaption,
+    String? instaEmoji,
   }) {
     final mvt = DynamicMovement(
       label: name,
@@ -442,9 +447,28 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       time: state.timeLabel,
       emoji: emoji,
     );
+    // Achat -> post Instagram auto (items marqués generatesInstaPost).
+    // Likes seedés de façon déterministe : réputation + jour + prix.
+    final newPosts = (instaCaption == null || instaCaption.isEmpty)
+        ? state.instaPosts
+        : [
+            ...state.instaPosts,
+            UserInstaPost(
+              id: 'user_$id',
+              day: state.currentDay,
+              time: state.timeLabel,
+              caption: instaCaption,
+              emoji: (instaEmoji == null || instaEmoji.isEmpty)
+                  ? emoji
+                  : instaEmoji,
+              likes: 38 + state.reputation * 6 + state.currentDay +
+                  (price ~/ 400),
+            ),
+          ];
     state = state.copyWith(
       ownedItems: {...state.ownedItems, id},
       dynamicMovements: [...state.dynamicMovements, mvt],
+      instaPosts: newPosts,
       mood: state.mood + moodGain,
       reputation: state.reputation + reputationGain,
       battery: (state.battery - 1).clamp(0, 100),

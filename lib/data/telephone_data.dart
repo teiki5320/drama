@@ -375,4 +375,76 @@ const kCalls = <CallEntry>[
     type: CallType.missed,
     avatarPath: 'assets/photos/avatars/tante_mei.webp',
   ),
+
+  // ─── J39 — les trois appels de 4h du matin (heure de Paris) ───
+  CallEntry(
+    day: 39,
+    time: '06:58',
+    contactLabel: 'Maman ❤️',
+    type: CallType.missed,
+    avatarPath: 'assets/photos/avatars/maman.webp',
+  ),
+  CallEntry(
+    day: 39,
+    time: '07:02',
+    contactLabel: 'Maman ❤️',
+    type: CallType.missed,
+    avatarPath: 'assets/photos/avatars/maman.webp',
+  ),
+  CallEntry(
+    day: 39,
+    time: '07:06',
+    contactLabel: 'Maman ❤️',
+    type: CallType.voicemail,
+    duration: '0:41',
+    voicemailNote:
+        '« C\'est Maman. Il est quatre heures. Une dame du Fujian '
+        'm\'a écrit. Rappelle-moi. S\'il te plaît. » (0:41)',
+    avatarPath: 'assets/photos/avatars/maman.webp',
+  ),
+
+  // ─── Ep 4-5 ───
+  CallEntry(
+    day: 41,
+    time: '10:02',
+    contactLabel: 'Maman ❤️',
+    type: CallType.outgoing,
+    duration: '0:12',
+    avatarPath: 'assets/photos/avatars/maman.webp',
+  ),
+  CallEntry(
+    day: 52,
+    time: '18:15',
+    contactLabel: 'Tristan H.',
+    type: CallType.missed,
+    avatarPath: 'assets/photos/avatars/tristan.webp',
+  ),
+  CallEntry(
+    day: 78,
+    time: '19:40',
+    contactLabel: 'Tante Mei (Fujian)',
+    contactEmoji: '🍵',
+    type: CallType.incoming,
+    duration: '23:12',
+    avatarPath: 'assets/photos/avatars/tante_mei.webp',
+  ),
+  CallEntry(
+    day: 95,
+    time: '11:04',
+    contactLabel: 'Tristan H.',
+    type: CallType.missed,
+    avatarPath: 'assets/photos/avatars/tristan.webp',
+  ),
+  CallEntry(
+    day: 112,
+    time: '07:20',
+    contactLabel: 'Camille',
+    contactEmoji: '🥐',
+    type: CallType.voicemail,
+    duration: '0:19',
+    voicemailNote:
+        '« C\'est moi. Quoi que tu choisisses, je gère les croissants. '
+        'Rappelle quand c\'est décidé. Ou pas. Je t\'aime. » (0:19)',
+    avatarPath: 'assets/photos/avatars/camille.webp',
+  ),
 ];

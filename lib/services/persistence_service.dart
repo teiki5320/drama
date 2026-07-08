@@ -132,6 +132,16 @@ class PersistenceService {
                   'imagePath': p.imagePath,
                 })
             .toList(),
+        'instaPosts': s.instaPosts
+            .map((p) => {
+                  'id': p.id,
+                  'day': p.day,
+                  'time': p.time,
+                  'caption': p.caption,
+                  'emoji': p.emoji,
+                  'likes': p.likes,
+                })
+            .toList(),
       };
 
   static PhoneState _phoneStateFromMap(Map<String, dynamic> j) {
@@ -198,6 +208,17 @@ class PersistenceService {
                   gradient: ((m['gradient'] as List<dynamic>?) ?? [])
                       .map((e) => e as int)
                       .toList(),
+        instaPosts: ((j['instaPosts'] as List<dynamic>?) ?? [])
+            .map((e) => e as Map<String, dynamic>)
+            .map((m) => UserInstaPost(
+                  id: m['id'] as String,
+                  day: m['day'] as int,
+                  time: m['time'] as String,
+                  caption: m['caption'] as String,
+                  emoji: m['emoji'] as String,
+                  likes: m['likes'] as int,
+                ))
+            .toList(),
                   caption: m['caption'] as String,
                   imagePath: m['imagePath'] as String?,
                 ))

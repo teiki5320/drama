@@ -38,6 +38,9 @@ class PhoneState {
   final List<DynamicMovement> dynamicMovements;
   /// Photos prises par le joueur via la Caméra.
   final List<UserPhoto> userPhotos;
+  /// Posts Instagram publiés par Shen (générés par les achats boutique
+  /// marqués `generatesInstaPost`). Affichés en tête du feed + profil.
+  final List<UserInstaPost> instaPosts;
 
   const PhoneState({
     this.currentDay = 1,
@@ -65,6 +68,7 @@ class PhoneState {
     this.ownedItems = const {},
     this.dynamicMovements = const [],
     this.userPhotos = const [],
+    this.instaPosts = const [],
   });
 
   /// Période visuelle pour le skin (palette qui réchauffe ou refroidit).
@@ -101,6 +105,7 @@ class PhoneState {
     Set<String>? ownedItems,
     List<DynamicMovement>? dynamicMovements,
     List<UserPhoto>? userPhotos,
+    List<UserInstaPost>? instaPosts,
   }) =>
       PhoneState(
         currentDay: currentDay ?? this.currentDay,
@@ -120,7 +125,29 @@ class PhoneState {
         ownedItems: ownedItems ?? this.ownedItems,
         dynamicMovements: dynamicMovements ?? this.dynamicMovements,
         userPhotos: userPhotos ?? this.userPhotos,
+        instaPosts: instaPosts ?? this.instaPosts,
       );
+}
+
+/// Post Instagram publié par Shen elle-même — généré quand un achat
+/// boutique porte `generatesInstaPost` (légende + emoji fournis par le
+/// catalogue). Les likes sont seedés de façon déterministe à l'achat.
+class UserInstaPost {
+  final String id;      // 'user_<itemId>'
+  final int day;
+  final String time;    // "14:32"
+  final String caption;
+  final String emoji;
+  final int likes;
+
+  const UserInstaPost({
+    required this.id,
+    required this.day,
+    required this.time,
+    required this.caption,
+    required this.emoji,
+    required this.likes,
+  });
 }
 
 /// Photo prise par le joueur via l'app Caméra (au lieu d'apparaître

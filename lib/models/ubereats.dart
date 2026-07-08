@@ -38,7 +38,7 @@ enum UberZone {
   defense,       // bureau, midi
   vincennes,     // famille, dimanche
   pantin,        // banlieue proche, ouvrier
-  fochAvenue,    // 16e, ultra-riche
+  rueDeBerri,     // 8e, ultra-riche
   goutteDor,     // 18e, vivant
 }
 
@@ -98,7 +98,7 @@ class UberCustomer {
   final String displayName;
   final CustomerKind kind;
   final UberZone zone;
-  final String address;  // ex: "12 av. Foch, 16e"
+  final String address;  // ex: "12 rue de Berri, 8e"
   final String building; // ex: "Bât. A · 3e étage · code 4297"
   final String emoji;
   /// Bio courte affichée si on tap dessus.

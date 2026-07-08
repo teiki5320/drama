@@ -50,10 +50,10 @@ const kEpilogues = <Epilogue>[
     emoji: '🍃',
   ),
 
-  // ── ÉPILOGUE 2 : Avenue Foch, encore ────────────────────────
+  // ── ÉPILOGUE 2 : Rue de Berri, encore ───────────────────────
   Epilogue(
-    id: 'foch_encore',
-    title: 'Avenue Foch, encore',
+    id: 'berri_encore',
+    title: 'Rue de Berri, encore',
     subtitle: 'Paris, J112 · 22h',
     body:
         'L\'avion atterrit à 17h. Tristan vient me chercher en personne.\n\n'
@@ -61,7 +61,7 @@ const kEpilogues = <Epilogue>[
         '« J\'ai prolongé. Le contrat. Trois mois encore. Ma mère a insisté. »\n\n'
         'Je dis oui sans réfléchir. C\'est devenu un réflexe.\n\n'
         'Maman dort à Belleville. Le traitement marche. Je suis riche. Je suis '
-        'à la fenêtre du 7e étage avenue Foch. Je regarde le boulevard. '
+        'à la fenêtre du 7e étage, rue de Berri. Je regarde la rue. '
         'Je ne sens plus rien.\n\n'
         'Camille m\'a envoyé un message : « Tu rentres ou tu rentres ? » '
         'Je n\'ai pas répondu.',
@@ -116,7 +116,7 @@ const kEpilogues = <Epilogue>[
     title: 'Camille, la troisième voie',
     subtitle: 'Paris, J112 · 11h',
     body:
-        'J\'ai quitté Avenue Foch le J52. Tristan ne m\'a pas retenue.\n\n'
+        'J\'ai quitté la rue de Berri à J52. Tristan ne m\'a pas retenue.\n\n'
         'Je vis chez Camille depuis quatre mois. Maman est en stabilisation à '
         'Tenon, elle vient déjeuner les dimanches. Elle ne me demande plus rien.\n\n'
         'J\'ai repris le master archi à distance, je passe mon HMONP en juin. '
@@ -135,7 +135,7 @@ const kEpilogues = <Epilogue>[
 /// Sélectionne l'épilogue selon l'état final.
 /// Heuristique :
 ///  - balance < 18000 ou Maman morte → belleville_deuil
-///  - balance >= 18000 et reste avec Tristan (foch_choice) → foch_encore
+///  - balance >= 18000 et reste avec Tristan (berri_choice) → berri_encore
 ///  - choix HK J95+ → hk_promesse
 ///  - choix Fujian J88+ → parc_ma_fille
 ///  - choix Camille J52 → camille_troisieme
@@ -151,7 +151,7 @@ Epilogue selectEpilogue({
   if (atCamille) return kEpilogues[4]; // camille
   if (wentToHK) return kEpilogues[3]; // hk
   if (wentToFujian) return kEpilogues[0]; // parc
-  if (stayedWithTristan) return kEpilogues[1]; // foch
+  if (stayedWithTristan) return kEpilogues[1]; // berri
   return kEpilogues[0]; // par défaut
 }
 
@@ -162,13 +162,16 @@ Epilogue selectEpilogue({
 ///  - le solde final < 18 000 € écrase tout (deuil) — géré par selectEpilogue ;
 ///  - `epilogue_j112` (SMS final de Camille) porte la destination :
 ///    rester au Fujian / rentrer à Paris / partir à Hong Kong ;
-///  - rentrer à Paris mène chez Camille si Shen a quitté l'avenue Foch à
-///    J52 (`tristan_fin_contrat_j52`), sinon chez Tristan (foch_encore) ;
+///  - rentrer à Paris mène chez Camille si Shen a quitté la rue de Berri à
+///    J52 (`tristan_fin_contrat_j52`), sinon chez Tristan (berri_encore) ;
 ///  - sans réponse à J112 (sécurité), la réponse de J95 à Tristan sert de
-///    repli pour Hong Kong.
+///    repli pour Hong Kong ; à défaut le `mood` final départage : un mood
+///    bas retombe dans l'inertie de la cage dorée (berri_encore), un mood
+///    correct laisse l'ouverture du parc (parc_ma_fille).
 Epilogue resolveEpilogue({
   required int finalBalance,
   required Map<String, String> repliesByBeat,
+  int mood = 5,
 }) {
   final j52 = repliesByBeat['tristan_fin_contrat_j52'] ?? '';
   final j95 = repliesByBeat['tristan_revient_j95'] ?? '';
@@ -179,10 +182,13 @@ Epilogue resolveEpilogue({
   final choseHK = j112 == kReplyJ112HongKong ||
       (j112.isEmpty && j95 == kReplyJ95HongKong);
   final choseFujian = j112 == kReplyJ112Fujian;
+  // Aucun choix explicite (save incomplète) : le mood tranche.
+  final noExplicit = !choseParis && !choseHK && !choseFujian;
+  final inertie = noExplicit && mood < 5 && !leftAtJ52;
 
   return selectEpilogue(
     finalBalance: finalBalance,
-    stayedWithTristan: choseParis && !leftAtJ52,
+    stayedWithTristan: (choseParis && !leftAtJ52) || inertie,
     wentToHK: choseHK,
     wentToFujian: choseFujian,
     atCamille: choseParis && leftAtJ52,

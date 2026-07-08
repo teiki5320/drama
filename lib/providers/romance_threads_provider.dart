@@ -54,7 +54,8 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
     _hydrate();
   }
 
-  final _rng = Random();
+  // Seed fixe : une même partie rejoue les mêmes tirages (testabilité).
+  final _rng = Random(19990906);
   // instanceId → beatIdx → index de variante piochée (stable au re-tick)
   final _textPicks = <String, Map<int, int>>{};
   final _photoPicks = <String, Map<int, int>>{};
@@ -119,7 +120,8 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
 
     final profileIdx = _rng.nextInt(template.profilePool.length);
     final instance = RomanceInstance(
-      id: 'rom_${DateTime.now().millisecondsSinceEpoch}_${_rng.nextInt(9999)}',
+      // Id déterministe : temps gameworld + template + profil.
+      id: 'rom_j${day}_${hour}h${minute}_${templateId}_$profileIdx',
       templateId: templateId,
       profileIdx: profileIdx,
       startDay: day,

@@ -15,15 +15,15 @@ App Store…). `lib/main.dart` n'est **plus** un placeholder.
 - **Contenu jouable** : Ep 1 (J1→J14) est dense ; Ep 2→5 sont **scaffoldés**
   (beats posés dans `lib/data/episodes.dart`, prose/choix encore à écrire).
 - **Données du jeu** : le contenu vit majoritairement dans `lib/data/*.dart`.
-  Les JSON `assets/data/` sont surtout de la **référence narrative** :
-  - `scenario.json` (J1-J14 ; ⚠ doublon J8-J14, deux versions — **non chargé**
-    par l'app, c'est une référence)
-  - `shop_catalog.json` (**40 items** — **seul JSON réellement chargé**, via
+  `assets/data/` a été nettoyé (juillet 2026) :
+  - `shop_catalog.json` (**40 items** — **seul JSON embarqué et chargé**, via
     `shopCatalogProvider`)
-  - `investments.json` (9 actions — **non chargé** ; la bourse jouable vit
-    dans `lib/data/banque_data.dart`)
-  - `insta_seed.json` (42 posts — **non chargé** ; le feed vit dans
-    `lib/data/`)
+  - `scenario.json` (J1→J14, **référence narrative dédoublonnée** — ni
+    embarquée dans le build, ni chargée ; l'ancienne branche « voie2 »
+    J8-J14 a été purgée)
+  - Les vestiges `investments.json` / `insta_seed.json` ont été **supprimés**
+    (récupérables via git history) ; la bourse jouable vit dans
+    `lib/data/banque_data.dart`, le feed Insta dans le code.
 - **Outillage** : `tools/audit.py` valide données, références d'assets,
   câblage des choix et conventions (voir « Audit & garde-fous » plus bas).
 
@@ -90,6 +90,9 @@ l'audit avant d'ouvrir une PR.
   - `Madame Heng` (jamais `Mme Heng`, jamais `Madame HENG`)
   - `Tante Mei` (toujours majuscule au titre)
   - `Tristan Heng`, `Vincent Heng`, `Camille Roux`
+- **Lieux (canon tranché)** : l'appartement de Tristan est **`rue de Berri`**
+  (8e). Jamais `avenue Foch` — l'ancienne dérive a été purgée, l'audit la
+  bloque (FAIL).
 - **Tickers** : majuscules en prose (`HENG`, jamais `Heng` quand c'est l'action).
 - **Citations dans dialogue** : point INTÉRIEUR aux guillemets pour une phrase
   complète : `« Oui. »` (pas `« Oui ».`).

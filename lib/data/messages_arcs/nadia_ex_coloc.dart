@@ -2,7 +2,7 @@ import '../../models/messages_arc.dart';
 
 /// NADIA — ex coloc Belleville
 /// 25 ans, partageait l'appart de Belleville avec Shen jusqu'au J9.
-/// Shen est partie sans expliquer (emménagement Avenue Foch). Nadia
+/// Shen est partie sans expliquer (emménagement rue de Berri). Nadia
 /// écrit pour comprendre ou récupérer du courrier. Arc 5-7 jours.
 
 const nadiaContact = MessagesArcContact(

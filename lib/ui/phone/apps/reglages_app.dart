@@ -3,9 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../data/banque_data.dart';
 import '../../../data/episodes.dart';
+import '../../../data/epilogues.dart';
 import '../../../models/phone_state.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/epilogue_provider.dart';
+import '../../../providers/instagram_state_provider.dart';
 import '../../../providers/relationships_provider.dart';
 import '../../../providers/sent_replies_provider.dart';
 import '../../../providers/app_tutorials_provider.dart';
@@ -162,6 +166,16 @@ class ReglagesApp extends ConsumerWidget {
                   ),
                 ]),
                 const SizedBox(height: 24),
+                // Revoir la fin — seulement une fois l'épilogue joué.
+                if (ref.watch(sentRepliesProvider
+                    .select((r) => r.containsKey('epilogue_j112'))))
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _DangerRow(
+                      label: 'Revoir l\'épilogue',
+                      onTap: () => _replayEpilogue(ref),
+                    ),
+                  ),
                 _DangerRow(
                   label: 'Réinitialiser la partie',
                   onTap: () => _confirmReset(context, ref),
@@ -199,6 +213,28 @@ class ReglagesApp extends ConsumerWidget {
     }
   }
 
+  /// Recalcule et réaffiche l'épilogue mérité (même logique que la fin
+  /// de partie dans PhoneShell : solde réel + choix pivots + mood).
+  void _replayEpilogue(WidgetRef ref) {
+    HapticFeedback.selectionClick();
+    final p = ref.read(phoneStateProvider);
+    var balance = kStartingBalance;
+    for (final m in kMovements) {
+      if (m.day <= p.currentDay) balance += m.amount;
+    }
+    for (final m in p.dynamicMovements) {
+      if (m.day <= p.currentDay) balance += m.amount;
+    }
+    final replies = ref.read(sentRepliesProvider);
+    ref.read(epilogueProvider.notifier).state = resolveEpilogue(
+      finalBalance: balance,
+      mood: p.mood,
+      repliesByBeat: {
+        for (final e in replies.entries) e.key: e.value.text,
+      },
+    );
+  }
+
   void _confirmReset(BuildContext context, WidgetRef ref) {
     HapticFeedback.mediumImpact();
     showDialog<void>(
@@ -227,6 +263,7 @@ class ReglagesApp extends ConsumerWidget {
               ref.read(phoneStateProvider.notifier).hydrate(const PhoneState());
               ref.read(relationshipsProvider.notifier).reset();
               ref.read(sentRepliesProvider.notifier).reset();
+              await ref.read(instagramStateProvider.notifier).reset();
               if (ctx.mounted) Navigator.of(ctx).pop();
             },
             child: const Text(

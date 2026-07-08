@@ -61,17 +61,17 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
         ref.read(lockNotificationsProvider.notifier).push(
               LockNotif.fromEvent(next),
             );
-        // Cas spécial : un event tagué « appel entrant » déclenche
+        // Cas spécial : un event marqué `isIncomingCall` déclenche
         // l'écran plein d'appel à la place du banner.
         // Les appels passent même en DND (comportement iOS « urgence »).
-        if (next.notifAppId == 'telephone' &&
-            next.notifTitle.toLowerCase().contains('appel')) {
+        if (next.isIncomingCall) {
           ref.read(incomingCallProvider.notifier).state = IncomingCall(
             displayName: next.notifBody.split('·').first.trim(),
             subtitle: next.notifTitle,
             masked: next.notifBody.toLowerCase().contains('masqué'),
             emoji: '📞',
             avatarColor: 0xFF6B7385,
+            transcript: next.callTranscript,
           );
           return;
         }
@@ -122,6 +122,7 @@ class _PhoneShellState extends ConsumerState<PhoneShell> {
     }
     final epilogue = resolveEpilogue(
       finalBalance: balance,
+      mood: p.mood,
       repliesByBeat: {
         for (final e in replies.entries) e.key: e.value.text,
       },

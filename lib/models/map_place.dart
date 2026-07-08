@@ -1,5 +1,5 @@
 /// Modèle de lieu pour l'app Plans — restaurants, clients, lieux
-/// canoniques (Tour Heng, Foch, Tenon, Belleville) et lieux narratifs
+/// canoniques (Tour Heng, Berri, Tenon, Belleville) et lieux narratifs
 /// (collision Avenue Montaigne).
 ///
 /// Chaque lieu a des coordonnées approximatives Paris pour la
@@ -9,7 +9,7 @@ library;
 
 /// Catégorie de lieu — affecte la couleur du pin, l'icône, le filtre.
 enum PlaceCategory {
-  heng,         // Tour Heng, Avenue Foch home, cabinet notaire
+  heng,         // Tour Heng, rue de Berri home, cabinet notaire
   maman,        // Belleville flat, Tenon, marché Belleville
   camille,      // appartement Camille, lieux qu'elle aime
   restaurant,   // UberEats restaurants
@@ -20,7 +20,7 @@ enum PlaceCategory {
   medical,      // Tenon, cabinet médecin
   amitie,       // librairie Bastien, lieux liés aux arcs
   travail,      // bureaux livraison, plateforme
-  perso,        // appartement Avenue Foch
+  perso,        // appartement rue de Berri
 }
 
 class MapPlace {

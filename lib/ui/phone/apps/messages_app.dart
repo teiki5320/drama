@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/contact_states.dart';
 import '../../../data/messages_data.dart';
+import '../../../models/messages_arc.dart';
 import '../../../providers/messages_arcs_provider.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../status_bar.dart';
@@ -275,7 +276,7 @@ class _ThreadTile extends ConsumerWidget {
 
 class _ArcThreadTile extends ConsumerWidget {
   const _ArcThreadTile({required this.instance});
-  final dynamic instance; // MessagesArcInstance
+  final MessagesArcInstance instance;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -390,7 +391,7 @@ class _ArcThreadTile extends ConsumerWidget {
     );
   }
 
-  String _previewOf(dynamic m) {
+  String _previewOf(MessagesArcPlayedMsg? m) {
     if (m == null) return 'Nouvelle conversation';
     final type = m.type.toString();
     if (type.contains('text')) {

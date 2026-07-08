@@ -119,7 +119,6 @@ class AppStoreApp extends ConsumerWidget {
   static String _descriptionFor(String id) {
     return switch (id) {
       'spotify' => 'Musique en streaming. Pour Belleville pluvieux.',
-      'strava' => 'Tracking vélo & courses. Sponsorisé par Plateforme.',
       'maps' => 'Plans, itinéraires. Indispensable en livraison.',
       'tinder' => 'Rencontres. Risqué quand on a un faux fiancé.',
       'instagram' => 'Photos, stories, vies parallèles.',

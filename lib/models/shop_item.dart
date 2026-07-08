@@ -12,6 +12,11 @@ class ShopItem {
   final int requiredMood;
   final bool generatesInstaPost;
 
+  /// Légende + emoji du post Instagram auto-publié après l'achat
+  /// (uniquement si `generatesInstaPost`).
+  final String instaPostCaption;
+  final String instaPostEmoji;
+
   const ShopItem({
     required this.id,
     required this.category,
@@ -24,6 +29,8 @@ class ShopItem {
     this.requiredReputation = 0,
     this.requiredMood = 0,
     this.generatesInstaPost = false,
+    this.instaPostCaption = '',
+    this.instaPostEmoji = '',
   });
 
   factory ShopItem.fromJson(Map<String, dynamic> j) => ShopItem(
@@ -38,6 +45,8 @@ class ShopItem {
         requiredReputation: (j['requiredReputation'] as num?)?.toInt() ?? 0,
         requiredMood: (j['requiredMood'] as num?)?.toInt() ?? 0,
         generatesInstaPost: j['generatesInstaPost'] as bool? ?? false,
+        instaPostCaption: j['instaPostCaption'] as String? ?? '',
+        instaPostEmoji: j['instaPostEmoji'] as String? ?? '',
       );
 }
 

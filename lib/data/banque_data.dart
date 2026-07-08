@@ -114,11 +114,11 @@ const kMovements = <BankMovement>[
   BankMovement(
       day: 8,
       time: '18:02',
-      label: 'Virement Heng International',
-      amount: 30000,
-      category: 'autre',
-      emoji: '⚠️'),
-  // ── J9 — Emménagement Avenue Foch
+      label: 'Acompte Heng International — 1/4',
+      amount: 10000,
+      category: 'contrat',
+      emoji: '🏦'),
+  // ── J9 — Emménagement rue de Berri
   BankMovement(
       day: 9,
       time: '07:42',
@@ -140,7 +140,7 @@ const kMovements = <BankMovement>[
       amount: 9,
       category: 'travail',
       emoji: '🛵'),
-  // ── J10 — Premier vrai jour à Foch
+  // ── J10 — Premier vrai jour à Berri
   BankMovement(
       day: 10,
       time: '08:14',
@@ -224,7 +224,7 @@ const kMovements = <BankMovement>[
   BankMovement(
       day: 13,
       time: '14:18',
-      label: 'Fleuriste avenue Foch — pivoines blanches',
+      label: 'Fleuriste rue de Berri — pivoines blanches',
       amount: -28,
       category: 'autre',
       emoji: '🌹'),
@@ -246,7 +246,7 @@ const kMovements = <BankMovement>[
   BankMovement(
       day: 14,
       time: '13:14',
-      label: 'UberEats — Thomas G. avenue Foch (VIP)',
+      label: 'UberEats — Thomas G. rue de Berri (VIP)',
       amount: 21,
       category: 'travail',
       emoji: '💎'),
@@ -261,7 +261,7 @@ const kMovements = <BankMovement>[
   BankMovement(
       day: 15,
       time: '09:14',
-      label: 'UberEats — Tante Lihua avenue Foch',
+      label: 'UberEats — Tante Lihua rue de Berri',
       amount: 11,
       category: 'travail',
       emoji: '🛵'),
@@ -301,6 +301,78 @@ const kMovements = <BankMovement>[
       amount: 100,
       category: 'famille',
       emoji: '👩'),
+
+  // ── Ep2-5 : le contrat se déroule, la vie continue ──
+  BankMovement(
+      day: 22,
+      time: '10:00',
+      label: 'Acompte Heng International — 2/4',
+      amount: 10000,
+      category: 'contrat',
+      emoji: '🏦'),
+  BankMovement(
+      day: 23,
+      time: '17:40',
+      label: 'Marché rue Coquillière — fraises',
+      amount: -6,
+      category: 'courses',
+      emoji: '🍓'),
+  BankMovement(
+      day: 36,
+      time: '10:00',
+      label: 'Acompte Heng International — 3/4',
+      amount: 10000,
+      category: 'contrat',
+      emoji: '🏦'),
+  BankMovement(
+      day: 37,
+      time: '15:12',
+      label: 'Marché de Mong Kok — éventail bambou',
+      amount: -5,
+      category: 'courses',
+      emoji: '🪭'),
+  BankMovement(
+      day: 45,
+      time: '10:04',
+      label: 'Hôpital Tenon — traitement (acompte soins)',
+      amount: -18000,
+      category: 'sante',
+      emoji: '🏥'),
+  BankMovement(
+      day: 53,
+      time: '09:00',
+      label: 'Heng International — solde de contrat (clause 21)',
+      amount: 10000,
+      category: 'contrat',
+      emoji: '🏦'),
+  BankMovement(
+      day: 60,
+      time: '19:20',
+      label: 'Cadeau anniversaire Camille — carnet + croissants',
+      amount: -34,
+      category: 'amis',
+      emoji: '🥐'),
+  BankMovement(
+      day: 80,
+      time: '06:12',
+      label: 'Air China — 2 billets Paris-Xiamen',
+      amount: -1246,
+      category: 'voyage',
+      emoji: '✈️'),
+  BankMovement(
+      day: 82,
+      time: '11:30',
+      label: 'Marché du village — oranges, encens',
+      amount: -12,
+      category: 'courses',
+      emoji: '🍊'),
+  BankMovement(
+      day: 105,
+      time: '08:44',
+      label: 'Recharge SIM locale — data Fujian',
+      amount: -20,
+      category: 'tech',
+      emoji: '📶'),
 ];
 
 class StockPosition {

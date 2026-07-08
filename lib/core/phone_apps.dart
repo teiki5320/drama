@@ -122,12 +122,6 @@ const List<AppMeta> kAllApps = [
     color: Color(0xFF1DB954),
   ),
   AppMeta(
-    id: 'strava',
-    label: 'Strava',
-    icon: Icons.directions_bike,
-    color: Color(0xFFFC4C02),
-  ),
-  AppMeta(
     id: 'maps',
     label: 'Plans',
     icon: Icons.map,
