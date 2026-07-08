@@ -16,6 +16,7 @@ class SpotifyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    final hour = ref.watch(phoneStateProvider.select((s) => s.hour));
     final visible = kPlaylists.where((p) => p.minDay <= day).toList();
 
     return Scaffold(
@@ -66,7 +67,7 @@ class SpotifyApp extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
                 Text(
-                  _greeting(),
+                  _greeting(hour),
                   style: GoogleFonts.inter(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -89,8 +90,8 @@ class SpotifyApp extends ConsumerWidget {
     );
   }
 
-  String _greeting() {
-    final h = DateTime.now().hour;
+  // Heure DIÉGÉTIQUE (celle du gameworld), pas celle de l'appareil.
+  String _greeting(int h) {
     if (h < 6) return 'Encore debout ?';
     if (h < 12) return 'Bonjour';
     if (h < 18) return 'Bon après-midi';

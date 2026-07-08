@@ -13,7 +13,7 @@ import '../status_bar.dart';
 /// Uber Eats — l'app a deux modes :
 /// - **Pro** (livreuse) : Shen reçoit des courses, accepte ou refuse,
 ///   gagne € selon succès, batterie -2. Mode par défaut J1-J8.
-/// - **Commande** (cliente) : à partir de J9 quand Shen vit Avenue Foch,
+/// - **Commande** (cliente) : à partir de J9 quand Shen vit rue de Berri,
 ///   elle peut commander pour Tristan (sushi 80€, dim sum 35€), pour
 ///   Camille (long doppio Hanami 4,20€), ou pour Maman (livraison
 ///   nouilles + soupe d'orge à Belleville).
@@ -380,16 +380,16 @@ class _OrderMode extends ConsumerWidget {
           item: 'Plateau omakase 12 pièces pour Tristan',
           price: 80.00,
           note: 'Wasabi à part. À livrer au bureau.',
-          requiresAvenueFoch: true,
+          requiresRueDeBerri: true,
         ),
         _OrderItem(
           id: 'dim_sum_madame_heng',
           emoji: '🥟',
-          restaurant: 'Lan Garden · Avenue Foch',
+          restaurant: 'Lan Garden · rue de Berri',
           item: 'Dim sum pour la table familiale',
           price: 35.00,
           note: 'Madame Heng préfère le porc.',
-          requiresAvenueFoch: true,
+          requiresRueDeBerri: true,
         ),
       ],
     ];
@@ -431,7 +431,7 @@ class _OrderItem {
   final String item;
   final double price;
   final String note;
-  final bool requiresAvenueFoch;
+  final bool requiresRueDeBerri;
   const _OrderItem({
     required this.id,
     required this.emoji,
@@ -439,7 +439,7 @@ class _OrderItem {
     required this.item,
     required this.price,
     required this.note,
-    this.requiresAvenueFoch = false,
+    this.requiresRueDeBerri = false,
   });
 }
 

@@ -45,7 +45,7 @@ NoteEntry? _traceFor(String courseId) {
         time: '08:14',
         title: 'Tante Lihua',
         body:
-            'Livraison Long Jing chez la tante de Tristan, avenue Foch.\n'
+            'Livraison Long Jing chez la tante de Tristan, rue de Berri.\n'
             'Elle m\'a dit « merci ma fille » sans me regarder.\n'
             'Elle ne me connaissait pas.',
         starred: true,
@@ -57,7 +57,7 @@ NoteEntry? _traceFor(String courseId) {
         time: '10:48',
         title: 'Hélène R.',
         body:
-            'Avenue Foch, encore. 15 € de tip.\n'
+            'rue de Berri, encore. 15 € de tip.\n'
             'Elle m\'a dit « mes pensées » comme à une orpheline.\n'
             'Elle connaît les Heng. Je n\'ai pas voulu poser de questions.',
       );
@@ -90,7 +90,7 @@ NoteEntry? _traceFor(String courseId) {
         time: '15:48',
         title: 'Bonjour Mlle Marchand',
         body:
-            'Thomas G., 7 avenue Foch.\n'
+            'Thomas G., 7 rue de Berri.\n'
             'Trois étages au-dessous de chez moi.\n'
             'Il m\'a tendu 20 € sans hésiter en disant « pour vous, '
             'sincèrement ». Il ne m\'a pas reconnue.',

@@ -204,7 +204,7 @@ def simulate_playthrough(beats, threads, choices):
 
 # ── 2. Simulation des épilogues ─────────────────────────────────────────────
 
-def resolve_epilogue(balance, replies, K):
+def resolve_epilogue(balance, replies, K, mood=5):
     """Réimplémentation fidèle de resolveEpilogue (epilogues.dart)."""
     j52 = replies.get("tristan_fin_contrat_j52", "")
     j95 = replies.get("tristan_revient_j95", "")
@@ -214,6 +214,8 @@ def resolve_epilogue(balance, replies, K):
     hk = j112 == K["kReplyJ112HongKong"] or (
         j112 == "" and j95 == K["kReplyJ95HongKong"])
     fujian = j112 == K["kReplyJ112Fujian"]
+    no_explicit = not (paris or hk or fujian)
+    inertie = no_explicit and mood < 5 and not left
     if balance < 18000:
         return "belleville_deuil"
     if paris and left:
@@ -222,8 +224,8 @@ def resolve_epilogue(balance, replies, K):
         return "hk_promesse"
     if fujian:
         return "parc_ma_fille"
-    if paris and not left:
-        return "foch_encore"
+    if (paris and not left) or inertie:
+        return "berri_encore"
     return "parc_ma_fille"
 
 
@@ -234,7 +236,7 @@ def simulate_epilogues(K, final_balance):
         ("Fujian (reste au village)", rich,
          {"epilogue_j112": K["kReplyJ112Fujian"]}, "parc_ma_fille"),
         ("Paris fidèle à Tristan", rich,
-         {"epilogue_j112": K["kReplyJ112Paris"]}, "foch_encore"),
+         {"epilogue_j112": K["kReplyJ112Paris"]}, "berri_encore"),
         ("Paris après rupture J52 → Camille", rich,
          {"tristan_fin_contrat_j52": K["kReplyJ52LeaveToCamille"],
           "epilogue_j112": K["kReplyJ112Paris"]}, "camille_troisieme"),
@@ -248,16 +250,21 @@ def simulate_epilogues(K, final_balance):
          {"tristan_fin_contrat_j52": K["kReplyJ52LeaveToCamille"],
           "epilogue_j112": K["kReplyJ112Fujian"]}, "parc_ma_fille"),
     ]
+    scenarios.append(
+        ("Aucun choix + mood bas -> inertie cage dorée", rich, {},
+         "berri_encore"))
     for name, bal, replies, expected in scenarios:
-        got = resolve_epilogue(bal, replies, K)
+        got = resolve_epilogue(bal, replies, K,
+                               mood=3 if "inertie" in name else 5)
         if got == expected:
             ok(f"épilogue « {name} » → {got}")
         else:
             fail(f"épilogue « {name} » : attendu {expected}, obtenu {got}")
     # les 5 fins sont-elles toutes atteignables ?
-    reachable = {resolve_epilogue(b, r, K)
-                 for _, b, r, _ in scenarios}
-    missing = {"parc_ma_fille", "foch_encore", "belleville_deuil",
+    reachable = {resolve_epilogue(b, r, K,
+                                  mood=3 if "inertie" in n else 5)
+                 for n, b, r, _ in scenarios}
+    missing = {"parc_ma_fille", "berri_encore", "belleville_deuil",
                "hk_promesse", "camille_troisieme"} - reachable
     if missing:
         fail(f"fins inatteignables dans la simulation : {sorted(missing)}")

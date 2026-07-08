@@ -2,7 +2,7 @@ import '../../models/romance.dart';
 
 /// CLASS DIVIDE
 /// Métier manuel/ouvrier, 30-38 ans. Honnête, direct, généreux.
-/// Shen sent une gêne malgré elle (Avenue Foch, contrat Heng). Le malaise
+/// Shen sent une gêne malgré elle (rue de Berri, contrat Heng). Le malaise
 /// vient des deux côtés. Arc 6 jours, drame social en sourdine.
 
 const classDivideProfiles = <RomanceProfile>[
@@ -175,7 +175,7 @@ const classDivideBeats = <RomanceBeat>[
       ),
       RomanceChoice(
         label: 'Confier',
-        reply: 'Je vis avenue Foch. Je sais comment ça sonne. C\'est compliqué.',
+        reply: 'Je vis rue de Berri. Je sais comment ça sonne. C\'est compliqué.',
         moodDelta: 2,
         setBranch: 'shen_confesse_c',
       ),
@@ -189,9 +189,9 @@ const classDivideBeats = <RomanceBeat>[
     type: RomanceBeatType.text,
     requireBranch: 'shen_confesse_c',
     textVariants: [
-      'Avenue Foch. OK. Tu choisis tes embrouilles.\nMerci d\'avoir dit. Bonne suite.',
+      'Rue de Berri. OK. Tu choisis tes embrouilles.\nMerci d\'avoir dit. Bonne suite.',
       'OK. C\'est honnête de me le dire. Mais on n\'a pas la même vie.\nPrends soin de toi.',
-      'Avenue Foch. Tu sais quoi : tu m\'as appris un truc. Sur moi. Pas sur toi.\nBye.',
+      'Rue de Berri. Tu sais quoi : tu m\'as appris un truc. Sur moi. Pas sur toi.\nBye.',
     ],
     endsArc: 'lui_part_class',
   ),

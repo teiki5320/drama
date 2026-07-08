@@ -366,7 +366,7 @@ const Map<String, List<Msg>> kThreads = {
       day: 8,
     ),
 
-    // ── J9 — Emménagement Avenue Foch ──────────────────────────
+    // ── J9 — Emménagement rue de Berri ──────────────────────────
     Msg(
       sender: 'maman',
       text: 'Tu n\'as pas dormi à la maison.',
@@ -835,10 +835,10 @@ const Map<String, List<Msg>> kThreads = {
       time: '13:45',
       day: 8,
     ),
-    // ── J9 — Emménagement Avenue Foch
+    // ── J9 — Emménagement rue de Berri
     Msg(sender: 'camille', text: 'Tu emménages aujourd\'hui ?', time: '15:42', day: 9),
     Msg(sender: 'moi', text: 'Oui 17h.', time: '15:48', day: 9),
-    Msg(sender: 'camille', text: 'Avenue Foch.', time: '15:48', day: 9),
+    Msg(sender: 'camille', text: 'rue de Berri.', time: '15:48', day: 9),
     Msg(sender: 'moi', text: 'Oui.', time: '15:49', day: 9),
     Msg(sender: 'camille', text: 'Putain.', time: '15:49', day: 9),
     Msg(sender: 'camille', text: 'Tu prends quoi avec toi ?', time: '15:50', day: 9),
@@ -857,7 +857,7 @@ const Map<String, List<Msg>> kThreads = {
       time: '22:23',
       day: 9,
     ),
-    // ── J10 — Une journée vide à Foch
+    // ── J10 — Une journée vide à Berri
     Msg(sender: 'camille', text: 'Comment tu trouves ?', time: '11:14', day: 10),
     Msg(sender: 'moi', text: 'Acheté.', time: '11:18', day: 10),
     Msg(sender: 'camille', text: 'Belle réponse pour un futur livre.', time: '11:19', day: 10),
@@ -1033,7 +1033,7 @@ const Map<String, List<Msg>> kThreads = {
       day: 8,
     ),
     Msg(sender: 'moi', text: 'Compris.', time: '20:18', day: 8),
-    // J9 — Emménagement Avenue Foch
+    // J9 — Emménagement rue de Berri
     Msg(
       sender: 'tristan',
       text:

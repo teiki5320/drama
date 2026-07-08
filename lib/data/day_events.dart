@@ -20,6 +20,13 @@ class DayEvent {
   final String notifAppId; // app qui apparaît dans le banner
   final String summary;
 
+  /// Si true, l'événement déclenche l'écran d'appel entrant plein écran
+  /// (au lieu d'un banner). `callTranscript` = ce que dit l'appelant si
+  /// Shen décroche, ligne à ligne. Le nom affiché est la partie de
+  /// `notifBody` avant « · ».
+  final bool isIncomingCall;
+  final List<String> callTranscript;
+
   const DayEvent({
     required this.day,
     required this.hour,
@@ -29,6 +36,8 @@ class DayEvent {
     required this.notifBody,
     required this.notifAppId,
     required this.summary,
+    this.isIncomingCall = false,
+    this.callTranscript = const [],
   });
 
   int get totalMinutes => day * 24 * 60 + hour * 60 + minute;
@@ -134,9 +143,12 @@ const kDayEvents = <DayEvent>[
     minute: 55,
     apps: ['telephone'],
     notifAppId: 'telephone',
-    notifTitle: 'Appel manqué',
+    notifTitle: 'Appel entrant',
     notifBody: 'Numéro masqué · 23:55',
     summary: 'T. appelle (numéro masqué)',
+    isIncomingCall: true,
+    // Il ne dit rien. Il écoute. Puis il raccroche.
+    callTranscript: ['…'],
   ),
   // ─── J14 ────────────────────────────────────────────────────────
   DayEvent(
@@ -168,6 +180,105 @@ const kDayEvents = <DayEvent>[
     notifTitle: 'Tristan H.',
     notifBody: '« Elle ne dit "ma fille" qu\'aux personnes... »',
     summary: 'Tristan commente le dîner',
+  ),
+
+  // ─── Ep2-5 — un signal par scène à choix, pour guider le joueur ────
+  DayEvent(
+    day: 23,
+    hour: 19,
+    minute: 32,
+    apps: ['messages'],
+    notifAppId: 'messages',
+    notifTitle: 'Maman ❤️',
+    notifBody: 'Qui t\'offre du thé d\'empereur ?',
+    summary: 'Maman a trouvé la boîte de Long Jing',
+  ),
+  DayEvent(
+    day: 26,
+    hour: 22,
+    minute: 14,
+    apps: ['messages'],
+    notifAppId: 'messages',
+    notifTitle: 'Camille',
+    notifBody: 'Sérieux, Shen. Huit jours.',
+    summary: 'Camille compte les jours de silence',
+  ),
+  DayEvent(
+    day: 35,
+    hour: 11,
+    minute: 0,
+    apps: ['messages', 'whatsapp'],
+    notifAppId: 'messages',
+    notifTitle: 'Numéro inconnu',
+    notifBody: 'Mei · « Je crois que je connais ton visage. »',
+    summary: 'Tante Mei repère Shen',
+  ),
+  DayEvent(
+    day: 39,
+    hour: 7,
+    minute: 12,
+    apps: ['telephone', 'messages'],
+    notifAppId: 'telephone',
+    notifTitle: 'Appel entrant',
+    notifBody: 'Maman ❤️ · 4h à Paris',
+    summary: 'Maman appelle en pleine nuit — Tante Mei a parlé',
+    isIncomingCall: true,
+    callTranscript: [
+      'Shen ? C\'est Maman.',
+      'Il est quatre heures ici. Je n\'arrive pas à dormir.',
+      'Une dame du Fujian m\'a écrit. Mei. Elle dit des choses sur toi.',
+      'Je t\'ai envoyé des messages. Lis-les. Réponds-moi.',
+    ],
+  ),
+  DayEvent(
+    day: 42,
+    hour: 11,
+    minute: 14,
+    apps: ['messages'],
+    notifAppId: 'messages',
+    notifTitle: 'Maman ❤️',
+    notifBody: 'Tu es dans ma cuisine et je t\'écris.',
+    summary: 'La confrontation silencieuse',
+  ),
+  DayEvent(
+    day: 52,
+    hour: 18,
+    minute: 8,
+    apps: ['messages', 'banque'],
+    notifAppId: 'messages',
+    notifTitle: 'Tristan H.',
+    notifBody: 'Vous êtes libre. C\'est la clause 21.',
+    summary: 'Tristan annonce la fin du contrat',
+  ),
+  DayEvent(
+    day: 78,
+    hour: 19,
+    minute: 32,
+    apps: ['messages'],
+    notifAppId: 'messages',
+    notifTitle: 'Tante Mei',
+    notifBody: 'Venez. Toi et ta mère. Avant l\'hiver.',
+    summary: 'L\'invitation au Fujian',
+  ),
+  DayEvent(
+    day: 95,
+    hour: 11,
+    minute: 0,
+    apps: ['messages'],
+    notifAppId: 'messages',
+    notifTitle: 'Tristan H.',
+    notifBody: 'Tu reviens ?',
+    summary: 'La question simple, depuis Paris',
+  ),
+  DayEvent(
+    day: 112,
+    hour: 7,
+    minute: 14,
+    apps: ['messages'],
+    notifAppId: 'messages',
+    notifTitle: 'Camille',
+    notifBody: 'Alors, ma poule. Tu emportes quoi ?',
+    summary: 'Le dernier choix',
   ),
 ];
 

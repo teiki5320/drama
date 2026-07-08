@@ -249,7 +249,7 @@ const kCourses = <UberCourse>[
     distanceKm: 6.8,
     basePayout: 11.20,
     type: CourseType.longueDistance,
-    narrativeNote: 'Mme Lihua, Avenue Foch. Lien Heng.',
+    narrativeNote: 'Mme Lihua, rue de Berri. Lien Heng.',
   ),
   UberCourse(
     id: 'c_j7_22h15',
@@ -274,7 +274,7 @@ const kCourses = <UberCourse>[
     distanceKm: 5.2,
     basePayout: 10.40,
     type: CourseType.longueDistance,
-    narrativeNote: 'Mme R. Avenue Foch. Tip 15 €. Connaît les Heng.',
+    narrativeNote: 'Mme R. rue de Berri. Tip 15 €. Connaît les Heng.',
   ),
   UberCourse(
     id: 'c_j8_12h45',
@@ -299,7 +299,7 @@ const kCourses = <UberCourse>[
     type: CourseType.surgeSoir,
   ),
 
-  // ── J9 — Emménagement Avenue Foch ─────────────────────────────
+  // ── J9 — Emménagement rue de Berri ─────────────────────────────
   UberCourse(
     id: 'c_j9_08h40',
     minDay: 9,
@@ -313,18 +313,18 @@ const kCourses = <UberCourse>[
     narrativeNote: 'Compte UberEats suspendu après emménagement.',
   ),
 
-  // ── J10 — Première journée Avenue Foch ─────────────────────────
+  // ── J10 — Première journée rue de Berri ─────────────────────────
   UberCourse(
     id: 'c_j10_11h30',
     minDay: 10,
     hour: 11,
     minute: 30,
     restaurantId: 'r_kodama',
-    customerId: 'cl_concierge_foch',
+    customerId: 'cl_concierge_berri',
     distanceKm: 0.3,
     basePayout: 5.00,
     type: CourseType.veryClose,
-    narrativeNote: 'Livraison chez le concierge Foch 12. Auto-livraison ironique.',
+    narrativeNote: 'Livraison chez le concierge Berri 12. Auto-livraison ironique.',
   ),
   UberCourse(
     id: 'c_j10_18h45',
@@ -481,7 +481,7 @@ const kCourses = <UberCourse>[
     basePayout: 6.00,
     type: CourseType.vipPremium,
     isSpecial: true,
-    narrativeNote: 'M. Thomas G. Av. Foch. VIP bonus +5 €. Tip 20 €.',
+    narrativeNote: 'M. Thomas G. Rue de Berri. VIP bonus +5 €. Tip 20 €.',
   ),
 
   // ── J15 — Lendemain dîner Heng ────────────────────────────────

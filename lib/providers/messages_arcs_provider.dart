@@ -46,7 +46,8 @@ class MessagesArcsNotifier extends StateNotifier<MessagesArcsState> {
     _hydrate();
   }
 
-  final _rng = Random();
+  // Seed fixe : une même partie rejoue les mêmes tirages (testabilité).
+  final _rng = Random(20260603);
   final _textPicks = <String, Map<int, int>>{};
   final _photoPicks = <String, Map<int, int>>{};
 
@@ -103,8 +104,8 @@ class MessagesArcsNotifier extends StateNotifier<MessagesArcsState> {
     }
 
     final instance = MessagesArcInstance(
-      id: 'msgarc_${DateTime.now().millisecondsSinceEpoch}_'
-          '${_rng.nextInt(9999)}',
+      // Id déterministe : temps gameworld + template (unique par partie).
+      id: 'msgarc_j${day}_${hour}h${minute}_$templateId',
       templateId: templateId,
       startDay: day,
       startHour: hour,

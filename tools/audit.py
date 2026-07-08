@@ -64,7 +64,9 @@ def read(path: Path) -> str:
 # ── 1. Validité JSON ───────────────────────────────────────────────────────
 def check_json_valid() -> dict[str, object]:
     parsed: dict[str, object] = {}
-    for name in ("scenario.json", "shop_catalog.json", "investments.json", "insta_seed.json"):
+    # scenario.json = référence narrative (non embarquée) ; shop_catalog =
+    # seul JSON runtime. investments/insta_seed ont été supprimés (vestiges).
+    for name in ("scenario.json", "shop_catalog.json"):
         p = DATA / name
         if not p.exists():
             fail(f"[json] {name} absent de assets/data/")
@@ -91,10 +93,8 @@ def check_scenario(parsed: dict[str, object]) -> None:
         if n > 1:
             dups.append(i)
     if dups:
-        editorial(f"[scenario] IDs dupliqués {sorted(dups)} : deux versions "
-                  f"rédigées de ces jours coexistent ({len(data)} entrées pour "
-                  f"{len(seen)} jours uniques). Choix d'auteur sur la version "
-                  f"canonique — fichier non chargé par l'app, zéro impact runtime.")
+        fail(f"[scenario] IDs dupliqués {sorted(dups)} — le doublon J8-J14 a "
+             f"été purgé (juillet 2026), il ne doit pas revenir")
     else:
         ok(f"[scenario] {len(data)} entrées, IDs uniques")
 
@@ -282,6 +282,8 @@ def check_shop_schema(parsed: dict[str, object]) -> None:
     known = required | {
         "moodGain", "reputationGain", "requiredReputation",
         "requiredMood", "generatesInstaPost",
+        # câblés juillet 2026 : achat -> post Instagram auto
+        "instaPostCaption", "instaPostEmoji",
     }
     # Catégories déclarées dans kShopCategories
     model = read(LIB / "models" / "shop_item.dart")
@@ -318,7 +320,7 @@ def check_doc_drift(parsed: dict[str, object]) -> None:
     txt = read(claude)
     # Tolérant au markdown : on capture le 1er nombre dans la 1re parenthèse
     # qui suit le nom de fichier (en sautant `, *, ~ et espaces).
-    for name in ("shop_catalog.json", "investments.json", "insta_seed.json"):
+    for name in ("shop_catalog.json",):
         rx = re.escape(name) + r"[^\n(]*\(\D*(\d+)"
         m = re.search(rx, txt)
         data = parsed.get(name)
@@ -428,18 +430,20 @@ def check_chronology() -> None:
 
 # ── 6f. Cohérence de lore (adresse appartement Tristan) ────────────────────
 def check_lore() -> None:
-    # ROADMAP + scenario placent l'appartement au 8e (rue de Berri) ; le code
-    # de l'app a dérivé vers « avenue Foch » (16e). Contradiction d'arrondiss.
-    foch = 0
+    # Canon tranché (juillet 2026, décision d'auteur) : l'appartement de
+    # Tristan est RUE DE BERRI (8e). L'ancienne dérive « avenue Foch » (16e)
+    # a été purgée — garde anti-régression : aucune réf Foch ne doit revenir.
+    refs = 0
     for dart in LIB.rglob("*.dart"):
-        foch += len(re.findall(r"[Aa]venue Foch", read(dart)))
-    roadmap = read(ROOT / "ROADMAP.md") if (ROOT / "ROADMAP.md").exists() else ""
-    bible_8e = bool(re.search(r"appartement de Tristan dans le 8", roadmap))
-    if foch and bible_8e:
-        editorial(f"[lore] l'app situe l'appartement de Tristan « avenue Foch » "
-                  f"(16e, {foch} réfs) alors que ROADMAP/scenario.json disent "
-                  f"« rue de Berri / 8e ». Contradiction d'arrondissement à "
-                  f"trancher (quel canon ?).")
+        refs += len(re.findall(r"[Ff]och", read(dart)))
+    roadmap = ROOT / "ROADMAP.md"
+    if roadmap.exists():
+        refs += len(re.findall(r"[Ff]och", read(roadmap)))
+    if refs:
+        fail(f"[lore] {refs} référence(s) « Foch » réapparue(s) — le canon "
+             f"est rue de Berri (8e)")
+    else:
+        ok("[lore] adresse canonique rue de Berri (8e) respectée (0 réf Foch)")
 
 
 # ── 7. Simulation couverture narrative J1 -> J112 ──────────────────────────
@@ -472,9 +476,16 @@ def check_coverage() -> None:
     for days in sources.values():
         union |= {d for d in days if 1 <= d <= 112}
     covered = len(union)
-    editorial(f"[coverage] {covered}/112 jours ont au moins une trace "
-              f"narrative (reste {112 - covered} jours à écrire, Ep2+). "
-              f"Ep1 (J1-J14) est dense ; le reste est scaffolding.")
+    # La métrique qui compte : le jeu ne VISITE que les jours de beats
+    # (advanceToNextBeat saute de beat en beat). Un jour sans beat n'est
+    # jamais affiché — le « trou » calendaire est donc théorique.
+    beat_days = sources["beats (episodes)"]
+    other = union - beat_days
+    visited_covered = len(beat_days & union)
+    editorial(f"[coverage] {covered}/112 jours calendaires ont une trace ; "
+              f"surtout : {visited_covered}/{len(beat_days)} jours de beats "
+              f"(les seuls visités) sont couverts, + {len(other)} jours "
+              f"d'ambiance hors beats. Densité d'auteur, non bloquant.")
 
 
 # ── main ───────────────────────────────────────────────────────────────────

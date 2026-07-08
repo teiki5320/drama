@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../models/phone_state.dart';
+import '../../../providers/instagram_state_provider.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../../../providers/relationships_provider.dart';
 import '../status_bar.dart';
@@ -25,16 +27,14 @@ class InstagramApp extends ConsumerStatefulWidget {
 }
 
 class _InstagramAppState extends ConsumerState<InstagramApp> {
-  final Set<String> _liked = {};
-  final Set<String> _hidden = {};
-  final Set<String> _viewedStories = {};
-  final Set<String> _viewedReels = {};
-  bool _tagRetire = false;
   int _tab = 0;
 
   @override
   Widget build(BuildContext context) {
     final p = ref.watch(phoneStateProvider);
+    // Interactions persistées (likes, vus, masqués, tag retiré).
+    final insta = ref.watch(instagramStateProvider);
+    final instaNotifier = ref.read(instagramStateProvider.notifier);
     final day = p.currentDay;
     final hour = p.hour;
     final isDark = hour >= 22 || hour < 7;
@@ -60,41 +60,35 @@ class _InstagramAppState extends ConsumerState<InstagramApp> {
               1 => _ReelsTab(
                   day: day,
                   isDark: isDark,
-                  viewedReels: _viewedReels,
-                  onView: (id) => setState(() => _viewedReels.add(id)),
+                  viewedReels: insta.viewedReels,
+                  onView: instaNotifier.viewReel,
                 ),
               2 => _SuggestionsTab(day: day, isDark: isDark),
               3 => _ActivityTab(day: day, isDark: isDark, suspicion: suspicionMaman),
               4 => _ProfileTab(
                   day: day,
                   isDark: isDark,
-                  posts: p.userPhotos.length,
+                  posts: p.userPhotos.length + p.instaPosts.length,
                 ),
               _ => _FeedTab(
                   day: day,
                   isDark: isDark,
-                  liked: _liked,
-                  hidden: _hidden,
-                  viewedStories: _viewedStories,
-                  tagRetire: _tagRetire,
+                  liked: insta.liked,
+                  hidden: insta.hidden,
+                  viewedStories: insta.viewedStories,
+                  tagRetire: insta.tagRetire,
                   suspicionMaman: suspicionMaman,
+                  userPosts: p.instaPosts,
                   onLike: (id) {
                     HapticFeedback.lightImpact();
-                    setState(() {
-                      if (_liked.contains(id)) {
-                        _liked.remove(id);
-                      } else {
-                        _liked.add(id);
-                      }
-                    });
+                    instaNotifier.toggleLike(id);
                   },
                   onHide: (id) {
                     HapticFeedback.mediumImpact();
-                    setState(() => _hidden.add(id));
+                    instaNotifier.hide(id);
                   },
-                  onViewStory: (id) =>
-                      setState(() => _viewedStories.add(id)),
-                  onRetireTag: () => setState(() => _tagRetire = true),
+                  onViewStory: instaNotifier.viewStory,
+                  onRetireTag: instaNotifier.retireTag,
                 ),
             },
           ),
@@ -238,6 +232,7 @@ class _FeedTab extends ConsumerWidget {
     required this.viewedStories,
     required this.tagRetire,
     required this.suspicionMaman,
+    required this.userPosts,
     required this.onLike,
     required this.onHide,
     required this.onViewStory,
@@ -250,6 +245,7 @@ class _FeedTab extends ConsumerWidget {
   final Set<String> viewedStories;
   final bool tagRetire;
   final int suspicionMaman;
+  final List<UserInstaPost> userPosts;
   final void Function(String) onLike;
   final void Function(String) onHide;
   final void Function(String) onViewStory;
@@ -258,6 +254,20 @@ class _FeedTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allPosts = _allPosts.where((p) => p.atDay <= day).toList();
+    // Les posts de Shen (achats -> auto-post) s'insèrent dans le flux.
+    for (final u in userPosts.where((u) => u.day <= day)) {
+      allPosts.add(_Post(
+        id: u.id,
+        author: 'shen_marchand_archi',
+        emoji: u.emoji,
+        when: 'J${u.day} · ${u.time}',
+        body: u.caption,
+        gradient: const [0xFFFBF7EF, 0xFFE8E0D0],
+        likes: u.likes,
+        atDay: u.day,
+      ));
+    }
+    allPosts.sort((a, b) => b.atDay.compareTo(a.atDay));
     final visiblePosts =
         allPosts.where((p) => !hidden.contains(p.id)).toList();
     final activeStories = _allStories
@@ -439,7 +449,7 @@ const _allStories = <_Story>[
       _StoryFrame(
         emoji: '🪞',
         body: 'Projet récent · 16ᵉ arrondissement.\n'
-            '📍 Avenue Foch, Paris',
+            '📍 rue de Berri, Paris',
         gradient: [0xFFE7E1D2, 0xFFCFC8B5],
       ),
       _StoryFrame(
@@ -2476,7 +2486,7 @@ class _SuggestionsTab extends StatelessWidget {
         const SizedBox(height: 10),
         _TrendChip(label: '#FemmesHengParis', count: '12,4k posts', isDark: isDark),
         _TrendChip(label: '#LongJing2026', count: '8 312 posts', isDark: isDark),
-        _TrendChip(label: '#AvenueFochLife', count: '4 821 posts', isDark: isDark),
+        _TrendChip(label: '#RueDeBerriLife', count: '4 821 posts', isDark: isDark),
         _TrendChip(label: '#FujianBack', count: '947 posts', isDark: isDark),
       ],
     );

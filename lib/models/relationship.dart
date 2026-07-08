@@ -92,4 +92,8 @@ const Map<String, Relationship> kInitialRelationships = {
       trust: 90, attraction: 10, dependency: 60, loyalty: 90, suspicion: 0),
   'tristan': Relationship(
       trust: 0, attraction: 0, dependency: 0, suspicion: 70, loyalty: 0),
+  // Tante Mei entre en scène à J35 : une inconnue, mais du sang — la
+  // confiance part basse, la loyauté familiale existe déjà en creux.
+  'tante_mei': Relationship(
+      trust: 30, attraction: 0, dependency: 5, suspicion: 20, loyalty: 55),
 };

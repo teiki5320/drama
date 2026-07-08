@@ -23,10 +23,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/data/scenario.json
     - assets/data/shop_catalog.json
-    - assets/data/investments.json
-    - assets/data/insta_seed.json
     - assets/photos/ep1/
     - assets/photos/avatars/
     - assets/photos/camera_pool/

@@ -284,9 +284,9 @@ NoteEntry? _traceNoteFor(RomanceInstance inst) {
       return NoteEntry(
         day: noteDay,
         time: '23:18',
-        title: 'Foch',
+        title: 'Berri',
         body:
-            'J\'ai dit avenue Foch à ${profile.name}.\n'
+            'J\'ai dit rue de Berri à ${profile.name}.\n'
             'Il a dit « tu choisis tes embrouilles ».\n'
             'Il avait raison. Je l\'ai choisi.',
         starred: true,

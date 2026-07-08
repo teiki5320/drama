@@ -224,7 +224,7 @@ const kNotes = <NoteEntry>[
     starred: true,
   ),
 
-  // J9 — Soir d'emménagement Avenue Foch
+  // J9 — Soir d'emménagement rue de Berri
   NoteEntry(
     day: 9,
     time: '23:18',
@@ -284,6 +284,129 @@ const kNotes = <NoteEntry>[
     body:
         'Maman.\n'
         'Je ne sais plus comment te dire que',
+    draft: true,
+  ),
+
+  // ── Ep 2 — La routine du mensonge ──
+  NoteEntry(
+    day: 15,
+    time: '08:31',
+    title: 'Deuxième récolte',
+    body:
+        '« Vous avez identifié la deuxième récolte. »\n\n'
+        'Huit mots à 8h12. Pas de bonjour. Pas de signature.\n'
+        'Chez les Heng, c\'est une médaille.\n\n'
+        'Je l\'ai relue quatre fois. Je déteste que ça me fasse ça.',
+  ),
+  NoteEntry(
+    day: 23,
+    time: '22:10',
+    title: 'La boîte',
+    body:
+        'Maman a trouvé le Long Jing dans mon sac.\n'
+        'Elle s\'est excusée de l\'avoir trouvé. Elle. À moi.\n\n'
+        'C\'est exactement dans cet ordre que le mensonge abîme : '
+        'd\'abord les autres demandent pardon à ta place.',
+    starred: true,
+  ),
+  NoteEntry(
+    day: 30,
+    time: '23:44',
+    title: 'Jeudi',
+    body:
+        'Il a dit « Tu pars avec moi à Hong Kong jeudi » comme on dit '
+        'passe-moi le sel.\n\n'
+        'J\'ai dit oui comme on repose le sel.\n\n'
+        'Note pour plus tard : retrouver où est mon passeport.',
+  ),
+
+  // ── Ep 3 — Hong Kong ──
+  NoteEntry(
+    day: 33,
+    time: '23:20',
+    title: 'Table de douze',
+    body:
+        'L\'oncle m\'a demandé si je parlais mandarin.\n'
+        'J\'ai répondu en mandarin. Douze personnes ont arrêté de mâcher.\n\n'
+        'Grand-mère, si tu as vu ça de là où tu es : c\'était pour toi.',
+    starred: true,
+  ),
+  NoteEntry(
+    day: 38,
+    time: '01:12',
+    title: 'Lan Kwai Fong',
+    body:
+        'Il était ivre. Il a dit mon prénom. Le vrai.\n'
+        'Pas « Mlle Marchand ». Pas « vous ».\n\n'
+        'Shen.\n\n'
+        'Une syllabe. J\'ai mis deux heures à m\'endormir.',
+  ),
+  NoteEntry(
+    day: 39,
+    time: '08:02',
+    title: 'Quatre heures du matin',
+    body:
+        'Maman sait. Tante Mei a parlé.\n'
+        'Trois appels manqués pendant que je dormais dans des draps '
+        'à 800 fils.\n\n'
+        'Le luxe, c\'est dormir pendant que ta mère ne dort pas.',
+    starred: true,
+  ),
+
+  // ── Ep 4 — Retour ──
+  NoteEntry(
+    day: 42,
+    time: '23:55',
+    title: 'La cuisine',
+    body:
+        'Quatre heures de silence dans 14 m².\n'
+        'Puis elle m\'a écrit. De la table à l\'évier.\n\n'
+        'On s\'est tout dit sans faire de bruit. C\'est peut-être ça, '
+        'être mère et fille : la portée est plus grande que la voix.',
+  ),
+  NoteEntry(
+    day: 45,
+    time: '10:40',
+    title: 'J45',
+    body:
+        'Le traitement commence. Le compte est passé de plein à juste.\n\n'
+        'Le Dr Aubin a dit « grâce à ce que vous faites ».\n'
+        'Si seulement il savait la ponctuation exacte de cette phrase.',
+    starred: true,
+  ),
+  NoteEntry(
+    day: 52,
+    time: '21:08',
+    title: 'Clause 21',
+    body:
+        '« Vous êtes libre. »\n\n'
+        'J\'ai lu ça debout dans la cuisine de la rue de Berri, '
+        'au milieu de cartons que je n\'avais pas encore faits.\n\n'
+        'Libre. Le mot le plus lourd du contrat.',
+  ),
+
+  // ── Ep 5 — Fujian ──
+  NoteEntry(
+    day: 88,
+    time: '21:30',
+    title: 'Le parc',
+    body:
+        'Maman m\'a montré le banc. « C\'est ici qu\'il m\'a dit '
+        'qu\'il partait. Il pensait revenir. »\n\n'
+        'Vingt-sept ans qu\'elle porte cette phrase seule.\n'
+        'Maintenant on la porte à deux. Elle pèse moitié moins et '
+        'deux fois plus.',
+    starred: true,
+  ),
+  NoteEntry(
+    day: 105,
+    time: '22:14',
+    title: 'La question de Camille',
+    body:
+        '« Ta place est où ? »\n\n'
+        'J\'ai regardé la cour, le kaki, Maman qui dort mieux ici '
+        'qu\'à Belleville.\n\n'
+        'Je n\'ai pas répondu. Sept jours pour trouver la réponse.',
     draft: true,
   ),
 ];

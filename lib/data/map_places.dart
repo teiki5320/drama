@@ -1,6 +1,6 @@
 /// Catalogue de ~70 lieux Paris pour l'app Plans. Coordonnées
 /// approximatives projetées sur un canvas stylisé. Couvre :
-///  - 10 lieux canoniques (Tour Heng, Foch, Belleville, Tenon, etc.)
+///  - 10 lieux canoniques (Tour Heng, Berri, Belleville, Tenon, etc.)
 ///  - 30 restaurants UberEats
 ///  - 30 clients UberEats
 ///  - quelques lieux narratifs (collision Avenue Montaigne, BNP)
@@ -41,10 +41,10 @@ const kMapPlaces = <MapPlace>[
     revealedAtStart: true,
   ),
   MapPlace(
-    id: 'p_foch_home',
-    name: 'Avenue Foch',
-    address: '12 av. Foch, 16e',
-    lat: 48.872, lng: 2.286,
+    id: 'p_berri_home',
+    name: 'Rue de Berri',
+    address: '12 rue de Berri, 8e',
+    lat: 48.873, lng: 2.302,
     category: PlaceCategory.perso,
     emoji: '🪞',
     detail: 'Hôtel particulier des Heng. Penderie partagée.',
@@ -103,8 +103,8 @@ const kMapPlaces = <MapPlace>[
   MapPlace(
     id: 'p_dinner_heng',
     name: 'Dîner Madame Heng',
-    address: '12 av. Foch, 16e (salon)',
-    lat: 48.872, lng: 2.286,
+    address: '12 rue de Berri, 8e (salon)',
+    lat: 48.873, lng: 2.302,
     category: PlaceCategory.heng,
     emoji: '🍵',
     detail: 'J14 20h30. Long Jing deuxième récolte. Six couverts.',
@@ -531,7 +531,7 @@ const kMapPlaces = <MapPlace>[
   MapPlace(
     id: 'p_cl_thomas_g',
     name: 'Thomas G.',
-    address: '7 av. Foch, 16e',
+    address: '7 rue de Berri, 8e',
     lat: 48.872, lng: 2.290,
     category: PlaceCategory.customer,
     emoji: '💎',
@@ -540,8 +540,8 @@ const kMapPlaces = <MapPlace>[
   MapPlace(
     id: 'p_cl_helene_r',
     name: 'Hélène R.',
-    address: '12 av. Foch, 16e',
-    lat: 48.872, lng: 2.286,
+    address: '12 rue de Berri, 8e',
+    lat: 48.873, lng: 2.302,
     category: PlaceCategory.customer,
     emoji: '💐',
     detail: 'Veuve aisée. Tip 15 € pour soutenir les jeunes.',
@@ -558,7 +558,7 @@ const kMapPlaces = <MapPlace>[
   MapPlace(
     id: 'p_cl_picky_s',
     name: 'Sophie K.',
-    address: '20 av. Foch, 16e',
+    address: '20 rue de Berri, 8e',
     lat: 48.871, lng: 2.282,
     category: PlaceCategory.customer,
     emoji: '😤',
@@ -612,17 +612,17 @@ const kMapPlaces = <MapPlace>[
   MapPlace(
     id: 'p_cl_tante_ly',
     name: 'Mme Lihua',
-    address: '8 av. Foch, 16e',
+    address: '8 rue de Berri, 8e',
     lat: 48.872, lng: 2.289,
     category: PlaceCategory.customer,
     emoji: '🍵',
     detail: '81 ans. Tante de Tristan Heng.',
   ),
   MapPlace(
-    id: 'p_cl_concierge_foch',
-    name: 'Concierge Foch 12',
-    address: '12 av. Foch, 16e',
-    lat: 48.872, lng: 2.286,
+    id: 'p_cl_concierge_berri',
+    name: 'Concierge Berri 12',
+    address: '12 rue de Berri, 8e',
+    lat: 48.873, lng: 2.302,
     category: PlaceCategory.customer,
     emoji: '🔑',
     detail: 'Concierge pour les Heng. Reçoit tout.',

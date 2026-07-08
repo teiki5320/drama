@@ -283,14 +283,14 @@ const _allGroups = <_WAGroup>[
       ),
       _WAMsg(
         sender: 'moi',
-        text: 'Avenue Foch.',
+        text: 'Rue de Berri.',
         time: '23:44',
         day: 9,
       ),
       _WAMsg(
         sender: 'Camille',
         text:
-            'Avenue Foch.\n'
+            'Rue de Berri.\n'
             'Promets-moi que tu écris ce que tu vis.',
         time: '23:45',
         day: 9,

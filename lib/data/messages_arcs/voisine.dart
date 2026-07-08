@@ -266,7 +266,7 @@ const voisineBeats = <MessagesArcBeat>[
       'Tout est réparé. J\'ai laissé un mot à votre maman avec mon numéro. '
           'Au cas où.',
       'Tout va bien. J\'ai une question : pourquoi votre maman ne sait pas '
-          'que vous habitez avenue Foch ?',
+          'que vous habitez rue de Berri ?',
     ],
     endsArc: 'voisine_alliée',
   ),
@@ -304,7 +304,7 @@ const voisineTemplate = MessagesArcTemplate(
   category: MessagesArcCategory.voisinage,
   contact: voisineContact,
   beats: voisineBeats,
-  minStartDay: 9,  // après emménagement Avenue Foch
+  minStartDay: 9,  // après emménagement rue de Berri
   spawnWeight: 1.0,
   cooldownDays: 90,
   description: 'Voisine 71 ans à Belleville. Colis perdu puis fuite '

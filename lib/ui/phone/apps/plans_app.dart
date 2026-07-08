@@ -492,7 +492,7 @@ class _ParisMapPainter extends CustomPainter {
     canvas.drawCircle(_projectLatLng(48.832, 2.326, size), 26, arrPaint);
     // 15e
     canvas.drawCircle(_projectLatLng(48.842, 2.298, size), 30, arrPaint);
-    // 16e (Foch)
+    // 8e (Berri)
     canvas.drawCircle(_projectLatLng(48.860, 2.275, size), 32, arrPaint);
     // 17e
     canvas.drawCircle(_projectLatLng(48.886, 2.305, size), 26, arrPaint);
@@ -547,7 +547,7 @@ class _ParisMapPainter extends CustomPainter {
 
     // Champs-Élysées (Concorde → Étoile)
     canvas.drawLine(s(48.865, 2.321), s(48.873, 2.295), axePaint);
-    // Avenue Foch (Étoile → Bois)
+    // rue de Berri (Champs-Élysées → Haussmann)
     canvas.drawLine(s(48.873, 2.295), s(48.872, 2.275), axePaint);
     // Avenue de la Grande Armée (Étoile → Neuilly)
     canvas.drawLine(s(48.873, 2.295), s(48.881, 2.282), axeMinor);
@@ -691,7 +691,7 @@ class _ParisMapPainter extends CustomPainter {
       tp.paint(canvas, Offset(pt.dx - tp.width / 2, pt.dy + 8));
     }
     quartier('Belleville', 48.870, 2.395);
-    quartier('Foch', 48.872, 2.286);
+    quartier('Berri', 48.873, 2.302);
     quartier('Marais', 48.860, 2.362);
     quartier('Bastille', 48.853, 2.378);
     quartier('Montmartre', 48.886, 2.342);

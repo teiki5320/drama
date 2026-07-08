@@ -10,8 +10,9 @@ import 'status_bar.dart';
 
 /// Plein écran d'appel entrant style iPhone — fond sombre flouté,
 /// gros nom, deux gros boutons rouge/vert. Vibre tant que l'appel
-/// sonne, s'auto-coupe au bout de 12s si Shen ne décroche pas (et
-/// laisse alors un appel manqué dans Téléphone).
+/// sonne, s'auto-coupe au bout de 18s si Shen ne décroche pas (et
+/// laisse alors un appel manqué dans Téléphone). Décrocher passe en
+/// mode « en ligne » : chrono + transcript de l'appelant ligne à ligne.
 class IncomingCallScreen extends ConsumerStatefulWidget {
   const IncomingCallScreen({super.key, required this.call});
   final IncomingCall call;
@@ -25,6 +26,13 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
     with SingleTickerProviderStateMixin {
   Timer? _vibrate;
   Timer? _timeout;
+  // — état « en ligne » après décrochage —
+  bool _accepted = false;
+  int _seconds = 0;
+  int _visibleLines = 0;
+  Timer? _chrono;
+  Timer? _lines;
+  Timer? _autoEnd;
   late final AnimationController _pulseCtrl = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 1500),
@@ -36,12 +44,43 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
     _vibrate = Timer.periodic(const Duration(milliseconds: 1500), (_) {
       HapticFeedback.heavyImpact();
     });
-    _timeout = Timer(const Duration(seconds: 12), _hangUp);
+    _timeout = Timer(const Duration(seconds: 18), _hangUp);
+  }
+
+  /// Décroche : arrête la sonnerie, lance le chrono et fait défiler
+  /// le transcript de l'appelant ligne à ligne. L'appelant raccroche
+  /// tout seul quelques secondes après sa dernière phrase (ou presque
+  /// tout de suite s'il n'a rien à dire — appel masqué).
+  void _accept() {
+    _vibrate?.cancel();
+    _timeout?.cancel();
+    HapticFeedback.mediumImpact();
+    setState(() => _accepted = true);
+    _chrono = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() => _seconds++);
+    });
+    final lines = widget.call.transcript;
+    if (lines.isEmpty) {
+      _autoEnd = Timer(const Duration(seconds: 4), _hangUp);
+      return;
+    }
+    _lines = Timer.periodic(const Duration(milliseconds: 2600), (t) {
+      if (!mounted) return;
+      if (_visibleLines < lines.length) {
+        setState(() => _visibleLines++);
+      } else {
+        t.cancel();
+        _autoEnd = Timer(const Duration(seconds: 3), _hangUp);
+      }
+    });
   }
 
   void _hangUp() {
     _vibrate?.cancel();
     _timeout?.cancel();
+    _chrono?.cancel();
+    _lines?.cancel();
+    _autoEnd?.cancel();
     ref.read(incomingCallProvider.notifier).state = null;
   }
 
@@ -49,8 +88,17 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
   void dispose() {
     _vibrate?.cancel();
     _timeout?.cancel();
+    _chrono?.cancel();
+    _lines?.cancel();
+    _autoEnd?.cancel();
     _pulseCtrl.dispose();
     super.dispose();
+  }
+
+  String get _chronoLabel {
+    final m = (_seconds ~/ 60).toString().padLeft(2, '0');
+    final s = (_seconds % 60).toString().padLeft(2, '0');
+    return '$m:$s';
   }
 
   @override
@@ -71,7 +119,7 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
             const PhoneStatusBar(foreground: Colors.white),
             const SizedBox(height: 30),
             Text(
-              'Appel entrant',
+              _accepted ? _chronoLabel : 'Appel entrant',
               style: GoogleFonts.inter(
                 fontSize: 13,
                 color: Colors.white70,
@@ -79,11 +127,11 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
               ),
             ),
             const SizedBox(height: 20),
-            // Avatar avec halo pulsant
+            // Avatar avec halo pulsant (immobile une fois en ligne)
             AnimatedBuilder(
               animation: _pulseCtrl,
               builder: (context, child) {
-                final t = _pulseCtrl.value;
+                final t = _accepted ? 0.0 : _pulseCtrl.value;
                 return Stack(
                   alignment: Alignment.center,
                   children: [
@@ -153,27 +201,75 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
                 ),
               ),
             ],
-            const Spacer(),
-            // Boutons rouge / vert
+            // En ligne : les phrases de l'appelant apparaissent une à une.
+            if (_accepted)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(36, 28, 36, 8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (var i = 0; i < _visibleLines; i++)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 14),
+                          child: AnimatedOpacity(
+                            opacity: 1.0,
+                            duration: const Duration(milliseconds: 400),
+                            child: Text(
+                              c.transcript[i],
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.crimsonPro(
+                                fontSize: 17,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.white.withValues(alpha: 0.9),
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (_visibleLines == 0)
+                        Text(
+                          '…',
+                          style: GoogleFonts.inter(
+                            fontSize: 24,
+                            color: Colors.white38,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              const Spacer(),
+            // Boutons : rouge/vert qui sonne, rouge seul en ligne.
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _CallButton(
-                    color: const Color(0xFFE53935),
-                    icon: Icons.call_end,
-                    label: 'Refuser',
-                    onTap: _hangUp,
-                  ),
-                  _CallButton(
-                    color: const Color(0xFF34C759),
-                    icon: Icons.call,
-                    label: 'Accepter',
-                    onTap: _hangUp, // pour l'instant on hang-up aussi
-                  ),
-                ],
-              ),
+              child: _accepted
+                  ? Center(
+                      child: _CallButton(
+                        color: const Color(0xFFE53935),
+                        icon: Icons.call_end,
+                        label: 'Raccrocher',
+                        onTap: _hangUp,
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _CallButton(
+                          color: const Color(0xFFE53935),
+                          icon: Icons.call_end,
+                          label: 'Refuser',
+                          onTap: _hangUp,
+                        ),
+                        _CallButton(
+                          color: const Color(0xFF34C759),
+                          icon: Icons.call,
+                          label: 'Accepter',
+                          onTap: _accept,
+                        ),
+                      ],
+                    ),
             ),
             const SizedBox(height: 50),
           ],

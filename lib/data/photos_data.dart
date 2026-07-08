@@ -15,7 +15,7 @@ class PhotoItem {
   /// relative (0..1) sur la photo et un texte Shen-style.
   final List<PhotoHotspot> hotspots;
   /// Tags pour grouper en albums dynamiques :
-  /// 'maman', 'papa', 'camille', 'foch', 'belleville', 'heng', 'hk',
+  /// 'maman', 'papa', 'camille', 'berri', 'belleville', 'heng', 'hk',
   /// 'fujian', 'memories' (il y a 1 an).
   final List<String> tags;
   /// Si true, la photo n'apparaît que dans l'album caché (FaceID 1402).
@@ -83,10 +83,10 @@ const kAlbums = <PhotoAlbum>[
     note: 'Croissants, fous rires, codes civils.',
   ),
   PhotoAlbum(
-    id: 'al_foch',
-    title: 'Avenue Foch',
+    id: 'al_berri',
+    title: 'rue de Berri',
     emoji: '🪞',
-    tagFilter: 'foch',
+    tagFilter: 'berri',
     gradient: [0xFF1F2937, 0xFF3D4858],
     note: 'L\'appartement. Les couloirs. Les fenêtres qui regardent vers Belleville.',
   ),
@@ -352,10 +352,10 @@ const kPhotos = <PhotoItem>[
   PhotoItem(
     day: 9,
     monthLabel: 'Juin',
-    title: 'Avenue Foch · cuisine',
+    title: 'rue de Berri · cuisine',
     subtitle: '🍓 17h45',
     gradient: [0xFFFAFAFA, 0xFFE7E1D2],
-    imagePath: 'assets/photos/ep1/j09_17h22_avenue_foch_cuisine.webp',
+    imagePath: 'assets/photos/ep1/j09_17h22_avenue_berri_cuisine.webp',
     hotspots: [
       PhotoHotspot(
         x: 0.55,
@@ -368,10 +368,10 @@ const kPhotos = <PhotoItem>[
   PhotoItem(
     day: 9,
     monthLabel: 'Juin',
-    title: 'Avenue Foch · chambre',
+    title: 'rue de Berri · chambre',
     subtitle: '🛏️ 18h02',
     gradient: [0xFFE7E1D2, 0xFFCFC8B5],
-    imagePath: 'assets/photos/ep1/j09_avenue_foch_chambre.webp',
+    imagePath: 'assets/photos/ep1/j09_avenue_berri_chambre.webp',
   ),
 
   // ─── J11 — Lundi 13 juin (Maman, mensonge) ──────────────────────
@@ -508,24 +508,24 @@ const kPhotos = <PhotoItem>[
     imagePath: 'assets/photos/ep1/j11_maman_fenetre_paris.webp',
     tags: ['maman', 'belleville'],
   ),
-  // ─── Album Foch ─────────────────────────────────────────────
+  // ─── Album Berri ─────────────────────────────────────────────
   PhotoItem(
     day: 9,
     monthLabel: 'Juin',
     title: 'Cuisine — 17:22',
-    subtitle: '📷 Premier soir à Foch. Plan de travail vide.',
+    subtitle: '📷 Premier soir à Berri. Plan de travail vide.',
     gradient: [0xFF1F2937, 0xFF3D4858],
-    imagePath: 'assets/photos/ep1/j09_17h22_avenue_foch_cuisine.webp',
-    tags: ['foch', 'heng'],
+    imagePath: 'assets/photos/ep1/j09_17h22_avenue_berri_cuisine.webp',
+    tags: ['berri', 'heng'],
   ),
   PhotoItem(
     day: 9,
     monthLabel: 'Juin',
-    title: 'Chambre Foch',
+    title: 'Chambre Berri',
     subtitle: '📷 Penderie partagée. Oreiller de droite, sent le neuf.',
     gradient: [0xFF1F2937, 0xFF553C2A],
-    imagePath: 'assets/photos/ep1/j09_avenue_foch_chambre.webp',
-    tags: ['foch'],
+    imagePath: 'assets/photos/ep1/j09_avenue_berri_chambre.webp',
+    tags: ['berri'],
   ),
   // ─── Album Heng ─────────────────────────────────────────────
   PhotoItem(
@@ -564,5 +564,83 @@ const kPhotos = <PhotoItem>[
     gradient: [0xFFE89B7F, 0xFFFCC9A1],
     imagePath: 'assets/photos/ep1/post_camille_montmartre.webp',
     tags: ['camille'],
+  ),
+
+  // ─── Ep 3 — Hong Kong (juillet) ────────────────────────────────
+  PhotoItem(
+    day: 33,
+    monthLabel: 'Juillet',
+    title: 'Victoria Harbour, 20e étage',
+    subtitle: '📷 Trop de lumière pour une seule ville.',
+    gradient: [0xFF1F2A44, 0xFF4A6FA5],
+    tags: ['hk', 'heng'],
+  ),
+  PhotoItem(
+    day: 37,
+    monthLabel: 'Juillet',
+    title: 'Repulse Bay, pieds nus',
+    subtitle: '📷 « Mon père aussi est de Fujian. » Première fois que je le dis.',
+    gradient: [0xFF7FA8C9, 0xFFEFD9B4],
+    tags: ['hk', 'papa'],
+  ),
+  PhotoItem(
+    day: 40,
+    monthLabel: 'Juillet',
+    title: 'Hublot, mer de Chine',
+    subtitle: '📷 Il dort. Pas moi. Treize heures pour réfléchir.',
+    gradient: [0xFF2A3550, 0xFF8FA3C8],
+    tags: ['hk'],
+  ),
+
+  // ─── Ep 4 — Retour (juillet-août) ─────────────────────────────
+  PhotoItem(
+    day: 44,
+    monthLabel: 'Juillet',
+    title: 'Café de Camille, sans jugement',
+    subtitle: '📷 Elle a apporté les tasses. Elle n\'a rien demandé.',
+    gradient: [0xFFFCE6D8, 0xFFE8C9A8],
+    tags: ['camille', 'belleville'],
+  ),
+  PhotoItem(
+    day: 45,
+    monthLabel: 'Juillet',
+    title: 'Tenon, salle 12',
+    subtitle: '📷 Le traitement commence. Photo prise pour m\'en souvenir en mieux.',
+    gradient: [0xFFE7E1D2, 0xFFB8C5B0],
+    tags: ['maman'],
+  ),
+
+  // ─── Ep 5 — Fujian (septembre) ────────────────────────────────
+  PhotoItem(
+    day: 80,
+    monthLabel: 'Septembre',
+    title: 'Maman, hublot, 1998-2026',
+    subtitle: '📷 Elle me tient la main au décollage. Première fois depuis le lycée.',
+    gradient: [0xFF9FB8D8, 0xFFEFE3C8],
+    tags: ['maman', 'fujian'],
+  ),
+  PhotoItem(
+    day: 82,
+    monthLabel: 'Septembre',
+    title: 'La cour, le kaki',
+    subtitle: '📷 Tante Mei dit qu\'il donne trop cette année. Il rattrape.',
+    gradient: [0xFFF2E3C8, 0xFFC8A96B],
+    tags: ['fujian'],
+  ),
+  PhotoItem(
+    day: 88,
+    monthLabel: 'Septembre',
+    title: 'Le banc du parc',
+    subtitle: '📷 C\'est ici qu\'il lui a dit qu\'il partait. Il pensait revenir.',
+    gradient: [0xFF8AA070, 0xFFD8E3C0],
+    tags: ['fujian', 'papa', 'maman'],
+  ),
+  PhotoItem(
+    day: 112,
+    monthLabel: 'Octobre',
+    title: 'Ce que j\'emporte',
+    subtitle: '📷 Le pinceau, le carnet, la 312e lettre. Le reste se décide à 11h.',
+    gradient: [0xFFFBF7EF, 0xFF8AA070],
+    tags: ['fujian', 'papa'],
   ),
 ];

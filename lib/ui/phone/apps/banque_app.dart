@@ -1263,6 +1263,10 @@ class _ShopCard extends ConsumerWidget {
                       price: item.price,
                       moodGain: item.moodGain,
                       reputationGain: item.reputationGain,
+                      instaCaption: item.generatesInstaPost
+                          ? item.instaPostCaption
+                          : null,
+                      instaEmoji: item.instaPostEmoji,
                     );
               } else {
                 HapticFeedback.heavyImpact();
