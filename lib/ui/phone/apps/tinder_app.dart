@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../data/romance_templates.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../../../providers/tinder_state_provider.dart';
 import '../../../providers/romance_threads_provider.dart';

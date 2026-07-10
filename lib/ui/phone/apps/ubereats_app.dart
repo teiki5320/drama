@@ -295,7 +295,7 @@ class _LivreurMode extends ConsumerWidget {
       id: c.id,
       time: time,
       from: r.name,
-      to: '${cl.displayName} · ${zoneLabel(cl.zone)}',
+      to: '${cl.displayName} · ${ub.zoneLabel(cl.zone)}',
       distance: '${c.distanceKm.toStringAsFixed(1)} km',
       payout: c.totalPayout,
       penalty: 0,
