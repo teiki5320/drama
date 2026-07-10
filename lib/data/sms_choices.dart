@@ -465,6 +465,274 @@ const Map<String, SmsChoice> kSmsChoices = {
       ),
     ],
   ),
+
+  // J19 — Madame Heng : « L'Amant, ou Hiroshima ? »
+  'heng_duras_j19': SmsChoice(
+    beatId: 'heng_duras_j19',
+    contactId: 'madame_heng',
+    options: [
+      SmsChoiceOption(
+        label: 'L\'Amant',
+        reply: 'L\'Amant. Quatre relectures cette année.',
+        delta: RelationshipDelta(trust: 6, attraction: 2, suspicion: -3),
+      ),
+      SmsChoiceOption(
+        label: 'Hiroshima',
+        reply:
+            'Hiroshima. La mémoire m\'intéresse plus que la passion, '
+            'Madame.',
+        delta: RelationshipDelta(trust: 4, attraction: 3),
+      ),
+      SmsChoiceOption(
+        label: 'Esquiver',
+        reply: 'Je lis peu, Madame. Le vélo prend les soirées.',
+        delta: RelationshipDelta(trust: -4, suspicion: 5),
+      ),
+    ],
+  ),
+
+  // J24 — Maman devine (« dis-moi si je me trompe »)
+  'maman_devine_j24': SmsChoice(
+    beatId: 'maman_devine_j24',
+    contactId: 'maman',
+    options: [
+      SmsChoiceOption(
+        label: 'Nier',
+        reply: 'Tu te fais des films. C\'est la fatigue du stage.',
+        delta: RelationshipDelta(trust: -4, suspicion: 6),
+      ),
+      SmsChoiceOption(
+        label: 'Demi-aveu',
+        reply:
+            'Tu ne te trompes jamais. C\'est bien ça le problème. '
+            'Laisse-moi le temps de comprendre.',
+        delta: RelationshipDelta(trust: 6, dependency: 3, suspicion: -2),
+      ),
+      SmsChoiceOption(
+        label: 'Retourner',
+        reply: 'Et toi, tu avais quel visage à mon âge ?',
+        delta: RelationshipDelta(trust: 3, attraction: 3),
+      ),
+    ],
+  ),
+
+  // J29 — Camille : le passeport
+  'camille_passeport_j29': SmsChoice(
+    beatId: 'camille_passeport_j29',
+    contactId: 'camille',
+    options: [
+      SmsChoiceOption(
+        label: 'La boîte',
+        reply:
+            'Trouvé. Boîte à chaussures, sous le lit, avec les photos '
+            'de la fac. Périmé dans deux ans, ça va.',
+        delta: RelationshipDelta(trust: 3, loyalty: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Panique',
+        reply: 'JE SAIS PAS OÙ IL EST. Camille. JEUDI.',
+        delta: RelationshipDelta(dependency: 5, trust: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Vexée',
+        reply: 'J\'ai 24 ans, je sais où est mon passeport.',
+        delta: RelationshipDelta(trust: -2, suspicion: 2),
+      ),
+    ],
+  ),
+
+  // J38 — Camille : la photo de la robe
+  'camille_robe_j38': SmsChoice(
+    beatId: 'camille_robe_j38',
+    contactId: 'camille',
+    options: [
+      SmsChoiceOption(
+        label: 'La photo',
+        reply:
+            'Tiens. Bleu nuit, dos nu. Tristan est entré, il a rien dit '
+            'pendant trois secondes. Trois LONGUES secondes.',
+        delta: RelationshipDelta(trust: 6, attraction: 2, loyalty: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Décrire',
+        reply:
+            'Pas de photo, le wifi de l\'hôtel me connaît. Bleu nuit, '
+            'dos nu, et je me trouve belle. Voilà.',
+        delta: RelationshipDelta(trust: 4, attraction: 1),
+      ),
+      SmsChoiceOption(
+        label: 'Refuser',
+        reply: 'Non. Tu la verras au retour. Le suspense te va bien.',
+        delta: RelationshipDelta(attraction: 2, suspicion: 2, trust: -1),
+      ),
+    ],
+  ),
+
+  // J39 — Vincent : « tu es la quatrième »
+  'vincent_quatrieme_j39': SmsChoice(
+    beatId: 'vincent_quatrieme_j39',
+    contactId: 'vincent_heng',
+    options: [
+      SmsChoiceOption(
+        label: 'Tu mens',
+        reply:
+            'Tu mens, Vincent. Pas complètement, c\'est ta technique. '
+            'Combien, vraiment ?',
+        delta: RelationshipDelta(trust: 2, suspicion: 4, attraction: -2),
+      ),
+      SmsChoiceOption(
+        label: 'Encaisser',
+        reply: 'Merci pour l\'information. Bonne nuit.',
+        delta: RelationshipDelta(suspicion: 6, dependency: -2),
+      ),
+      SmsChoiceOption(
+        label: 'Demander à Tristan',
+        reply:
+            'Je vais lui poser la question. Devant toi si tu veux. '
+            'Tu confirmeras ?',
+        delta: RelationshipDelta(trust: -3, suspicion: 3, loyalty: -2),
+      ),
+    ],
+  ),
+
+  // J46 — Madame Heng : une question. Une seule.
+  'heng_phrase_j46': SmsChoice(
+    beatId: 'heng_phrase_j46',
+    contactId: 'madame_heng',
+    options: [
+      SmsChoiceOption(
+        label: 'Qui ?',
+        reply: 'De qui je tiens cette bouche, Madame ?',
+        delta: RelationshipDelta(trust: 4, suspicion: -2, dependency: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Mon père',
+        reply:
+            'Vous connaissiez mon père. Dites-le. Shen Wenbo. '
+            'Notaire instructeur : Heng Lihua.',
+        delta: RelationshipDelta(trust: 2, attraction: 3, suspicion: 3),
+      ),
+      SmsChoiceOption(
+        label: 'Pas prête',
+        reply:
+            'Je garde ma question, Madame. Je ne suis pas prête '
+            'pour la réponse.',
+        delta: RelationshipDelta(trust: 3, dependency: -2),
+      ),
+    ],
+  ),
+
+  // J53 — Camille : le dossier de Shanghai (« tu fais quoi ? »)
+  'camille_dossier_j53': SmsChoice(
+    beatId: 'camille_dossier_j53',
+    contactId: 'camille',
+    options: [
+      SmsChoiceOption(
+        label: 'Je l\'ouvre',
+        reply:
+            'Je monte. Je l\'ouvre. C\'est le nom de ma mère, c\'est '
+            'mon histoire aussi.',
+        delta: RelationshipDelta(trust: 4, suspicion: 3, dependency: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Je l\'emporte',
+        reply:
+            'Je le prends sans l\'ouvrir. Je veux le lire chez moi, '
+            'pas dans son bureau.',
+        delta: RelationshipDelta(trust: 2, suspicion: 4),
+      ),
+      SmsChoiceOption(
+        label: 'J\'attends',
+        reply:
+            'Je redescends. S\'il me cache ce dossier, je veux voir '
+            'combien de temps il ose.',
+        delta: RelationshipDelta(trust: -2, suspicion: 6, attraction: -1),
+      ),
+    ],
+  ),
+
+  // J69 — Maman : « on la lira ensemble ? »
+  'maman_lettre_j69': SmsChoice(
+    beatId: 'maman_lettre_j69',
+    contactId: 'maman',
+    options: [
+      SmsChoiceOption(
+        label: 'Oui, dimanche',
+        reply: 'Oui. Dimanche. Je fais le thé, tu lis.',
+        delta: RelationshipDelta(trust: 7, dependency: 3, suspicion: -4),
+      ),
+      SmsChoiceOption(
+        label: 'Pas encore',
+        reply:
+            'Pas encore. Je n\'arrive pas encore à l\'entendre à voix '
+            'haute. Bientôt. Promis.',
+        delta: RelationshipDelta(trust: 2, dependency: -2),
+      ),
+      SmsChoiceOption(
+        label: 'En silence',
+        reply:
+            'On la lira chacune en silence, côte à côte. Les voix '
+            'hautes, c\'est pour lui au parc.',
+        delta: RelationshipDelta(trust: 5, attraction: 2),
+      ),
+    ],
+  ),
+
+  // J91 — Tante Mei : lire la lettre seule ou avec Maman
+  'mei_lettre_j91': SmsChoice(
+    beatId: 'mei_lettre_j91',
+    contactId: 'tante_mei',
+    options: [
+      SmsChoiceOption(
+        label: 'Seule',
+        reply:
+            'Seule, d\'abord. C\'est à moi qu\'elle est adressée. '
+            'Ensuite je la donnerai à Maman.',
+        delta: RelationshipDelta(trust: 4, dependency: 2),
+      ),
+      SmsChoiceOption(
+        label: 'Avec Maman',
+        reply:
+            'Avec elle. Il lui a écrit 311 lettres avant celle-là. '
+            'Cette dernière est aussi la sienne.',
+        delta: RelationshipDelta(trust: 6, loyalty: 3),
+      ),
+      SmsChoiceOption(
+        label: 'Pas ce soir',
+        reply:
+            'Pas ce soir. Neuf ans qu\'elle attend, elle peut attendre '
+            'que je dorme une nuit entière.',
+        delta: RelationshipDelta(trust: 1, suspicion: 2),
+      ),
+    ],
+  ),
+
+  // J102 — Maman : « tu lui as dit quoi ? »
+  'maman_312e_j102': SmsChoice(
+    beatId: 'maman_312e_j102',
+    contactId: 'maman',
+    options: [
+      SmsChoiceOption(
+        label: 'La phrase',
+        reply:
+            'Que je n\'ai plus besoin de lui écrire pour lui parler. '
+            'C\'est tout. C\'était assez.',
+        delta: RelationshipDelta(trust: 7, attraction: 3, suspicion: -3),
+      ),
+      SmsChoiceOption(
+        label: 'Entre lui et moi',
+        reply:
+            'C\'est entre lui et moi, Maman. Tu as eu tes 311 lettres. '
+            'Celle-là était la mienne.',
+        delta: RelationshipDelta(trust: 2, dependency: -3, attraction: 1),
+      ),
+      SmsChoiceOption(
+        label: 'Au parc',
+        reply: 'Je te le dirai au parc. À voix haute. Devant lui.',
+        delta: RelationshipDelta(trust: 5, dependency: 2, loyalty: 2),
+      ),
+    ],
+  ),
 };
 
 /// Renvoie le choix associé à un beat, ou null si pas de choix défini.
