@@ -208,6 +208,10 @@ class PersistenceService {
                   gradient: ((m['gradient'] as List<dynamic>?) ?? [])
                       .map((e) => e as int)
                       .toList(),
+                  caption: m['caption'] as String,
+                  imagePath: m['imagePath'] as String?,
+                ))
+            .toList(),
         instaPosts: ((j['instaPosts'] as List<dynamic>?) ?? [])
             .map((e) => e as Map<String, dynamic>)
             .map((m) => UserInstaPost(
@@ -217,10 +221,6 @@ class PersistenceService {
                   caption: m['caption'] as String,
                   emoji: m['emoji'] as String,
                   likes: m['likes'] as int,
-                ))
-            .toList(),
-                  caption: m['caption'] as String,
-                  imagePath: m['imagePath'] as String?,
                 ))
             .toList(),
       );
