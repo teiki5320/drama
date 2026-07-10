@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/notes_data.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/relationships_provider.dart';
 
 /// Mode Carnet — extraction des notes en une vue paysage panoramique
 /// façon vrai carnet écrit à la main : papier crème, marge gauche,
@@ -40,8 +41,16 @@ class _CarnetViewState extends ConsumerState<CarnetView> {
   @override
   Widget build(BuildContext context) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
+    // Même filtre que l'app Notes : les notes gatées par la suspicion de
+    // Maman ne doivent pas fuir par le Mode Carnet.
+    final suspicion =
+        ref.watch(relationshipsProvider)['maman']?.suspicion ?? 0;
     final notes = kNotes
-        .where((n) => n.day <= day && !n.draft)
+        .where((n) =>
+            n.day <= day &&
+            !n.draft &&
+            (n.requiresSuspicionMaman == null ||
+                suspicion >= n.requiresSuspicionMaman!))
         .toList();
 
     return Scaffold(

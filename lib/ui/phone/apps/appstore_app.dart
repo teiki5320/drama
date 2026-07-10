@@ -17,9 +17,16 @@ class AppStoreApp extends ConsumerWidget {
     final unlocked = ref.watch(
       phoneStateProvider.select((s) => s.unlockedApps),
     );
-    // L'App Store ne peut pas se proposer lui-même.
+    // L'App Store ne peut pas se proposer lui-même — et il ne propose
+    // QUE les apps réellement installables : les apps narratives (Notes,
+    // Banque, Téléphone, WhatsApp…) se débloquent par l'histoire, sinon
+    // « OBTENIR » court-circuite le scénario.
+    const installables = {'spotify', 'maps', 'tinder', 'cloud'};
     final notInstalled = kAllApps
-        .where((a) => !unlocked.contains(a.id) && a.id != 'appstore')
+        .where((a) =>
+            !unlocked.contains(a.id) &&
+            a.id != 'appstore' &&
+            installables.contains(a.id))
         .toList();
     final installed = kAllApps
         .where((a) => unlocked.contains(a.id) && a.id != 'appstore')
@@ -91,7 +98,11 @@ class AppStoreApp extends ConsumerWidget {
                     description: _descriptionFor(a.id),
                     actionLabel: 'OUVRIR',
                     actionFilled: true,
-                    secondaryAction: a.id == 'reglages'
+                    // Le cœur du jeu ne se désinstalle pas : sans
+                    // Messages la progression gèle, sans Caméra plus de
+                    // photos, sans Réglages plus de reset.
+                    secondaryAction: const {'reglages', 'messages', 'camera'}
+                            .contains(a.id)
                         ? null
                         : (
                             label: 'Désinstaller',

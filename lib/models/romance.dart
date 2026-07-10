@@ -264,6 +264,11 @@ class RomanceInstance {
   /// dans template.beats). Null = pas de choix en attente.
   final int? pendingChoiceBeatIdx;
 
+  /// Prénom de la carte réellement swipée dans le deck — remplace le nom
+  /// du profil du template pour que la conversation soit avec la personne
+  /// que le joueur a likée (et pas un inconnu du pool).
+  final String? overrideName;
+
   const RomanceInstance({
     required this.id,
     required this.templateId,
@@ -277,6 +282,7 @@ class RomanceInstance {
     this.ended = false,
     this.endingId,
     this.pendingChoiceBeatIdx,
+    this.overrideName,
   });
 
   RomanceInstance copyWith({
@@ -303,6 +309,7 @@ class RomanceInstance {
         pendingChoiceBeatIdx: clearPendingChoice
             ? null
             : (pendingChoiceBeatIdx ?? this.pendingChoiceBeatIdx),
+        overrideName: overrideName,
       );
 
   /// Sérialisation JSON pour shared_preferences.
@@ -332,6 +339,7 @@ class RomanceInstance {
         'ended': ended,
         'endingId': endingId,
         'pendingChoiceBeatIdx': pendingChoiceBeatIdx,
+        'overrideName': overrideName,
       };
 
   static RomanceInstance fromJson(Map<String, dynamic> j) => RomanceInstance(
@@ -363,5 +371,6 @@ class RomanceInstance {
         ended: j['ended'] as bool? ?? false,
         endingId: j['endingId'] as String?,
         pendingChoiceBeatIdx: j['pendingChoiceBeatIdx'] as int?,
+        overrideName: j['overrideName'] as String?,
       );
 }

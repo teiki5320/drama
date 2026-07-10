@@ -194,7 +194,7 @@ const avocateBeats = <RomanceBeat>[
       'Garde demain matin. Trop tôt pour décider. On se voit dans 10 jours.',
       'Désolée. Affaire qui prend tout l\'air. Plus tard.',
     ],
-    endsArc: 'av_couupe_urgence',
+    endsArc: 'av_coupe_urgence',
   ),
 ];
 

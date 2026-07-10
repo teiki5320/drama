@@ -299,6 +299,11 @@ def check_shop_schema(parsed: dict[str, object]) -> None:
         if it.get("id") in seen_ids:
             fail(f"[shop] id dupliqué : {it.get('id')}")
         seen_ids.add(it.get("id"))
+        # Échelle : mood est clampé 0-10 dans le jeu — un seuil > 10 rend
+        # l'item définitivement inachetable (bug historique : échelle 0-100).
+        if (it.get("requiredMood") or 0) > 10:
+            fail(f"[shop] item {it.get('id')} : requiredMood "
+                 f"{it.get('requiredMood')} > 10 (échelle mood du jeu = 0-10)")
         if it.get("category") not in cats:
             warn(f"[shop] item {it.get('id')} : catégorie « {it.get('category')} » "
                  f"absente de kShopCategories {sorted(cats)}")

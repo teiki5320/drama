@@ -382,12 +382,33 @@ class _MessageBubble extends StatelessWidget {
         return _callCard(isMe);
       case RomanceBeatType.typingThenNothing:
         return _ghostTyping();
+      case RomanceBeatType.seenNoReply:
+        // « Vu » sans réponse — le cœur de l'angoisse breadcrumber.
+        return _systemLine('Vu ✓✓ — pas de réponse');
+      case RomanceBeatType.cancelRdv:
+        return _systemLine('Rendez-vous annulé');
       case RomanceBeatType.unmatch:
       case RomanceBeatType.choice:
-      case RomanceBeatType.seenNoReply:
-      case RomanceBeatType.cancelRdv:
         return const SizedBox.shrink();
     }
+  }
+
+  /// Ligne système discrète, centrée (« Vu », « Rendez-vous annulé »).
+  Widget _systemLine(String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Center(
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 10.5,
+            fontStyle: FontStyle.italic,
+            color: Colors.grey.shade500,
+            letterSpacing: 0.3,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _bubble({required bool isMe, required Widget child}) {
@@ -705,9 +726,34 @@ class _EndingBanner extends StatelessWidget {
         return 'Il a unmatch sans explication.';
       case 'il_fade_seche':
         return 'Il s\'est éteint après ta sécheresse.';
-      default:
-        return 'Arc terminé.';
+      case 'fade_silencieux':
+        return 'Plus de réponse. La conversation s\'est éteinte d\'elle-même.';
     }
+    // ~125 fins existent : plutôt qu'un libellé générique unique, on
+    // reconnaît les familles par motif (le préfixe elle_/lui_ porte le genre).
+    final s = id ?? '';
+    final elle = s.startsWith('elle_') || s.startsWith('q_');
+    if (s.contains('block_signal')) return 'Signalé. Bloqué. Terminé.';
+    if (s.startsWith('shen_block')) return 'Tu as bloqué.';
+    if (s.startsWith('shen_unmatch')) return 'Tu as unmatch.';
+    if (s.contains('unmatch')) {
+      return elle ? 'Elle a unmatch.' : 'Il a unmatch.';
+    }
+    if (s.contains('fade')) return 'La conversation s\'est éteinte.';
+    if (s.startsWith('shen_decline')) return 'Tu as décliné, proprement.';
+    if (s.startsWith('shen_recule') || s.contains('recule')) {
+      return 'Quelqu\'un a reculé. Peut-être toi.';
+    }
+    if (s.contains('amitie')) return 'Une amitié reste.';
+    if (s.contains('continue') || s.contains('durable') ||
+        s.contains('rdv_planifie')) {
+      return 'Ça continue, doucement.';
+    }
+    if (s.contains('part')) {
+      return elle ? 'Elle est partie.' : 'Il est parti.';
+    }
+    if (s.contains('lache')) return 'Ça a lâché.';
+    return 'Arc terminé.';
   }
 
   @override

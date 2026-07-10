@@ -219,6 +219,7 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
               beatId: pendingBeat,
               lastMessageTime: pendingMsg!.time,
               lastMessageDay: pendingMsg.day,
+              promptText: pendingMsg.text,
             )
           else
             _InputBar(),

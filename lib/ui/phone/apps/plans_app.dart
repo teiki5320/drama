@@ -101,11 +101,15 @@ class _PlansAppState extends ConsumerState<PlansApp> {
                 children: [
                   // Carte
                   Positioned.fill(
-                    child: GestureDetector(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) => GestureDetector(
                       onTapUp: (details) {
+                        // Taille du CANVAS (via LayoutBuilder) — context.size
+                        // renvoyait le Scaffold entier : les pins du bas de
+                        // carte rataient de ~100 px.
                         final pin = _findPinAt(
                           details.localPosition,
-                          context.size ?? Size.zero,
+                          constraints.biggest,
                           filtered,
                           visits,
                         );
@@ -120,6 +124,7 @@ class _PlansAppState extends ConsumerState<PlansApp> {
                         ),
                         size: Size.infinite,
                       ),
+                    ),
                     ),
                   ),
                   // Filtres en bas
@@ -745,7 +750,8 @@ class _ParisMapPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_ParisMapPainter old) =>
-      old.places.length != places.length ||
-      old.visited.length != visited.length;
+      // Comparaison par identité de listes : deux filtres à effectifs
+      // égaux ne repeignaient pas (pins périmés à l'écran).
+      !identical(old.places, places) || !identical(old.visited, visited);
 }
 

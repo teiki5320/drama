@@ -71,6 +71,16 @@ class MessagesArcsNotifier extends StateNotifier<MessagesArcsState> {
     } catch (_) {}
   }
 
+  /// Reset (Réglages > Réinitialiser la partie) : purge l'état ET la clé
+  /// persistée — sinon la nouvelle partie hérite des threads et cooldowns.
+  Future<void> reset() async {
+    state = const MessagesArcsState();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_kPrefsKey);
+    } catch (_) {}
+  }
+
   Future<void> _persist() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(

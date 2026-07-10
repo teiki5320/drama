@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../core/phone_apps.dart';
 import '../data/episodes.dart';
 import '../models/phone_state.dart';
 import '../models/relationship.dart';
@@ -96,7 +97,13 @@ class PersistenceService {
   }
 
   // ─── Mappers ────────────────────────────────────────────────────
+  /// Version du format de save. Incrémenter quand la numérotation des
+  /// beats change : la migration re-dérive alors beatIdx depuis le JOUR
+  /// sauvegardé (stable) au lieu de l'index (fragile).
+  static const int _kSaveVersion = 2;
+
   static Map<String, dynamic> _phoneStateToMap(PhoneState s) => {
+        'saveVersion': _kSaveVersion,
         'currentDay': s.currentDay,
         'hour': s.hour,
         'minute': s.minute,
@@ -162,6 +169,25 @@ class PersistenceService {
     } else if (beatIdx < 0 || beatIdx >= ep.beats.length) {
       beatIdx = 0;
     }
+    // Save d'une version antérieure : la numérotation des beats a pu
+    // changer (insertions). On re-dérive l'index depuis le JOUR sauvegardé :
+    // premier beat de l'épisode dont day >= currentDay sauvé — la
+    // progression ne recule jamais et ne saute pas de choix requis.
+    final savedVersion = j['saveVersion'] as int? ?? 1;
+    if (savedVersion < _kSaveVersion) {
+      final savedDay = j['currentDay'] as int? ?? 1;
+      final epNow = episodeById(epId);
+      if (epNow != null) {
+        var idx = epNow.beats.length - 1;
+        for (var i = 0; i < epNow.beats.length; i++) {
+          if (epNow.beats[i].day >= savedDay) {
+            idx = i;
+            break;
+          }
+        }
+        beatIdx = idx;
+      }
+    }
     return PhoneState(
         currentDay: j['currentDay'] as int? ?? 1,
         hour: j['hour'] as int? ?? 7,
@@ -170,15 +196,27 @@ class PersistenceService {
         signal: SignalType.values[(j['signal'] as int?) ?? 0],
         isLocked: j['isLocked'] as bool? ?? true,
         dndEnabled: j['dndEnabled'] as bool? ?? false,
-        openAppId: j['openAppId'] as String?,
-        badges: (j['badges'] as Map<String, dynamic>? ?? {})
-            .map((k, v) => MapEntry(k, v as int)),
+        // Assainissement : une app retirée du jeu (ex. 'strava') ne doit
+        // pas revenir d'une vieille save et faire crasher le routing.
+        openAppId: (() {
+          final id = j['openAppId'] as String?;
+          if (id == null) return null;
+          return kAllApps.any((a) => a.id == id) ? id : null;
+        })(),
+        badges: Map.fromEntries(
+            (j['badges'] as Map<String, dynamic>? ?? {})
+                .entries
+                .where((e) => kAllApps.any((a) => a.id == e.key))
+                .map((e) => MapEntry(e.key, e.value as int))),
         // Fallback : si la clé manque (ancien save), on retombe sur
         // le set initial défini dans PhoneState() (5 apps de démarrage).
         unlockedApps: () {
           final raw = j['unlockedApps'] as List<dynamic>?;
           if (raw == null) return const PhoneState().unlockedApps;
-          final set = raw.map((e) => e as String).toSet();
+          final set = raw
+              .map((e) => e as String)
+              .where((id) => kAllApps.any((a) => a.id == id))
+              .toSet();
           return set.isEmpty ? const PhoneState().unlockedApps : set;
         }(),
         currentEpisodeId: epId,

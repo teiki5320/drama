@@ -8,8 +8,16 @@ import '../../../data/episodes.dart';
 import '../../../data/epilogues.dart';
 import '../../../models/phone_state.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/call_log_provider.dart';
 import '../../../providers/epilogue_provider.dart';
 import '../../../providers/instagram_state_provider.dart';
+import '../../../providers/romance_threads_provider.dart';
+import '../../../providers/tinder_state_provider.dart';
+import '../../../providers/messages_arcs_provider.dart';
+import '../../../providers/ubereats_stats_provider.dart';
+import '../../../providers/portfolio_provider.dart';
+import '../../../providers/map_visits_provider.dart';
+import '../../../providers/lock_notifications_provider.dart';
 import '../../../providers/relationships_provider.dart';
 import '../../../providers/sent_replies_provider.dart';
 import '../../../providers/app_tutorials_provider.dart';
@@ -225,6 +233,7 @@ class ReglagesApp extends ConsumerWidget {
     for (final m in p.dynamicMovements) {
       if (m.day <= p.currentDay) balance += m.amount;
     }
+    balance += ref.read(portfolioMarketValueProvider).round();
     final replies = ref.read(sentRepliesProvider);
     ref.read(epilogueProvider.notifier).state = resolveEpilogue(
       finalBalance: balance,
@@ -264,6 +273,17 @@ class ReglagesApp extends ConsumerWidget {
               ref.read(relationshipsProvider.notifier).reset();
               ref.read(sentRepliesProvider.notifier).reset();
               await ref.read(instagramStateProvider.notifier).reset();
+              // Notifiers autonomes : sans purge, la nouvelle partie hérite
+              // des matchs Tinder, arcs SMS, stats livreur, bourse et lieux.
+              await ref.read(romanceThreadsProvider.notifier).reset();
+              await ref.read(tinderStateProvider.notifier).reset();
+              await ref.read(callLogProvider.notifier).reset();
+              await ref.read(messagesArcsProvider.notifier).reset();
+              ref.read(uberStatsProvider.notifier).reset();
+              ref.read(portfolioProvider.notifier).reset();
+              ref.read(mapVisitsProvider.notifier).reset();
+              ref.read(lockNotificationsProvider.notifier).clear();
+              ref.read(epilogueProvider.notifier).state = null;
               if (ctx.mounted) Navigator.of(ctx).pop();
             },
             child: const Text(

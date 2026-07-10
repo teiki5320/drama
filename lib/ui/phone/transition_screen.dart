@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,13 +36,28 @@ class _TransitionScreenState extends ConsumerState<TransitionScreen>
   @override
   void initState() {
     super.initState();
+    _start();
+  }
+
+  Timer? _autoClose;
+
+  void _start() {
     HapticFeedback.lightImpact();
-    _fadeCtrl.forward();
+    _fadeCtrl.forward(from: 0);
     Future.delayed(const Duration(milliseconds: 350), () {
-      if (mounted) _typeCtrl.forward();
+      if (mounted) _typeCtrl.forward(from: 0);
     });
     // Auto-close après ~4.5s total (fade-in 700 + lecture 3500 + close 300).
-    Future.delayed(const Duration(milliseconds: 5200), _close);
+    _autoClose?.cancel();
+    _autoClose = Timer(const Duration(milliseconds: 5200), _close);
+  }
+
+  @override
+  void didUpdateWidget(covariant TransitionScreen old) {
+    super.didUpdateWidget(old);
+    // Une nouvelle transition remplace l'ancienne dans le même State :
+    // sans reset, le timer de la 1re écourtait la 2e.
+    if (old.transition != widget.transition) _start();
   }
 
   void _close() async {
@@ -53,6 +70,7 @@ class _TransitionScreenState extends ConsumerState<TransitionScreen>
 
   @override
   void dispose() {
+    _autoClose?.cancel();
     _fadeCtrl.dispose();
     _typeCtrl.dispose();
     super.dispose();

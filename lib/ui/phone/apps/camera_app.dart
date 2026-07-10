@@ -59,7 +59,7 @@ class _CameraAppState extends ConsumerState<CameraApp>
   @override
   Widget build(BuildContext context) {
     final p = ref.watch(phoneStateProvider);
-    final isNight = p.hour >= 20 || p.hour < 6;
+    final isNight = p.hour >= 22 || p.hour < 6;
     final viewfinderGradient = isNight
         ? const [Color(0xFF0A0E1F), Color(0xFF1A1E33)]
         : const [Color(0xFF3A4555), Color(0xFF6B7385)];

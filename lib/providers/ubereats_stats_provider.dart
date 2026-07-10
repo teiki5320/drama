@@ -24,6 +24,9 @@ class UberStatsState {
   final Map<String, int> ratings;
   /// Notes textuelles laissées par clients (id course → texte).
   final Map<String, String> customerNotes;
+  /// Jour gameworld où chaque course a été livrée (id → J). Sert aux
+  /// « gains du jour » — l'ancien parsing d'ID comptait les loops chaque jour.
+  final Map<String, int> completedDays;
   /// Acceptance rate calculé.
   double get acceptanceRate {
     final total = completedCourseIds.length + refusedCourseIds.length;
@@ -44,6 +47,7 @@ class UberStatsState {
     this.totalTips = 0.0,
     this.ratings = const {},
     this.customerNotes = const {},
+    this.completedDays = const {},
   });
 
   UberStatsState copyWith({
@@ -53,6 +57,7 @@ class UberStatsState {
     double? totalTips,
     Map<String, int>? ratings,
     Map<String, String>? customerNotes,
+    Map<String, int>? completedDays,
   }) =>
       UberStatsState(
         completedCourseIds: completedCourseIds ?? this.completedCourseIds,
@@ -61,6 +66,7 @@ class UberStatsState {
         totalTips: totalTips ?? this.totalTips,
         ratings: ratings ?? this.ratings,
         customerNotes: customerNotes ?? this.customerNotes,
+        completedDays: completedDays ?? this.completedDays,
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,6 +76,7 @@ class UberStatsState {
         'tips': totalTips,
         'ratings': ratings,
         'notes': customerNotes,
+        'completedDays': completedDays,
       };
 
   static UberStatsState fromJson(Map<String, dynamic> j) => UberStatsState(
@@ -83,7 +90,20 @@ class UberStatsState {
             .map((k, v) => MapEntry(k as String, v as int)),
         customerNotes: ((j['notes'] as Map?) ?? {})
             .map((k, v) => MapEntry(k as String, v as String)),
+        completedDays: ((j['completedDays'] as Map?) ?? {})
+            .map((k, v) => MapEntry(k as String, v as int)),
       );
+}
+
+/// Tip déterministe d'une course : ±30 % autour du tip moyen du client,
+/// seedé sur l'id (même course => même tip, partout).
+double tipFor(UberCourse course) {
+  final customer = kCustomers.firstWhere(
+    (c) => c.id == course.customerId,
+    orElse: () => kCustomers.first,
+  );
+  final tipJitter = (course.id.hashCode % 60 - 30) / 100.0;
+  return (customer.avgTip * (1.0 + tipJitter)).clamp(0.0, 30.0);
 }
 
 const _kPrefsKey = 'ubereats_stats_v1';
@@ -107,16 +127,15 @@ class UberStatsNotifier extends StateNotifier<UberStatsState> {
     await prefs.setString(_kPrefsKey, jsonEncode(state.toJson()));
   }
 
-  /// Accepter une course → calculer earnings + tip + rating.
-  void acceptCourse(UberCourse course) {
+  /// Accepter une course → calcule earnings + tip + rating, mémorise le
+  /// jour de livraison, et RETOURNE le gain total (course + tip) pour que
+  /// l'appelant crédite la Banque du montant exact.
+  double acceptCourse(UberCourse course, {int day = 0}) {
     final customer = kCustomers.firstWhere(
       (c) => c.id == course.customerId,
       orElse: () => kCustomers.first,
     );
-    // Tip aléatoire autour de avgTip (±30 %)
-    final tipBase = customer.avgTip;
-    final tipJitter = (course.id.hashCode % 60 - 30) / 100.0; // ±30 %
-    final tip = (tipBase * (1.0 + tipJitter)).clamp(0.0, 30.0);
+    final tip = tipFor(course);
     final earnings = course.totalPayout + tip;
     // Rating aléatoire 4-5 (3-5 pour picky, 2-4 pour gymGirl no-tip)
     var rating = 5;
@@ -144,8 +163,10 @@ class UberStatsNotifier extends StateNotifier<UberStatsState> {
       ratings: {...state.ratings, course.id: rating},
       customerNotes:
           note.isNotEmpty ? {...state.customerNotes, course.id: note} : state.customerNotes,
+      completedDays: {...state.completedDays, course.id: day},
     );
     _persist();
+    return earnings;
   }
 
   /// Refuser une course.
@@ -193,13 +214,11 @@ class DailyStats {
 
 final dailyStatsProvider = Provider.family<DailyStats, int>((ref, day) {
   final stats = ref.watch(uberStatsProvider);
-  // On compte les courses livrées dont l'ID commence par "c_jX_" pour ce jour.
-  final completed = stats.completedCourseIds.where((id) {
-    final m = RegExp(r'^c_j(\d+)_').firstMatch(id);
-    if (m == null) return true; // loops sans préfixe jour, ignore
-    final cd = int.tryParse(m.group(1)!) ?? 0;
-    return cd == day;
-  }).toList();
+  // Le jour RÉEL de livraison est mémorisé à l'acceptation ; les tips sont
+  // recalculés avec la même formule déterministe que le crédit Banque.
+  final completed = stats.completedCourseIds
+      .where((id) => (stats.completedDays[id] ?? -1) == day)
+      .toList();
   var earnings = 0.0;
   var tips = 0.0;
   for (final cid in completed) {
@@ -207,12 +226,9 @@ final dailyStatsProvider = Provider.family<DailyStats, int>((ref, day) {
       (cc) => cc.id == cid,
       orElse: () => kCourses.first,
     );
-    final customer = kCustomers.firstWhere(
-      (cc) => cc.id == c.customerId,
-      orElse: () => kCustomers.first,
-    );
-    earnings += c.totalPayout;
-    tips += customer.avgTip;
+    final tip = tipFor(c);
+    earnings += c.totalPayout + tip;
+    tips += tip;
   }
   return DailyStats(
     livraisons: completed.length,

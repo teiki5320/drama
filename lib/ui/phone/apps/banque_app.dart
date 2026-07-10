@@ -173,24 +173,34 @@ class _CompteView extends StatelessWidget {
     final lowBalance = balance < 100;
 
     // Combine mouvements canoniques + dynamiques pour l'affichage.
-    final allMvts = <_DisplayMvt>[
-      ...kMovements
-          .where((m) => m.day <= state.currentDay)
-          .map((m) => _DisplayMvt(
-                emoji: m.emoji,
-                label: m.label,
-                amount: m.amount,
-                dateLabel: m.day == 0
-                    ? 'La semaine dernière'
-                    : 'J${m.day} · ${m.time}',
-              )),
-      ...state.dynamicMovements.map((m) => _DisplayMvt(
-            emoji: m.emoji,
-            label: m.label,
-            amount: m.amount,
-            dateLabel: 'J${m.day} · ${m.time}',
+    // Fusion canoniques + dynamiques, TRIÉE par (jour, heure) — les
+    // mouvements canoniques ne sont pas déclarés en ordre chronologique.
+    final entries = <({int day, String time, _DisplayMvt m})>[
+      ...kMovements.where((m) => m.day <= state.currentDay).map((m) => (
+            day: m.day,
+            time: m.time,
+            m: _DisplayMvt(
+              emoji: m.emoji,
+              label: m.label,
+              amount: m.amount,
+              dateLabel: m.day == 0
+                  ? 'La semaine dernière'
+                  : 'J${m.day} · ${m.time}',
+            ),
           )),
-    ].reversed.toList();
+      ...state.dynamicMovements.map((m) => (
+            day: m.day,
+            time: m.time,
+            m: _DisplayMvt(
+              emoji: m.emoji,
+              label: m.label,
+              amount: m.amount,
+              dateLabel: 'J${m.day} · ${m.time}',
+            ),
+          )),
+    ]..sort((a, b) =>
+        a.day != b.day ? a.day.compareTo(b.day) : a.time.compareTo(b.time));
+    final allMvts = entries.map((e) => e.m).toList().reversed.toList();
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -422,7 +432,7 @@ class _InvestissementView extends ConsumerWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                hasPositions ? '${mv.toStringAsFixed(2)} €' : '0,00 €',
+                hasPositions ? _formatMoneyCents(mv) : '0,00 €',
                 style: GoogleFonts.inter(
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
@@ -440,7 +450,7 @@ class _InvestissementView extends ConsumerWidget {
                       size: 18,
                     ),
                     Text(
-                      'Plus-value latente : ${pl.toStringAsFixed(2)} €',
+                      'Plus-value latente : ${_formatMoneyCents(pl)}',
                       style: GoogleFonts.inter(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -732,7 +742,7 @@ class _StockRow extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  price.toStringAsFixed(2),
+                  price.toStringAsFixed(2).replaceAll('.', ','),
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -824,7 +834,7 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
                       style: GoogleFonts.inter(
                           fontSize: 14, color: Colors.grey.shade600)),
                   const Spacer(),
-                  Text('${price.toStringAsFixed(2)} €',
+                  Text(_formatMoneyCents(price),
                       style: GoogleFonts.inter(
                           fontSize: 18, fontWeight: FontWeight.w700)),
                 ],
@@ -850,7 +860,7 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
                           style: GoogleFonts.inter(fontSize: 12)),
                       const Spacer(),
                       Text(
-                          'PRU ${position.pru.toStringAsFixed(2)} €',
+                          'PRU ${_formatMoneyCents(position.pru)}',
                           style: GoogleFonts.inter(
                               fontSize: 12, color: Colors.grey.shade700)),
                     ],
@@ -931,7 +941,7 @@ class _TradeSheetState extends ConsumerState<_TradeSheet> {
                           fontSize: 13, color: Colors.grey.shade700)),
                   const Spacer(),
                   Text(
-                      '${total.toStringAsFixed(2)} €',
+                      _formatMoneyCents(total),
                       style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
@@ -1267,6 +1277,8 @@ class _ShopCard extends ConsumerWidget {
                           ? item.instaPostCaption
                           : null,
                       instaEmoji: item.instaPostEmoji,
+                      requiredMood: item.requiredMood,
+                      requiredReputation: item.requiredReputation,
                     );
               } else {
                 HapticFeedback.heavyImpact();
@@ -1318,11 +1330,23 @@ String _formatMoney(int v) {
   final s = v.abs().toString();
   final buf = StringBuffer();
   for (var i = 0; i < s.length; i++) {
-    if (i > 0 && (s.length - i) % 3 == 0) buf.write(' ');
+    // Séparateur de milliers ET espace avant € : insécables (convention
+    // typographique du projet — « 2 384 € », jamais « 2 384€ »).
+    if (i > 0 && (s.length - i) % 3 == 0) buf.write('\u00A0');
     buf.write(s[i]);
   }
-  final prefix = v < 0 ? '- ' : '';
-  return '$prefix$buf €';
+  final prefix = v < 0 ? '-\u00A0' : '';
+  return '$prefix$buf\u00A0€';
+}
+
+/// Montants à centimes (bourse) : virgule française + insécables.
+String _formatMoneyCents(double v) {
+  final euros = v.truncate();
+  final cents = ((v - euros).abs() * 100).round().toString().padLeft(2, '0');
+  final base = _formatMoney(euros.abs());
+  final noEuro = base.substring(0, base.length - 2); // retire « € »
+  final prefix = v < 0 ? '-\u00A0' : '';
+  return '$prefix$noEuro,$cents\u00A0€';
 }
 
 /// Sparkline minimaliste pour l'historique de prix d'une action.

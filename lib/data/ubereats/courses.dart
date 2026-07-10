@@ -712,5 +712,13 @@ UberCourse courseById(String id) =>
     kCourses.firstWhere((c) => c.id == id);
 
 /// Helper : filtre les courses spawnables pour un jour donné.
-List<UberCourse> coursesForDay(int day) =>
-    kCourses.where((c) => c.minDay <= day).toList();
+List<UberCourse> coursesForDay(int day) => kCourses.where((c) {
+      // La collision J1 est un accident narratif, pas une course payante.
+      if (c.id == 'c_j1_07h52_collision') return false;
+      // Les courses « loop » (fond de catalogue) restent disponibles ;
+      // les courses datées expirent après 48 h (jour J et J+1) — fini le
+      // farm de toutes les courses passées en une session.
+      final isLoop = c.id.startsWith('c_loop');
+      if (isLoop) return c.minDay <= day;
+      return c.minDay <= day && day <= c.minDay + 1;
+    }).toList();

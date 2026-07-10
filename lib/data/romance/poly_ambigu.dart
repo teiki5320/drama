@@ -2,7 +2,7 @@ import '../../models/romance.dart';
 
 /// POLY NON-DIT AMBIGU
 /// 24-30 ans, charmant, drôle. Cache pendant 3-4 jours qu'il est en
-/// couple ouverte. Reveal J+5 → Shen bloque ou pas. Arc 5-8 jours.
+/// couple ouvert. Reveal J+5 → Shen bloque ou pas. Arc 5-8 jours.
 
 const polyProfiles = <RomanceProfile>[
   RomanceProfile(
@@ -143,7 +143,7 @@ const polyBeats = <RomanceBeat>[
     type: RomanceBeatType.text,
     requireBranch: 'rdv_po',
     textVariants: [
-      'Petit truc à préciser avant ce soir. Je suis en couple ouverte avec '
+      'Petit truc à préciser avant ce soir. Je suis en couple ouvert avec '
           'Léa depuis 4 ans. C\'est cool ?',
       'Avant qu\'on se voie : ma copine et moi on est ouverts. Tu savais '
           'pas, je le dis maintenant.',
@@ -214,6 +214,6 @@ const polyTemplate = RomanceTemplate(
   minStartDay: 1,
   spawnWeight: 0.7,
   cooldownDays: 30,
-  description: 'Cache la couple ouverte 4 j, reveal J+5 avant RDV. '
+  description: 'Cache la couple ouvert 4 j, reveal J+5 avant RDV. '
       'Block, confronter ou tenter.',
 );

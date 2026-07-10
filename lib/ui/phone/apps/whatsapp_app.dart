@@ -9,6 +9,10 @@ import '../status_bar.dart';
 /// WhatsApp — refuge familial. Tante Mei en mandarin (voix lettrée),
 /// Camille en groupe privé avec Shen (off-record). L'app où la famille
 /// distante et l'amie proche se croisent.
+/// Groupes ouverts ce jour (clé `groupId@jour`) — le compteur non-lu
+/// s'éteint après lecture, au lieu de rester allumé en permanence.
+final _waOpenedProvider = StateProvider<Set<String>>((ref) => <String>{});
+
 class WhatsAppApp extends ConsumerWidget {
   const WhatsAppApp({super.key});
 
@@ -319,18 +323,21 @@ const _allGroups = <_WAGroup>[
   ),
 ];
 
-class _GroupTile extends StatelessWidget {
+class _GroupTile extends ConsumerWidget {
   const _GroupTile({required this.group, required this.day});
   final _WAGroup group;
   final int day;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final visible =
         group.messages.where((m) => m.day <= day).toList();
     final last = visible.isNotEmpty ? visible.last : null;
-    final unread = visible.where((m) => m.sender != 'moi').length > 0 &&
-        last?.sender != 'moi'
+    final opened =
+        ref.watch(_waOpenedProvider).contains('${group.id}@$day');
+    final unread = !opened &&
+            visible.where((m) => m.sender != 'moi').isNotEmpty &&
+            last?.sender != 'moi'
         ? visible
             .where((m) => m.sender != 'moi' && m.day == day)
             .length
@@ -338,6 +345,10 @@ class _GroupTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         HapticFeedback.selectionClick();
+        ref.read(_waOpenedProvider.notifier).state = {
+          ...ref.read(_waOpenedProvider),
+          '${group.id}@$day',
+        };
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) =>

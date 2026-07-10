@@ -130,3 +130,12 @@ const List<AppMeta> kAllApps = [
 ];
 
 AppMeta appById(String id) => kAllApps.firstWhere((a) => a.id == id);
+
+/// Variante défensive : null si l'app n'existe plus (ex. id 'strava' dans
+/// une vieille save) au lieu d'un StateError qui ferait crasher le boot.
+AppMeta? appByIdOrNull(String id) {
+  for (final a in kAllApps) {
+    if (a.id == id) return a;
+  }
+  return null;
+}

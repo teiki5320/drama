@@ -53,7 +53,13 @@ class _NotificationBannerState extends State<NotificationBanner>
 
   @override
   Widget build(BuildContext context) {
-    final meta = appById(widget.appId);
+    final meta = appByIdOrNull(widget.appId) ??
+        const AppMeta(
+          id: '_inconnu',
+          label: 'Notification',
+          icon: Icons.notifications,
+          color: Color(0xFF8E8E93),
+        );
     return AnimatedBuilder(
       animation: _ctrl,
       builder: (context, _) {

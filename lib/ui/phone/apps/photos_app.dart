@@ -260,13 +260,17 @@ class _PhotosAppState extends ConsumerState<PhotosApp> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
+              onPressed: () {
+                controller.dispose();
+                Navigator.of(ctx).pop();
+              },
               child: Text('Annuler',
                   style: GoogleFonts.inter(color: Colors.white70)),
             ),
             TextButton(
               onPressed: () {
                 if (controller.text == '1402') {
+                  controller.dispose();
                   Navigator.of(ctx).pop();
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => _AlbumDetailScreen(album: al),

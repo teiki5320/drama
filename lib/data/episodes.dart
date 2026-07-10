@@ -32,7 +32,7 @@ const kEpisodes = <Episode>[
         label: 'Avenue Montaigne, collision',
         // Le choc révèle le carnet (notes) et la réalité financière
         // (banque). Les deux apps apparaissent sur le home après ce beat.
-        unlocksApps: ['notes', 'banque'],
+        unlocksApps: ['notes', 'banque', 'photos'],
         transition: BeatTransition(
           timestamp: '08:17',
           body:

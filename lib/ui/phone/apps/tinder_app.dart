@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/romance_templates.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/tinder_state_provider.dart';
 import '../../../providers/romance_threads_provider.dart';
 import '../status_bar.dart';
 import 'tinder/romance_threads_list.dart';
@@ -31,7 +32,6 @@ class _TinderAppState extends ConsumerState<TinderApp>
   int _likes = 0;
   int _nopes = 0;
   int _superLikes = 0;
-  int _swipesRestants = 50;
   int _currentPhotoIdx = 0; // photo affichée sur la carte du haut
   int _tabIdx = 0; // 0=feed, 1=likes reçus, 2=messages, 3=profil
   bool _platinumPopupShown = false;
@@ -42,10 +42,14 @@ class _TinderAppState extends ConsumerState<TinderApp>
   void initState() {
     super.initState();
     _deck = List.from(_kInitialDeck);
-    // Injecter profils contextuels selon le jour gameworld.
+    // Injecter profils contextuels selon le jour gameworld, puis retirer
+    // les cartes déjà swipées (persisté — le deck ne se rejoue plus à
+    // chaque ouverture, gags compris).
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final day = ref.read(phoneStateProvider).currentDay;
       _injectContextualProfiles(day);
+      final consumed = ref.read(tinderStateProvider).consumedCardIds;
+      _deck.removeWhere((m) => consumed.contains(m.id));
       setState(() {});
     });
   }
@@ -98,6 +102,8 @@ class _TinderAppState extends ConsumerState<TinderApp>
           hour: p.hour,
           minute: p.minute,
           mood: p.mood,
+          // La conversation portera le nom de la carte swipée.
+          matchName: m.name,
         );
     if (inst != null) {
       // Tick immédiat pour faire apparaître les premiers messages.
@@ -120,16 +126,15 @@ class _TinderAppState extends ConsumerState<TinderApp>
         ),
       );
     }
-    // Sinon : silencieux (cooldown ou max parallèle atteint)
-    // ignore: avoid_print
-    assert(kRomanceTemplates.isNotEmpty);
+    // Sinon : silencieux (cooldown ou max parallèle atteint).
   }
 
   void _resolve(bool liked, {bool superLike = false}) {
     if (_deck.isEmpty) return;
     final m = _deck.first;
-    // Compteur de swipes — 50 par jour
-    if (_swipesRestants <= 0) {
+    final day = ref.read(phoneStateProvider).currentDay;
+    // Limite réelle : kSwipesParJour par jour gameworld, persistée.
+    if (ref.read(tinderStateProvider).remaining(day) <= 0) {
       HapticFeedback.heavyImpact();
       _showSwipesExhausted();
       return;
@@ -149,7 +154,7 @@ class _TinderAppState extends ConsumerState<TinderApp>
     } else {
       _nopes++;
     }
-    _swipesRestants--;
+    ref.read(tinderStateProvider.notifier).recordSwipe(day, m.id);
     // Match impossible : 80 % des right-swipes sur profils non autoMatch
     // se ferment silencieusement (« vous n'êtes pas premium »).
     final triggerMatch = liked && m.autoMatch;
@@ -186,7 +191,7 @@ class _TinderAppState extends ConsumerState<TinderApp>
       context: context,
       builder: (ctx) => _SimpleDialog(
         title: 'Plus de swipes',
-        body: 'Tu en as eu 50 aujourd\'hui. Reviens demain.\n\n'
+        body: 'Tu en as eu $kSwipesParJour aujourd\'hui. Reviens demain.\n\n'
             'Ou achète un pack de 5 pour 0,99 €.',
         primaryLabel: 'Demain',
         secondaryLabel: 'Acheter 5 swipes',
@@ -298,6 +303,7 @@ class _TinderAppState extends ConsumerState<TinderApp>
   void _showCamilleGag() {
     showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => Center(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 28),
@@ -412,7 +418,9 @@ class _TinderAppState extends ConsumerState<TinderApp>
           const PhoneStatusBar(foreground: Color(0xFF1A1A1A)),
           // Header avec retour + flamme + GOLD
           _TinderHeader(
-            swipesRestants: _swipesRestants,
+            swipesRestants: ref
+                .watch(tinderStateProvider)
+                .remaining(ref.watch(phoneStateProvider).currentDay),
             onPlatinum: _showPlatinumPopup,
             onClose: () {
               HapticFeedback.selectionClick();
@@ -471,7 +479,12 @@ class _TinderAppState extends ConsumerState<TinderApp>
                                 _showProfileDetail(_deck.first),
                             onTapUp: (d) {
                               // Tap zone gauche/droite pour changer de photo
-                              final w = MediaQuery.of(context).size.width;
+                              // — largeur de la CARTE (localPosition est
+                              // local), pas de l'écran.
+                              final box = context.findRenderObject();
+                              final w = box is RenderBox
+                                  ? box.size.width
+                                  : MediaQuery.of(context).size.width;
                               final dx = d.localPosition.dx;
                               final m = _deck.first;
                               if (m.photos.length <= 1) return;
@@ -566,7 +579,9 @@ class _TinderAppState extends ConsumerState<TinderApp>
               const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           child: Text(
             'Tap gauche/droite : photo suivante. Appui long : profil.\n'
-            'Swipe haut : ⭐. ${_swipesRestants}/50 swipes aujourd\'hui.',
+            'Swipe haut : ⭐. '
+            '${ref.watch(tinderStateProvider).remaining(ref.watch(phoneStateProvider).currentDay)}'
+            '/$kSwipesParJour swipes aujourd\'hui.',
             textAlign: TextAlign.center,
             style: GoogleFonts.crimsonPro(
               fontSize: 11,
@@ -929,7 +944,7 @@ class _MyProfileView extends StatelessWidget {
 
   static String _shenBio(int mood) {
     if (mood <= 2) {
-      return '_Bio vide._';
+      return 'Bio vide.';
     }
     if (mood <= 4) {
       return 'Livreuse à vélo. Carnet vert. Maman malade.\n'
