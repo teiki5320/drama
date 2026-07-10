@@ -540,6 +540,34 @@ const Map<String, List<Msg>> kThreads = {
       beatId: 'maman_long_jing_j23',
     ),
 
+    // ── J24 — après la visite : « le visage d'une fille amoureuse » ──
+    Msg(
+      sender: 'maman',
+      text:
+          'C\'était bien de t\'avoir ce soir. Tu as laissé ton écharpe, '
+          'je te la garde.',
+      time: '20:58',
+      day: 24,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Tu avais le visage d\'une fille amoureuse qui ne veut pas '
+          'l\'être.',
+      time: '21:06',
+      day: 24,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Je n\'ai pas dit que tu l\'étais. J\'ai dit que tu ne veux '
+          'pas l\'être. Dis-moi si je me trompe.',
+      time: '21:12',
+      day: 24,
+      status: MsgStatus.delivered,
+      beatId: 'maman_devine_j24',
+    ),
+
     // ── J39 — l'appel de 4h du matin (Tante Mei a parlé) ──
     Msg(
       sender: 'maman',
@@ -609,6 +637,58 @@ const Map<String, List<Msg>> kThreads = {
       day: 42,
       status: MsgStatus.delivered,
       beatId: 'maman_confrontation_j42',
+    ),
+
+    // ── J69 — Hélène lit la lettre de Wenbo ──
+    Msg(
+      sender: 'maman',
+      text: 'J\'ai fini de lire. Trois fois.',
+      time: '20:40',
+      day: 69,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Je l\'ai attendu jusqu\'en 2010. Après j\'ai arrêté de '
+          'compter.',
+      time: '20:48',
+      day: 69,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Il ne m\'a pas oubliée une seule semaine, ma fille. Personne '
+          'ne pourra m\'enlever d\'avoir été aimée comme ça.',
+      time: '20:54',
+      day: 69,
+    ),
+    Msg(
+      sender: 'maman',
+      text:
+          'Viens dimanche. On la lira à voix haute, une fois, ensemble. '
+          'Tu veux bien ?',
+      time: '21:00',
+      day: 69,
+      status: MsgStatus.delivered,
+      beatId: 'maman_lettre_j69',
+    ),
+
+    // ── J102 — le brasero de la cour, la 312e lettre ──
+    Msg(
+      sender: 'maman',
+      text:
+          'Je t\'ai vue au brasero ce soir. La fumée montait droit. '
+          'Tante Mei dit que c\'est bon signe.',
+      time: '20:52',
+      day: 102,
+    ),
+    Msg(
+      sender: 'maman',
+      text: 'Tu lui as dit quoi, dans cette dernière lettre ?',
+      time: '21:00',
+      day: 102,
+      status: MsgStatus.delivered,
+      beatId: 'maman_312e_j102',
     ),
   ],
   'camille': [
@@ -957,6 +1037,62 @@ const Map<String, List<Msg>> kThreads = {
       beatId: 'camille_distance_j26',
     ),
 
+    // ── J29 — le passeport introuvable, départ jeudi ──
+    Msg(
+      sender: 'camille',
+      text:
+          'Alors comme ça mademoiselle part à Hong Kong. En business. '
+          'Avec un homme. Que sa mère adore.',
+      time: '10:22',
+      day: 29,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Question logistique de ta directrice de cabinet : t\'as un '
+          'passeport VALIDE au moins ?',
+      time: '10:30',
+      day: 29,
+      status: MsgStatus.delivered,
+      beatId: 'camille_passeport_j29',
+    ),
+
+    // ── J38 — la robe bleu nuit (essayage à HK) ──
+    Msg(
+      sender: 'camille',
+      text: 'C\'est ce soir l\'essayage de la robe du gala non ?',
+      time: '18:54',
+      day: 38,
+    ),
+    Msg(
+      sender: 'camille',
+      text: 'Photo. MAINTENANT. C\'est non négociable.',
+      time: '19:00',
+      day: 38,
+      status: MsgStatus.delivered,
+      beatId: 'camille_robe_j38',
+    ),
+
+    // ── J53 — le dossier de Shanghai (SMS de la secrétaire transféré) ──
+    Msg(
+      sender: 'camille',
+      text:
+          'Attends. La secrétaire de Tristan t\'a envoyé ÇA par erreur ? '
+          '« Le dossier de Shanghai est arrivé au bureau de M. Heng. »',
+      time: '09:32',
+      day: 53,
+    ),
+    Msg(
+      sender: 'camille',
+      text:
+          'Shen. C\'est le dossier avec le nom de ta mère dedans. '
+          'Tu fais quoi ?',
+      time: '09:40',
+      day: 53,
+      status: MsgStatus.delivered,
+      beatId: 'camille_dossier_j53',
+    ),
+
     // ── J112 — le choix final : bus, avion, ou ni l'un ni l'autre ──
     Msg(
       sender: 'camille',
@@ -1297,6 +1433,32 @@ const Map<String, List<Msg>> kThreads = {
       day: 38,
     ),
     // ── J40 — Retour
+    // ── J39 — le poison au bar de l'hôtel ──
+    Msg(
+      sender: 'vincent_heng',
+      text:
+          'Dure journée on dirait. Un verre en bas ? Cinq minutes. '
+          'J\'ai une information qui te concerne.',
+      time: '21:12',
+      day: 39,
+    ),
+    Msg(
+      sender: 'vincent_heng',
+      text:
+          'Bon, je te le dis ici alors. Mon frère a eu trois fiancées '
+          'contractuelles avant toi. Tu es la quatrième.',
+      time: '21:34',
+      day: 39,
+    ),
+    Msg(
+      sender: 'vincent_heng',
+      text: 'Je dis ça, je dis rien. Deal with it comme tu veux.',
+      time: '21:40',
+      day: 39,
+      status: MsgStatus.delivered,
+      beatId: 'vincent_quatrieme_j39',
+    ),
+
     Msg(
       sender: 'vincent_heng',
       text: 'Vol retour aujourd\'hui je crois. Vous vous parlez peu, Tristan et toi ?',
@@ -1488,6 +1650,47 @@ const Map<String, List<Msg>> kThreads = {
       time: '08:19',
       day: 15,
     ),
+
+    // ── J19 — après le déjeuner « juste nous deux » ──
+    Msg(
+      sender: 'madame_heng',
+      text:
+          'Merci pour ce déjeuner. Vous mangez comme quelqu\'un qui a '
+          'connu la faim. Ce n\'est pas un reproche.',
+      time: '20:48',
+      day: 19,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text:
+          'Mon neveu m\'a dit que vous lisiez Marguerite Duras. '
+          'L\'Amant, ou Hiroshima ?',
+      time: '21:04',
+      day: 19,
+      status: MsgStatus.delivered,
+      beatId: 'heng_duras_j19',
+    ),
+
+    // ── J46 — après la phrase du couloir ──
+    Msg(
+      sender: 'madame_heng',
+      text:
+          'Ce que j\'ai dit dans le couloir n\'était pas une menace. '
+          'C\'était une reconnaissance.',
+      time: '17:22',
+      day: 46,
+    ),
+    Msg(
+      sender: 'madame_heng',
+      text:
+          '« Tu as les yeux de ta mère, mais tu as la bouche de '
+          'quelqu\'un d\'autre. Quelqu\'un que j\'ai connu. » '
+          'Vous pouvez me poser une question. Une seule.',
+      time: '17:30',
+      day: 46,
+      status: MsgStatus.delivered,
+      beatId: 'heng_phrase_j46',
+    ),
   ],
   'banque': [
     Msg(
@@ -1607,6 +1810,26 @@ const Map<String, List<Msg>> kThreads = {
       day: 78,
       status: MsgStatus.delivered,
       beatId: 'mei_invitation_j78',
+    ),
+
+    // ── J91 — la lettre de 2017, dans la boîte en fer ──
+    Msg(
+      sender: 'tante_mei',
+      text:
+          'La lettre est dans la boîte en fer, sous l\'autel. '
+          'Il l\'a écrite en 2017, un an avant le chantier.',
+      time: '20:22',
+      day: 91,
+    ),
+    Msg(
+      sender: 'tante_mei',
+      text:
+          '« À ma fille que je n\'ai pas connue. » Elle t\'attend '
+          'depuis neuf ans. Tu veux la lire seule, ou avec ta mère ?',
+      time: '20:30',
+      day: 91,
+      status: MsgStatus.delivered,
+      beatId: 'mei_lettre_j91',
     ),
   ],
 };

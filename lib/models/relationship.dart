@@ -96,4 +96,10 @@ const Map<String, Relationship> kInitialRelationships = {
   // confiance part basse, la loyauté familiale existe déjà en creux.
   'tante_mei': Relationship(
       trust: 30, attraction: 0, dependency: 5, suspicion: 20, loyalty: 55),
+  // Madame Heng : l'estime se gagne réplique par réplique ; elle voit tout.
+  'madame_heng': Relationship(
+      trust: 25, attraction: 0, dependency: 0, suspicion: 45, loyalty: 20),
+  // Vincent : charmant, utile, dangereux — la méfiance est le point de départ.
+  'vincent_heng': Relationship(
+      trust: 15, attraction: 5, dependency: 0, suspicion: 55, loyalty: 5),
 };

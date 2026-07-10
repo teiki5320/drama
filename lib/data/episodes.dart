@@ -253,6 +253,13 @@ const kEpisodes = <Episode>[
       ),
       Beat(
         idx: 2,
+        day: 17,
+        hour: 12,
+        minute: 40,
+        label: 'Livraisons sous la pluie — trois jours par semaine, mes règles',
+      ),
+      Beat(
+        idx: 3,
         day: 18,
         hour: 21,
         minute: 14,
@@ -266,7 +273,15 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 3,
+        idx: 4,
+        day: 19,
+        hour: 21,
+        minute: 4,
+        label: 'Madame Heng écrit après le déjeuner « juste nous deux »',
+        requiresChoice: 'heng_duras_j19',
+      ),
+      Beat(
+        idx: 5,
         day: 20,
         hour: 20,
         minute: 0,
@@ -280,7 +295,14 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 4,
+        idx: 6,
+        day: 21,
+        hour: 19,
+        minute: 45,
+        label: 'Cinéma avec Camille — deux heures sans mentir',
+      ),
+      Beat(
+        idx: 7,
         day: 22,
         hour: 10,
         minute: 0,
@@ -295,7 +317,7 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 5,
+        idx: 8,
         day: 23,
         hour: 19,
         minute: 32,
@@ -303,14 +325,37 @@ const kEpisodes = <Episode>[
         requiresChoice: 'maman_long_jing_j23',
       ),
       Beat(
-        idx: 6,
+        idx: 9,
+        day: 24,
+        hour: 21,
+        minute: 12,
+        label: 'Belleville — « le visage d\'une fille amoureuse »',
+        requiresChoice: 'maman_devine_j24',
+      ),
+      Beat(
+        idx: 10,
         day: 25,
         hour: 9,
         minute: 30,
         label: 'Dialyse Maman — Dr Aubin attire Shen à part',
       ),
       Beat(
-        idx: 7,
+        idx: 11,
+        day: 25,
+        hour: 23,
+        minute: 5,
+        label: 'Long Jing silencieux — quelque chose se règle',
+        transition: BeatTransition(
+          timestamp: '23:05',
+          body:
+              'Il sort de son bureau vers 23h.\n'
+              '— Vous voulez du thé ?\n'
+              'On boit en silence. Personne ne parle du mot d\'avant-hier.',
+          coda: '(Affective. Il avait dit affective.)',
+        ),
+      ),
+      Beat(
+        idx: 12,
         day: 26,
         hour: 22,
         minute: 14,
@@ -318,7 +363,22 @@ const kEpisodes = <Episode>[
         requiresChoice: 'camille_distance_j26',
       ),
       Beat(
-        idx: 8,
+        idx: 13,
+        day: 27,
+        hour: 18,
+        minute: 20,
+        label: 'Le genou — Tristan sort le kit de premiers secours',
+        transition: BeatTransition(
+          timestamp: '18:20',
+          body:
+              'Il s\'agenouille avec un kit de premiers secours impeccable.\n'
+              'Il nettoie. Il colle un pansement. Ses mains ne tremblent pas.\n'
+              'Tout dure quatre minutes.',
+          coda: '(Je ne respire pas pendant les quatre minutes.)',
+        ),
+      ),
+      Beat(
+        idx: 14,
         day: 28,
         hour: 15,
         minute: 0,
@@ -332,7 +392,15 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 9,
+        idx: 15,
+        day: 29,
+        hour: 10,
+        minute: 30,
+        label: 'Le passeport — la boîte à chaussures',
+        requiresChoice: 'camille_passeport_j29',
+      ),
+      Beat(
+        idx: 16,
         day: 30,
         hour: 19,
         minute: 30,
@@ -393,6 +461,21 @@ const kEpisodes = <Episode>[
       ),
       Beat(
         idx: 3,
+        day: 34,
+        hour: 10,
+        minute: 0,
+        label: 'Mong Kok seule — « la bouche du Fujian »',
+        transition: BeatTransition(
+          timestamp: '10:00',
+          body:
+              'Le marché. L\'humidité, le jasmin, la friture, l\'encens.\n'
+              'Le vendeur d\'éventails me parle en cantonais, je réponds en mandarin.\n'
+              '— Le visage de la France et la bouche du Fujian.',
+          coda: '(Madame Heng a dit la même chose.)',
+        ),
+      ),
+      Beat(
+        idx: 4,
         day: 35,
         hour: 11,
         minute: 0,
@@ -402,14 +485,21 @@ const kEpisodes = <Episode>[
         unlocksApps: ['whatsapp'],
       ),
       Beat(
-        idx: 4,
+        idx: 5,
         day: 36,
         hour: 10,
         minute: 0,
         label: '3e acompte Heng — 10 000 €',
       ),
       Beat(
-        idx: 5,
+        idx: 6,
+        day: 36,
+        hour: 23,
+        minute: 0,
+        label: 'Balcon sur la baie — deux verres d\'eau',
+      ),
+      Beat(
+        idx: 7,
         day: 37,
         hour: 21,
         minute: 14,
@@ -424,14 +514,22 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 6,
+        idx: 8,
+        day: 38,
+        hour: 19,
+        minute: 0,
+        label: 'La robe bleu nuit — trois secondes de silence',
+        requiresChoice: 'camille_robe_j38',
+      ),
+      Beat(
+        idx: 9,
         day: 38,
         hour: 23,
         minute: 32,
         label: 'Lan Kwai Fong — Tristan ivre dit ton vrai prénom',
       ),
       Beat(
-        idx: 7,
+        idx: 10,
         day: 39,
         hour: 7,
         minute: 14,
@@ -439,7 +537,15 @@ const kEpisodes = <Episode>[
         requiresChoice: 'maman_decouvre_j39',
       ),
       Beat(
-        idx: 8,
+        idx: 11,
+        day: 39,
+        hour: 21,
+        minute: 40,
+        label: 'Vincent au bar de l\'hôtel — « la quatrième »',
+        requiresChoice: 'vincent_quatrieme_j39',
+      ),
+      Beat(
+        idx: 12,
         day: 40,
         hour: 8,
         minute: 0,
@@ -479,13 +585,20 @@ const kEpisodes = <Episode>[
       ),
       Beat(
         idx: 2,
+        day: 43,
+        hour: 14,
+        minute: 0,
+        label: 'Rue de Berri — les cartons pas encore faits',
+      ),
+      Beat(
+        idx: 3,
         day: 44,
         hour: 20,
         minute: 0,
         label: 'Camille apporte du café — pas de jugement',
       ),
       Beat(
-        idx: 3,
+        idx: 4,
         day: 45,
         hour: 10,
         minute: 0,
@@ -500,7 +613,36 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 4,
+        idx: 5,
+        day: 46,
+        hour: 17,
+        minute: 30,
+        label: 'La phrase de Madame Heng, dans le couloir',
+        requiresChoice: 'heng_phrase_j46',
+      ),
+      Beat(
+        idx: 6,
+        day: 47,
+        hour: 11,
+        minute: 0,
+        label: 'Bureau de Madame Heng — « pas mon histoire à raconter »',
+        transition: BeatTransition(
+          timestamp: '11:00',
+          body:
+              '— De qui je tiens cette bouche, Madame ?\n'
+              '— Mademoiselle Marchand. Ce n\'est pas mon histoire à raconter.\n'
+              'Elle me ressert du thé. Ses mains sont parfaitement calmes.',
+        ),
+      ),
+      Beat(
+        idx: 7,
+        day: 49,
+        hour: 12,
+        minute: 10,
+        label: 'Vincent tâte le terrain — déjeuner décliné',
+      ),
+      Beat(
+        idx: 8,
         day: 52,
         hour: 18,
         minute: 8,
@@ -508,21 +650,73 @@ const kEpisodes = <Episode>[
         requiresChoice: 'tristan_fin_contrat_j52',
       ),
       Beat(
-        idx: 5,
+        idx: 9,
+        day: 53,
+        hour: 9,
+        minute: 40,
+        label: 'Le dossier de Shanghai est sur son bureau',
+        requiresChoice: 'camille_dossier_j53',
+      ),
+      Beat(
+        idx: 10,
+        day: 55,
+        hour: 20,
+        minute: 0,
+        label: 'Six heures de vérité',
+        transition: BeatTransition(
+          timestamp: '20:00',
+          body:
+              'Arrêté deux jours avant l\'arrivée de Maman. Cinq ans de prison.\n'
+              'Les lettres interceptées par sa famille. Mort en 2018, Fuzhou.\n'
+              'Et une lettre de 2017 : « à ma fille que je n\'ai pas connue ».',
+          coda: '(Je n\'ai pas pleuré. Trop sidérée pour pleurer.)',
+        ),
+      ),
+      Beat(
+        idx: 11,
+        day: 58,
+        hour: 21,
+        minute: 30,
+        label: 'La distance — chacun son étage',
+      ),
+      Beat(
+        idx: 12,
         day: 60,
         hour: 20,
         minute: 0,
         label: 'Anniversaire Camille — Shen est seule',
       ),
       Beat(
-        idx: 6,
+        idx: 13,
+        day: 64,
+        hour: 11,
+        minute: 0,
+        label: 'Belleville, encore — le marché du dimanche',
+      ),
+      Beat(
+        idx: 14,
+        day: 69,
+        hour: 21,
+        minute: 0,
+        label: 'Hélène lit la lettre',
+        requiresChoice: 'maman_lettre_j69',
+      ),
+      Beat(
+        idx: 15,
         day: 70,
         hour: 22,
         minute: 14,
         label: 'Bilan Maman — meilleur que prévu',
       ),
       Beat(
-        idx: 7,
+        idx: 16,
+        day: 75,
+        hour: 9,
+        minute: 30,
+        label: 'Des photos de la cour — le kaki de Tante Mei',
+      ),
+      Beat(
+        idx: 17,
         day: 78,
         hour: 19,
         minute: 32,
@@ -554,13 +748,48 @@ const kEpisodes = <Episode>[
       ),
       Beat(
         idx: 1,
+        day: 81,
+        hour: 19,
+        minute: 0,
+        label: 'La route rouge — Fuzhou vers le village',
+        transition: BeatTransition(
+          timestamp: '19:00',
+          body:
+              'Trois heures de route. La terre devient rouge.\n'
+              'Maman regarde par la fenêtre sans rien dire.\n'
+              'Elle reconnaît des choses qu\'elle n\'a jamais vues.',
+        ),
+      ),
+      Beat(
+        idx: 2,
         day: 82,
         hour: 14,
         minute: 0,
         label: 'Village ancestral — Tante Mei a 73 ans',
       ),
       Beat(
-        idx: 2,
+        idx: 3,
+        day: 84,
+        hour: 9,
+        minute: 0,
+        label: 'La tombe de Wenbo — trois bâtons d\'encens',
+        transition: BeatTransition(
+          timestamp: '09:00',
+          body:
+              'La fumée monte droit. C\'est bon signe, dit Tante Mei.\n'
+              'Maman parle à la pierre en français, comme toujours.\n'
+              'Je n\'entends pas ce qu\'elle dit. Je n\'ai pas besoin.',
+        ),
+      ),
+      Beat(
+        idx: 4,
+        day: 86,
+        hour: 16,
+        minute: 0,
+        label: 'La chambre d\'enfant — 心 gravé sur le chambranle',
+      ),
+      Beat(
+        idx: 5,
         day: 88,
         hour: 17,
         minute: 0,
@@ -574,7 +803,15 @@ const kEpisodes = <Episode>[
         ),
       ),
       Beat(
-        idx: 3,
+        idx: 6,
+        day: 91,
+        hour: 20,
+        minute: 30,
+        label: 'La lettre de 2017 — elle t\'attend',
+        requiresChoice: 'mei_lettre_j91',
+      ),
+      Beat(
+        idx: 7,
         day: 95,
         hour: 11,
         minute: 0,
@@ -582,14 +819,43 @@ const kEpisodes = <Episode>[
         requiresChoice: 'tristan_revient_j95',
       ),
       Beat(
-        idx: 4,
+        idx: 8,
+        day: 98,
+        hour: 14,
+        minute: 0,
+        label: 'Le pinceau de Wenbo — les cadeaux de Tante Mei',
+      ),
+      Beat(
+        idx: 9,
+        day: 102,
+        hour: 21,
+        minute: 0,
+        label: 'La 312e lettre — le brasero de la cour',
+        requiresChoice: 'maman_312e_j102',
+      ),
+      Beat(
+        idx: 10,
         day: 105,
         hour: 19,
         minute: 32,
         label: 'Camille — « ta place est où ? »',
       ),
       Beat(
-        idx: 5,
+        idx: 11,
+        day: 108,
+        hour: 9,
+        minute: 0,
+        label: 'Les valises ouvertes — rien dedans encore',
+      ),
+      Beat(
+        idx: 12,
+        day: 110,
+        hour: 20,
+        minute: 0,
+        label: 'Camille au téléphone — vingt minutes de rires',
+      ),
+      Beat(
+        idx: 13,
         day: 112,
         hour: 7,
         minute: 14,
