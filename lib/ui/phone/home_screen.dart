@@ -21,6 +21,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  bool _spotlightOpen = false;
   final _gridScroll = ScrollController();
   double _parallaxY = 0;
 
@@ -50,12 +51,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return GestureDetector(
       // Pull-down depuis le haut → Spotlight (style iOS).
       onVerticalDragUpdate: (d) {
+        // Un drag rapide déclenchait plusieurs Spotlight empilés.
+        if (_spotlightOpen) return;
         if (d.delta.dy > 8 && d.globalPosition.dy < 200) {
+          _spotlightOpen = true;
           showDialog<void>(
             context: context,
             barrierColor: Colors.transparent,
             builder: (_) => const SpotlightSearch(),
-          );
+          ).whenComplete(() => _spotlightOpen = false);
         }
       },
       child: Stack(

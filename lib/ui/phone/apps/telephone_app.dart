@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/telephone_data.dart';
+import '../../../providers/call_log_provider.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../status_bar.dart';
 
@@ -14,7 +15,29 @@ class TelephoneApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
-    final calls = kCalls.where((c) => c.day <= day).toList().reversed.toList();
+    // Statique (canon) + dynamique (appels réellement vécus), TRIÉ par
+    // (jour, heure) — kCalls est déclaré par thème, pas chronologiquement.
+    final dynCalls = ref.watch(callLogProvider);
+    final calls = [
+      ...kCalls.where((c) => c.day <= day),
+      ...dynCalls.where((c) => c.day <= day).map((c) => CallEntry(
+            day: c.day,
+            time: c.time,
+            contactLabel: c.label,
+            type: switch (c.kind) {
+              'accepted' => CallType.incoming,
+              'refused' => CallType.missed,
+              _ => CallType.missed,
+            },
+            duration: c.durationLabel,
+            voicemailNote: c.transcript,
+            avatarPath: c.label.contains('Maman')
+                ? 'assets/photos/avatars/maman.webp'
+                : null,
+          )),
+    ]..sort((a, b) =>
+        a.day != b.day ? a.day.compareTo(b.day) : a.time.compareTo(b.time));
+    final sorted = calls.reversed.toList();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -51,12 +74,12 @@ class TelephoneApp extends ConsumerWidget {
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: calls.length,
+              itemCount: sorted.length,
               separatorBuilder: (_, __) => Padding(
                 padding: const EdgeInsets.only(left: 50),
                 child: Container(height: 0.5, color: Colors.grey.shade300),
               ),
-              itemBuilder: (context, i) => _CallRow(call: calls[i]),
+              itemBuilder: (context, i) => _CallRow(call: sorted[i]),
             ),
           ),
         ],

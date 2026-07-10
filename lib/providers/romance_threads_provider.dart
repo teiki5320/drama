@@ -85,6 +85,16 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
     }
   }
 
+  /// Reset (Réglages > Réinitialiser la partie) : purge l'état ET la clé
+  /// persistée — sinon la nouvelle partie hérite des threads et cooldowns.
+  Future<void> reset() async {
+    state = const RomanceThreadsState();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_kPrefsKey);
+    } catch (_) {}
+  }
+
   Future<void> _persist() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
@@ -106,6 +116,7 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
     required int day,
     required int hour,
     required int minute,
+    String? matchName,
   }) {
     if (state.active.length >= _kMaxParallelArcs) return null;
     final template = kRomanceTemplates.firstWhere(
@@ -127,6 +138,7 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
       startDay: day,
       startHour: hour,
       startMinute: minute,
+      overrideName: matchName,
     );
     state = state.copyWith(
       instances: [...state.instances, instance],
@@ -155,6 +167,8 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
     required int hour,
     required int minute,
     int mood = 5,
+    String? matchName,
+    bool female = false,
   }) {
     if (state.active.length >= _kMaxParallelArcs) return null;
     // Cooldown global
@@ -165,6 +179,9 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
       }
     }
     final eligible = kRomanceTemplates.where((t) {
+      // L'arc « queer_douce » raconte le premier swipe d'une femme :
+      // il ne peut suivre qu'une carte féminine du deck.
+      if (t.id == 'queer_douce' && !female) return false;
       if (day < t.minStartDay) return false;
       if (t.maxStartDay != null && day > t.maxStartDay!) return false;
       final last = state.lastSpawnDay[t.id];
@@ -220,7 +237,11 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
       roll -= t.spawnWeight * moodMultiplier(t.tone);
       if (roll <= 0) {
         return spawn(
-            templateId: t.id, day: day, hour: hour, minute: minute);
+            templateId: t.id,
+            day: day,
+            hour: hour,
+            minute: minute,
+            matchName: matchName);
       }
     }
     return null;
@@ -297,6 +318,13 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
         break;
       }
       cur = cur.copyWith(nextBeatIdx: cur.nextBeatIdx + 1);
+    }
+    // Fin de liste atteinte sans `endsArc` (87 chemins de choix posaient une
+    // branche qu'aucun beat suivant ne lisait) : l'arc se taisait pour
+    // toujours ET occupait un slot à vie. On le clôt proprement — l'autre
+    // s'éloigne en silence, comme dans la vraie vie des applis.
+    if (!cur.ended && cur.nextBeatIdx >= template.beats.length) {
+      cur = cur.copyWith(ended: true, endingId: 'fade_silencieux');
     }
     return cur;
   }
@@ -468,8 +496,26 @@ class RomanceThreadsNotifier extends StateNotifier<RomanceThreadsState> {
   // ─── API publique pour lire depuis le UI ──────────────────────
 
   RomanceTemplate templateOf(RomanceInstance inst) => _templateOf(inst);
-  RomanceProfile profileOf(RomanceInstance inst) =>
-      _templateOf(inst).profilePool[inst.profileIdx];
+  RomanceProfile profileOf(RomanceInstance inst) {
+    final pool = _templateOf(inst).profilePool;
+    // Clamp défensif : une save peut référencer un index d'un ancien pool.
+    final base = pool[inst.profileIdx % pool.length];
+    if (inst.overrideName == null) return base;
+    // La conversation porte le nom de la carte réellement swipée.
+    return RomanceProfile(
+      id: base.id,
+      name: inst.overrideName!,
+      age: base.age,
+      profession: base.profession,
+      quartier: base.quartier,
+      detail: base.detail,
+      bio: base.bio,
+      gradient: base.gradient,
+      emoji: base.emoji,
+      photoCount: base.photoCount,
+      photoEmojis: base.photoEmojis,
+    );
+  }
 
   /// Pour le panneau de choix : retourne les choix du beat en attente.
   List<RomanceChoice>? pendingChoices(RomanceInstance inst) {

@@ -124,7 +124,7 @@ const Map<String, ({String title, String body})> kAppTutorials = {
   'appstore': (
     title: 'App Store',
     body:
-        'Installe ou désinstalle les apps. Certaines (Spotify, Strava, '
+        'Installe ou désinstalle les apps. Certaines (Spotify, '
         'Plans) ne sont pas là par défaut — à toi de les obtenir.',
   ),
   'camera': (

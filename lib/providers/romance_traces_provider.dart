@@ -26,7 +26,7 @@ NoteEntry? _traceNoteFor(RomanceInstance inst) {
     (t) => t.id == inst.templateId,
     orElse: () => kRomanceTemplates.first,
   );
-  final profile = template.profilePool[inst.profileIdx];
+  final profile = template.profilePool[inst.profileIdx % template.profilePool.length];
   // Jour de la trace : on prend le dernier message joué + 1 jour.
   final lastDay = inst.playedMessages.isNotEmpty
       ? inst.playedMessages.last.day
@@ -240,7 +240,7 @@ NoteEntry? _traceNoteFor(RomanceInstance inst) {
         time: '23:14',
         title: 'Pas prêt',
         body:
-            '${profile.name} a panique en deux jours.\n'
+            '${profile.name} a paniqué en deux jours.\n'
             'À ${profile.age} ans je l\'étais aussi. Sauf que personne ne me l\'a pardonné.',
       );
     // ── Départ imminent
@@ -299,7 +299,7 @@ NoteEntry? _traceNoteFor(RomanceInstance inst) {
         time: '15:28',
         title: 'Ouvert',
         body:
-            '${profile.name} m\'a dit le jour du RDV qu\'il était en couple ouverte.\n'
+            '${profile.name} m\'a dit le jour du RDV qu\'il était en couple ouvert.\n'
             'Quatre jours de conversation pour ça.\n'
             'J\'ai bloqué sans drama.',
       );
@@ -392,7 +392,7 @@ NoteEntry? _traceNoteFor(RomanceInstance inst) {
       );
     // ── Avocate
     case 'av_arret_droit':
-    case 'av_couupe_urgence':
+    case 'av_coupe_urgence':
       return NoteEntry(
         day: noteDay,
         time: '22:48',

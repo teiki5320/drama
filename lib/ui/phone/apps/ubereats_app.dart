@@ -70,7 +70,22 @@ class _UberEatsAppState extends ConsumerState<UberEatsApp> {
             // ── Mode commande client (J9+) avec bandeau rouge ─────
             Expanded(child: _OrderMode(
               orderedItemIds: _orderedItemIds,
-              onOrder: (id) => setState(() => _orderedItemIds.add(id)),
+              onOrder: (id) {
+                        // Commander coûte de l'argent — le compteur est
+                        // le cœur du jeu, un sushi à 80 € doit se voir.
+                        final item = _kOrderItemById(day, id);
+                        if (item != null) {
+                          ref.read(phoneStateProvider.notifier).addBankMovement(
+                                label: 'UberEats · ${item.item}',
+                                amount: -item.price.round(),
+                                emoji: '🥡',
+                              );
+                          ref
+                              .read(phoneStateProvider.notifier)
+                              .nudgeMood(1);
+                        }
+                        setState(() => _orderedItemIds.add(id));
+                      },
               day: day,
             ))
           else
@@ -96,17 +111,18 @@ class _UberEatsAppState extends ConsumerState<UberEatsApp> {
                                   ),
                                 );
                         if (course.id.isNotEmpty) {
-                          ref
+                          // Le provider mémorise le jour réel et renvoie le
+                          // gain TOTAL (course + tip) — la Banque est créditée
+                          // du même montant, arrondi à l'euro.
+                          final gains = ref
                               .read(uberStatsProvider.notifier)
-                              .acceptCourse(course);
-                          // Crédite Banque
+                              .acceptCourse(course, day: day);
                           final restaurant =
                               restaurantById(course.restaurantId);
-                          final cents = (course.totalPayout * 100).round();
                           ref.read(phoneStateProvider.notifier).addBankMovement(
                                 label:
                                     'UberEats · ${restaurant.name}',
-                                amount: cents ~/ 100,
+                                amount: gains.round(),
                                 emoji: '🛵',
                               );
                         }
@@ -115,14 +131,38 @@ class _UberEatsAppState extends ConsumerState<UberEatsApp> {
                           HapticFeedback.mediumImpact();
                         });
                       },
-                      onRefuse: () {
+                      onRefuse: (id) {
                         HapticFeedback.lightImpact();
+                        final course = ref
+                            .read(availableCoursesProvider(day))
+                            .where((c) => c.id == id)
+                            .firstOrNull;
+                        if (course != null) {
+                          ref
+                              .read(uberStatsProvider.notifier)
+                              .refuseCourse(course);
+                        }
                       },
                       onSwitch: () => setState(() => _proMode = false),
                     )
                   : _OrderMode(
                       orderedItemIds: _orderedItemIds,
-                      onOrder: (id) => setState(() => _orderedItemIds.add(id)),
+                      onOrder: (id) {
+                        // Commander coûte de l'argent — le compteur est
+                        // le cœur du jeu, un sushi à 80 € doit se voir.
+                        final item = _kOrderItemById(day, id);
+                        if (item != null) {
+                          ref.read(phoneStateProvider.notifier).addBankMovement(
+                                label: 'UberEats · ${item.item}',
+                                amount: -item.price.round(),
+                                emoji: '🥡',
+                              );
+                          ref
+                              .read(phoneStateProvider.notifier)
+                              .nudgeMood(1);
+                        }
+                        setState(() => _orderedItemIds.add(id));
+                      },
                       day: day,
                     ),
             ),
@@ -144,7 +184,7 @@ class _LivreurMode extends ConsumerWidget {
   final int day;
   final Set<String> acceptedCourseIds;
   final void Function(String) onAccept;
-  final VoidCallback onRefuse;
+  final ValueChanged<String> onRefuse;
   final VoidCallback onSwitch;
 
   @override
@@ -236,7 +276,7 @@ class _LivreurMode extends ConsumerWidget {
                 course: c,
                 accepted: acceptedCourseIds.contains(c.id),
                 onAccept: () => onAccept(c.id),
-                onRefuse: onRefuse,
+                onRefuse: () => onRefuse(c.id),
               );
             },
           ),
@@ -255,7 +295,7 @@ class _LivreurMode extends ConsumerWidget {
       id: c.id,
       time: time,
       from: r.name,
-      to: '${cl.displayName} · ${cl.zone.name}',
+      to: '${cl.displayName} · ${zoneLabel(cl.zone)}',
       distance: '${c.distanceKm.toStringAsFixed(1)} km',
       payout: c.totalPayout,
       penalty: 0,
@@ -341,7 +381,8 @@ class _OrderMode extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 10),
-        for (final item in _kOrderItems(day))
+        for (final item in _orderItemsFor(day)
+            .where((it) => !it.requiresRueDeBerri || day >= 9))
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: _OrderRow(
@@ -354,7 +395,37 @@ class _OrderMode extends ConsumerWidget {
     );
   }
 
-  List<_OrderItem> _kOrderItems(int day) {
+}
+
+// ─── Modèles ────────────────────────────────────────────────────
+class _Course {
+  final String id;
+  final String time;
+  final String from;
+  final String to;
+  final String distance;
+  final double payout;
+  final double penalty;
+  final String status;
+  final double surge;
+  final bool replayNarrative;
+  final bool suspicionWarning;
+  const _Course({
+    required this.id,
+    required this.time,
+    required this.from,
+    required this.to,
+    required this.distance,
+    required this.payout,
+    required this.penalty,
+    required this.status,
+    this.surge = 1.0,
+    this.replayNarrative = false,
+    this.suspicionWarning = false,
+  });
+}
+
+List<_OrderItem> _orderItemsFor(int day) {
     return [
       _OrderItem(
         id: 'long_doppio_camille',
@@ -393,35 +464,14 @@ class _OrderMode extends ConsumerWidget {
         ),
       ],
     ];
-  }
 }
 
-// ─── Modèles ────────────────────────────────────────────────────
-class _Course {
-  final String id;
-  final String time;
-  final String from;
-  final String to;
-  final String distance;
-  final double payout;
-  final double penalty;
-  final String status;
-  final double surge;
-  final bool replayNarrative;
-  final bool suspicionWarning;
-  const _Course({
-    required this.id,
-    required this.time,
-    required this.from,
-    required this.to,
-    required this.distance,
-    required this.payout,
-    required this.penalty,
-    required this.status,
-    this.surge = 1.0,
-    this.replayNarrative = false,
-    this.suspicionWarning = false,
-  });
+/// Item du menu Commande par id (null si absent ce jour-là).
+_OrderItem? _kOrderItemById(int day, String id) {
+  for (final it in _orderItemsFor(day)) {
+    if (it.id == id) return it;
+  }
+  return null;
 }
 
 class _OrderItem {

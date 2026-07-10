@@ -26,6 +26,8 @@ class DayEvent {
   /// `notifBody` avant « · ».
   final bool isIncomingCall;
   final List<String> callTranscript;
+  /// Id relationnel de l'appelant (conséquences accept/refus).
+  final String? callerId;
 
   const DayEvent({
     required this.day,
@@ -38,6 +40,7 @@ class DayEvent {
     required this.summary,
     this.isIncomingCall = false,
     this.callTranscript = const [],
+    this.callerId,
   });
 
   int get totalMinutes => day * 24 * 60 + hour * 60 + minute;
@@ -263,6 +266,7 @@ const kDayEvents = <DayEvent>[
     notifBody: 'Maman ❤️ · 4h à Paris',
     summary: 'Maman appelle en pleine nuit — Tante Mei a parlé',
     isIncomingCall: true,
+    callerId: 'maman',
     callTranscript: [
       'Shen ? C\'est Maman.',
       'Il est quatre heures ici. Je n\'arrive pas à dormir.',

@@ -18,6 +18,10 @@ class IncomingCall {
   /// pendant l'appel. Vide = l'appelant se tait et raccroche vite.
   final List<String> transcript;
 
+  /// Id relationnel de l'appelant ('maman'…) — null si inconnu/masqué.
+  /// Sert aux conséquences : décrocher rassure, ignorer inquiète.
+  final String? callerId;
+
   const IncomingCall({
     required this.displayName,
     this.subtitle,
@@ -25,6 +29,7 @@ class IncomingCall {
     this.avatarColor = 0xFFCCCCCC,
     this.masked = false,
     this.transcript = const [],
+    this.callerId,
   });
 }
 

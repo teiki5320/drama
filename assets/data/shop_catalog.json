@@ -83,7 +83,7 @@
     "moodGain": 1,
     "reputationGain": 1,
     "requiredReputation": 0,
-    "requiredMood": 60,
+    "requiredMood": 6,
     "generatesInstaPost": true,
     "instaPostCaption": "Premier dîner 🍷",
     "instaPostEmoji": "👗"
@@ -98,7 +98,7 @@
     "moodGain": 1,
     "reputationGain": 1,
     "requiredReputation": 0,
-    "requiredMood": 60,
+    "requiredMood": 6,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -112,7 +112,7 @@
     "moodGain": 2,
     "reputationGain": 4,
     "requiredReputation": 4,
-    "requiredMood": 60,
+    "requiredMood": 6,
     "generatesInstaPost": true,
     "instaPostCaption": "Trouvaille du Marais",
     "instaPostEmoji": "👜"
@@ -127,7 +127,7 @@
     "moodGain": 2,
     "reputationGain": 2,
     "requiredReputation": 2,
-    "requiredMood": 60,
+    "requiredMood": 6,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -141,7 +141,7 @@
     "moodGain": 2,
     "reputationGain": 3,
     "requiredReputation": 3,
-    "requiredMood": 60,
+    "requiredMood": 6,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -155,7 +155,7 @@
     "moodGain": 1,
     "reputationGain": 2,
     "requiredReputation": 0,
-    "requiredMood": 70,
+    "requiredMood": 7,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -169,7 +169,7 @@
     "moodGain": 4,
     "reputationGain": 1,
     "requiredReputation": 0,
-    "requiredMood": 80,
+    "requiredMood": 8,
     "generatesInstaPost": true,
     "instaPostCaption": "Kyoto, cerisiers en avance 🌸",
     "instaPostEmoji": "🌸"
@@ -184,7 +184,7 @@
     "moodGain": 5,
     "reputationGain": 2,
     "requiredReputation": 0,
-    "requiredMood": 80,
+    "requiredMood": 8,
     "generatesInstaPost": true,
     "instaPostCaption": "Reset 🏝️",
     "instaPostEmoji": "🏝️"
@@ -199,7 +199,7 @@
     "moodGain": 3,
     "reputationGain": 0,
     "requiredReputation": 0,
-    "requiredMood": 80,
+    "requiredMood": 8,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -213,7 +213,7 @@
     "moodGain": 5,
     "reputationGain": 3,
     "requiredReputation": 0,
-    "requiredMood": 80,
+    "requiredMood": 8,
     "generatesInstaPost": true,
     "instaPostCaption": "Mes racines 🌿",
     "instaPostEmoji": "🌿"
@@ -228,7 +228,7 @@
     "moodGain": 1,
     "reputationGain": 1,
     "requiredReputation": 0,
-    "requiredMood": 50,
+    "requiredMood": 5,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -242,7 +242,7 @@
     "moodGain": 1,
     "reputationGain": 1,
     "requiredReputation": 0,
-    "requiredMood": 50,
+    "requiredMood": 5,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -256,7 +256,7 @@
     "moodGain": 2,
     "reputationGain": 1,
     "requiredReputation": 0,
-    "requiredMood": 50,
+    "requiredMood": 5,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -270,7 +270,7 @@
     "moodGain": 3,
     "reputationGain": 2,
     "requiredReputation": 4,
-    "requiredMood": 50,
+    "requiredMood": 5,
     "generatesInstaPost": true,
     "instaPostCaption": "Premier shoot Leica 📸",
     "instaPostEmoji": "📸"
@@ -285,7 +285,7 @@
     "moodGain": 2,
     "reputationGain": 0,
     "requiredReputation": 0,
-    "requiredMood": 40,
+    "requiredMood": 4,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -299,7 +299,7 @@
     "moodGain": 1,
     "reputationGain": 1,
     "requiredReputation": 0,
-    "requiredMood": 40,
+    "requiredMood": 4,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -313,7 +313,7 @@
     "moodGain": 2,
     "reputationGain": 1,
     "requiredReputation": 0,
-    "requiredMood": 40,
+    "requiredMood": 4,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -327,7 +327,7 @@
     "moodGain": 2,
     "reputationGain": 2,
     "requiredReputation": 0,
-    "requiredMood": 40,
+    "requiredMood": 4,
     "generatesInstaPost": false,
     "instaPostCaption": ""
   },
@@ -426,7 +426,7 @@
     "moodGain": 2,
     "reputationGain": 8,
     "requiredReputation": 6,
-    "requiredMood": 50,
+    "requiredMood": 5,
     "generatesInstaPost": true,
     "instaPostCaption": "Marais. Quatre fenêtres. Je ne sais pas encore si je dois rire ou avoir le vertige.",
     "instaPostEmoji": "🏛️"
@@ -483,7 +483,7 @@
     "price": 65,
     "moodGain": 1,
     "reputationGain": 0,
-    "requiredMood": 30,
+    "requiredMood": 3,
     "requiredReputation": 0,
     "generatesInstaPost": false,
     "description": "Le bout de chez Maman qu'on s'autorise enfin sans calculer."
@@ -496,7 +496,7 @@
     "price": 140,
     "moodGain": 2,
     "reputationGain": 0,
-    "requiredMood": 30,
+    "requiredMood": 3,
     "requiredReputation": 0,
     "generatesInstaPost": true,
     "instaPostEmoji": "🍷",
@@ -511,7 +511,7 @@
     "price": 95,
     "moodGain": 1,
     "reputationGain": 0,
-    "requiredMood": 30,
+    "requiredMood": 3,
     "requiredReputation": 0,
     "generatesInstaPost": false,
     "description": "Junmai Daiginjo, robe pâle. Un verre suffit. Un verre par soir suffit."
@@ -524,7 +524,7 @@
     "price": 500,
     "moodGain": 1,
     "reputationGain": 2,
-    "requiredMood": 90,
+    "requiredMood": 9,
     "requiredReputation": 0,
     "generatesInstaPost": true,
     "instaPostEmoji": "📚",
@@ -539,7 +539,7 @@
     "price": 1500,
     "moodGain": 2,
     "reputationGain": 3,
-    "requiredMood": 90,
+    "requiredMood": 9,
     "requiredReputation": 0,
     "generatesInstaPost": false,
     "description": "Une bourse, une étudiante, un nom rendu plus tard."
@@ -552,7 +552,7 @@
     "price": 220,
     "moodGain": 2,
     "reputationGain": 1,
-    "requiredMood": 90,
+    "requiredMood": 9,
     "requiredReputation": 0,
     "generatesInstaPost": false,
     "description": "Annie Ernaux, Marguerite Duras, Yôko Ogawa. Pour les chambres voisines de Maman."
@@ -565,7 +565,7 @@
     "price": 3500,
     "moodGain": 1,
     "reputationGain": 4,
-    "requiredMood": 90,
+    "requiredMood": 9,
     "requiredReputation": 2,
     "generatesInstaPost": true,
     "instaPostEmoji": "🎨",

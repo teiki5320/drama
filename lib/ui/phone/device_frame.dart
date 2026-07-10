@@ -20,8 +20,10 @@ class DeviceFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // Sur iPhone : pas de frame, on rend tel quel.
-    if (size.width < _threshold) {
+    // Sur iPhone : pas de frame, on rend tel quel. Critère : le plus
+    // petit côté — un iPhone en PAYSAGE dépassait le seuil en largeur et
+    // se retrouvait encadré dans un faux téléphone portrait.
+    if (size.shortestSide < _threshold) {
       return child;
     }
 

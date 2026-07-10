@@ -8,6 +8,7 @@ import '../../../data/messages_data.dart';
 import '../../../models/messages_arc.dart';
 import '../../../providers/messages_arcs_provider.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/sent_replies_provider.dart';
 import '../status_bar.dart';
 import 'messages/arc_thread_view.dart';
 import 'messages/thread_view.dart';
@@ -137,7 +138,12 @@ class _ThreadTile extends ConsumerWidget {
         (kThreads[contact.id] ?? []).where((m) => m.day <= currentDay).toList();
     if (msgs.isEmpty) return const SizedBox.shrink();
     final last = msgs.last;
-    final unread = last.sender != 'moi' && last.status != MsgStatus.read;
+    // Non-lu honnête : si le dernier message porte un beatId déjà répondu,
+    // la conversation est traitée — la pastille s'éteint.
+    final replies = ref.watch(sentRepliesProvider);
+    final unread = last.sender != 'moi' &&
+        last.status != MsgStatus.read &&
+        !(last.beatId != null && replies.containsKey(last.beatId!));
 
     return InkWell(
       onTap: () {

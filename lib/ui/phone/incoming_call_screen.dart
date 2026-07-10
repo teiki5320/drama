@@ -5,7 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../models/relationship.dart';
+import '../../providers/call_log_provider.dart';
 import '../../providers/incoming_call_provider.dart';
+import '../../providers/phone_state_provider.dart';
+import '../../providers/relationships_provider.dart';
 import 'status_bar.dart';
 
 /// Plein écran d'appel entrant style iPhone — fond sombre flouté,
@@ -51,11 +55,20 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
   /// le transcript de l'appelant ligne à ligne. L'appelant raccroche
   /// tout seul quelques secondes après sa dernière phrase (ou presque
   /// tout de suite s'il n'a rien à dire — appel masqué).
+  bool _logged = false;
+
   void _accept() {
     _vibrate?.cancel();
     _timeout?.cancel();
     HapticFeedback.mediumImpact();
     setState(() => _accepted = true);
+    // Conséquences : décrocher rassure l'appelant (une seule fois).
+    final callerId = widget.call.callerId;
+    if (callerId != null && !_logged) {
+      ref
+          .read(relationshipsProvider.notifier)
+          .apply(callerId, const RelationshipDelta(trust: 4));
+    }
     _chrono = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted) setState(() => _seconds++);
     });
@@ -81,6 +94,29 @@ class _IncomingCallScreenState extends ConsumerState<IncomingCallScreen>
     _chrono?.cancel();
     _lines?.cancel();
     _autoEnd?.cancel();
+    // Trace + conséquences (une seule fois par appel).
+    if (!_logged) {
+      _logged = true;
+      final p = ref.read(phoneStateProvider);
+      final callerId = widget.call.callerId;
+      if (!_accepted && callerId != null) {
+        // Ignorer/refuser l'appel de Maman à 4h du matin a un prix.
+        ref.read(relationshipsProvider.notifier).apply(
+            callerId, const RelationshipDelta(trust: -3, suspicion: 6));
+      }
+      ref.read(callLogProvider.notifier).log(DynamicCall(
+            day: p.currentDay,
+            time: p.timeLabel,
+            label: widget.call.masked
+                ? 'Numéro masqué'
+                : widget.call.displayName,
+            kind: _accepted ? 'accepted' : 'missed',
+            durationLabel: _accepted ? _chronoLabel : '0:00',
+            transcript: _accepted && widget.call.transcript.isNotEmpty
+                ? widget.call.transcript.join('\n')
+                : null,
+          ));
+    }
     ref.read(incomingCallProvider.notifier).state = null;
   }
 

@@ -11,20 +11,38 @@ import '../../../../providers/sent_replies_provider.dart';
 /// Panneau de 3 boutons de réponse, en bas de la conversation, quand un
 /// message reçu attend un choix de Shen. Au tap : ajoute le reply, met
 /// à jour les jauges relationnelles, ferme le panneau.
-class ChoicePanel extends ConsumerWidget {
+class ChoicePanel extends ConsumerStatefulWidget {
   const ChoicePanel({
     super.key,
     required this.beatId,
     required this.lastMessageTime,
     required this.lastMessageDay,
+    this.promptText,
   });
 
   final String beatId;
   final String lastMessageTime;
   final int lastMessageDay;
 
+  /// Extrait du message auquel Shen répond — le panneau peut viser un
+  /// message plus haut dans le fil, on le cite pour lever l'ambiguïté.
+  final String? promptText;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ChoicePanel> createState() => _ChoicePanelState();
+}
+
+class _ChoicePanelState extends ConsumerState<ChoicePanel> {
+  /// Anti double-tap : deux taps rapides appliquaient deux deltas et
+  /// écrasaient la réponse.
+  bool _sent = false;
+
+  String get beatId => widget.beatId;
+  String get lastMessageTime => widget.lastMessageTime;
+  int get lastMessageDay => widget.lastMessageDay;
+
+  @override
+  Widget build(BuildContext context) {
     final choice = choiceForBeat(beatId);
     if (choice == null) return const SizedBox.shrink();
 
@@ -38,6 +56,18 @@ class ChoicePanel extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (widget.promptText != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 6, left: 4, right: 4),
+              child: Text(
+                '\u00AB ${widget.promptText!.length > 80 ? '${widget.promptText!.substring(0, 80)}\u2026' : widget.promptText!} \u00BB',
+                style: GoogleFonts.inter(
+                  fontSize: 11,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.only(bottom: 8, left: 4),
             child: Text(
@@ -56,6 +86,8 @@ class ChoicePanel extends ConsumerWidget {
               child: _OptionButton(
                 option: option,
                 onTap: () {
+                  if (_sent) return;
+                  setState(() => _sent = true);
                   HapticFeedback.selectionClick();
                   // 1) Mémorise la réponse pour la rendre dans la conversation
                   ref.read(sentRepliesProvider.notifier).send(SentReply(

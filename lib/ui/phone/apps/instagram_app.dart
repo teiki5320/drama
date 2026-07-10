@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/phone_state.dart';
+import '../../../models/relationship.dart';
 import '../../../providers/instagram_state_provider.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../../../providers/relationships_provider.dart';
@@ -88,7 +89,14 @@ class _InstagramAppState extends ConsumerState<InstagramApp> {
                     instaNotifier.hide(id);
                   },
                   onViewStory: instaNotifier.viewStory,
-                  onRetireTag: instaNotifier.retireTag,
+                  onRetireTag: () {
+                    instaNotifier.retireTag();
+                    // Le snackbar annonçait « -3 confiance » sans
+                    // l'appliquer : Madame Heng le voit, maintenant.
+                    ref.read(relationshipsProvider.notifier).apply(
+                        'madame_heng',
+                        const RelationshipDelta(trust: -3));
+                  },
                 ),
             },
           ),
@@ -258,7 +266,7 @@ class _FeedTab extends ConsumerWidget {
     for (final u in userPosts.where((u) => u.day <= day)) {
       allPosts.add(_Post(
         id: u.id,
-        author: 'shen_marchand_archi',
+        author: 'shen_marchand',
         emoji: u.emoji,
         when: 'J${u.day} · ${u.time}',
         body: u.caption,

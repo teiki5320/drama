@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/banque_data.dart';
 import '../data/day_events.dart';
+import 'lock_notifications_provider.dart';
 import '../data/episodes.dart';
 import '../models/episode.dart';
 import '../models/phone_state.dart';
@@ -36,6 +38,12 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
 
   /// Ajoute un mouvement bancaire dynamique. Utilisé par UberEats pour
   /// créditer Shen à chaque course livrée (course + tip).
+  /// Petit ajustement d'humeur (commande plaisir, gag…). Clampé 0-10
+  /// par copyWith.
+  void nudgeMood(int delta) {
+    state = state.copyWith(mood: state.mood + delta);
+  }
+
   void addBankMovement({
     required String label,
     required int amount,
@@ -90,7 +98,20 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     );
     final beat = beatAt(episodeId: next.episodeId, beatIdx: next.beatIdx);
     if (beat == null) return; // fin de l'histoire
+    // Dernier beat : nextBeat() renvoie le même couple — ne pas rejouer la
+    // transition (elle recouvrirait l'épilogue) ni re-déclencher les events.
+    if (next.episodeId == from.currentEpisodeId &&
+        next.beatIdx == from.currentBeatIdx) {
+      return;
+    }
     final crossesNight = beat.day > from.currentDay;
+    // Nouvelle journée : la pile de notifications du lock repart à zéro
+    // (sinon 112 jours s'empilent).
+    if (crossesNight) {
+      try {
+        _ref.read(lockNotificationsProvider.notifier).clear();
+      } catch (_) {}
+    }
     // Si le beat débloque des apps (premier appel → telephone,
     // premier carnet → notes…), on les ajoute au set unlockedApps.
     final newUnlocked = beat.unlocksApps.isEmpty
@@ -104,9 +125,9 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
       minute: beat.minute,
       isLocked: crossesNight ? true : from.isLocked,
       dndEnabled: beat.hour >= 23 || beat.hour < 7,
-      battery: crossesNight
-          ? (from.battery - 15).clamp(0, 100)
-          : (from.battery - 1).clamp(0, 100),
+      // Shen branche le téléphone chaque nuit : traverser une nuit
+      // recharge à 100 %. En journée, chaque beat consomme un peu.
+      battery: crossesNight ? 100 : (from.battery - 1).clamp(0, 100),
       unlockedApps: newUnlocked,
     );
     // Si le beat a une scène de transition canonique, on l'affiche.
@@ -154,10 +175,13 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
   /// pour ne pas inonder le joueur. DÉTERMINISTE : la décision dépend du
   /// temps gameworld (même partie => mêmes spawns), pas de l'horloge réelle.
   void _maybeSpawnMessagesArc() {
-    // ~5 % des ticks : hash multiplicatif du temps diégétique.
+    // ~5 % des ticks : hash mélangé du temps diégétique (le simple
+    // multiplicatif était linéaire mod 20 et ne dépendait que des minutes).
     final tick =
         state.currentDay * 1440 + state.hour * 60 + state.minute;
-    if ((tick * 2654435761) % 20 != 0) return;
+    var h = tick * 2654435761;
+    h ^= h >> 13;
+    if (h % 100 >= 5) return;
     _ref.read(messagesArcsProvider.notifier).spawnRandom(
           day: state.currentDay,
           hour: state.hour,
@@ -301,6 +325,7 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
   /// pas encore débloquée, par exemple), on ignore silencieusement —
   /// l'UI grise garde la cohérence.
   void openApp(String id) {
+    clearBadge(id);
     if (!state.unlockedApps.contains(id)) return;
     state = state.copyWith(openAppId: id);
   }
@@ -371,7 +396,7 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
   UserPhoto takePhoto() {
     final hour = state.hour;
     final mood = state.mood;
-    final isNight = hour >= 20 || hour < 6;
+    final isNight = hour >= 22 || hour < 6;
     final String key;
     if (isNight) {
       key = mood <= 4 ? 'night_low' : 'night_high';
@@ -439,7 +464,23 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
     required int reputationGain,
     String? instaCaption,
     String? instaEmoji,
+    int requiredMood = 0,
+    int requiredReputation = 0,
   }) {
+    // Garde-fous côté moteur (l'UI Banque protège aussi, mais elle ne doit
+    // pas être la seule défense) : pas de double achat, pas de découvert,
+    // seuils respectés.
+    if (state.ownedItems.contains(id)) return false;
+    if (state.mood < requiredMood) return false;
+    if (state.reputation < requiredReputation) return false;
+    var balance = kStartingBalance;
+    for (final m in kMovements) {
+      if (m.day <= state.currentDay) balance += m.amount;
+    }
+    for (final m in state.dynamicMovements) {
+      if (m.day <= state.currentDay) balance += m.amount;
+    }
+    if (price > balance) return false;
     final mvt = DynamicMovement(
       label: name,
       amount: -price,

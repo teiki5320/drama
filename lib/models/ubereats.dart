@@ -42,6 +42,23 @@ enum UberZone {
   goutteDor,     // 18e, vivant
 }
 
+/// Libellé affichable d'une zone (l'enum brut « rueDeBerri » ne doit
+/// jamais apparaître à l'écran).
+String zoneLabel(UberZone z) => switch (z) {
+      UberZone.belleville => 'Belleville',
+      UberZone.marais => 'Le Marais',
+      UberZone.champsLuxe => 'Champs-Élysées',
+      UberZone.saintGermain => 'Saint-Germain',
+      UberZone.montparnasse => 'Montparnasse',
+      UberZone.republique => 'République',
+      UberZone.bastille => 'Bastille',
+      UberZone.defense => 'La Défense',
+      UberZone.vincennes => 'Vincennes',
+      UberZone.pantin => 'Pantin',
+      UberZone.rueDeBerri => 'Rue de Berri',
+      UberZone.goutteDor => 'Goutte d\'Or',
+    };
+
 class Restaurant {
   final String id;
   final String name;
