@@ -5,64 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../data/contact_states.dart';
 import '../../../../data/messages_data.dart';
-import '../../../../data/sms_choices.dart';
+import '../../../../data/thread_render.dart';
 import '../../../../providers/phone_state_provider.dart';
 import '../../../../providers/relationships_provider.dart';
 import '../../../../providers/sent_replies_provider.dart';
 import 'choice_panel.dart';
-
-/// Résultat du calcul d'affichage d'un fil : messages visibles (déjà
-/// tronqués au choix en attente) + le beat/message en attente s'il y en a un.
-class ThreadRender {
-  final List<Msg> messages;
-  final String? pendingBeatId;
-  final Msg? pendingMsg;
-  const ThreadRender(this.messages, this.pendingBeatId, this.pendingMsg);
-}
-
-/// Logique PURE de rendu d'un fil (testable sans widget) :
-/// - filtre par jour courant et seuil de suspicion ;
-/// - intercale les réponses déjà envoyées de Shen après leur beat ;
-/// - détecte le PREMIER choix non répondu et TRONQUE tout ce qui suit,
-///   pour que la conversation se fige sur la décision au lieu de dérouler
-///   la journée entière d'un bloc.
-ThreadRender computeThreadRender({
-  required List<Msg> thread,
-  required Map<String, SentReply> sentReplies,
-  required int day,
-  required int suspicion,
-}) {
-  final canonMsgs = thread
-      .where((m) =>
-          m.day <= day &&
-          (m.requiresSuspicionAtLeast == null ||
-              suspicion >= m.requiresSuspicionAtLeast!))
-      .toList();
-  final msgs = <Msg>[];
-  for (final m in canonMsgs) {
-    msgs.add(m);
-    if (m.beatId != null && sentReplies.containsKey(m.beatId!)) {
-      msgs.add(sentReplies[m.beatId!]!.toMsg());
-    }
-  }
-  Msg? pendingMsg;
-  var pendingIdx = -1;
-  for (var i = 0; i < msgs.length; i++) {
-    final m = msgs[i];
-    if (m.sender != 'moi' &&
-        m.beatId != null &&
-        choiceForBeat(m.beatId!) != null &&
-        !sentReplies.containsKey(m.beatId!)) {
-      pendingMsg = m;
-      pendingIdx = i;
-      break;
-    }
-  }
-  if (pendingIdx >= 0) {
-    msgs.removeRange(pendingIdx + 1, msgs.length);
-  }
-  return ThreadRender(msgs, pendingMsg?.beatId, pendingMsg);
-}
 
 /// Vue conversation iMessage : bulles bleues à droite (Shen), grises à
 /// gauche (l'autre), barre du haut avec emoji + nom, indicateur de

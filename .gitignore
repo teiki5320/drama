@@ -47,3 +47,6 @@ android/.cxx/
 # Python (tools/)
 __pycache__/
 *.pyc
+
+# Harnais de test visuel (captures)
+.webshoot/
