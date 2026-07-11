@@ -76,7 +76,7 @@ const kEpilogues = <Epilogue>[
     title: 'Belleville, en deuil',
     subtitle: 'Paris, J112 · 14h',
     body:
-        'Le traitement n\'a pas suffi. L\'argent était là, le corps n\'a pas tenu.\n\n'
+        'Le traitement n\'a pas suffi. L\'argent n\'était pas là à temps, le corps n\'a pas tenu.\n\n'
         'L\'enterrement était hier au Père-Lachaise. Tante Mei a fait le voyage. '
         'Camille a porté le voile noir comme une sœur. Tristan n\'est pas venu — '
         'je ne lui ai pas écrit pour le prévenir.\n\n'
@@ -97,7 +97,7 @@ const kEpilogues = <Epilogue>[
     subtitle: 'Repulse Bay, J112 · 19h',
     body:
         'Je ne suis pas rentrée à Paris. Je n\'ai pas non plus suivi Maman à Fujian.\n\n'
-        'Je vis dans un appartement de la presqu\'île de Repulse Bay. Tristan vient '
+        'Je vis dans un appartement de Repulse Bay. Tristan vient '
         'le week-end. Vincent a accepté de gérer le family office sans moi.\n\n'
         'Maman m\'a écrit hier : « Ton père aurait été fier de toi. Ou furieux. '
         'C\'est la même chose chez nous. »\n\n'
@@ -117,10 +117,10 @@ const kEpilogues = <Epilogue>[
     subtitle: 'Paris, J112 · 11h',
     body:
         'J\'ai quitté la rue de Berri à J52. Tristan ne m\'a pas retenue.\n\n'
-        'Je vis chez Camille depuis quatre mois. Maman est en stabilisation à '
+        'Je vis chez Camille depuis deux mois. Maman est en stabilisation à '
         'Tenon, elle vient déjeuner les dimanches. Elle ne me demande plus rien.\n\n'
         'J\'ai repris le master archi à distance, je passe mon HMONP en juin. '
-        'Sarah Vincent m\'a transmis trois missions freelance qui paient le loyer. '
+        'Sarah m\'a transmis trois missions freelance qui paient le loyer. '
         'Pas plus.\n\n'
         'Je n\'ai pas remboursé les Heng. Vincent dit que le contrat couvrait — '
         'que l\'argent était à moi. Je ne suis pas sûre. Je garde l\'enveloppe '
