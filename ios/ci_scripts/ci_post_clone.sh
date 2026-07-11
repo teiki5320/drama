@@ -18,6 +18,14 @@ echo "=== flutter pub get ==="
 cd "$CI_PRIMARY_REPOSITORY_PATH"
 flutter pub get
 
+# CFBundleVersion = numéro de build Xcode Cloud (toujours croissant, jamais
+# en conflit avec un upload TestFlight précédent). `flutter pub get` écrit
+# FLUTTER_BUILD_NUMBER depuis pubspec ; on le remplace par $CI_BUILD_NUMBER.
+if [ -n "$CI_BUILD_NUMBER" ]; then
+  echo "=== CFBundleVersion = $CI_BUILD_NUMBER (build Xcode Cloud) ==="
+  /usr/bin/sed -i '' "s/^FLUTTER_BUILD_NUMBER=.*/FLUTTER_BUILD_NUMBER=$CI_BUILD_NUMBER/" "$CI_PRIMARY_REPOSITORY_PATH/ios/Flutter/Generated.xcconfig"
+fi
+
 echo "=== Generate launcher icons ==="
 dart run flutter_launcher_icons
 
