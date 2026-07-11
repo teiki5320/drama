@@ -383,6 +383,12 @@ class _TimeSkipWidgetState extends ConsumerState<TimeSkipWidget>
   }
 }
 
+/// Visibilité de la bannière deadline (logique pure, testée).
+/// - Masquée avant J2 : le traitement et son montant (18 000 €) ne sont
+///   révélés qu'au bureau du Dr Aubin (J2). L'afficher dès J1 spoile.
+/// - Masquée passé J50 (delta < -5) : la deadline n'est plus d'actualité.
+bool deadlineBannerVisible(int day) => day >= 2 && (45 - day) >= -5;
+
 /// Bandeau « J-X · Traitement Maman » qui s'affiche en haut du home.
 /// Couleur qui s'intensifie à mesure que J45 approche.
 class DeadlineBanner extends ConsumerWidget {
@@ -393,12 +399,7 @@ class DeadlineBanner extends ConsumerWidget {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
     const targetDay = 45;
     final delta = targetDay - day;
-    // Le montant et l'existence même du traitement ne sont révélés qu'au
-    // bureau du Dr Aubin (J2, beat idx 3). Avant, Shen — et le joueur — ne
-    // savent rien : afficher « Traitement Maman · 18 000 € » dès J1 spoile
-    // toute l'intrigue. On masque la bannière tant qu'on n'a pas atteint J2.
-    if (day < 2) return const SizedBox.shrink();
-    if (delta < -5) return const SizedBox.shrink();
+    if (!deadlineBannerVisible(day)) return const SizedBox.shrink();
     final isPast = delta < 0;
     final isUrgent = delta >= 0 && delta <= 14;
     final color = isPast
