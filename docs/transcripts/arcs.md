@@ -21,7 +21,7 @@
 | | | | | · **Merci pro** → « Merci Docteur. Je vous tiens informé. » →`shen_pro_a` |
 | | | | | · **Honnête** → « Docteur, je vais devoir trouver 18 000 € en 6 semaines. Est-ce qu'il existe des aides que je n'ai pas explorées ? » →`shen_honnete_a` |
 | | | | | · **Silence** → « _(silence)_ » →`shen_silence_a` |
-| J+4 | 09:14 | l'autre | text | **3 variantes :** « L'assistante sociale de l'hôpital, Mme Lemaitre, est disponible le mardi. Je vous écris son numéro : 01 56 01 70 32. Dites que vous venez de ma part. » ⁄ « Il existe un fond d'urgence pour les cancers rares, dossier à monter sous 10 jours. Je vous envoie le formulaire par mail. » ⁄ « Je peux orienter votre dossier vers une bourse caritative qui finance jusqu'à 8 000 € en 4 semaines. Je vous joins demain. » _(si `shen_honnete_a`, FIN `aubin_aide_pratique`)_ |
+| J+4 | 09:14 | l'autre | text | **3 variantes :** « L'assistante sociale de l'hôpital, Madame Lemaître, est disponible le mardi. Je vous écris son numéro : 01 56 01 70 32. Dites que vous venez de ma part. » ⁄ « Il existe un fond d'urgence pour les cancers rares, dossier à monter sous 10 jours. Je vous envoie le formulaire par mail. » ⁄ « Je peux orienter votre dossier vers une bourse caritative qui finance jusqu'à 8 000 € en 4 semaines. Je vous joins demain. » _(si `shen_honnete_a`, FIN `aubin_aide_pratique`)_ |
 | J+5 | 18:08 | l'autre | text | Bonne continuation. À votre disposition si besoin. _(si `shen_pro_a`, FIN `aubin_distance_pro`)_ |
 | J+6 | 11:32 | l'autre | text | Pas de nouvelles. J'espère que votre mère va bien. Je reste joignable. _(si `shen_silence_a`, FIN `aubin_silence`)_ |
 
@@ -42,7 +42,7 @@
 | J+0 | 00:18 | **Shen** | choice | **CHOIX :** _(si `shen_curieuse_sav`)_ |
 | | | | | · **Bloquer + signaler** → « _(silence)_ » FIN `shen_block_sav_late` |
 | | | | | · **Donner code** → « (Shen envoie un code à 6 chiffres) » →`shen_donne_code` |
-| J+1 | 06:24 | l'autre | text | **2 variantes :** « Merci. Votre compte est sécurisé. ⏎  ⏎ — BANQUE INFO : Prélèvement Apple Services 287.50 € — compte clôturé pour insuffisance. » ⁄ « Compte vérifié. Bonne journée. ⏎  ⏎ — ALERTE BNP : tentative de paiement à 320 € sur AliExpress refusée. Vérifiez votre application. » _(si `shen_donne_code`, FIN `shen_arnaquee`)_ |
+| J+1 | 06:24 | l'autre | text | **2 variantes :** « Merci. Votre compte est sécurisé. ⏎  ⏎ — BANQUE INFO : Prélèvement Apple Services 287,50 € — compte clôturé pour insuffisance. » ⁄ « Compte vérifié. Bonne journée. ⏎  ⏎ — ALERTE BNP : tentative de paiement à 320 € sur AliExpress refusée. Vérifiez votre application. » _(si `shen_donne_code`, FIN `shen_arnaquee`)_ |
 | J+1 | 09:14 | l'autre | text | **2 variantes :** « Votre session a expiré. Reconnectez-vous : appleid-secure.fr » ⁄ « Tentative d'accès non autorisée toujours active. Sécurisez sous 12h. » _(si `shen_clique_sav`, FIN `shen_sauve_de_justesse`)_ |
 
 ### ❓ Karim (wrong number)  ·  `karim_wrong_number`
@@ -173,7 +173,7 @@
 | | | | | · **Refuser** → « Pas dispo en ce moment. Une autre fois. » FIN `shen_refuse_s` |
 | J+0 | 00:36 | l'autre | text | **3 variantes :** « Je peux pousser à 5400. Pas plus. Elle est jeune, elle gère son cash. » ⁄ « Honnêtement non. Mais je peux te garantir 4800 + recommandation pour 2 autres missions plus tard. » ⁄ « Si tu me lâches pas en route, je peux monter à 5500. » _(si `shen_negocie_s`)_ |
 | J+0 | 00:40 | **Shen** | choice | **CHOIX :** _(si `shen_negocie_s`)_ |
-| | | | | · **OK** → « OK pour 5400. On commence quand ? » →`shen_accept_s` |
+| | | | | · **OK** → « OK, marché conclu. On commence quand ? » →`shen_accept_s` |
 | | | | | · **Refuser** → « Non c'est trop court pour moi. Désolée. » FIN `shen_refuse_negocie_s` |
 | J+2 | 09:14 | l'autre | text | **3 variantes :** « Je t'envoie les specs par mail. RDV chez elle samedi 14h pour kick-off. 22 rue Saint-Maur. » ⁄ « Specs envoyées. Premier livrable : esquisses des 3 lofts pour le 10 du mois. » ⁄ « Tu reçois le brief. La cliente s'appelle Anaïs Becker, sympa mais perfectionniste. » _(si `shen_accept_s`)_ |
 | J+5 | 18:22 | l'autre | text | **3 variantes :** « Anaïs m'a dit que tu lui as envoyé une première esquisse. Elle a aimé. Continue. » ⁄ « Petit point : tu cours dans 8 directions ? Anaïs m'a dit que tu as l'air débordée. » ⁄ « Tu tiens le délai ? Pas de pression mais elle est stricte. » _(si `shen_accept_s`)_ |
@@ -208,7 +208,7 @@
 
 ### 👵🏼 Voisine Dubreuil  ·  `voisine_dubreuil`
 
-- Catégorie **voisinage** · démarre ≥ J9 · contact Mme Dubreuil (3e) (Voisine)
+- Catégorie **voisinage** · démarre ≥ J9 · contact Madame Dubreuil (3e) (Voisine)
 - _Voisine 71 ans à Belleville. Colis perdu puis fuite plomberie chez Maman. 3 fins._
 - Fichier `lib/data/messages_arcs/voisine.dart` · 16 beats
 
@@ -238,6 +238,6 @@
 | J+3 | 14:34 | l'autre | text | **3 variantes :** « Voilà ce que ça donne chez moi. Pas grave si vous trouvez la source. Je suis assurée. » ⁄ « Ce n'est pas une accusation, hein. Je voulais juste vous alerter. » ⁄ « Pas d'urgence, mais si vous pouviez prévenir un plombier, ce serait gentil. » _(si `shen_verifie_v`)_ |
 | J+4 | 19:04 | l'autre | text | **3 variantes :** « Bon. Je suis montée chez votre maman. Elle est charmante. La fuite vient de la salle de bain. Elle a appelé son plombier habituel, il vient demain. ⏎ Elle a accepté que je reste boire un thé. » ⁄ « Votre maman m'a fait du thé Long Jing. Elle m'a dit que vous travaillez beaucoup. Je n'ai rien dit de la fuite, on s'en est occupé entre nous. » ⁄ « Tout est sous contrôle. Votre maman est une femme bien. Elle s'inquiète, mais ne dit rien. » _(si `shen_demande_v`)_ |
 | J+4 | 21:14 | l'autre | text | **3 variantes :** « Vous avez trouvé ? Je n'ai pas de nouvelles depuis ce matin. » ⁄ « Tout va bien chez vous ? » ⁄ « Ma fuite continue. Si vous pouviez juste me dire ce que vous avez vu. » _(si `shen_verifie_v`)_ |
-| J+5 | 11:22 | l'autre | text | **3 variantes :** « Plombier passé. C'est réglé. Votre maman m'a redonné un sachet de thé pour vous. Passez quand vous pouvez. » ⁄ « Tout est réparé. J'ai laissé un mot à votre maman avec mon numéro. Au cas où. » ⁄ « Tout va bien. J'ai une question : pourquoi votre maman ne sait pas que vous habitez rue de Berri ? » _(si `shen_demande_v`, FIN `voisine_alliée`)_ |
+| J+5 | 11:22 | l'autre | text | **3 variantes :** « Plombier passé. C'est réglé. Votre maman m'a redonné un sachet de thé pour vous. Passez quand vous pouvez. » ⁄ « Tout est réparé. J'ai laissé un mot à votre maman avec mon numéro. Au cas où. » ⁄ « Tout va bien. J'ai une question : pourquoi votre maman ne sait pas que vous avez déménagé ? » _(si `shen_demande_v`, FIN `voisine_alliée`)_ |
 | J+6 | 22:08 | l'autre | text | **3 variantes :** « La fuite s'est arrêtée. Tant mieux. Je ne vous embête plus. » ⁄ « J'ai appelé moi-même un plombier qui est passé chez vous. Votre maman a payé. Vous me remercierez à l'occasion. » ⁄ « Bon. Je comprends que vous ne pouviez pas. Je n'ai rien dit à votre maman. » _(si `shen_esquive_plombe`, FIN `voisine_dignite_blessee`)_ |
 | J+5 | 09:14 | l'autre | text | Je vous ai laissé le colis devant votre porte hier. Bonne réception. _(si `shen_seche_v`, FIN `voisine_distance`)_ |

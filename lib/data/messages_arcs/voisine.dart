@@ -8,7 +8,7 @@ import '../../models/messages_arc.dart';
 
 const voisineContact = MessagesArcContact(
   id: 'arc_voisine_dubreuil',
-  displayName: 'Mme Dubreuil (3e)',
+  displayName: 'Madame Dubreuil (3e)',
   emoji: '👵🏼',
   avatarTint: '#E0D9C5',
   subtitle: 'Voisine',
@@ -266,7 +266,7 @@ const voisineBeats = <MessagesArcBeat>[
       'Tout est réparé. J\'ai laissé un mot à votre maman avec mon numéro. '
           'Au cas où.',
       'Tout va bien. J\'ai une question : pourquoi votre maman ne sait pas '
-          'que vous habitez rue de Berri ?',
+          'que vous avez déménagé ?',
     ],
     endsArc: 'voisine_alliée',
   ),

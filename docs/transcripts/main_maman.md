@@ -179,8 +179,8 @@ Contact `maman` — 129 messages canoniques. « moi » = Shen.
 |---|---|---|---|
 | 08:32 | Maman ❤️ | Bonjour. |  |
 | 12:18 | Maman ❤️ | Tu manges ? |  |
-| 18:42 | Maman ❤️ | Tu portes un parfum différent quand tu passes. Je ne te juge pas. Je te le dis. ⟨susp≥30⟩ |  |
 | 17:48 | Maman ❤️ | Tu as oublié de m'apporter des fleurs ce matin. C'est la première fois en quatre mois. ⟨susp≥30⟩ |  |
+| 18:42 | Maman ❤️ | Tu portes un parfum différent quand tu passes. Je ne te juge pas. Je te le dis. ⟨susp≥30⟩ |  |
 
 ## J14
 

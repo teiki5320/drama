@@ -59,7 +59,7 @@ Contact `tristan` — 44 messages canoniques. « moi » = Shen.
 | Heure | Qui | Message | beat |
 |---|---|---|---|
 | 07:08 | Tristan H. | Petit déjeuner à 7h30. Si vous voulez. |  |
-| 19:32 | Tristan H. | Mes parents passent dimanche. Préparez-vous. |  |
+| 19:32 | Tristan H. | Mes parents passent jeudi. Préparez-vous. |  |
 | 19:48 | **Shen** | OK. |  |
 
 ## J12

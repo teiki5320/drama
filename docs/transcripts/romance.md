@@ -398,7 +398,7 @@
 | J+2 | 20:18 | l'autre | text | **3 variantes :** « Tu te trompes. Mais OK, je respecte ta défense. » ⁄ « Bon courage. Tu en auras besoin. » ⁄ « Quand tu seras prête à recevoir, tu sauras où me trouver. » _(si `shen_reveil`, FIN `shen_arret_propre_man2`)_ |
 | J+1 | 19:14 | l'autre | text | **2 variantes :** « Je suis pas analyste, juste sensible. Promis. » ⁄ « Tu te défends. C'est OK. Ça veut dire que j'ai touché juste. » _(si `shen_mef_man2`)_ |
 | J+3 | 22:32 | l'autre | text | Je te laisse réfléchir. Je suis là quand tu veux. _(si `shen_mef_man2`, FIN `man2_lache`)_ |
-| J+5 | 21:08 | l'autre | text | **3 variantes :** « Mon premier RDV individuel est à 80 €/séance. Tu en aurais besoin de 6 minimum. » ⁄ « Je peux te recommander une retraite à Bali en mai. 1200 €. Je t'accompagne. » ⁄ « Mon livre est sorti. 18 €. Lis-le et on en reparle. » _(si `shen_avalee`)_ |
+| J+5 | 21:08 | l'autre | text | **3 variantes :** « Mon premier RDV individuel est à 80 €/séance. Tu en aurais besoin de 6 minimum. » ⁄ « Je peux te recommander une retraite à Bali en mai. 1 200 €. Je t'accompagne. » ⁄ « Mon livre est sorti. 18 €. Lis-le et on en reparle. » _(si `shen_avalee`)_ |
 | J+5 | 21:14 | **Shen** | choice | **CHOIX :** _(si `shen_avalee`)_ |
 | | | | | · **Réveil tardif** → « Tu as réussi ton coup. Bravo. » FIN `shen_reveil_tardif` |
 | | | | | · **Block** → « _(silence)_ » FIN `shen_block_late_man2` |

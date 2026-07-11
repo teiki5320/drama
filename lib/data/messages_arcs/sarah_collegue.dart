@@ -126,7 +126,7 @@ const sarahBeats = <MessagesArcBeat>[
     choices: [
       MessagesArcChoice(
         label: 'OK',
-        reply: 'OK pour 5400. On commence quand ?',
+        reply: 'OK, marché conclu. On commence quand ?',
         moodDelta: 1,
         setBranch: 'shen_accept_s',
       ),

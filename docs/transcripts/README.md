@@ -21,4 +21,4 @@ Généré par `tools/transcript.py`. Relire pour repérer les incohérences (tim
 
 ## Analyse
 
-- [Incohérences heuristiques](./_incoherences.md) — 1 signalement(s)
+- [Incohérences heuristiques](./_incoherences.md) — 0 signalement(s)

@@ -220,9 +220,9 @@ Contact `camille` — 144 messages canoniques. « moi » = Shen.
 | Heure | Qui | Message | beat |
 |---|---|---|---|
 | 21:58 | Camille | T'es vivante ? |  |
-| 22:02 | Camille | Je demande parce que ton dernier message date d'il y a 8 jours. J'ai compté. Enfin, mon boulanger a compté. |  |
+| 22:02 | Camille | Je demande parce que ton dernier message date d'il y a treize jours. J'ai compté. Enfin, mon boulanger a compté. |  |
 | 22:07 | Camille | Il met un croissant de côté tous les matins « pour ton amie ». Il commence à me regarder avec pitié. |  |
-| 22:14 | Camille | Sérieux, Shen. Huit jours. Je dis pas ça pour te culpabiliser. Si. Un peu. | `camille_distance_j26` |
+| 22:14 | Camille | Sérieux, Shen. Treize jours. Je dis pas ça pour te culpabiliser. Si. Un peu. | `camille_distance_j26` |
 | | | ↳ **3 réponses possibles :** | |
 | | | · **Excuse vraie** → « T'as raison. Je me noie un peu là-haut. Demain 19h, croissants sur moi ? » RelationshipDelta(trust: 5, loyalty: 3) | |
 | | | · **Vanne défensive** → « J'étais occupée à devenir une femme du monde. Ça prend du temps, tu peux pas savoir. » RelationshipDelta(attraction: 2, trust: -2, suspicion: 2) | |
