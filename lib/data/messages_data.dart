@@ -466,18 +466,18 @@ const Map<String, List<Msg>> kThreads = {
     Msg(sender: 'maman', text: 'Tu manges ?', time: '12:18', day: 13),
     Msg(
       sender: 'maman',
-      text:
-          'Tu portes un parfum différent quand tu passes. Je ne te juge pas. '
-          'Je te le dis.',
-      time: '18:42',
+      text: 'Tu as oublié de m\'apporter des fleurs ce matin. '
+          'C\'est la première fois en quatre mois.',
+      time: '17:48',
       day: 13,
       requiresSuspicionAtLeast: 30,
     ),
     Msg(
       sender: 'maman',
-      text: 'Tu as oublié de m\'apporter des fleurs ce matin. '
-          'C\'est la première fois en quatre mois.',
-      time: '17:48',
+      text:
+          'Tu portes un parfum différent quand tu passes. Je ne te juge pas. '
+          'Je te le dis.',
+      time: '18:42',
       day: 13,
       requiresSuspicionAtLeast: 30,
     ),
@@ -1003,7 +1003,7 @@ const Map<String, List<Msg>> kThreads = {
       day: 14,
     ),
 
-    // ── J26 — huit jours de silence (Ep2, beat à choix) ──
+    // ── J26 — treize jours de silence (Ep2, beat à choix) ──
     Msg(
       sender: 'camille',
       text: 'T\'es vivante ?',
@@ -1013,7 +1013,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'camille',
       text:
-          'Je demande parce que ton dernier message date d\'il y a 8 '
+          'Je demande parce que ton dernier message date d\'il y a treize '
           'jours. J\'ai compté. Enfin, mon boulanger a compté.',
       time: '22:02',
       day: 26,
@@ -1029,7 +1029,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'camille',
       text:
-          'Sérieux, Shen. Huit jours. Je dis pas ça pour te '
+          'Sérieux, Shen. Treize jours. Je dis pas ça pour te '
           'culpabiliser. Si. Un peu.',
       time: '22:14',
       day: 26,
@@ -1209,7 +1209,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(sender: 'tristan', text: 'Petit déjeuner à 7h30. Si vous voulez.', time: '07:08', day: 11),
     Msg(
       sender: 'tristan',
-      text: 'Mes parents passent dimanche. Préparez-vous.',
+      text: 'Mes parents passent jeudi. Préparez-vous.',
       time: '19:32',
       day: 11,
     ),
@@ -1763,7 +1763,7 @@ const Map<String, List<Msg>> kThreads = {
       sender: 'tante_mei',
       text:
           'Ton visage, c\'est le visage de mon frère. Shen Wenbo. '
-          '你是他的女儿吗 ?',
+          '你是他的女儿吗 ? (Es-tu sa fille ?)',
       time: '10:52',
       day: 35,
     ),
@@ -1805,7 +1805,7 @@ const Map<String, List<Msg>> kThreads = {
     ),
     Msg(
       sender: 'tante_mei',
-      text: 'Venez. Toi et ta mère. Avant l\'hiver. 家里等你们。',
+      text: 'Venez. Toi et ta mère. Avant l\'hiver. 家里等你们。 (La maison vous attend.)',
       time: '19:32',
       day: 78,
       status: MsgStatus.delivered,

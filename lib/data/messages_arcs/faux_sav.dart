@@ -103,7 +103,7 @@ const fauxSavBeats = <MessagesArcBeat>[
     requireBranch: 'shen_donne_code',
     textVariants: [
       'Merci. Votre compte est sécurisé.\n\n'
-          '— BANQUE INFO : Prélèvement Apple Services 287.50 € — '
+          '— BANQUE INFO : Prélèvement Apple Services 287,50 € — '
           'compte clôturé pour insuffisance.',
       'Compte vérifié. Bonne journée.\n\n'
           '— ALERTE BNP : tentative de paiement à 320 € sur AliExpress '

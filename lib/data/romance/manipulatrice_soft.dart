@@ -197,7 +197,7 @@ const manipBeats = <RomanceBeat>[
     requireBranch: 'shen_avalee',
     textVariants: [
       'Mon premier RDV individuel est à 80 €/séance. Tu en aurais besoin de 6 minimum.',
-      'Je peux te recommander une retraite à Bali en mai. 1200 €. Je t\'accompagne.',
+      'Je peux te recommander une retraite à Bali en mai. 1 200 €. Je t\'accompagne.',
       'Mon livre est sorti. 18 €. Lis-le et on en reparle.',
     ],
   ),

@@ -148,7 +148,7 @@ const drAubinBeats = <MessagesArcBeat>[
     type: MessagesArcBeatType.text,
     requireBranch: 'shen_honnete_a',
     textVariants: [
-      'L\'assistante sociale de l\'hôpital, Mme Lemaitre, est disponible '
+      'L\'assistante sociale de l\'hôpital, Madame Lemaître, est disponible '
           'le mardi. Je vous écris son numéro : 01 56 01 70 32. Dites '
           'que vous venez de ma part.',
       'Il existe un fond d\'urgence pour les cancers rares, dossier à '
