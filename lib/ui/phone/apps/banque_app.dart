@@ -750,7 +750,7 @@ class _StockRow extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  '${up ? "+" : ""}${change.toStringAsFixed(1)}%',
+                  '${up ? "+" : ""}${change.toStringAsFixed(1).replaceAll('.', ',')}%',
                   style: GoogleFonts.inter(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
