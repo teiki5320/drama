@@ -93,14 +93,26 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
     // message du fil : les SMS d'ambiance arrivés après le message-clé
     // masquaient le panneau et bloquaient toute la progression.
     Msg? pendingMsg;
-    for (final m in msgs) {
+    var pendingIdx = -1;
+    for (var i = 0; i < msgs.length; i++) {
+      final m = msgs[i];
       if (m.sender != 'moi' &&
           m.beatId != null &&
           choiceForBeat(m.beatId!) != null &&
           !sentReplies.containsKey(m.beatId!)) {
         pendingMsg = m;
+        pendingIdx = i;
         break;
       }
+    }
+    // Tant qu'un choix est en attente, on masque tout ce qui vient
+    // chronologiquement APRÈS le message-clé. Sans ça, toute la journée de
+    // Maman (petit-déj → « Bonne nuit ») s'affichait d'un bloc dès J1, le
+    // panneau de choix se retrouvait enfoui au milieu et la conversation
+    // n'avait plus aucun sens. La discussion se fige désormais sur la
+    // décision ; la suite se révèle une fois la réponse envoyée.
+    if (pendingIdx >= 0) {
+      msgs.removeRange(pendingIdx + 1, msgs.length);
     }
     final pendingBeat = pendingMsg?.beatId;
 
@@ -192,7 +204,9 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
               itemBuilder: (context, i) {
                 if (i == msgs.length) {
                   // Indicateur de frappe (Tristan jamais ne tape encore en PR2)
-                  if (widget.contact.id == 'maman' && day == 1) {
+                  if (widget.contact.id == 'maman' &&
+                      day == 1 &&
+                      pendingBeat == null) {
                     return const _TypingBubble();
                   }
                   return const SizedBox(height: 24);
