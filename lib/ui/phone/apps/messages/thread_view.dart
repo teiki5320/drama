@@ -11,6 +11,59 @@ import '../../../../providers/relationships_provider.dart';
 import '../../../../providers/sent_replies_provider.dart';
 import 'choice_panel.dart';
 
+/// Résultat du calcul d'affichage d'un fil : messages visibles (déjà
+/// tronqués au choix en attente) + le beat/message en attente s'il y en a un.
+class ThreadRender {
+  final List<Msg> messages;
+  final String? pendingBeatId;
+  final Msg? pendingMsg;
+  const ThreadRender(this.messages, this.pendingBeatId, this.pendingMsg);
+}
+
+/// Logique PURE de rendu d'un fil (testable sans widget) :
+/// - filtre par jour courant et seuil de suspicion ;
+/// - intercale les réponses déjà envoyées de Shen après leur beat ;
+/// - détecte le PREMIER choix non répondu et TRONQUE tout ce qui suit,
+///   pour que la conversation se fige sur la décision au lieu de dérouler
+///   la journée entière d'un bloc.
+ThreadRender computeThreadRender({
+  required List<Msg> thread,
+  required Map<String, SentReply> sentReplies,
+  required int day,
+  required int suspicion,
+}) {
+  final canonMsgs = thread
+      .where((m) =>
+          m.day <= day &&
+          (m.requiresSuspicionAtLeast == null ||
+              suspicion >= m.requiresSuspicionAtLeast!))
+      .toList();
+  final msgs = <Msg>[];
+  for (final m in canonMsgs) {
+    msgs.add(m);
+    if (m.beatId != null && sentReplies.containsKey(m.beatId!)) {
+      msgs.add(sentReplies[m.beatId!]!.toMsg());
+    }
+  }
+  Msg? pendingMsg;
+  var pendingIdx = -1;
+  for (var i = 0; i < msgs.length; i++) {
+    final m = msgs[i];
+    if (m.sender != 'moi' &&
+        m.beatId != null &&
+        choiceForBeat(m.beatId!) != null &&
+        !sentReplies.containsKey(m.beatId!)) {
+      pendingMsg = m;
+      pendingIdx = i;
+      break;
+    }
+  }
+  if (pendingIdx >= 0) {
+    msgs.removeRange(pendingIdx + 1, msgs.length);
+  }
+  return ThreadRender(msgs, pendingMsg?.beatId, pendingMsg);
+}
+
 /// Vue conversation iMessage : bulles bleues à droite (Shen), grises à
 /// gauche (l'autre), barre du haut avec emoji + nom, indicateur de
 /// frappe « tape... », statut « Lu / Délivré » sous le dernier message
@@ -73,48 +126,16 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
         0;
     // Messages canoniques du thread + réponses dynamiques de Shen
     // intercalées après chaque beat répondu.
-    final canonMsgs = (kThreads[widget.contact.id] ?? [])
-        .where((m) =>
-            m.day <= day &&
-            (m.requiresSuspicionAtLeast == null ||
-                suspicion >= m.requiresSuspicionAtLeast!))
-        .toList();
-    final msgs = <Msg>[];
-    for (final m in canonMsgs) {
-      msgs.add(m);
-      if (m.beatId != null && sentReplies.containsKey(m.beatId!)) {
-        final r = sentReplies[m.beatId!]!;
-        msgs.add(r.toMsg());
-      }
-    }
-    // Détecte le choix en attente : le PREMIER message reçu (ordre
-    // chronologique) qui porte un beatId avec un SmsChoice défini et
-    // auquel Shen n'a pas encore répondu. Ne pas se limiter au dernier
-    // message du fil : les SMS d'ambiance arrivés après le message-clé
-    // masquaient le panneau et bloquaient toute la progression.
-    Msg? pendingMsg;
-    var pendingIdx = -1;
-    for (var i = 0; i < msgs.length; i++) {
-      final m = msgs[i];
-      if (m.sender != 'moi' &&
-          m.beatId != null &&
-          choiceForBeat(m.beatId!) != null &&
-          !sentReplies.containsKey(m.beatId!)) {
-        pendingMsg = m;
-        pendingIdx = i;
-        break;
-      }
-    }
-    // Tant qu'un choix est en attente, on masque tout ce qui vient
-    // chronologiquement APRÈS le message-clé. Sans ça, toute la journée de
-    // Maman (petit-déj → « Bonne nuit ») s'affichait d'un bloc dès J1, le
-    // panneau de choix se retrouvait enfoui au milieu et la conversation
-    // n'avait plus aucun sens. La discussion se fige désormais sur la
-    // décision ; la suite se révèle une fois la réponse envoyée.
-    if (pendingIdx >= 0) {
-      msgs.removeRange(pendingIdx + 1, msgs.length);
-    }
-    final pendingBeat = pendingMsg?.beatId;
+    // Calcul d'affichage (logique pure, testée dans test/thread_gating_test).
+    final render = computeThreadRender(
+      thread: kThreads[widget.contact.id] ?? const [],
+      sentReplies: sentReplies,
+      day: day,
+      suspicion: suspicion,
+    );
+    final msgs = render.messages;
+    final pendingMsg = render.pendingMsg;
+    final pendingBeat = render.pendingBeatId;
 
     return Scaffold(
       backgroundColor: Colors.white,
