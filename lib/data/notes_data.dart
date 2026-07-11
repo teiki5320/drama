@@ -294,7 +294,7 @@ const kNotes = <NoteEntry>[
     title: 'Deuxième récolte',
     body:
         '« Vous avez identifié la deuxième récolte. »\n\n'
-        'Huit mots à 8h12. Pas de bonjour. Pas de signature.\n'
+        'Six mots à 8h12. Pas de bonjour. Pas de signature.\n'
         'Chez les Heng, c\'est une médaille.\n\n'
         'Je l\'ai relue quatre fois. Je déteste que ça me fasse ça.',
   ),

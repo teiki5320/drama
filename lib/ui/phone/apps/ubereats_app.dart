@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../core/format.dart';
 import '../../../data/ubereats/customers.dart';
 import '../../../data/ubereats/restaurants.dart';
 import '../../../models/ubereats.dart' as ub;
@@ -208,7 +209,7 @@ class _LivreurMode extends ConsumerWidget {
               Expanded(
                 child: _StatCard(
                   label: 'Note livreuse',
-                  value: '⭐ ${notedRating.toStringAsFixed(1)}',
+                  value: '⭐ ${frDec(notedRating, 1)}',
                   hint: '${stats.ratings.length} avis',
                 ),
               ),
@@ -225,7 +226,7 @@ class _LivreurMode extends ConsumerWidget {
               Expanded(
                 child: _StatCard(
                   label: 'Gains du jour',
-                  value: '${earnings.toStringAsFixed(2)} €',
+                  value: '${frDec(earnings, 2)} €',
                   hint: '${daily.livraisons} livraisons',
                   emphasize: earnings >= 20,
                 ),
@@ -296,7 +297,7 @@ class _LivreurMode extends ConsumerWidget {
       time: time,
       from: r.name,
       to: '${cl.displayName} · ${ub.zoneLabel(cl.zone)}',
-      distance: '${c.distanceKm.toStringAsFixed(1)} km',
+      distance: '${frDec(c.distanceKm, 1)} km',
       payout: c.totalPayout,
       penalty: 0,
       status: 'Proposée',
@@ -606,7 +607,7 @@ class _CourseCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    '×${course.surge.toStringAsFixed(1)} ☔',
+                    '×${frDec(course.surge, 1)} ☔',
                     style: GoogleFonts.inter(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
@@ -712,7 +713,7 @@ class _CourseCard extends StatelessWidget {
                 )
               else
                 Text(
-                  '+ ${effectivePayout.toStringAsFixed(2)} €',
+                  '+ ${frDec(effectivePayout, 2)} €',
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -827,7 +828,7 @@ class _OrderRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '${item.price.toStringAsFixed(2)} €',
+                '${frDec(item.price, 2)} €',
                 style: GoogleFonts.inter(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,

@@ -421,10 +421,10 @@ class DeadlineBanner extends ConsumerWidget {
     final label = isPast
         ? 'Deadline dépassée'
         : delta == 0
-            ? 'AUJOURD\'HUI · Traitement Maman'
+            ? 'AUJOURD\'HUI · Traitement de Maman'
             : delta == 1
-                ? 'DEMAIN · Traitement Maman'
-                : 'J-$delta · Traitement Maman';
+                ? 'DEMAIN · Traitement de Maman'
+                : 'J-$delta · Traitement de Maman';
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
       child: Container(
