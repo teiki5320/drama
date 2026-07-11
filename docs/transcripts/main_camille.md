@@ -21,7 +21,7 @@ Contact `camille` — 144 messages canoniques. « moi » = Shen.
 | 22:14 | Camille | OK tu m'as raconté à 22h, j'ai cinq minutes pour réagir. |  |
 | 22:15 | Camille | « Une carte. Quatre morceaux. Dans la flaque. » ⏎ Tu as un don pour les premières phrases de roman. |  |
 | 22:16 | Camille | T. Heng. Tu sais ce que ça veut dire ? |  |
-| 22:18 | **Shen** | Que mes économies vont jamais aller jusqu'à J45. |  |
+| 22:18 | **Shen** | Que mes économies vont jamais tenir jusqu'au bout du mois. |  |
 | 22:20 | Camille | Que tu pars au lit. Demain on parle. |  |
 
 ## J2

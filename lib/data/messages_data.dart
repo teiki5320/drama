@@ -421,7 +421,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(sender: 'maman', text: 'Tu as eu une bonne journée ?', time: '17:48', day: 11),
     Msg(
       sender: 'maman',
-      text: 'Premier jour de stage. Comment ça s\'est passé ?',
+      text: 'Alors, ce stage ? Comment ça s\'est passé ?',
       time: '21:08',
       day: 11,
     ),
@@ -737,7 +737,7 @@ const Map<String, List<Msg>> kThreads = {
       day: 1,
     ),
     Msg(sender: 'camille', text: 'T. Heng. Tu sais ce que ça veut dire ?', time: '22:16', day: 1),
-    Msg(sender: 'moi', text: 'Que mes économies vont jamais aller jusqu\'à J45.', time: '22:18', day: 1),
+    Msg(sender: 'moi', text: 'Que mes économies vont jamais tenir jusqu\'au bout du mois.', time: '22:18', day: 1),
     Msg(sender: 'camille', text: 'Que tu pars au lit. Demain on parle.', time: '22:20', day: 1),
     // ── J2 — Tenon, Camille tape de loin
     Msg(sender: 'camille', text: 'Tu es à Tenon ?', time: '06:48', day: 2),
@@ -1663,7 +1663,7 @@ const Map<String, List<Msg>> kThreads = {
     Msg(
       sender: 'madame_heng',
       text:
-          'Mon neveu m\'a dit que vous lisiez Marguerite Duras. '
+          'Mon fils m\'a dit que vous lisiez Marguerite Duras. '
           'L\'Amant, ou Hiroshima ?',
       time: '21:04',
       day: 19,
