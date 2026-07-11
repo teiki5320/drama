@@ -116,11 +116,14 @@ const voisineBeats = <MessagesArcBeat>[
     ],
   ),
   // ── J+3 — Le vrai sujet apparaît : plomberie
+  // Le joueur qui a été « Sèche » (shen_seche_v) reste sur l'affaire du colis
+  // et n'entre pas dans l'intrigue plomberie/fuite.
   MessagesArcBeat(
     dayOffset: 3,
     atHour: 7,
     atMinute: 48,
     type: MessagesArcBeatType.text,
+    forbidBranch: 'shen_seche_v',
     textVariants: [
       'Bonjour Madame Marchand. Je vous dérange pour une chose embêtante : '
           'il y a une fuite chez vous qui inonde mon plafond. '
@@ -137,6 +140,7 @@ const voisineBeats = <MessagesArcBeat>[
     atMinute: 52,
     type: MessagesArcBeatType.choice,
     fromThem: false,
+    forbidBranch: 'shen_seche_v',
     choices: [
       MessagesArcChoice(
         label: 'Vérifier',

@@ -71,3 +71,24 @@ une réplique écrite (décision auteur) · **CONVENTION** = mécanique sûre ·
 
 ### Décompte
 - **A (réparable sûr)** : 12 · **B (retouche réplique)** : 5 · **C (auteur)** : 5 · **D (conventions)** : ~5 · **E (écartés)** : ~25
+
+---
+
+## Résolution (« traite tout »)
+
+**Corrigés (retouches de réplique / gating) :**
+- B1 Camille J1 22:18 : « …jusqu'à J45 » → « …jusqu'au bout du mois » (spoiler + méta retirés).
+- B2 Maman J1 (Inquiète) : « gélules de 16h » → « mangé quelque chose de chaud » (plus de pré-spoiler médical).
+- B4 Maman J11 21:08 : « Premier jour de stage. » → « Alors, ce stage ? » (lève la redite / la tension avec « depuis trois jours »).
+- B5 Madame Heng J19 : « Mon neveu » → « Mon fils » (aucun neveu au canon ; elle dit déjà « mon fils » ailleurs).
+- A7 dr_aubin : `forbidBranch: 'shen_reporte_a'` sur « rappel demain » + « suite à votre passage » (incohérents si RDV reporté).
+- A9 voisine : `forbidBranch: 'shen_seche_v'` sur l'intro fuite + son choix (le joueur « Sèche » reste sur le colis).
+- A12 stephane : conseil « 7e » → « 8e » (secteur canon de Shen).
+
+**Gardés + tranchés (NON-bugs après analyse) :**
+- B3 Camille J4 « Nier » : option de MENSONGE valide (trust −8, Shen ment sciemment). Conservée.
+- Madame Heng J46 tutoiement : rupture d'intimité volontaire (citation d'un moment tendre). Conservé.
+- « SHEN MIAO » (badge refusé) : Tristan ne l'a pas déclarée. Conservé.
+- « Mme » (clients/incidents, ~12 noms) : français correct, distinct de « Madame Heng » (voix canon). Conservé.
+- Vincent J39 « verre en bas » : scène « poison au bar de l'hôtel » en présentiel voulue (Vincent à HK pour affaires). Conservé.
+- Camille aperçu nuit à 7h30 : nécessiterait un beat de pacing J1 (authoring pur) — laissé tel quel, le moteur ne gate pas à l'horloge par design.

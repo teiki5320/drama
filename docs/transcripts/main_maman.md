@@ -23,7 +23,7 @@ Contact `maman` — 129 messages canoniques. « moi » = Shen.
 | | | ↳ **3 réponses possibles :** | |
 | | | · **Réciproque** → « Toi couvre-toi surtout. » RelationshipDelta(attraction: 3, loyalty: 2, dependency: 2) | |
 | | | · **Court** → « Oui Maman. » RelationshipDelta(attraction: 1) | |
-| | | · **Inquiète** → « Tu as bien pris tes gélules de 16h hier ? » RelationshipDelta(dependency: 4, suspicion: 2, trust: 1) | |
+| | | · **Inquiète** → « Tu as bien mangé quelque chose de chaud hier soir ? » RelationshipDelta(dependency: 4, suspicion: 2, trust: 1) | |
 | 12:34 | Maman ❤️ | Tu as déjeuné ? |  |
 | 12:35 | **Shen** | Oui un bowl. |  |
 | 12:35 | Maman ❤️ | Bowl. Le café au coin de la rue ? |  |
@@ -156,7 +156,7 @@ Contact `maman` — 129 messages canoniques. « moi » = Shen.
 | 12:15 | **Shen** | Stage paysagiste. Lao Chen. |  |
 | 12:32 | Maman ❤️ | Tu ne m'as pas dit que tu changeais de métier. |  |
 | 17:48 | Maman ❤️ | Tu as eu une bonne journée ? |  |
-| 21:08 | Maman ❤️ | Premier jour de stage. Comment ça s'est passé ? |  |
+| 21:08 | Maman ❤️ | Alors, ce stage ? Comment ça s'est passé ? |  |
 | 21:10 | Maman ❤️ | « Bien. » Tu écris « bien » depuis trois jours. Donne-moi un détail. | `maman_stage_j11` |
 | | | ↳ **3 réponses possibles :** | |
 | | | · **Mensonge construit** → « La courge du potager a doublé en deux jours. Lao Chen dit que c'est l'humidité. » RelationshipDelta(trust: -4, suspicion: 8, attraction: -1) | |

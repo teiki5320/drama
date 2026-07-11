@@ -51,7 +51,7 @@ Contact `madame_heng` — 27 messages canoniques. « moi » = Shen.
 | Heure | Qui | Message | beat |
 |---|---|---|---|
 | 20:48 | Madame Heng | Merci pour ce déjeuner. Vous mangez comme quelqu'un qui a connu la faim. Ce n'est pas un reproche. |  |
-| 21:04 | Madame Heng | Mon neveu m'a dit que vous lisiez Marguerite Duras. L'Amant, ou Hiroshima ? | `heng_duras_j19` |
+| 21:04 | Madame Heng | Mon fils m'a dit que vous lisiez Marguerite Duras. L'Amant, ou Hiroshima ? | `heng_duras_j19` |
 | | | ↳ **3 réponses possibles :** | |
 | | | · **L'Amant** → « L'Amant. Quatre relectures cette année. » RelationshipDelta(trust: 6, attraction: 2, suspicion: -3) | |
 | | | · **Hiroshima** → « Hiroshima. La mémoire m'intéresse plus que la passion, Madame. » RelationshipDelta(trust: 4, attraction: 3) | |

@@ -102,7 +102,7 @@ const Map<String, SmsChoice> kSmsChoices = {
       ),
       SmsChoiceOption(
         label: 'Inquiète',
-        reply: 'Tu as bien pris tes gélules de 16h hier ?',
+        reply: 'Tu as bien mangé quelque chose de chaud hier soir ?',
         delta: RelationshipDelta(dependency: 4, suspicion: 2, trust: 1),
       ),
     ],

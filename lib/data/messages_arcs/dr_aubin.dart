@@ -91,6 +91,8 @@ const drAubinBeats = <MessagesArcBeat>[
     atHour: 17,
     atMinute: 14,
     type: MessagesArcBeatType.text,
+    // Ne pas jouer ce rappel « demain » si le RDV a été reporté à lundi.
+    forbidBranch: 'shen_reporte_a',
     textVariants: [
       'Rappel pour le rendez-vous demain matin. Pensez à arriver 15 min '
           'avant pour les formalités.',
@@ -104,6 +106,9 @@ const drAubinBeats = <MessagesArcBeat>[
     atHour: 15,
     atMinute: 38,
     type: MessagesArcBeatType.text,
+    // Le bilan « suite à votre passage ce matin » n'a pas de sens si le RDV
+    // a été reporté à lundi.
+    forbidBranch: 'shen_reporte_a',
     textVariants: [
       'Suite à votre passage ce matin : votre mère a très bien réagi à '
           'la nouvelle. Comme toujours. Tenez bon.',

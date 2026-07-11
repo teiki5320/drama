@@ -81,7 +81,7 @@ const stephaneBeats = <MessagesArcBeat>[
     requireBranch: 'shen_pousse_st',
     textVariants: [
       'Hé Shen. Pas pire que le mois dernier. Je vous lâche un peu.\n'
-          'Restez sur le 7e, c\'est plus stable.',
+          'Restez sur le 8e, c\'est plus stable.',
       'OK je note. Mais 67 % c\'est sous le seuil. Vous remontez ou je '
           'remonte la note.',
       'Vous avez du caractère, j\'aime ça. Mais le système, lui, il aime pas.',
