@@ -5,9 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/contact_states.dart';
 import '../../../data/messages_data.dart';
+import '../../../data/thread_render.dart';
 import '../../../models/messages_arc.dart';
 import '../../../providers/messages_arcs_provider.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/relationships_provider.dart';
 import '../../../providers/sent_replies_provider.dart';
 import '../status_bar.dart';
 import 'messages/arc_thread_view.dart';
@@ -134,13 +136,23 @@ class _ThreadTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final msgs =
-        (kThreads[contact.id] ?? []).where((m) => m.day <= currentDay).toList();
-    if (msgs.isEmpty) return const SizedBox.shrink();
-    final last = msgs.last;
+    // Aperçu = dernier message RÉELLEMENT visible au point de progression
+    // (même logique que le fil : filtré par jour + suspicion, tronqué au
+    // choix en attente). Sans ça, l'aperçu montrait le dernier message du
+    // JOUR (« Bonne nuit », 22:12) dès le matin.
+    final replies = ref.watch(sentRepliesProvider);
+    final suspicion =
+        ref.watch(relationshipsProvider)[contact.id]?.suspicion ?? 0;
+    final render = computeThreadRender(
+      thread: kThreads[contact.id] ?? const [],
+      sentReplies: replies,
+      day: currentDay,
+      suspicion: suspicion,
+    );
+    if (render.messages.isEmpty) return const SizedBox.shrink();
+    final last = render.messages.last;
     // Non-lu honnête : si le dernier message porte un beatId déjà répondu,
     // la conversation est traitée — la pastille s'éteint.
-    final replies = ref.watch(sentRepliesProvider);
     final unread = last.sender != 'moi' &&
         last.status != MsgStatus.read &&
         !(last.beatId != null && replies.containsKey(last.beatId!));

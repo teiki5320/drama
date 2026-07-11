@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:contre_jour/data/messages_data.dart';
+import 'package:contre_jour/data/thread_render.dart';
 import 'package:contre_jour/providers/sent_replies_provider.dart';
-import 'package:contre_jour/ui/phone/apps/messages/thread_view.dart';
 import 'package:contre_jour/ui/phone/widgets/home_widgets.dart';
 
 /// Tests de régression sur les deux bugs d'ouverture signalés en jouant :
@@ -37,6 +37,17 @@ void main() {
       expect(texts, isNot(contains('Bonne nuit')));
       expect(texts, isNot(contains('Tu rentres ce soir')));
       expect(texts, isNot(contains('déjeuné')));
+    });
+
+    test('aperçu (liste + widget) = dernier message visible, pas « Bonne nuit »',
+        () {
+      // Le dernier message visible sert d'aperçu dans la liste Messages et le
+      // widget home. À J1 matin il doit être le choix en attente, jamais le
+      // « Bonne nuit ma fille » de 22:12.
+      final r = computeThreadRender(
+          thread: maman, sentReplies: const {}, day: 1, suspicion: 0);
+      expect(r.messages.last.text, contains('Donne-moi un détail'));
+      expect(r.messages.last.text, isNot(contains('Bonne nuit')));
     });
 
     test('après réponse au petit-déj : la réponse s\'intercale, le fil avance',

@@ -5,7 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/calendar_data.dart';
 import '../../../data/messages_data.dart';
+import '../../../data/thread_render.dart';
 import '../../../providers/phone_state_provider.dart';
+import '../../../providers/relationships_provider.dart';
 import '../../../providers/sent_replies_provider.dart';
 
 /// Widget Météo grand format pour le home screen.
@@ -71,11 +73,20 @@ class PhotoMamanWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final day = ref.watch(phoneStateProvider.select((s) => s.currentDay));
-    // Dernier message reçu de Maman (sender != 'moi') visible jusqu'ici.
-    final mamanMsgs = (kThreads['maman'] ?? [])
-        .where((m) => m.day <= day && m.sender == 'maman')
-        .toList();
-    final last = mamanMsgs.isNotEmpty ? mamanMsgs.last : null;
+    // Dernier message de Maman RÉELLEMENT visible au point de progression
+    // (même logique que le fil : jour + suspicion + troncature au choix en
+    // attente). Sans ça, le widget affichait « Bonne nuit » (22:12) dès le
+    // matin, avant même que Maman l'ait envoyé.
+    final render = computeThreadRender(
+      thread: kThreads['maman'] ?? const [],
+      sentReplies: ref.watch(sentRepliesProvider),
+      day: day,
+      suspicion: ref.watch(relationshipsProvider)['maman']?.suspicion ?? 0,
+    );
+    Msg? last;
+    for (final m in render.messages) {
+      if (m.sender == 'maman') last = m;
+    }
     final body = last?.text ?? 'Couvre-toi.';
     final stamp = last == null
         ? '—'
