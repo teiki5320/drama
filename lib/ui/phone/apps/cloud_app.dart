@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../core/format.dart';
 import '../../../data/cloud_data.dart';
 import '../../../providers/phone_state_provider.dart';
 import '../../../providers/relationships_provider.dart';
@@ -411,7 +412,7 @@ class _StorageHeader extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '${used.toStringAsFixed(2)} / $total Go',
+                  '${frDec(used, 2)} / $total Go',
                   style: GoogleFonts.inter(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,

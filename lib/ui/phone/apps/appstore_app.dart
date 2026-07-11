@@ -306,17 +306,17 @@ class _AppRow extends StatelessWidget {
 
 String _ratingFor(String id) {
   return switch (id) {
-    'tinder' => '4.2',
-    'instagram' => '4.6',
-    'spotify' => '4.8',
-    'whatsapp' => '4.7',
-    'banque' => '4.1',
-    'ubereats' => '3.8',
-    'photos' => '4.5',
-    'notes' => '4.6',
-    'maps' => '4.4',
-    'cloud' => '3.9',
-    _ => '4.3',
+    'tinder' => '4,2',
+    'instagram' => '4,6',
+    'spotify' => '4,8',
+    'whatsapp' => '4,7',
+    'banque' => '4,1',
+    'ubereats' => '3,8',
+    'photos' => '4,5',
+    'notes' => '4,6',
+    'maps' => '4,4',
+    'cloud' => '3,9',
+    _ => '4,3',
   };
 }
 

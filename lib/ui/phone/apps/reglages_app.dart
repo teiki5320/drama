@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../core/format.dart';
 import '../../../data/banque_data.dart';
 import '../../../data/episodes.dart';
 import '../../../data/epilogues.dart';
@@ -128,14 +129,14 @@ class ReglagesApp extends ConsumerWidget {
                 const SizedBox(height: 18),
                 // ── TEMPS D'ÉCRAN
                 _Section(title: "TEMPS D'ÉCRAN · cette semaine", children: [
-                  _Row(label: 'Tinder', value: '${(2 + p.currentDay * 0.18).toStringAsFixed(1)} h'),
-                  _Row(label: 'Instagram', value: '${(3.4 + p.currentDay * 0.21).toStringAsFixed(1)} h'),
-                  _Row(label: 'Messages', value: '${(1.6 + p.currentDay * 0.09).toStringAsFixed(1)} h'),
-                  _Row(label: 'Spotify', value: '${(0.8 + p.currentDay * 0.05).toStringAsFixed(1)} h'),
-                  _Row(label: 'UberEats', value: '${(1.2 + p.currentDay * 0.08).toStringAsFixed(1)} h'),
+                  _Row(label: 'Tinder', value: '${frDec(2 + p.currentDay * 0.18, 1)} h'),
+                  _Row(label: 'Instagram', value: '${frDec(3.4 + p.currentDay * 0.21, 1)} h'),
+                  _Row(label: 'Messages', value: '${frDec(1.6 + p.currentDay * 0.09, 1)} h'),
+                  _Row(label: 'Spotify', value: '${frDec(0.8 + p.currentDay * 0.05, 1)} h'),
+                  _Row(label: 'UberEats', value: '${frDec(1.2 + p.currentDay * 0.08, 1)} h'),
                   _Row(
                       label: 'Total quotidien moyen',
-                      value: '${(4.2 + p.currentDay * 0.12).toStringAsFixed(1)} h'),
+                      value: '${frDec(4.2 + p.currentDay * 0.12, 1)} h'),
                 ]),
                 const SizedBox(height: 18),
                 // ── FACE ID & code
