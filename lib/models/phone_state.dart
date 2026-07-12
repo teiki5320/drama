@@ -59,7 +59,7 @@ class PhoneState {
     // accessible dès le départ pour permettre les installations).
     this.unlockedApps = const {
       'messages', 'calendrier', 'reglages', 'instagram', 'camera',
-      'appstore',
+      'appstore', 'regie',
     },
     this.currentEpisodeId = 'avant_la_lumiere',
     this.currentBeatIdx = 0,

@@ -27,8 +27,10 @@ class PhoneStateNotifier extends StateNotifier<PhoneState> {
   /// (notifs, badges).
   final Ref _ref;
 
-  /// Recharge l'état depuis shared_preferences au démarrage.
-  void hydrate(PhoneState s) => state = s;
+  /// Recharge l'état depuis shared_preferences au démarrage. On force la
+  /// présence de « regie » (outil d'auteur) même sur d'anciennes sauvegardes.
+  void hydrate(PhoneState s) =>
+      state = s.copyWith(unlockedApps: {...s.unlockedApps, 'regie'});
 
   /// Force la valeur de mood (clampée 0-10). Utilisé par les arcs de
   /// romance Tinder pour appliquer un delta après un choix Shen.

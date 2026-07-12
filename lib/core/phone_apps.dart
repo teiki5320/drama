@@ -127,6 +127,13 @@ const List<AppMeta> kAllApps = [
     icon: Icons.map,
     color: Color(0xFF34A853),
   ),
+  // ─── Outil d'AUTEUR (pas du contenu joueur) ─────────────────────
+  AppMeta(
+    id: 'regie',
+    label: 'Régie',
+    icon: Icons.movie_creation,
+    color: Color(0xFF2D2440),
+  ),
 ];
 
 AppMeta appById(String id) => kAllApps.firstWhere((a) => a.id == id);
