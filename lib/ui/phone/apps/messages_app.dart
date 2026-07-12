@@ -151,11 +151,15 @@ class _ThreadTile extends ConsumerWidget {
     );
     if (render.messages.isEmpty) return const SizedBox.shrink();
     final last = render.messages.last;
-    // Non-lu honnête : si le dernier message porte un beatId déjà répondu,
-    // la conversation est traitée — la pastille s'éteint.
-    final unread = last.sender != 'moi' &&
-        last.status != MsgStatus.read &&
-        !(last.beatId != null && replies.containsKey(last.beatId!));
+    // Conversation EN ATTENTE : un choix non répondu (le vrai signal « à toi
+    // de jouer »). Les messages canoniques sont `read` par défaut, donc le
+    // seul critère `status` ne suffisait pas — les fils qui attendaient une
+    // réponse n'avaient aucun indicateur.
+    final hasPending = render.pendingBeatId != null;
+    final unread = hasPending ||
+        (last.sender != 'moi' &&
+            last.status != MsgStatus.read &&
+            !(last.beatId != null && replies.containsKey(last.beatId!)));
 
     return InkWell(
       onTap: () {
@@ -214,11 +218,33 @@ class _ThreadTile extends ConsumerWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      if (hasPending)
+                        Container(
+                          margin: const EdgeInsets.only(right: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF007AFF),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            'À répondre',
+                            style: GoogleFonts.inter(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       Text(
                         last.time,
                         style: GoogleFonts.inter(
                           fontSize: 12,
-                          color: Colors.grey.shade500,
+                          color: hasPending
+                              ? const Color(0xFF007AFF)
+                              : Colors.grey.shade500,
+                          fontWeight:
+                              hasPending ? FontWeight.w700 : FontWeight.normal,
                         ),
                       ),
                       const SizedBox(width: 2),
