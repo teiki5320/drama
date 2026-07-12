@@ -23,19 +23,71 @@ class ThreadView extends ConsumerStatefulWidget {
   ConsumerState<ThreadView> createState() => _ThreadViewState();
 }
 
+/// Mémoire de session : combien de messages ont déjà « défilé » pour chaque
+/// contact. Évite de rejouer l'animation d'arrivée quand on rouvre un fil —
+/// seuls les messages réellement nouveaux arrivent un par un.
+final Map<String, int> _revealedPerContact = {};
+
 class _ThreadViewState extends ConsumerState<ThreadView> {
   final _scrollCtrl = ScrollController();
+
+  /// Nombre de messages actuellement affichés (le reste arrive un par un).
+  int _shown = -1;
+
+  /// Un message reçu est « en train d'être écrit » (bulle « … » en bas).
+  bool _typing = false;
+
+  /// Une boucle de révélation est en cours (évite les doublons).
+  bool _revealing = false;
 
   @override
   void initState() {
     super.initState();
     // Vibration différenciée par contact à l'ouverture
     _vibrateForContact(widget.contact.id);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollCtrl.hasClients) {
-        _scrollCtrl.jumpTo(_scrollCtrl.position.maxScrollExtent);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+  }
+
+  void _scrollToBottom() {
+    if (_scrollCtrl.hasClients) {
+      _scrollCtrl.jumpTo(_scrollCtrl.position.maxScrollExtent);
+    }
+  }
+
+  void _scrollSoon() =>
+      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+
+  /// Révèle les messages restants un par un. Les messages reçus sont
+  /// précédés d'une bulle « … » et d'un délai proportionnel à leur longueur ;
+  /// les réponses de Shen apparaissent presque aussitôt.
+  void _maybeReveal(List<Msg> msgs) {
+    if (_revealing || _shown >= msgs.length) return;
+    _revealing = true;
+    () async {
+      while (mounted && _shown < msgs.length) {
+        final next = msgs[_shown];
+        if (next.sender != 'moi') {
+          setState(() => _typing = true);
+          _scrollSoon();
+          final ms = (next.text.length * 22).clamp(600, 1600);
+          await Future.delayed(Duration(milliseconds: ms));
+          if (!mounted) break;
+          HapticFeedback.lightImpact();
+          setState(() {
+            _typing = false;
+            _shown++;
+          });
+        } else {
+          await Future.delayed(const Duration(milliseconds: 280));
+          if (!mounted) break;
+          setState(() => _shown++);
+        }
+        _revealedPerContact[widget.contact.id] = _shown;
+        _scrollSoon();
       }
-    });
+      _revealing = false;
+      if (mounted) setState(() {});
+    }();
   }
 
   static void _vibrateForContact(String contactId) {
@@ -83,6 +135,21 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
     final msgs = render.messages;
     final pendingMsg = render.pendingMsg;
     final pendingBeat = render.pendingBeatId;
+
+    // Première ouverture : l'historique (jours précédents) s'affiche d'un
+    // bloc, les messages du jour courant arrivent un par un. Une réouverture
+    // ne rejoue que ce qui est réellement nouveau (mémoire de session).
+    if (_shown < 0) {
+      final history = msgs.where((m) => m.day < day).length;
+      final revealed = _revealedPerContact[widget.contact.id] ?? 0;
+      _shown = revealed > history ? revealed : history;
+    }
+    if (_shown > msgs.length) _shown = msgs.length;
+    final revealDone = _shown >= msgs.length;
+    if (!revealDone) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _maybeReveal(msgs));
+    }
+    final visible = msgs.take(_shown).toList();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -163,47 +230,35 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
             ),
           ),
           const Divider(height: 0.5, color: Color(0xFFE5E5E5)),
-          // Messages
+          // Messages — révélés un par un (voir _maybeReveal).
           Expanded(
             child: ListView.builder(
               controller: _scrollCtrl,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              itemCount: msgs.length + 1,
+              itemCount: visible.length + 1,
               itemBuilder: (context, i) {
-                if (i == msgs.length) {
-                  // Indicateur de frappe (Tristan jamais ne tape encore en PR2)
-                  if (widget.contact.id == 'maman' &&
-                      day == 1 &&
-                      pendingBeat == null) {
-                    return const _TypingBubble();
-                  }
+                if (i == visible.length) {
+                  // Bulle « … » pendant qu'un message reçu s'écrit.
+                  if (_typing) return const _TypingBubble();
                   return const SizedBox(height: 24);
                 }
-                final m = msgs[i];
-                final showStatus = m.sender == 'moi' && i == msgs.length - 1;
-                // Le dernier message reçu (pas de Shen) se tape lettre
-                // par lettre s'il est récent (de l'épisode en cours).
-                final isLatestIncoming = m.sender != 'moi' &&
-                    i == msgs.length - 1 &&
-                    m.day == day;
-                return _Bubble(
-                  msg: m,
-                  showStatus: showStatus,
-                  animateTyping: isLatestIncoming,
-                );
+                final m = visible[i];
+                final showStatus =
+                    m.sender == 'moi' && revealDone && i == visible.length - 1;
+                return _Bubble(msg: m, showStatus: showStatus);
               },
             ),
           ),
-          // Soit le panneau de choix de réponse (beat ouvert), soit
-          // l'input bar iMessage classique.
-          if (pendingBeat != null)
+          // Le panneau de choix (ou l'input bar) n'apparaît qu'une fois toute
+          // la séquence arrivée — sinon il surgirait pendant que ça « écrit ».
+          if (revealDone && pendingBeat != null)
             ChoicePanel(
               beatId: pendingBeat,
               lastMessageTime: pendingMsg!.time,
               lastMessageDay: pendingMsg.day,
               promptText: pendingMsg.text,
             )
-          else
+          else if (revealDone)
             _InputBar(),
         ],
       ),
@@ -211,52 +266,17 @@ class _ThreadViewState extends ConsumerState<ThreadView> {
   }
 }
 
-class _Bubble extends StatefulWidget {
+class _Bubble extends StatelessWidget {
   const _Bubble({
     required this.msg,
     required this.showStatus,
-    this.animateTyping = false,
   });
   final Msg msg;
   final bool showStatus;
-  /// Si true, le texte se tape lettre par lettre à l'ouverture.
-  final bool animateTyping;
-
-  @override
-  State<_Bubble> createState() => _BubbleState();
-}
-
-class _BubbleState extends State<_Bubble> {
-  late String _shown;
-  bool _done = true;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.animateTyping) {
-      _shown = '';
-      _done = false;
-      _typeOut();
-    } else {
-      _shown = widget.msg.text;
-    }
-  }
-
-  Future<void> _typeOut() async {
-    // 25 ms / char avec un cap à 1.6 s pour les longs textes.
-    final full = widget.msg.text;
-    final perChar = (1600 / full.length).clamp(15.0, 40.0).toInt();
-    for (var i = 1; i <= full.length; i++) {
-      await Future.delayed(Duration(milliseconds: perChar));
-      if (!mounted) return;
-      setState(() => _shown = full.substring(0, i));
-    }
-    if (mounted) setState(() => _done = true);
-  }
 
   @override
   Widget build(BuildContext context) {
-    final isMe = widget.msg.sender == 'moi';
+    final isMe = msg.sender == 'moi';
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Column(
@@ -275,7 +295,7 @@ class _BubbleState extends State<_Bubble> {
               borderRadius: BorderRadius.circular(18),
             ),
             child: Text(
-              _done ? widget.msg.text : '$_shown▍',
+              msg.text,
               style: GoogleFonts.inter(
                 fontSize: 15,
                 color: isMe ? Colors.white : const Color(0xFF1A1A1A),
@@ -283,13 +303,13 @@ class _BubbleState extends State<_Bubble> {
               ),
             ),
           ),
-          if (widget.showStatus)
+          if (showStatus)
             Padding(
               padding: const EdgeInsets.only(top: 2, right: 6),
               child: Text(
-                widget.msg.status == MsgStatus.read
+                msg.status == MsgStatus.read
                     ? 'Lu'
-                    : widget.msg.status == MsgStatus.delivered
+                    : msg.status == MsgStatus.delivered
                         ? 'Délivré'
                         : 'Envoi…',
                 style: GoogleFonts.inter(
