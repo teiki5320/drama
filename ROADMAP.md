@@ -28,9 +28,9 @@ mini-jeux. Une seule surface : les conversations.
 ## Ce qu'on garde de l'ancien projet
 
 - Les **227 images** dans `assets/` (photos, avatars, références personnages).
-- Rien d'autre. **L'ancienne histoire ne sert pas de référence** : la nouvelle
-  histoire part d'une page blanche. On ne va pas la rechercher dans
-  l'historique git.
+- L'univers de l'ancienne histoire (Shen, les Heng), **repris et retravaillé
+  avec l'auteur** en juillet 2026 — la nouvelle version fait foi :
+  voir `docs/HISTOIRE.md`. L'ancien code, lui, reste enterré dans l'historique.
 
 ## Étapes (à remplir ensemble)
 
