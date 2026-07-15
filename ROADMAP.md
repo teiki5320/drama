@@ -28,8 +28,9 @@ mini-jeux. Une seule surface : les conversations.
 ## Ce qu'on garde de l'ancien projet
 
 - Les **227 images** dans `assets/` (photos, avatars, références personnages).
-- Rien d'autre — l'ancien code reste dans l'historique git (commit `05b8229`)
-  si besoin de s'y référer.
+- Rien d'autre. **L'ancienne histoire ne sert pas de référence** : la nouvelle
+  histoire part d'une page blanche. On ne va pas la rechercher dans
+  l'historique git.
 
 ## Étapes (à remplir ensemble)
 
