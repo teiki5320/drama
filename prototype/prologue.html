@@ -208,6 +208,64 @@
   .homebar{flex:0 0 auto; height:20px; display:flex; align-items:center; justify-content:center; background:var(--head-bg);}
   .homebar i{width:134px; height:5px; border-radius:3px; background:var(--head-text); opacity:.28;}
 
+  /* ---------- écran verrouillé ---------- */
+  .lock{
+    position:absolute; inset:0; z-index:50;
+    background:
+      radial-gradient(120% 90% at 20% 0%, #24304E 0%, #141A2E 45%, #0B0E1A 100%);
+    color:#F4F5FA;
+    display:flex; flex-direction:column; align-items:center;
+    padding:26px 16px 22px;
+    border-radius:inherit;
+    transition:transform .45s cubic-bezier(.32,.72,.29,1), opacity .45s;
+    cursor:pointer;
+  }
+  .lock.away{transform:translateY(-102%); opacity:.4;}
+  .lock .padlock{font-size:15px; opacity:.85; margin-top:4px;}
+  .lock .l-clock{
+    font-size:74px; font-weight:700; letter-spacing:-.03em; line-height:1;
+    margin-top:6px; font-variant-numeric:tabular-nums;
+  }
+  .lock .l-date{font-size:16px; font-weight:500; opacity:.85; margin-top:6px;}
+  .lock .notifs{
+    width:100%; display:flex; flex-direction:column; gap:8px;
+    margin-top:auto; margin-bottom:14px;
+  }
+  .notif{
+    background:rgba(250,250,252,.16);
+    -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+    border-radius:16px; padding:10px 12px;
+    display:flex; gap:10px; align-items:flex-start;
+    animation:rise .3s ease-out both;
+  }
+  .notif:nth-child(2){animation-delay:.08s}
+  .notif:nth-child(3){animation-delay:.16s}
+  .notif:nth-child(4){animation-delay:.24s}
+  .n-icon{
+    width:32px; height:32px; border-radius:8px; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center; font-size:17px;
+    background:rgba(255,255,255,.92);
+  }
+  .n-body{flex:1 1 auto; min-width:0;}
+  .n-top{display:flex; justify-content:space-between; gap:8px; margin-bottom:1px;}
+  .n-app{font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; opacity:.75;}
+  .n-time{font-size:11px; opacity:.6; flex:0 0 auto;}
+  .n-title{font-size:13.5px; font-weight:700; line-height:1.25;}
+  .n-text{font-size:13.5px; line-height:1.3; opacity:.92;}
+  .unlock-hint{
+    font-size:12.5px; font-weight:600; opacity:.8; letter-spacing:.02em;
+    animation:hintPulse 2s ease-in-out infinite;
+    background:none; border:none; color:inherit; font-family:inherit; cursor:pointer;
+  }
+  .unlock-hint:focus-visible{outline:2px solid #fff; outline-offset:3px; border-radius:6px;}
+  .lock .bar{width:134px; height:5px; border-radius:3px; background:#fff; opacity:.85; margin-top:10px;}
+  @keyframes hintPulse{0%,100%{opacity:.5; transform:none} 50%{opacity:1; transform:translateY(-3px)}}
+  @media (prefers-reduced-motion: reduce){
+    .lock{transition:none;}
+    .notif{animation:none;}
+    .unlock-hint{animation:none;}
+  }
+
   @keyframes pop{from{transform:translateY(8px) scale(.97); opacity:0} to{transform:none; opacity:1}}
   @keyframes rise{from{transform:translateY(10px); opacity:0} to{transform:none; opacity:1}}
   @keyframes blink{0%,60%,100%{opacity:.35} 30%{opacity:1}}
@@ -247,6 +305,48 @@
   <div class="tray" id="tray" style="display:none"><div class="idle">…</div></div>
 
   <div class="homebar"><i></i></div>
+
+  <!-- ÉCRAN VERROUILLÉ -->
+  <div class="lock" id="lock" role="button" aria-label="Déverrouiller le téléphone de Shen">
+    <div class="padlock">🔒</div>
+    <div class="l-clock">07:46</div>
+    <div class="l-date">Mercredi 15 juillet</div>
+    <div class="notifs">
+      <div class="notif">
+        <div class="n-icon">📅</div>
+        <div class="n-body">
+          <div class="n-top"><span class="n-app">Agenda</span><span class="n-time">il y a 8 min</span></div>
+          <div class="n-title">Demain 08:30 — Hôpital Tenon</div>
+          <div class="n-text">Accompagner Maman · niveau 2, couloir K</div>
+        </div>
+      </div>
+      <div class="notif">
+        <div class="n-icon">🏦</div>
+        <div class="n-body">
+          <div class="n-top"><span class="n-app">BNP Paribas</span><span class="n-time">07:02</span></div>
+          <div class="n-title">Solde : 86,44 €</div>
+          <div class="n-text">Votre découvert autorisé sera bientôt atteint.</div>
+        </div>
+      </div>
+      <div class="notif">
+        <div class="n-icon">🛵</div>
+        <div class="n-body">
+          <div class="n-top"><span class="n-app">Livraisons Pro</span><span class="n-time">hier</span></div>
+          <div class="n-title">Paiement hebdomadaire : 214,60 €</div>
+          <div class="n-text">Bonne semaine ! Objectif : gardez votre priorité A.</div>
+        </div>
+      </div>
+      <div class="notif">
+        <div class="n-icon">🥐</div>
+        <div class="n-body">
+          <div class="n-top"><span class="n-app">Messages · Camille</span><span class="n-time">hier</span></div>
+          <div class="n-text">regarde ce meme, c'est TOI 😭 — dors un peu, promis ?</div>
+        </div>
+      </div>
+    </div>
+    <button class="unlock-hint" id="unlock">Touche pour déverrouiller le téléphone de Shen</button>
+    <div class="bar"></div>
+  </div>
 </div>
 
 <script>
@@ -276,7 +376,7 @@
     t.id = id; t.unread = 0; t.preview = ''; t.ptime = ''; t.pending = null;
     t.el = el('div','thread'); hostEl.appendChild(t.el);
   });
-  THREADS.camille.preview = 'Bisous. Dors un peu, promis ?'; THREADS.camille.ptime = 'Hier';
+  THREADS.camille.preview = 'regarde ce meme, c’est TOI 😭 — dors un peu, promis ?'; THREADS.camille.ptime = 'Hier';
   THREADS.plateforme.preview = 'Paiement hebdomadaire : 214,60 €.'; THREADS.plateforme.ptime = 'Hier';
 
   let current = null;
@@ -608,6 +708,15 @@
   }
 
   goHome();
-  play();
+  clockEl.textContent = '07:46';
+  const lock = $('lock');
+  let started = false;
+  function unlock(){
+    if (started) return; started = true;
+    lock.classList.add('away');
+    setTimeout(() => lock.remove(), 500);
+    play();
+  }
+  lock.addEventListener('click', unlock);
 })();
 </script>
