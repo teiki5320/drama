@@ -1,0 +1,96 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+/// Nature d'un élément affiché dans un fil de discussion.
+enum MsgKind { incoming, outgoing, separator, sysline, endCard }
+
+/// Un message (ou séparateur) dans un fil. Mutable : un message entrant
+/// commence en « en train d'écrire… » puis reçoit son texte.
+class Msg {
+  Msg.incoming(this.text, {this.typing = false}) : kind = MsgKind.incoming;
+  Msg.outgoing(this.text) : kind = MsgKind.outgoing;
+  Msg.separator(this.text) : kind = MsgKind.separator;
+  Msg.sysline(this.text) : kind = MsgKind.sysline;
+  Msg.endCard() : kind = MsgKind.endCard, text = '';
+
+  final MsgKind kind;
+  String text;
+  bool typing = false;
+
+  /// « Distribué » puis « Lu » — uniquement pour les messages envoyés.
+  String? receipt;
+}
+
+/// Une réponse proposée au joueur.
+class ChoiceOption {
+  const ChoiceOption(this.label, {this.reply, this.silent = false, this.key});
+
+  /// Le texte envoyé par Shen (et affiché sur le bouton).
+  final String label;
+
+  /// La réplique de l'autre, quand elle dépend directement du choix.
+  final String? reply;
+
+  /// Choix silencieux : rien n'est envoyé (« ne pas répondre », bloquer…).
+  final bool silent;
+
+  /// Étiquette de branche pour le script.
+  final String? key;
+}
+
+/// Un choix en attente de réponse dans un fil.
+class PendingChoice {
+  PendingChoice(this.options) : completer = Completer<ChoiceOption>();
+
+  final List<ChoiceOption> options;
+  final Completer<ChoiceOption> completer;
+}
+
+/// Définition statique d'un contact.
+class ThreadDef {
+  const ThreadDef({
+    required this.id,
+    required this.name,
+    required this.headerName,
+    required this.initials,
+    required this.gradientTop,
+    required this.gradientBottom,
+    this.hiddenAtStart = false,
+  });
+
+  final String id;
+  final String name;
+  final String headerName;
+  final String initials;
+  final Color gradientTop;
+  final Color gradientBottom;
+  final bool hiddenAtStart;
+}
+
+/// État vivant d'un fil de discussion.
+class ThreadState {
+  ThreadState(this.def) : hidden = def.hiddenAtStart;
+
+  final ThreadDef def;
+  final List<Msg> messages = [];
+  bool hidden;
+  int unread = 0;
+  String preview = '';
+  String previewTime = '';
+  PendingChoice? pending;
+  Msg? lastOutgoing;
+}
+
+/// Bannière de notification (message reçu dans un fil non ouvert).
+class BannerData {
+  const BannerData({
+    required this.threadId,
+    required this.text,
+    required this.seq,
+  });
+
+  final String threadId;
+  final String text;
+  final int seq;
+}

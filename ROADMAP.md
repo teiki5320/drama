@@ -36,6 +36,9 @@ mini-jeux. Une seule surface : les conversations.
 
 - [x] Définir l'histoire : qui écrit au joueur, quel est l'enjeu, comment ça finit. → `docs/HISTOIRE.md`
 - [x] Maquette d'une conversation (l'écran unique du jeu). → `maquette/conversation.html`
-- [ ] Prototype jouable : une journée d'histoire, un fil, des choix. → en cours : `prototype/prologue.html` (le prologue, jour 1)
+- [x] Prototype jouable : une journée d'histoire, des fils, des choix.
+  → **l'app Flutter** (`lib/`) : le prologue (jour 1), testé (`flutter analyze` + `flutter test`).
+  La version web de repérage reste dans `prototype/prologue.html`.
 - [ ] Étendre l'histoire, tester, ajuster.
-- [ ] Publier sur TestFlight.
+- [ ] Publier sur TestFlight → prêt : pousser sur la branche que Xcode Cloud surveille
+  (le script `ios/ci_scripts/ci_post_clone.sh` installe Flutter 3.27.4 et gère le build).
