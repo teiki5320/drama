@@ -56,6 +56,7 @@ class ThreadDef {
     required this.initials,
     required this.gradientTop,
     required this.gradientBottom,
+    this.avatarAsset,
     this.hiddenAtStart = false,
   });
 
@@ -65,6 +66,10 @@ class ThreadDef {
   final String initials;
   final Color gradientTop;
   final Color gradientBottom;
+
+  /// Photo du contact ; à défaut, pastille dégradée avec initiales.
+  final String? avatarAsset;
+
   final bool hiddenAtStart;
 }
 

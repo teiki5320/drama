@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../engine.dart';
 import '../models.dart';
 import '../palette.dart';
+import 'contact_sheet.dart';
 import 'widgets.dart';
 
 /// L'écran unique du jeu : une conversation, les messages qui arrivent,
@@ -118,19 +119,30 @@ class _Header extends StatelessWidget {
             tooltip: 'Messages',
           ),
           Expanded(
-            child: Column(
-              children: [
-                GradientAvatar(def: def, size: 40),
-                const SizedBox(height: 3),
-                Text(
-                  def.headerName,
-                  style: TextStyle(
-                    color: pal.headText,
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w500,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => showContactSheet(context, def),
+              child: Column(
+                children: [
+                  GradientAvatar(def: def, size: 40),
+                  const SizedBox(height: 3),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        def.headerName,
+                        style: TextStyle(
+                          color: pal.headText,
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Icon(Icons.chevron_right, color: pal.meta, size: 13),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(width: 48),

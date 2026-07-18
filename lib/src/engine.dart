@@ -14,6 +14,7 @@ const List<ThreadDef> kThreadDefs = [
     initials: 'M',
     gradientTop: Color(0xFFE8637C),
     gradientBottom: Color(0xFFD14A66),
+    avatarAsset: 'assets/photos/avatars/maman.webp',
   ),
   ThreadDef(
     id: 'camille',
@@ -22,6 +23,7 @@ const List<ThreadDef> kThreadDefs = [
     initials: 'C',
     gradientTop: Color(0xFFF0A24A),
     gradientBottom: Color(0xFFE0832C),
+    avatarAsset: 'assets/photos/avatars/camille.webp',
   ),
   ThreadDef(
     id: 'plateforme',

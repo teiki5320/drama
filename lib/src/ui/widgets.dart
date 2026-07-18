@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../models.dart';
 import '../palette.dart';
 
-/// Pastille dégradée avec initiales, comme les avatars de Messages.
+/// Avatar d'un contact : sa photo si elle existe, sinon la pastille
+/// dégradée avec initiales, comme dans Messages.
 class GradientAvatar extends StatelessWidget {
   const GradientAvatar({super.key, required this.def, this.size = 44});
 
@@ -12,6 +13,22 @@ class GradientAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final asset = def.avatarAsset;
+    if (asset != null) {
+      return ClipOval(
+        child: Image.asset(
+          asset,
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stack) => _fallback(),
+        ),
+      );
+    }
+    return _fallback();
+  }
+
+  Widget _fallback() {
     return Container(
       width: size,
       height: size,
