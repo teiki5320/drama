@@ -34,8 +34,8 @@ mini-jeux. Une seule surface : les conversations.
 
 ## Étapes (à remplir ensemble)
 
-- [ ] Définir l'histoire : qui écrit au joueur, quel est l'enjeu, comment ça finit.
-- [ ] Maquette d'une conversation (l'écran unique du jeu).
-- [ ] Prototype jouable : une journée d'histoire, un fil, des choix.
+- [x] Définir l'histoire : qui écrit au joueur, quel est l'enjeu, comment ça finit. → `docs/HISTOIRE.md`
+- [x] Maquette d'une conversation (l'écran unique du jeu). → `maquette/conversation.html`
+- [ ] Prototype jouable : une journée d'histoire, un fil, des choix. → en cours : `prototype/prologue.html` (le prologue, jour 1)
 - [ ] Étendre l'histoire, tester, ajuster.
 - [ ] Publier sur TestFlight.
