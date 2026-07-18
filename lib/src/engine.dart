@@ -157,6 +157,41 @@ class GameEngine extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Photo entrante : même logique qu'un message, la bulle est une image.
+  Future<void> incomingImage(String tid, String asset,
+      {int typing = 1800}) async {
+    final t = thread(tid);
+    t.hidden = false;
+    if (currentThreadId == tid) {
+      final m = Msg.incoming('', typing: true);
+      t.messages.add(m);
+      notifyListeners();
+      await sleep(typing);
+      m.typing = false;
+      m.imageAsset = asset;
+    } else {
+      await sleep(typing);
+      t.messages.add(Msg.incomingImage(asset));
+      t.unread++;
+      _showBanner(t, '📷 Photo');
+    }
+    t.preview = '📷 Photo';
+    t.previewTime = gameClock;
+    notifyListeners();
+  }
+
+  /// Photo envoyée par Shen.
+  Msg outgoingImage(String tid, String asset) {
+    final t = thread(tid);
+    final m = Msg.outgoingImage(asset)..receipt = 'Distribué';
+    t.messages.add(m);
+    t.lastOutgoing = m;
+    t.preview = '📷 Photo';
+    t.previewTime = gameClock;
+    notifyListeners();
+    return m;
+  }
+
   /// Fait apparaître « en train d'écrire… » sans jamais envoyer de message.
   Future<void> typingThenNothing(String tid, {int ms = 2600}) async {
     final t = thread(tid);

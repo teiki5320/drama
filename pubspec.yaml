@@ -1,7 +1,7 @@
 name: drama
 description: "Drama — jeu narratif qui se joue entièrement dans une messagerie."
 publish_to: "none"
-version: 0.16.1+1
+version: 0.16.2+1
 
 environment:
   sdk: ">=3.5.0 <4.0.0"
@@ -21,6 +21,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/photos/avatars/
+    - assets/photos/ep1/
+    - assets/photos/camera_pool/
 
 flutter_launcher_icons:
   image_path: "assets/icon/icon.png"

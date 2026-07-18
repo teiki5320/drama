@@ -34,6 +34,12 @@ void main() {
     expect(total, greaterThan(30));
     expect(e.thread('inconnu').hidden, isFalse);
     expect(e.gameClock, '22:47');
+    // Des photos circulent dans les conversations.
+    final photos = e.threads.values
+        .expand((t) => t.messages)
+        .where((m) => m.imageAsset != null)
+        .length;
+    expect(photos, greaterThanOrEqualTo(4));
   });
 
   test('le prologue se joue jusqu’à la fin (derniers choix, blocage inclus)',

@@ -13,6 +13,11 @@ Future<void> runPrologue(GameEngine e) async {
       typing: 1500);
   await e.incoming('maman', 'Il pleut sur tout Paris. Couvre-toi.',
       typing: 1400);
+  await e.incomingImage(
+      'maman', 'assets/photos/ep1/j02_belleville_matin_brouillard.webp',
+      typing: 2000);
+  await e.incoming('maman', 'Regarde-moi ce brouillard. Même Belleville a froid.',
+      typing: 1300);
   var c = await e.choice('maman', const [
     ChoiceOption('Dix minutes. Capuche promise.',
         reply: 'Bien. Le thermos de thé est près de la porte.'),
@@ -134,6 +139,13 @@ Future<void> runPrologue(GameEngine e) async {
   await e.sleep(700);
   e.markRead('camille');
   await e.incoming('camille', c.reply!, typing: 1300);
+  await e.sleep(600);
+  e.outgoingImage('camille', 'assets/photos/ep1/j01_08h17_velo_casse_montaigne.webp');
+  await e.sleep(900);
+  e.markRead('camille');
+  await e.incoming('camille',
+      'Oh non. Il a donné sa vie pour toi, ce vélo. Paix à sa chaîne.',
+      typing: 1600);
   await e.incoming('camille',
       'Et le conducteur ? Constat ? Assurance ? Dis-moi que t’as ses infos.',
       typing: 1700);
@@ -175,13 +187,20 @@ Future<void> runPrologue(GameEngine e) async {
       typing: 2000);
   await e.incoming('camille', 'Et passe me voir après. Bisous mon canard cabossé.',
       typing: 1400);
+  await e.incomingImage(
+      'camille', 'assets/photos/ep1/post_shen_camille_croissants.webp',
+      typing: 1900);
+  await e.incoming('camille', 'Motivation pour samedi. Je dis ça, je dis rien.',
+      typing: 1300);
   await e.sleep(1800);
 
   // — 18:42, Maman, le soir —
   e.setClock('18:42');
   e.separator('maman', '18:42');
-  await e.incoming('maman', 'Le riz est dans le rice cooker. Tu rentres ce soir ?',
-      typing: 1500);
+  await e.incoming('maman', 'Le riz est dans le rice cooker.', typing: 1400);
+  await e.incomingImage('maman', 'assets/photos/ep1/post_maman_plat.webp',
+      typing: 2100);
+  await e.incoming('maman', 'Ta part. Tu rentres ce soir ?', typing: 1200);
   c = await e.choice('maman', const [
     ChoiceOption('J’arrive.', reply: 'Je réchauffe.'),
     ChoiceOption('Tard. M’attends pas pour manger.',

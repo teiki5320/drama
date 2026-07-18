@@ -9,7 +9,13 @@ enum MsgKind { incoming, outgoing, separator, sysline, endCard }
 /// commence en « en train d'écrire… » puis reçoit son texte.
 class Msg {
   Msg.incoming(this.text, {this.typing = false}) : kind = MsgKind.incoming;
+  Msg.incomingImage(this.imageAsset)
+      : kind = MsgKind.incoming,
+        text = '';
   Msg.outgoing(this.text) : kind = MsgKind.outgoing;
+  Msg.outgoingImage(this.imageAsset)
+      : kind = MsgKind.outgoing,
+        text = '';
   Msg.separator(this.text) : kind = MsgKind.separator;
   Msg.sysline(this.text) : kind = MsgKind.sysline;
   Msg.endCard() : kind = MsgKind.endCard, text = '';
@@ -17,6 +23,9 @@ class Msg {
   final MsgKind kind;
   String text;
   bool typing = false;
+
+  /// Photo partagée dans la bulle (message image).
+  String? imageAsset;
 
   /// « Distribué » puis « Lu » — uniquement pour les messages envoyés.
   String? receipt;

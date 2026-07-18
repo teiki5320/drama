@@ -225,31 +225,33 @@ class _MessageItem extends StatelessWidget {
                   constraints: BoxConstraints(
                     maxWidth: MediaQuery.of(context).size.width * 0.78,
                   ),
-                  child: Container(
-                    padding: msg.typing
-                        ? const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 12)
-                        : const EdgeInsets.fromLTRB(13, 8, 13, 9),
-                    decoration: BoxDecoration(
-                      color: isOut ? pal.outBubble : pal.inBubble,
-                      borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(18),
-                        topRight: const Radius.circular(18),
-                        bottomLeft: Radius.circular(isOut ? 18 : 6),
-                        bottomRight: Radius.circular(isOut ? 6 : 18),
-                      ),
-                    ),
-                    child: msg.typing
-                        ? TypingDots(color: pal.meta)
-                        : Text(
-                            msg.text,
-                            style: TextStyle(
-                              color: isOut ? pal.outText : pal.inText,
-                              fontSize: 16,
-                              height: 1.32,
+                  child: msg.imageAsset != null && !msg.typing
+                      ? _ImageBubble(asset: msg.imageAsset!, isOut: isOut)
+                      : Container(
+                          padding: msg.typing
+                              ? const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 12)
+                              : const EdgeInsets.fromLTRB(13, 8, 13, 9),
+                          decoration: BoxDecoration(
+                            color: isOut ? pal.outBubble : pal.inBubble,
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(18),
+                              topRight: const Radius.circular(18),
+                              bottomLeft: Radius.circular(isOut ? 18 : 6),
+                              bottomRight: Radius.circular(isOut ? 6 : 18),
                             ),
                           ),
-                  ),
+                          child: msg.typing
+                              ? TypingDots(color: pal.meta)
+                              : Text(
+                                  msg.text,
+                                  style: TextStyle(
+                                    color: isOut ? pal.outText : pal.inText,
+                                    fontSize: 16,
+                                    height: 1.32,
+                                  ),
+                                ),
+                        ),
                 ),
               ),
               if (isOut && msg.receipt != null)
@@ -268,6 +270,87 @@ class _MessageItem extends StatelessWidget {
           ),
         );
     }
+  }
+}
+
+class _ImageBubble extends StatelessWidget {
+  const _ImageBubble({required this.asset, required this.isOut});
+
+  final String asset;
+  final bool isOut;
+
+  @override
+  Widget build(BuildContext context) {
+    final pal = Palette.of(context);
+    final maxW = MediaQuery.of(context).size.width * 0.65;
+    return GestureDetector(
+      onTap: () => _openViewer(context),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(18),
+          topRight: const Radius.circular(18),
+          bottomLeft: Radius.circular(isOut ? 18 : 6),
+          bottomRight: Radius.circular(isOut ? 6 : 18),
+        ),
+        child: Image.asset(
+          asset,
+          width: maxW,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stack) => Container(
+            width: maxW,
+            height: maxW * 0.75,
+            color: pal.inBubble,
+            alignment: Alignment.center,
+            child: Text('📷', style: TextStyle(fontSize: 28, color: pal.meta)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _openViewer(BuildContext context) {
+    Navigator.of(context).push(
+      PageRouteBuilder<void>(
+        opaque: false,
+        barrierColor: Colors.black,
+        pageBuilder: (context, _, __) => GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Scaffold(
+            backgroundColor: Colors.black,
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: InteractiveViewer(
+                      maxScale: 4,
+                      child: Center(
+                        child: Image.asset(
+                          asset,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stack) => const Text(
+                            '📷',
+                            style: TextStyle(fontSize: 40),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.close,
+                          color: Colors.white, size: 26),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
