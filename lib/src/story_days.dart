@@ -245,11 +245,11 @@ Future<void> runDay4(GameEngine e) async {
   e.setClock('10:14');
   e.separator('camille', 'Samedi 18 juillet · 10:14');
   await e.incomingImage(
-      'camille', 'assets/photos/ep1/pr_croissant_cafe_terrasse_belleville.webp',
+      'camille', 'assets/photos/ep1/pr_petit_dejeuner_croissants_livre.webp',
       typing: 1900);
   await e.incoming('camille',
-      'Debout. Café en bas de chez toi dans vingt minutes. On s’habille comme '
-      'quelqu’un qui va gagner.',
+      'Debout. Café en bas de chez toi — le tien est déjà servi. Vingt minutes. '
+      'On s’habille comme quelqu’un qui va gagner.',
       typing: 1800);
   var c = await e.choice('camille', const [
     ChoiceOption('J’arrive.', reply: 'Deux sucres, comme les jours de guerre.'),

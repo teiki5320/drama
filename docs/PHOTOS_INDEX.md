@@ -32,13 +32,13 @@
 - `pr_camille_selfie_revisions.webp`
 - `pr_carnet_comptes_table_cuisine.webp` · *(lot openart du 19/07)*
 - `pr_carte_recollee_bureau_nuit.webp`
-- `pr_croissant_cafe_terrasse_belleville.webp` · *(lot openart du 19/07)*
 - `pr_croissant_partage_cafe.webp`
 - `pr_essayage_tailleur_noir_miroir.webp`
+- `pr_petit_dejeuner_croissants_livre.webp`
 - `pr_repas_poisson_riz_legumes.webp`
 - `pr_tour_heng_contre_plongee.webp`
 
-## `assets/photos/personnages` — Portraits, selfies et scènes centrées sur des gens (70)
+## `assets/photos/personnages` — Portraits, selfies et scènes centrées sur des gens (71)
 
 - `pr_accident_velo_2.webp`
 - `pr_appel_camille_nuit_vin.webp`
@@ -61,6 +61,7 @@
 - `pr_femme_robe_noire_miroir_dore_2.webp` · *(lot openart du 19/07)*
 - `pr_femme_selfie_tour_bureaux.webp`
 - `pr_femme_tailleur_balcon_ville_nuit.webp` · *(lot openart du 19/07)*
+- `pr_femme_terrasse_belleville_croissant.webp` · *(lot openart du 19/07)*
 - `pr_homme_30aine_appareil_photo.webp`
 - `pr_homme_30aine_lunettes_rondes_sweat.webp`
 - `pr_homme_50aine_cour_fujian.webp`
@@ -132,7 +133,7 @@
 - `pr_tour_contre_plongee_2.webp`
 - `pr_tour_contre_plongee_3.webp` · *(lot openart du 19/07)*
 
-## `assets/photos/quotidien` — Nourriture, thé, fleurs, objets du quotidien (28)
+## `assets/photos/quotidien` — Nourriture, thé, fleurs, objets du quotidien (27)
 
 - `pr_album_photos_main_jade.webp`
 - `pr_boite_the_long_jing.webp`
@@ -150,7 +151,6 @@
 - `pr_ecrin_bracelet_cartier_2.webp`
 - `pr_fraises_cafe_2.webp`
 - `pr_fraises_cafe_cuisine_noire.webp`
-- `pr_petit_dejeuner_croissants_livre.webp`
 - `pr_polaroid_livre_cafe.webp`
 - `pr_polaroid_livre_cafe_2.webp`
 - `pr_repas_poisson_riz_2.webp`
@@ -221,7 +221,6 @@
 - `video_the_cuisine_medicaments_deux_femmes.mp4`
 
 > Depuis l'audit du 19/07 : `ep1/` ne contient que les photos réellement
-> envoyées dans les conversations. `pr_carte_recollee_bureau_nuit` est
-> recadrée (l'écran et le carnet de l'ancien univers sont hors champ).
-> Provenance du lot openart et anciens noms : voir l'historique git
-> (`git log --follow -- <fichier>`).
+> envoyées dans les conversations, toutes cohérentes avec le point de vue
+> de l'expéditeur. Provenance du lot openart et anciens noms : historique
+> git (`git log --follow -- <fichier>`).
