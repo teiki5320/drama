@@ -28,12 +28,20 @@ class _ThreadScreenState extends State<ThreadScreen> {
   final ScrollController _scroll = ScrollController();
   int _lastCount = -1;
 
+  /// Suit le bas du fil uniquement si le joueur y est déjà : s'il remonte
+  /// lire le début, l'écran ne bouge plus et une pastille compte les
+  /// nouveaux messages en bas.
+  bool _stickToBottom = true;
+  int _unseenBelow = 0;
+
   ThreadState get thread => widget.engine.thread(widget.threadId);
 
   @override
   void initState() {
     super.initState();
+    _lastCount = thread.messages.length;
     widget.engine.addListener(_onEngine);
+    _scroll.addListener(_onScroll);
     _scrollToBottom(animated: false);
   }
 
@@ -44,7 +52,37 @@ class _ThreadScreenState extends State<ThreadScreen> {
     super.dispose();
   }
 
-  void _onEngine() => _scrollToBottom();
+  bool get _nearBottom {
+    if (!_scroll.hasClients) return true;
+    final pos = _scroll.position;
+    return pos.maxScrollExtent - pos.pixels < 140;
+  }
+
+  void _onScroll() {
+    final near = _nearBottom;
+    if (near == _stickToBottom) return;
+    _stickToBottom = near;
+    if (near && _unseenBelow != 0) {
+      setState(() => _unseenBelow = 0);
+    }
+  }
+
+  void _onEngine() {
+    final count = thread.messages.length;
+    final added = count - _lastCount;
+    _lastCount = count;
+    if (_stickToBottom) {
+      _scrollToBottom();
+    } else if (added > 0) {
+      setState(() => _unseenBelow += added);
+    }
+  }
+
+  void _jumpToNew() {
+    _stickToBottom = true;
+    setState(() => _unseenBelow = 0);
+    _scrollToBottom();
+  }
 
   void _scrollToBottom({bool animated = true}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -66,10 +104,6 @@ class _ThreadScreenState extends State<ThreadScreen> {
   Widget build(BuildContext context) {
     final pal = Palette.of(context);
     final t = thread;
-    if (t.messages.length != _lastCount) {
-      _lastCount = t.messages.length;
-      _scrollToBottom();
-    }
     return Container(
       color: pal.threadBg,
       child: SafeArea(
@@ -78,19 +112,72 @@ class _ThreadScreenState extends State<ThreadScreen> {
             GameClockBar(engine: widget.engine),
             _Header(engine: widget.engine, thread: t),
             Expanded(
-              child: ListView.builder(
-                controller: _scroll,
-                padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
-                itemCount: t.messages.length,
-                itemBuilder: (context, i) => _MessageItem(
-                  msg: t.messages[i],
-                  previous: i > 0 ? t.messages[i - 1] : null,
-                  onRestart: widget.onRestart,
-                ),
+              child: Stack(
+                children: [
+                  ListView.builder(
+                    controller: _scroll,
+                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
+                    itemCount: t.messages.length,
+                    itemBuilder: (context, i) => _MessageItem(
+                      msg: t.messages[i],
+                      previous: i > 0 ? t.messages[i - 1] : null,
+                      onRestart: widget.onRestart,
+                    ),
+                  ),
+                  if (_unseenBelow > 0)
+                    Positioned(
+                      right: 12,
+                      bottom: 10,
+                      child: _NewMessagesPill(
+                        count: _unseenBelow,
+                        onTap: _jumpToNew,
+                      ),
+                    ),
+                ],
               ),
             ),
             _ChoiceTray(engine: widget.engine, thread: t),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NewMessagesPill extends StatelessWidget {
+  const _NewMessagesPill({required this.count, required this.onTap});
+
+  final int count;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final pal = Palette.of(context);
+    final label = count == 1 ? '1 nouveau message' : '$count nouveaux messages';
+    return Material(
+      color: pal.brand,
+      shape: const StadiumBorder(),
+      elevation: 3,
+      child: InkWell(
+        customBorder: const StadiumBorder(),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.arrow_downward, color: Colors.white, size: 15),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
