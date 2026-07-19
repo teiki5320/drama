@@ -1,235 +1,273 @@
-# Index des photos — noms descriptifs
+# Index des photos — inventaire par dossier
 
-> Convention : `pr_` = photo réaliste (style canon, base `pr_shen.webp`),
-> `ill_` = illustration (à régénérer en réaliste avant usage dans le jeu),
-> suffixe `_2` = doublon/variante d'une image du même sujet.
-> Les identités incertaines sont décrites (« homme 50aine… ») — à préciser ensemble.
+> Convention : `pr_` = photo réaliste (style canon, base `avatars/pr_shen.webp`),
+> `ill_` = illustration (interdite dans le jeu tant que non régénérée),
+> suffixes `_2`/`_3` = variantes du même sujet, `_ref` = image de référence.
+> Les identités incertaines sont décrites (« femme 60aine… ») — à préciser ensemble.
 
-| Dossier | Nouveau nom | Ancien nom |
-|---|---|---|
-| `assets/photos/avatars` | `pr_shen.webp` | `shen.webp` |
-| `assets/photos/avatars` | `pr_maman.webp` | `maman.webp` |
-| `assets/photos/avatars` | `pr_camille.webp` | `camille.webp` |
-| `assets/photos/avatars` | `pr_tristan.webp` | `tristan.webp` |
-| `assets/photos/avatars` | `pr_vincent.webp` | `vincent.webp` |
-| `assets/photos/avatars` | `pr_madame_heng.webp` | `madame_heng.webp` |
-| `assets/photos/avatars` | `pr_tante_mei.webp` | `tante_mei.webp` |
-| `assets/photos/ep1` | `pr_carnet_notes_polaroid.webp` | `j01_07h42_carnet_matinal.webp` |
-| `assets/photos/ep1` | `pr_accident_velo_homme_costume.webp` | `j01_08h17_velo_casse_montaigne.webp` |
-| `assets/photos/ep1` | `pr_carte_recollee_bureau_nuit.webp` | `j01_23h42_carte_recollee.webp` |
-| `assets/photos/ep1` | `ill_studio_belleville_jour.webp` | `j01_studio_belleville_jour.webp` |
-| `assets/photos/ep1` | `ill_studio_belleville_nuit.webp` | `j01_studio_belleville_nuit.webp` |
-| `assets/photos/ep1` | `ill_cabinet_medical_vide.webp` | `j02_06h30_cabinet_dr_aubin.webp` |
-| `assets/photos/ep1` | `ill_rue_paris_brouillard.webp` | `j02_belleville_matin_brouillard.webp` |
-| `assets/photos/ep1` | `ill_rue_montmartre_pluie_nuit.webp` | `j02_metro_couronnes_pluie.webp` |
-| `assets/photos/ep1` | `ill_bureau_calculs_calculatrice.webp` | `j03_15h48_trois_colonnes.webp` |
-| `assets/photos/ep1` | `pr_selfie_ascenseur_chemise_blanche.webp` | `j06_22h31_tailleur_miroir.webp` |
-| `assets/photos/ep1` | `pr_tour_heng_contre_plongee.webp` | `j07_11h00_tour_heng_exterieur.webp` |
-| `assets/photos/ep1` | `pr_homme_costume_bureau_vue_tour_eiffel.webp` | `j07_47e_etage_bureau_tristan.webp` |
-| `assets/photos/ep1` | `pr_shen_ascenseur_homme_age.webp` | `j07_ascenseur_shen_tristan.webp` |
-| `assets/photos/ep1` | `pr_ecran_badge_shen_miao_refuse.webp` | `j07_badge_47e_refuse.webp` |
-| `assets/photos/ep1` | `pr_contrat_notaire_stylo_plume.webp` | `j08_11h30_contrat_14_pages.webp` |
-| `assets/photos/ep1` | `pr_fraises_cafe_cuisine_noire.webp` | `j09_17h22_avenue_berri_cuisine.webp` |
-| `assets/photos/ep1` | `pr_chambre_blanche_marbre.webp` | `j09_avenue_berri_chambre.webp` |
-| `assets/photos/ep1` | `pr_maman_cuisine_soir_cocotte.webp` | `j11_maman_cuisine_soir.webp` |
-| `assets/photos/ep1` | `pr_maman_cafe_fenetre_matin.webp` | `j11_maman_fenetre_paris.webp` |
-| `assets/photos/ep1` | `pr_the_mains_passation_gaiwan.webp` | `j14_20h30_long_jing_mains.webp` |
-| `assets/photos/ep1` | `pr_boite_the_long_jing.webp` | `j14_boite_long_jing.webp` |
-| `assets/photos/ep1` | `pr_the_plateau_gaiwan.webp` | `j14_long_jing_gaiwan.webp` |
-| `assets/photos/ep1` | `pr_billet_avion_telephone.webp` | `pj_billet_avion_cdg.webp` |
-| `assets/photos/ep1` | `pr_bol_nouilles_boeuf.webp` | `pj_maman_plat.webp` |
-| `assets/photos/ep1` | `pr_pere_et_shen_enfant.webp` | `pj_papa_shen_5ans.webp` |
-| `assets/photos/ep1` | `pr_enveloppe_billets_pour_ma_fille.webp` | `pj_tante_mei_billets.webp` |
-| `assets/photos/ep1` | `pr_camille_selfie_revisions.webp` | `post_camille_bureau_droit.webp` |
-| `assets/photos/ep1` | `pr_deux_cafes_mains.webp` | `post_camille_cafe.webp` |
-| `assets/photos/ep1` | `pr_camille_terrasse_montmartre.webp` | `post_camille_montmartre.webp` |
-| `assets/photos/ep1` | `pr_ecrin_bracelet_cartier.webp` | `post_cartier_cadeau.webp` |
-| `assets/photos/ep1` | `pr_escalier_helicoidal_marbre.webp` | `post_escalier_helice.webp` |
-| `assets/photos/ep1` | `pr_repas_poisson_riz_legumes.webp` | `post_maman_plat.webp` |
-| `assets/photos/ep1` | `pr_homme_50aine_cour_fujian.webp` | `post_oncle_fujian.webp` |
-| `assets/photos/ep1` | `pr_croissant_partage_cafe.webp` | `post_shen_camille_croissants.webp` |
-| `assets/photos/camera_pool` | `pr_boulangere_bebe_boulangerie.webp` | `day_high_1.webp` |
-| `assets/photos/camera_pool` | `pr_soupe_potiron_pain.webp` | `day_high_2.webp` |
-| `assets/photos/camera_pool` | `pr_bouquet_pivoines_fleuriste.webp` | `day_low_1.webp` |
-| `assets/photos/camera_pool` | `pr_polaroid_livre_cafe.webp` | `day_low_2.webp` |
-| `assets/photos/camera_pool` | `pr_femme_30aine_pull_beige.webp` | `day_mid_1.webp` |
-| `assets/photos/camera_pool` | `pr_homme_age_bureau_lampe_verte.webp` | `day_mid_2.webp` |
-| `assets/photos/camera_pool` | `pr_feu_artifice_fenetre_vin.webp` | `night_high_1.webp` |
-| `assets/photos/camera_pool` | `pr_feu_artifice_tour_nuit.webp` | `night_low_1.webp` |
-| `assets/photos/camera_pool` | `pr_chambre_valise_toits_chine.webp` | `night_low_2.webp` |
-| `assets/photos/ref_characters` | `pr_shen_ref.webp` | `IMG_4362.webp` |
-| `assets/photos/ref_characters` | `pr_homme_30aine_appareil_photo.webp` | `openart-image_1778244928121_d5d4049c_1778244928192_40ec0570.webp` |
-| `assets/photos/ref_characters` | `pr_homme_60aine_costume_lunettes.webp` | `openart-image_1778244959829_66e262b0_1778244959869_904c31a5.webp` |
-| `assets/photos/ref_characters` | `pr_tante_mei_tricot.webp` | `openart-image_1778244976091_2adf10c8_1778244976345_757d9aa3.webp` |
-| `assets/photos/ref_characters` | `pr_homme_30aine_lunettes_rondes_sweat.webp` | `openart-image_1778245016240_19221f96_1778245016295_d8ad460e.webp` |
-| `assets/photos/ref_characters` | `pr_boulanger_rouleau_livre_poesie.webp` | `openart-image_1778245044524_4b8c6eda_1778245044708_c9c730a1.webp` |
-| `assets/photos/ref_characters` | `pr_potiere_tablier.webp` | `openart-image_1778245065017_29a334d2_1778245065156_ec3cdc43.webp` |
-| `assets/photos/ref_characters` | `pr_vieil_homme_casquette_barbe.webp` | `openart-image_1778245118104_48bcc413_1778245118154_74c74019.webp` |
-| `assets/photos/ref_characters` | `pr_maman_ref.webp` | `openart-image_1778245210531_02149917_1778245210557_7074db5b.webp` |
-| `assets/photos/ref_characters` | `pr_madame_heng_ref.webp` | `openart-image_1778437421023_33c3792f_1778437421068_085ab3f8.webp` |
-| `assets/photos/ref_characters` | `pr_homme_costume_salon_prive.webp` | `openart-image_1778437493183_7233c42a_1778437493249_ba44baa9 2.webp` |
-| `assets/photos/ref_characters` | `pr_homme_50aine_cour_fujian_ref.webp` | `openart-image_1778437650312_80f730bf_1778437650348_2aec6df9 2.webp` |
-| `assets/photos/ref_characters` | `pr_homme_costume_boutique_tailleur.webp` | `openart-image_1778495262527_b6d763aa_1778495262812_43469ffe.webp` |
-| `assets/photos/ref_characters` | `pr_femme_robe_noire_miroir_dore.webp` | `post_amanda_robe.webp` |
-| `assets/photos/ref_characters` | `pr_homme_costume_regard_intense.webp` | `post_lu_portrait.webp` |
-| `assets/photos/ref_characters` | `pr_femme_selfie_tour_bureaux.webp` | `post_wei_tour.webp` |
-| `assets/photos/_tampon` | `pr_badge_visiteur_shen.webp` | `IMG_4365.webp` |
-| `assets/photos/_tampon` | `pr_shen_selfie_cour_briques.webp` | `IMG_4368.webp` |
-| `assets/photos/_tampon` | `pr_planche_expressions_shen.webp` | `IMG_4605.webp` |
-| `assets/photos/_tampon` | `pr_planche_poses_livreuse_shen.webp` | `IMG_4608.webp` |
-| `assets/photos/_tampon` | `pr_planche_gestes_telephone_shen.webp` | `IMG_4609.webp` |
-| `assets/photos/_tampon` | `ill_planche_shen_casque_actions.webp` | `IMG_4618.webp` |
-| `assets/photos/_tampon` | `ill_planche_homme_costume_details.webp` | `IMG_4619.webp` |
-| `assets/photos/_tampon` | `ill_planche_shen_casque_emotions.webp` | `IMG_4620.webp` |
-| `assets/photos/_tampon` | `ill_studio_jour_2.webp` | `IMG_4621.webp` |
-| `assets/photos/_tampon` | `ill_rue_pluie_feu_rouge.webp` | `IMG_4622.webp` |
-| `assets/photos/_tampon` | `ill_studio_nuit_2.webp` | `IMG_4626.webp` |
-| `assets/photos/_tampon` | `ill_bureau_calculs_2.webp` | `IMG_4627.webp` |
-| `assets/photos/_tampon` | `ill_rue_brouillard_2.webp` | `IMG_4628.webp` |
-| `assets/photos/_tampon` | `ill_planche_shen_ecrit_telephone.webp` | `IMG_4629.webp` |
-| `assets/photos/_tampon` | `ill_cabinet_medical_2.webp` | `IMG_4632.webp` |
-| `assets/photos/_tampon` | `pr_enveloppe_billets_2.webp` | `chat_billets.webp` |
-| `assets/photos/_tampon` | `pr_interieur_tour_baie_vitree.webp` | `chat_lu_office_vie.webp` |
-| `assets/photos/_tampon` | `pr_bol_nouilles_2.webp` | `chat_maman_plat.webp` |
-| `assets/photos/_tampon` | `pr_pere_et_shen_enfant_2.webp` | `chat_papa_shen_5ans.webp` |
-| `assets/photos/_tampon` | `pr_selfie_ascenseur_2.webp` | `chat_shen_ascenseur_selfie.webp` |
-| `assets/photos/_tampon` | `pr_tour_contre_plongee_2.webp` | `chat_tour_groupe_lu.webp` |
-| `assets/photos/_tampon` | `pr_ecran_badge_shen_miao_2.webp` | `chat_wei_screenshot_badge.webp` |
-| `assets/photos/_tampon` | `pr_femme_30aine_pull_beige_2.webp` | `openart-image_1777810961579_cd4e04be_1777810961615_db85e826.webp` |
-| `assets/photos/_tampon` | `pr_polaroid_livre_cafe_2.webp` | `openart-image_1778245475070_bccd2731_1778245475091_2d04a5eb.webp` |
-| `assets/photos/_tampon` | `pr_chambre_hopital_couple_age.webp` | `openart-image_1778245608234_a53d217c_1778245608732_38a1e198.webp` |
-| `assets/photos/_tampon` | `pr_homme_age_bureau_lampe_verte_2.webp` | `openart-image_1778246123277_c6d20ecf_1778246123325_256d589e.webp` |
-| `assets/photos/_tampon` | `pr_feu_artifice_fenetre_vin_2.webp` | `openart-image_1778246270610_8d1a9c44_1778246270653_43e39e64.webp` |
-| `assets/photos/_tampon` | `pr_shen_ascenseur_homme_age_2.webp` | `openart-image_1778246376655_d97e6da5_1778246376734_3a6b4034.webp` |
-| `assets/photos/_tampon` | `pr_boulangere_bebe_2.webp` | `openart-image_1778246887208_fa06d251_1778246887263_0b35ad3c.webp` |
-| `assets/photos/_tampon` | `pr_feu_artifice_tour_nuit_2.webp` | `openart-image_1778247054420_d7386f90_1778247054694_c74e35c8.webp` |
-| `assets/photos/_tampon` | `pr_billet_avion_telephone_2.webp` | `openart-image_1778247090382_1ef8d83a_1778247090492_9ce1078f.webp` |
-| `assets/photos/_tampon` | `pr_carnet_notes_polaroid_2.webp` | `openart-image_1778247104015_94aa6357_1778247104084_7458fc93.webp` |
-| `assets/photos/_tampon` | `pr_chambre_valise_toits_chine_2.webp` | `openart-image_1778247116736_b4512939_1778247116821_b8eed430.webp` |
-| `assets/photos/_tampon` | `pr_selfie_femme_aeroport_taxfree.webp` | `openart-image_1778280201176_3d4874f4_1778280201236_14b93d70.webp` |
-| `assets/photos/_tampon` | `pr_camille_croissant_bistrot.webp` | `openart-image_1778437391829_0ae09c42_1778437392287_0d083673.webp` |
-| `assets/photos/_tampon` | `pr_accident_velo_2.webp` | `openart-image_1778456895248_12213a4c_1778456895361_df2a4d83.webp` |
-| `assets/photos/_tampon` | `pr_carte_dechiree_bureau_nuit.webp` | `openart-image_1778458099169_3a707b74_1778458099238_f6271f04.webp` |
-| `assets/photos/_tampon` | `pr_carte_recollee_bureau_2.webp` | `openart-image_1778458188673_38bd25bd_1778458188735_d9e84260.webp` |
-| `assets/photos/_tampon` | `pr_contrat_notaire_2.webp` | `openart-image_1778458223758_1bc5d76e_1778458223816_f4404143.webp` |
-| `assets/photos/_tampon` | `pr_petit_dejeuner_croissants_livre.webp` | `openart-image_1778458242213_2d418a6d_1778458242250_0e282228.webp` |
-| `assets/photos/_tampon` | `pr_fraises_cafe_2.webp` | `openart-image_1778458278625_9c4714a6_1778458278698_baec98c6.webp` |
-| `assets/photos/_tampon` | `pr_maman_cuisine_soir_2.webp` | `openart-image_1778458316834_dbce206b_1778458316877_358eec17.webp` |
-| `assets/photos/_tampon` | `pr_chambre_blanche_marbre_2.webp` | `openart-image_1778458369311_fcda9729_1778458369375_171568d9.webp` |
-| `assets/photos/_tampon` | `pr_salle_a_manger_toits_paris.webp` | `openart-image_1778458428261_c091d754_1778458428293_8bfbe627.webp` |
-| `assets/photos/_tampon` | `pr_appel_camille_nuit_vin.webp` | `openart-image_1778458535264_ad5a397a_1778458535316_fcdbff5c.webp` |
-| `assets/photos/_tampon` | `pr_essayage_tailleur_noir_miroir.webp` | `openart-image_1778459300498_a8c44d46_1778459300526_3e0b78b8.webp` |
-| `assets/photos/_tampon` | `pr_the_mains_passation_2.webp` | `openart-image_1778459867095_8e04a135_1778459867134_d3327fcc.webp` |
-| `assets/photos/_tampon` | `pr_homme_costume_vue_tour_eiffel_2.webp` | `openart-image_1778460069330_bf05b676_1778460069400_7b9a5b63.webp` |
-| `assets/photos/_tampon` | `pr_bouquet_pivoines_2.webp` | `openart-image_1778494948558_dd35e1c3_1778494948606_c048c6cc.webp` |
-| `assets/photos/_tampon` | `pr_maman_cafe_fenetre_2.webp` | `openart-image_1778494999972_a0cb9028_1778495000034_43c9e09a.webp` |
-| `assets/photos/_tampon` | `pr_soupe_potiron_2.webp` | `openart-image_1778495000520_45d8a50b_1778495000601_b8a1d3b9.webp` |
-| `assets/photos/_tampon` | `pr_cafe_livre_eclair.webp` | `openart-image_1778495047164_f4c6041f_1778495047586_f1e780bd.webp` |
-| `assets/photos/_tampon` | `pr_diner_pates_deux.webp` | `openart-image_1778495091832_ac7e406b_1778495091894_4aa0334b.webp` |
-| `assets/photos/_tampon` | `pr_croissant_partage_2.webp` | `openart-image_1778495095608_a3517771_1778495095651_482ba3c0.webp` |
-| `assets/photos/_tampon` | `pr_camille_selfie_revisions_2.webp` | `openart-image_1778495122870_7f5d360f_1778495122919_6d074a8b.webp` |
-| `assets/photos/_tampon` | `pr_camille_terrasse_montmartre_2.webp` | `openart-image_1778495145609_24d7ab0f_1778495145682_eedef4f8.webp` |
-| `assets/photos/_tampon` | `pr_femme_bibliotheque_livres.webp` | `openart-image_1778495156208_12743816_1778495156269_0a60efd9.webp` |
-| `assets/photos/_tampon` | `pr_table_reunion_carnet.webp` | `openart-image_1778495195143_58c7e964_1778495195164_a4e0c762.webp` |
-| `assets/photos/_tampon` | `pr_silhouette_homme_tour_eiffel_nuit.webp` | `openart-image_1778495209552_57799ce2_1778495209864_70329b50.webp` |
-| `assets/photos/_tampon` | `pr_homme_costume_cigare_whisky.webp` | `openart-image_1778495241342_35de9338_1778495241413_9d3e0b7a.webp` |
-| `assets/photos/_tampon` | `pr_homme_chemise_bleue_terrasse_mer.webp` | `openart-image_1778495268600_f1cdc0ac_1778495268628_e49405c4.webp` |
-| `assets/photos/_tampon` | `pr_the_plateau_gaiwan_2.webp` | `openart-image_1778495298051_bb8f096f_1778495298186_73e216b8.webp` |
-| `assets/photos/_tampon` | `pr_album_photos_main_jade.webp` | `openart-image_1778495307568_656b42e9_1778495307664_be2ef15e.webp` |
-| `assets/photos/_tampon` | `pr_boite_the_long_jing_2.webp` | `openart-image_1778495344730_f167a2a7_1778495344826_755ced64.webp` |
-| `assets/photos/_tampon` | `pr_fleurs_iris_cour_fujian.webp` | `openart-image_1778495389644_7ae4051f_1778495389692_2c28c1a6.webp` |
-| `assets/photos/_tampon` | `pr_ecrin_bracelet_cartier_2.webp` | `post_amanda_cadeau.webp` |
-| `assets/photos/_tampon` | `pr_escalier_helicoidal_2.webp` | `post_lu_archi.webp` |
-| `assets/photos/_tampon` | `pr_repas_poisson_riz_2.webp` | `post_maman_plat.webp` |
-| `assets/photos/_tampon` | `pr_shen_selfie_chambre_valise.webp` | `post_shen_studio.webp` |
-| `assets/photos/_tampon` | `pr_shen_selfie_gare_hall.webp` | `post_shen_train.webp` |
-| `assets/photos/_tampon` | `pr_deux_cafes_mains_2.webp` | `post_wei_cafe.webp` |
-| `assets/photos/_tampon` | `pr_rizieres_coucher_soleil.webp` | `wallpaper_home.webp` |
-| `assets/_originaux/ref_characters` | `pr_shen_ref.jpeg` | `IMG_4362.jpeg` |
-| `assets/_originaux/ref_characters` | `pr_homme_30aine_appareil_photo.png` | `openart-image_1778244928121_d5d4049c_1778244928192_40ec0570.png` |
-| `assets/_originaux/ref_characters` | `pr_homme_60aine_costume_lunettes.png` | `openart-image_1778244959829_66e262b0_1778244959869_904c31a5.png` |
-| `assets/_originaux/ref_characters` | `pr_tante_mei_tricot.png` | `openart-image_1778244976091_2adf10c8_1778244976345_757d9aa3.png` |
-| `assets/_originaux/ref_characters` | `pr_homme_30aine_lunettes_rondes_sweat.png` | `openart-image_1778245016240_19221f96_1778245016295_d8ad460e.png` |
-| `assets/_originaux/ref_characters` | `pr_boulanger_rouleau_livre_poesie.png` | `openart-image_1778245044524_4b8c6eda_1778245044708_c9c730a1.png` |
-| `assets/_originaux/ref_characters` | `pr_potiere_tablier.png` | `openart-image_1778245065017_29a334d2_1778245065156_ec3cdc43.png` |
-| `assets/_originaux/ref_characters` | `pr_vieil_homme_casquette_barbe.png` | `openart-image_1778245118104_48bcc413_1778245118154_74c74019.png` |
-| `assets/_originaux/ref_characters` | `pr_maman_ref.png` | `openart-image_1778245210531_02149917_1778245210557_7074db5b.png` |
-| `assets/_originaux/ref_characters` | `pr_madame_heng_ref.png` | `openart-image_1778437421023_33c3792f_1778437421068_085ab3f8.png` |
-| `assets/_originaux/ref_characters` | `pr_homme_costume_salon_prive.png` | `openart-image_1778437493183_7233c42a_1778437493249_ba44baa9 2.png` |
-| `assets/_originaux/ref_characters` | `pr_homme_50aine_cour_fujian_ref.png` | `openart-image_1778437650312_80f730bf_1778437650348_2aec6df9 2.png` |
-| `assets/_originaux/ref_characters` | `pr_homme_costume_boutique_tailleur.png` | `openart-image_1778495262527_b6d763aa_1778495262812_43469ffe.png` |
-| `assets/_originaux/ref_characters` | `pr_femme_robe_noire_miroir_dore.png` | `post_amanda_robe.png` |
-| `assets/_originaux/ref_characters` | `pr_homme_costume_regard_intense.png` | `post_lu_portrait.png` |
-| `assets/_originaux/ref_characters` | `pr_femme_selfie_tour_bureaux.png` | `post_wei_tour.png` |
-| `assets/_originaux/_tampon` | `pr_badge_visiteur_shen.jpeg` | `IMG_4365.jpeg` |
-| `assets/_originaux/_tampon` | `pr_shen_selfie_cour_briques.jpeg` | `IMG_4368.jpeg` |
-| `assets/_originaux/_tampon` | `pr_planche_expressions_shen.png` | `IMG_4605.png` |
-| `assets/_originaux/_tampon` | `pr_planche_poses_livreuse_shen.png` | `IMG_4608.png` |
-| `assets/_originaux/_tampon` | `pr_planche_gestes_telephone_shen.jpeg` | `IMG_4609.jpeg` |
-| `assets/_originaux/_tampon` | `ill_planche_shen_casque_actions.png` | `IMG_4618.png` |
-| `assets/_originaux/_tampon` | `ill_planche_homme_costume_details.png` | `IMG_4619.png` |
-| `assets/_originaux/_tampon` | `ill_planche_shen_casque_emotions.png` | `IMG_4620.png` |
-| `assets/_originaux/_tampon` | `ill_studio_jour_2.png` | `IMG_4621.png` |
-| `assets/_originaux/_tampon` | `ill_rue_pluie_feu_rouge.png` | `IMG_4622.png` |
-| `assets/_originaux/_tampon` | `ill_studio_nuit_2.png` | `IMG_4626.png` |
-| `assets/_originaux/_tampon` | `ill_bureau_calculs_2.png` | `IMG_4627.png` |
-| `assets/_originaux/_tampon` | `ill_rue_brouillard_2.png` | `IMG_4628.png` |
-| `assets/_originaux/_tampon` | `ill_planche_shen_ecrit_telephone.png` | `IMG_4629.png` |
-| `assets/_originaux/_tampon` | `ill_cabinet_medical_2.png` | `IMG_4632.png` |
-| `assets/_originaux/_tampon` | `pr_enveloppe_billets_2.jpg` | `chat_billets.jpg` |
-| `assets/_originaux/_tampon` | `pr_interieur_tour_baie_vitree.png` | `chat_lu_office_vie.png` |
-| `assets/_originaux/_tampon` | `pr_bol_nouilles_2.png` | `chat_maman_plat.png` |
-| `assets/_originaux/_tampon` | `pr_pere_et_shen_enfant_2.png` | `chat_papa_shen_5ans.png` |
-| `assets/_originaux/_tampon` | `pr_selfie_ascenseur_2.png` | `chat_shen_ascenseur_selfie.png` |
-| `assets/_originaux/_tampon` | `pr_tour_contre_plongee_2.jpg` | `chat_tour_groupe_lu.jpg` |
-| `assets/_originaux/_tampon` | `pr_ecran_badge_shen_miao_2.png` | `chat_wei_screenshot_badge.png` |
-| `assets/_originaux/_tampon` | `pr_femme_30aine_pull_beige_2.png` | `openart-image_1777810961579_cd4e04be_1777810961615_db85e826.png` |
-| `assets/_originaux/_tampon` | `pr_polaroid_livre_cafe_2.png` | `openart-image_1778245475070_bccd2731_1778245475091_2d04a5eb.png` |
-| `assets/_originaux/_tampon` | `pr_chambre_hopital_couple_age.png` | `openart-image_1778245608234_a53d217c_1778245608732_38a1e198.png` |
-| `assets/_originaux/_tampon` | `pr_homme_age_bureau_lampe_verte_2.png` | `openart-image_1778246123277_c6d20ecf_1778246123325_256d589e.png` |
-| `assets/_originaux/_tampon` | `pr_feu_artifice_fenetre_vin_2.png` | `openart-image_1778246270610_8d1a9c44_1778246270653_43e39e64.png` |
-| `assets/_originaux/_tampon` | `pr_shen_ascenseur_homme_age_2.png` | `openart-image_1778246376655_d97e6da5_1778246376734_3a6b4034.png` |
-| `assets/_originaux/_tampon` | `pr_boulangere_bebe_2.png` | `openart-image_1778246887208_fa06d251_1778246887263_0b35ad3c.png` |
-| `assets/_originaux/_tampon` | `pr_feu_artifice_tour_nuit_2.png` | `openart-image_1778247054420_d7386f90_1778247054694_c74e35c8.png` |
-| `assets/_originaux/_tampon` | `pr_billet_avion_telephone_2.png` | `openart-image_1778247090382_1ef8d83a_1778247090492_9ce1078f.png` |
-| `assets/_originaux/_tampon` | `pr_carnet_notes_polaroid_2.png` | `openart-image_1778247104015_94aa6357_1778247104084_7458fc93.png` |
-| `assets/_originaux/_tampon` | `pr_chambre_valise_toits_chine_2.png` | `openart-image_1778247116736_b4512939_1778247116821_b8eed430.png` |
-| `assets/_originaux/_tampon` | `pr_selfie_femme_aeroport_taxfree.png` | `openart-image_1778280201176_3d4874f4_1778280201236_14b93d70.png` |
-| `assets/_originaux/_tampon` | `pr_camille_croissant_bistrot.png` | `openart-image_1778437391829_0ae09c42_1778437392287_0d083673.png` |
-| `assets/_originaux/_tampon` | `pr_accident_velo_2.png` | `openart-image_1778456895248_12213a4c_1778456895361_df2a4d83.png` |
-| `assets/_originaux/_tampon` | `pr_carte_dechiree_bureau_nuit.png` | `openart-image_1778458099169_3a707b74_1778458099238_f6271f04.png` |
-| `assets/_originaux/_tampon` | `pr_carte_recollee_bureau_2.png` | `openart-image_1778458188673_38bd25bd_1778458188735_d9e84260.png` |
-| `assets/_originaux/_tampon` | `pr_contrat_notaire_2.png` | `openart-image_1778458223758_1bc5d76e_1778458223816_f4404143.png` |
-| `assets/_originaux/_tampon` | `pr_petit_dejeuner_croissants_livre.png` | `openart-image_1778458242213_2d418a6d_1778458242250_0e282228.png` |
-| `assets/_originaux/_tampon` | `pr_fraises_cafe_2.png` | `openart-image_1778458278625_9c4714a6_1778458278698_baec98c6.png` |
-| `assets/_originaux/_tampon` | `pr_maman_cuisine_soir_2.png` | `openart-image_1778458316834_dbce206b_1778458316877_358eec17.png` |
-| `assets/_originaux/_tampon` | `pr_chambre_blanche_marbre_2.png` | `openart-image_1778458369311_fcda9729_1778458369375_171568d9.png` |
-| `assets/_originaux/_tampon` | `pr_salle_a_manger_toits_paris.png` | `openart-image_1778458428261_c091d754_1778458428293_8bfbe627.png` |
-| `assets/_originaux/_tampon` | `pr_appel_camille_nuit_vin.png` | `openart-image_1778458535264_ad5a397a_1778458535316_fcdbff5c.png` |
-| `assets/_originaux/_tampon` | `pr_essayage_tailleur_noir_miroir.png` | `openart-image_1778459300498_a8c44d46_1778459300526_3e0b78b8.png` |
-| `assets/_originaux/_tampon` | `pr_the_mains_passation_2.png` | `openart-image_1778459867095_8e04a135_1778459867134_d3327fcc.png` |
-| `assets/_originaux/_tampon` | `pr_homme_costume_vue_tour_eiffel_2.png` | `openart-image_1778460069330_bf05b676_1778460069400_7b9a5b63.png` |
-| `assets/_originaux/_tampon` | `pr_bouquet_pivoines_2.png` | `openart-image_1778494948558_dd35e1c3_1778494948606_c048c6cc.png` |
-| `assets/_originaux/_tampon` | `pr_maman_cafe_fenetre_2.png` | `openart-image_1778494999972_a0cb9028_1778495000034_43c9e09a.png` |
-| `assets/_originaux/_tampon` | `pr_soupe_potiron_2.png` | `openart-image_1778495000520_45d8a50b_1778495000601_b8a1d3b9.png` |
-| `assets/_originaux/_tampon` | `pr_cafe_livre_eclair.png` | `openart-image_1778495047164_f4c6041f_1778495047586_f1e780bd.png` |
-| `assets/_originaux/_tampon` | `pr_diner_pates_deux.png` | `openart-image_1778495091832_ac7e406b_1778495091894_4aa0334b.png` |
-| `assets/_originaux/_tampon` | `pr_croissant_partage_2.png` | `openart-image_1778495095608_a3517771_1778495095651_482ba3c0.png` |
-| `assets/_originaux/_tampon` | `pr_camille_selfie_revisions_2.png` | `openart-image_1778495122870_7f5d360f_1778495122919_6d074a8b.png` |
-| `assets/_originaux/_tampon` | `pr_camille_terrasse_montmartre_2.png` | `openart-image_1778495145609_24d7ab0f_1778495145682_eedef4f8.png` |
-| `assets/_originaux/_tampon` | `pr_femme_bibliotheque_livres.png` | `openart-image_1778495156208_12743816_1778495156269_0a60efd9.png` |
-| `assets/_originaux/_tampon` | `pr_table_reunion_carnet.png` | `openart-image_1778495195143_58c7e964_1778495195164_a4e0c762.png` |
-| `assets/_originaux/_tampon` | `pr_silhouette_homme_tour_eiffel_nuit.png` | `openart-image_1778495209552_57799ce2_1778495209864_70329b50.png` |
-| `assets/_originaux/_tampon` | `pr_homme_costume_cigare_whisky.png` | `openart-image_1778495241342_35de9338_1778495241413_9d3e0b7a.png` |
-| `assets/_originaux/_tampon` | `pr_homme_chemise_bleue_terrasse_mer.png` | `openart-image_1778495268600_f1cdc0ac_1778495268628_e49405c4.png` |
-| `assets/_originaux/_tampon` | `pr_the_plateau_gaiwan_2.png` | `openart-image_1778495298051_bb8f096f_1778495298186_73e216b8.png` |
-| `assets/_originaux/_tampon` | `pr_album_photos_main_jade.png` | `openart-image_1778495307568_656b42e9_1778495307664_be2ef15e.png` |
-| `assets/_originaux/_tampon` | `pr_boite_the_long_jing_2.png` | `openart-image_1778495344730_f167a2a7_1778495344826_755ced64.png` |
-| `assets/_originaux/_tampon` | `pr_fleurs_iris_cour_fujian.png` | `openart-image_1778495389644_7ae4051f_1778495389692_2c28c1a6.png` |
-| `assets/_originaux/_tampon` | `pr_ecrin_bracelet_cartier_2.png` | `post_amanda_cadeau.png` |
-| `assets/_originaux/_tampon` | `pr_escalier_helicoidal_2.png` | `post_lu_archi.png` |
-| `assets/_originaux/_tampon` | `pr_repas_poisson_riz_2.png` | `post_maman_plat.png` |
-| `assets/_originaux/_tampon` | `pr_shen_selfie_chambre_valise.png` | `post_shen_studio.png` |
-| `assets/_originaux/_tampon` | `pr_shen_selfie_gare_hall.png` | `post_shen_train.png` |
-| `assets/_originaux/_tampon` | `pr_deux_cafes_mains_2.png` | `post_wei_cafe.png` |
-| `assets/_originaux/_tampon` | `pr_rizieres_coucher_soleil.png` | `wallpaper_home.png` |
+## Arborescence
+
+- `assets/photos/<dossier>/` : versions **webp** du jeu.
+  Seuls `avatars/` et `ep1/` sont déclarés dans `pubspec.yaml` et embarqués dans l'app ;
+  le reste est la banque d'images.
+- `assets/_originaux/<dossier>/` : les masters (png/jpg) des mêmes images.
+- `assets/videos/` : les clips générés (pas encore utilisés dans le jeu).
+
+## `assets/photos/avatars` — Portraits canon des personnages (embarqués dans l'app) (8)
+
+- `pr_aubin.webp` · *(lot openart du 19/07)*
+- `pr_camille.webp`
+- `pr_madame_heng.webp`
+- `pr_maman.webp`
+- `pr_shen.webp`
+- `pr_tante_mei.webp`
+- `pr_tristan.webp`
+- `pr_vincent.webp`
+
+## `assets/photos/ep1` — Photos utilisées par le script de l'épisode 1 (embarquées dans l'app) (10)
+
+- `pr_accident_velo_homme_costume.webp`
+- `pr_bol_nouilles_boeuf.webp`
+- `pr_bouquet_pivoines_fleuriste.webp`
+- `pr_carte_recollee_bureau_nuit.webp`
+- `pr_contrat_notaire_stylo_plume.webp`
+- `pr_croissant_partage_cafe.webp`
+- `pr_deux_cafes_mains.webp`
+- `pr_repas_poisson_riz_legumes.webp`
+- `pr_selfie_ascenseur_chemise_blanche.webp`
+- `pr_tour_heng_contre_plongee.webp`
+
+## `assets/photos/personnages` — Portraits, selfies et scènes centrées sur des gens (71)
+
+- `pr_accident_velo_2.webp`
+- `pr_appel_camille_nuit_vin.webp`
+- `pr_boulanger_rouleau_livre_poesie.webp`
+- `pr_boulangere_bebe_2.webp`
+- `pr_boulangere_bebe_3.webp` · *(lot openart du 19/07)*
+- `pr_boulangere_bebe_boulangerie.webp`
+- `pr_camille_croissant_bistrot.webp`
+- `pr_camille_selfie_revisions.webp`
+- `pr_camille_selfie_revisions_2.webp`
+- `pr_camille_terrasse_montmartre.webp`
+- `pr_camille_terrasse_montmartre_2.webp`
+- `pr_chambre_hopital_couple_age.webp`
+- `pr_essayage_tailleur_noir_miroir.webp`
+- `pr_femme_30aine_pull_beige.webp`
+- `pr_femme_30aine_pull_beige_2.webp`
+- `pr_femme_60aine_pivoines_fenetre_toits.webp` · *(lot openart du 19/07)*
+- `pr_femme_bibliotheque_livres.webp`
+- `pr_femme_photographie_maison_pierre_rizieres.webp` · *(lot openart du 19/07)*
+- `pr_femme_robe_noire_bar_hotel.webp` · *(lot openart du 19/07)*
+- `pr_femme_robe_noire_miroir_dore.webp`
+- `pr_femme_robe_noire_miroir_dore_2.webp` · *(lot openart du 19/07)*
+- `pr_femme_selfie_tour_bureaux.webp`
+- `pr_femme_tailleur_balcon_ville_nuit.webp` · *(lot openart du 19/07)*
+- `pr_homme_30aine_appareil_photo.webp`
+- `pr_homme_30aine_lunettes_rondes_sweat.webp`
+- `pr_homme_50aine_cour_fujian.webp`
+- `pr_homme_50aine_cour_fujian_ref.webp`
+- `pr_homme_60aine_costume_lunettes.webp`
+- `pr_homme_age_bureau_lampe_verte.webp`
+- `pr_homme_age_bureau_lampe_verte_2.webp`
+- `pr_homme_chemise_bleue_terrasse_mer.webp`
+- `pr_homme_chemise_lin_jardin.webp` · *(lot openart du 19/07)*
+- `pr_homme_costume_boutique_tailleur.webp`
+- `pr_homme_costume_bureau_vue_tour_eiffel.webp`
+- `pr_homme_costume_cigare_whisky.webp`
+- `pr_homme_costume_regard_intense.webp`
+- `pr_homme_costume_salon_prive.webp`
+- `pr_homme_costume_vue_tour_eiffel_2.webp`
+- `pr_homme_costume_vue_tour_eiffel_3.webp` · *(lot openart du 19/07)*
+- `pr_madame_heng_ref.webp`
+- `pr_maman_cafe_fenetre_2.webp`
+- `pr_maman_cafe_fenetre_matin.webp`
+- `pr_maman_cuisine_soir_2.webp`
+- `pr_maman_cuisine_soir_cocotte.webp`
+- `pr_maman_ref.webp`
+- `pr_pere_et_shen_enfant.webp`
+- `pr_pere_et_shen_enfant_2.webp`
+- `pr_photo_famille_maison_pierre_2010.webp` · *(lot openart du 19/07)*
+- `pr_portrait_femme_casque_velo.webp` · *(lot openart du 19/07)*
+- `pr_portrait_femme_casque_velo_2.webp` · *(lot openart du 19/07)*
+- `pr_portrait_jeune_femme_cheveux_attaches.webp` · *(lot openart du 19/07)*
+- `pr_portrait_jeune_femme_cheveux_laches.webp` · *(lot openart du 19/07)*
+- `pr_potiere_tablier.webp`
+- `pr_selfie_ascenseur_2.webp`
+- `pr_selfie_femme_aeroport_taxfree.webp`
+- `pr_selfie_femme_departs_paris_cdg.webp` · *(lot openart du 19/07)*
+- `pr_selfie_femme_gare_moderne_valise_rouge.webp` · *(lot openart du 19/07)*
+- `pr_selfie_femme_hall_aeroport_valise_rouge.webp` · *(lot openart du 19/07)*
+- `pr_selfie_femme_maison_pierre_rizieres.webp` · *(lot openart du 19/07)*
+- `pr_selfie_femme_robe_noire_collegues.webp` · *(lot openart du 19/07)*
+- `pr_selfie_femme_trench_hall_bagages.webp` · *(lot openart du 19/07)*
+- `pr_selfie_femme_trench_hall_bagages_2.webp` · *(lot openart du 19/07)*
+- `pr_shen_ascenseur_homme_age.webp`
+- `pr_shen_ascenseur_homme_age_2.webp`
+- `pr_shen_ref.webp`
+- `pr_shen_selfie_chambre_valise.webp`
+- `pr_shen_selfie_cour_briques.webp`
+- `pr_shen_selfie_gare_hall.webp`
+- `pr_silhouette_homme_tour_eiffel_nuit.webp`
+- `pr_tante_mei_tricot.webp`
+- `pr_vieil_homme_casquette_barbe.webp`
+
+## `assets/photos/lieux` — Villes, rues, tours, intérieurs, paysages (18)
+
+- `pr_bureau_nuit_vue_skyline_neons.webp` · *(lot openart du 19/07)*
+- `pr_chambre_blanche_marbre.webp`
+- `pr_chambre_blanche_marbre_2.webp`
+- `pr_chambre_valise_toits_chine.webp`
+- `pr_chambre_valise_toits_chine_2.webp`
+- `pr_escalier_helicoidal_2.webp`
+- `pr_escalier_helicoidal_marbre.webp`
+- `pr_feu_artifice_fenetre_vin.webp`
+- `pr_feu_artifice_fenetre_vin_2.webp`
+- `pr_feu_artifice_tour_nuit.webp`
+- `pr_feu_artifice_tour_nuit_2.webp`
+- `pr_fleurs_iris_cour_fujian.webp`
+- `pr_interieur_tour_baie_vitree.webp`
+- `pr_rizieres_coucher_soleil.webp`
+- `pr_rue_asiatique_neons_nuit.webp` · *(lot openart du 19/07)*
+- `pr_salle_a_manger_toits_paris.webp`
+- `pr_tour_contre_plongee_2.webp`
+- `pr_tour_contre_plongee_3.webp` · *(lot openart du 19/07)*
+
+## `assets/photos/quotidien` — Nourriture, thé, fleurs, objets du quotidien (28)
+
+- `pr_album_photos_main_jade.webp`
+- `pr_boite_the_long_jing.webp`
+- `pr_boite_the_long_jing_2.webp`
+- `pr_bol_nouilles_2.webp`
+- `pr_bouquet_pivoines_2.webp`
+- `pr_cafe_livre_eclair.webp`
+- `pr_carnet_comptes_table_cuisine.webp` · *(lot openart du 19/07)*
+- `pr_carnet_comptes_table_ronde.webp` · *(lot openart du 19/07)*
+- `pr_croissant_cafe_terrasse_belleville.webp` · *(lot openart du 19/07)*
+- `pr_croissant_partage_2.webp`
+- `pr_deux_cafes_mains_2.webp`
+- `pr_diner_pates_deux.webp`
+- `pr_ecrin_bracelet_cartier.webp`
+- `pr_ecrin_bracelet_cartier_2.webp`
+- `pr_fraises_cafe_2.webp`
+- `pr_fraises_cafe_cuisine_noire.webp`
+- `pr_petit_dejeuner_croissants_livre.webp`
+- `pr_polaroid_livre_cafe.webp`
+- `pr_polaroid_livre_cafe_2.webp`
+- `pr_repas_poisson_riz_2.webp`
+- `pr_soupe_potiron_2.webp`
+- `pr_soupe_potiron_pain.webp`
+- `pr_tasse_the_bracelet_jade.webp` · *(lot openart du 19/07)*
+- `pr_the_mains_passation_2.webp`
+- `pr_the_mains_passation_gaiwan.webp`
+- `pr_the_plateau_gaiwan.webp`
+- `pr_the_plateau_gaiwan_2.webp`
+- `pr_the_verse_pivoine_bracelet_jade.webp` · *(lot openart du 19/07)*
+
+## `assets/photos/documents` — Papiers, reçus, enveloppes, écrans, dessins (22)
+
+- `pr_badge_visiteur_shen.webp`
+- `pr_billet_avion_telephone.webp`
+- `pr_billet_avion_telephone_2.webp`
+- `pr_capture_messagerie_lu_huan.webp` · *(lot openart du 19/07)*
+- `pr_carnet_notes_polaroid.webp`
+- `pr_carnet_notes_polaroid_2.webp`
+- `pr_carte_dechiree_bureau_nuit.webp`
+- `pr_carte_embarquement_air_china_helene.webp` · *(lot openart du 19/07)*
+- `pr_carte_embarquement_paris_cdg.webp` · *(lot openart du 19/07)*
+- `pr_carte_recollee_bureau_2.webp`
+- `pr_contrat_notaire_2.webp`
+- `pr_dessin_enfant_baleine_liu_wei_2007.webp` · *(lot openart du 19/07)*
+- `pr_dossier_scelle_hatsune_confidentiel.webp` · *(lot openart du 19/07)*
+- `pr_ecran_badge_shen_miao_2.webp`
+- `pr_ecran_badge_shen_miao_refuse.webp`
+- `pr_enveloppe_billets_2.webp`
+- `pr_enveloppe_billets_pour_ma_fille.webp`
+- `pr_enveloppe_euros_pour_ma_fille.webp` · *(lot openart du 19/07)*
+- `pr_enveloppe_yuans_pour_ma_fille.webp` · *(lot openart du 19/07)*
+- `pr_quittance_loyer_350_yuans.webp` · *(lot openart du 19/07)*
+- `pr_recu_taxi_neocity_genoux.webp` · *(lot openart du 19/07)*
+- `pr_table_reunion_carnet.webp`
+
+## `assets/photos/planches` — Planches de poses et d'expressions (référence) (7)
+
+- `ill_planche_homme_costume_details.webp`
+- `ill_planche_shen_casque_actions.webp`
+- `ill_planche_shen_casque_emotions.webp`
+- `ill_planche_shen_ecrit_telephone.webp`
+- `pr_planche_expressions_shen.webp`
+- `pr_planche_gestes_telephone_shen.webp`
+- `pr_planche_poses_livreuse_shen.webp`
+
+## `assets/photos/illustrations` — Style illustré — à régénérer en réaliste avant usage (12)
+
+- `ill_bureau_calculs_2.webp`
+- `ill_bureau_calculs_calculatrice.webp`
+- `ill_cabinet_medical_2.webp`
+- `ill_cabinet_medical_vide.webp`
+- `ill_rue_brouillard_2.webp`
+- `ill_rue_montmartre_pluie_nuit.webp`
+- `ill_rue_paris_brouillard.webp`
+- `ill_rue_pluie_feu_rouge.webp`
+- `ill_studio_belleville_jour.webp`
+- `ill_studio_belleville_nuit.webp`
+- `ill_studio_jour_2.webp`
+- `ill_studio_nuit_2.webp`
+
+## `assets/videos` — clips (4)
+
+- `video_livreur_velo_dos_rue_paris_bus.mp4`
+- `video_livreuse_sac_jaune_rue_pluie.mp4`
+- `video_livreuse_velo_rue_pavee_brouillard.mp4`
+- `video_the_cuisine_medicaments_deux_femmes.mp4`
+
+## Provenance du lot openart trié le 19/07
+
+112 fichiers reçus dans `assets/openart-download/` : 70 doublons exacts supprimés (mêmes octets), 42 gardés et renommés.
+
+| Nouveau nom | Fichier openart d'origine |
+|---|---|
+| `personnages/pr_selfie_femme_hall_aeroport_valise_rouge.webp` | `openart-image_1777810131909_a15efc42_1777810131946_4f738f5e.png` |
+| `personnages/pr_femme_photographie_maison_pierre_rizieres.webp` | `openart-image_1777810170721_6cb5386d_1777810170800_d928bcb4.png` |
+| `personnages/pr_selfie_femme_maison_pierre_rizieres.webp` | `openart-image_1777810230062_40e82535_1777810230112_169eba57.png` |
+| `personnages/pr_femme_robe_noire_bar_hotel.webp` | `openart-image_1777810570834_bfe9c9e2_1777810570898_a867d801.png` |
+| `personnages/pr_selfie_femme_robe_noire_collegues.webp` | `openart-image_1777810659212_28b662ac_1777810659581_ab6492d5.png` |
+| `personnages/pr_femme_robe_noire_miroir_dore_2.webp` | `openart-image_1777810693794_e351d649_1777810694464_f91a6817.png` |
+| `personnages/pr_photo_famille_maison_pierre_2010.webp` | `openart-image_1777822586491_3c1abf6d_1777822586555_e0b19c33.png` |
+| `lieux/pr_tour_contre_plongee_3.webp` | `openart-image_1777831995993_da4fc4d2_1777831996129_4ebf0bdc.png` |
+| `lieux/pr_rue_asiatique_neons_nuit.webp` | `openart-image_1777835269845_7d9f46b0_1777835269892_4e17e634.png` |
+| `lieux/pr_bureau_nuit_vue_skyline_neons.webp` | `openart-image_1777835337084_43534ab7_1777835337181_bfed9543.png` |
+| `personnages/pr_femme_tailleur_balcon_ville_nuit.webp` | `openart-image_1777835349248_128768f4_1777835349278_ca1e563f.png` |
+| `documents/pr_quittance_loyer_350_yuans.webp` | `openart-image_1777835525039_f3b66e40_1777835525745_578988a0.png` |
+| `documents/pr_recu_taxi_neocity_genoux.webp` | `openart-image_1777835633852_dd4b95df_1777835634001_e1fccc73.png` |
+| `documents/pr_enveloppe_euros_pour_ma_fille.webp` | `openart-image_1777836786871_4b8710cd_1777836786933_1eff6d9b.png` |
+| `documents/pr_enveloppe_yuans_pour_ma_fille.webp` | `openart-image_1777837049635_b1c0f7c6_1777837049706_5e5adcd1.png` |
+| `documents/pr_capture_messagerie_lu_huan.webp` | `openart-image_1778245383677_5602007d_1778245383726_fbe3c912.png` |
+| `documents/pr_dessin_enfant_baleine_liu_wei_2007.webp` | `openart-image_1778246166087_816288c7_1778246166131_ceef1554.png` |
+| `personnages/pr_boulangere_bebe_3.webp` | `openart-image_1778246180943_bba83ebd_1778246180990_91e9e0dc.png` |
+| `documents/pr_dossier_scelle_hatsune_confidentiel.webp` | `openart-image_1778246426330_509ececc_1778246426390_7b224420.png` |
+| `documents/pr_carte_embarquement_paris_cdg.webp` | `openart-image_1778255898153_33a72b9d_1778255898185_34c1266a.png` |
+| `documents/pr_carte_embarquement_air_china_helene.webp` | `openart-image_1778278681685_260e931d_1778278682013_e7469a23.png` |
+| `personnages/pr_selfie_femme_trench_hall_bagages.webp` | `openart-image_1778280062092_0517fec6_1778280062154_4da10707.png` |
+| `personnages/pr_selfie_femme_trench_hall_bagages_2.webp` | `openart-image_1778280079288_68e3d3aa_1778280079389_ad253742.png` |
+| `personnages/pr_selfie_femme_departs_paris_cdg.webp` | `openart-image_1778280132371_1a15659b_1778280132408_335839dd.png` |
+| `personnages/pr_selfie_femme_gare_moderne_valise_rouge.webp` | `openart-image_1778280145325_d609c6f7_1778280145684_30322a7d.png` |
+| `avatars/pr_aubin.webp` | `openart-image_1778437498644_c2350ee2_1778437498682_ace1263d.png` |
+| `personnages/pr_homme_chemise_lin_jardin.webp` | `openart-image_1778437567777_f9e11c74_1778437567832_2d8f8b45.png` |
+| `quotidien/pr_carnet_comptes_table_ronde.webp` | `openart-image_1778456933180_420956ab_1778456933539_806dc961.png` |
+| `quotidien/pr_carnet_comptes_table_cuisine.webp` | `openart-image_1778458251508_e6ba239a_1778458251580_704c1425.png` |
+| `personnages/pr_femme_60aine_pivoines_fenetre_toits.webp` | `openart-image_1778495009514_47616435_1778495009596_f79d84c3.png` |
+| `quotidien/pr_croissant_cafe_terrasse_belleville.webp` | `openart-image_1778495057748_0403f4b9_1778495057840_eb37a684.png` |
+| `personnages/pr_homme_costume_vue_tour_eiffel_3.webp` | `openart-image_1778495195520_6f3e5478_1778495195563_772dd2cd.png` |
+| `quotidien/pr_the_verse_pivoine_bracelet_jade.webp` | `openart-image_1778495343815_300cfbd2_1778495344041_0c3accb2.png` |
+| `quotidien/pr_tasse_the_bracelet_jade.webp` | `openart-image_1778495344313_536e2214_1778495344588_a89af197.png` |
+| `personnages/pr_portrait_jeune_femme_cheveux_attaches.webp` | `openart-image_1778657685492_f884119d_1778657685675_089df3b8.png` |
+| `personnages/pr_portrait_jeune_femme_cheveux_laches.webp` | `openart-image_1778657732554_76613438_1778657733145_d13ae9d5.png` |
+| `personnages/pr_portrait_femme_casque_velo.webp` | `openart-image_1778673724981_6c02ec18_1778673725049_6f28219c.png` |
+| `personnages/pr_portrait_femme_casque_velo_2.webp` | `openart-image_1778673909853_64b9985c_1778673909894_ddfb9cd1.png` |
+| `videos/video_livreuse_velo_rue_pavee_brouillard.mp4` | `openart-19869115-metadata_user_…e4a5c197.mp4` |
+| `videos/video_the_cuisine_medicaments_deux_femmes.mp4` | `openart-44d3ae0c…9a863cd6.mp4` |
+| `videos/video_livreuse_sac_jaune_rue_pluie.mp4` | `openart-8432942705…432ae1dc.mp4` |
+| `videos/video_livreur_velo_dos_rue_paris_bus.mp4` | `openart-95376066-metadata_user_…fa1d0545.mp4` |
+
+> L'historique complet des renommages précédents (anciens noms `j01_…`, etc.)
+> reste consultable dans git : `git log --follow -- <fichier>`.

@@ -15,7 +15,7 @@ Future<void> runDay1(GameEngine e) async {
   await e.incoming('maman', 'Il pleut sur tout Paris. Couvre-toi.',
       typing: 1400);
   await e.incomingImage(
-      'maman', 'assets/photos/camera_pool/pr_bouquet_pivoines_fleuriste.webp',
+      'maman', 'assets/photos/ep1/pr_bouquet_pivoines_fleuriste.webp',
       typing: 2000);
   await e.incoming('maman',
       'Le fleuriste sortait les pivoines sous la pluie. Je n’ai pas résisté.',

@@ -10,8 +10,11 @@
   (interdite dans le jeu tant qu'elle n'est pas régénérée en réaliste).
 - Le nom décrit le sujet ; les identités incertaines sont décrites
   (« homme 50aine… ») en attendant qu'on les fixe ensemble.
-- Suffixe `_2` = doublon/variante du même sujet.
-- L'inventaire complet ancien nom → nouveau nom : `docs/PHOTOS_INDEX.md`.
+- Suffixes `_2`/`_3` = variantes du même sujet.
+- Arborescence : `assets/photos/{avatars,ep1}` = embarqué dans l'app ;
+  `assets/photos/{personnages,lieux,quotidien,documents,planches,illustrations}`
+  = banque d'images ; `assets/_originaux/…` = masters png/jpg ;
+  `assets/videos/` = clips. Inventaire complet : `docs/PHOTOS_INDEX.md`.
 
 ## Le style
 
@@ -31,21 +34,31 @@
 
 | Fichier attendu | Usage | Prompt |
 |---|---|---|
-| `avatars/dr_aubin.webp` | Portrait du Dr Aubin — **homme**, oncologue à Tenon, **blouse blanche, derrière son bureau** | *« French hospital oncologist, man in his 50s, short greying hair, white coat, sitting behind his desk, warm direct gaze, hospital office softly blurred »* + bloc de style. (L'auteur possède déjà cette image hors dépôt — à déposer sous ce nom.) |
-| remplace `ep1/ill_rue_paris_brouillard` | La vue de la fenêtre de Maman, matin de pluie | *« View from Parisian apartment window, Belleville rooftops in morning fog and rain, zinc roofs, soft grey light, shot on smartphone from inside, window frame edge visible »* + bloc de style |
-| remplace `ep1/ill_rue_montmartre_pluie_nuit` | Le trajet vers Tenon (quai du métro Couronnes) | *« Paris métro platform Couronnes, rainy morning, wet floor reflections, few commuters, warm artificial light, candid smartphone shot »* + bloc de style |
-| remplace `ep1/ill_bureau_calculs_calculatrice` | Le carnet de comptes de Shen | *« Open notebook on small kitchen table, handwritten three columns of numbers in blue pen, calculator, cold tea, harsh honest daylight, shot from above with smartphone »* + bloc de style |
+| ~~`avatars/dr_aubin.webp`~~ | ✅ **Fait** (lot du 19/07) : `avatars/pr_aubin.webp` — homme 50aine, blouse blanche, derrière son bureau. Branché sur la fiche et le fil du Dr Aubin. | — |
+| ~~carnet de comptes~~ | ✅ **Fait** (lot du 19/07) : `quotidien/pr_carnet_comptes_table_cuisine.webp` (vue du dessus) et `pr_carnet_comptes_table_ronde.webp`. Remplacent `illustrations/ill_bureau_calculs_calculatrice` le jour où la scène repasse en photo. | — |
+| remplace `illustrations/ill_rue_paris_brouillard` | La vue de la fenêtre de Maman, matin de pluie | *« View from Parisian apartment window, Belleville rooftops in morning fog and rain, zinc roofs, soft grey light, shot on smartphone from inside, window frame edge visible »* + bloc de style |
+| remplace `illustrations/ill_rue_montmartre_pluie_nuit` | Le trajet vers Tenon (quai du métro Couronnes) | *« Paris métro platform Couronnes, rainy morning, wet floor reflections, few commuters, warm artificial light, candid smartphone shot »* + bloc de style |
 
 ## À unifier plus tard 🔶
 
 - `ep1/pr_selfie_ascenseur_chemise_blanche` : réaliste, mais le visage ne
   correspond pas exactement à `pr_shen.webp`. À régénérer avec le portrait
   de Shen en référence.
-- `_tampon/pr_essayage_tailleur_noir_miroir` : bon candidat pour remplacer
+- `personnages/pr_essayage_tailleur_noir_miroir` : bon candidat pour remplacer
   le selfie d'ascenseur au jour 4 (vrai essayage devant miroir).
-- `camera_pool/pr_femme_30aine_pull_beige` : portrait d'une inconnue —
+- `personnages/pr_portrait_femme_casque_velo[_2]` et
+  `pr_portrait_jeune_femme_cheveux_attaches/laches` : ressemblent fort à Shen
+  (casque de livreuse !) mais le visage diffère un peu du canon — identités
+  à confirmer ensemble.
+- `personnages/pr_femme_60aine_pivoines_fenetre_toits` : probablement Maman
+  (pivoines + toits de Paris) — à confirmer.
+- `personnages/pr_femme_30aine_pull_beige` : portrait d'une inconnue —
   réserver à un futur personnage.
-- `camera_pool/pr_feu_artifice_*` : garder pour Hong Kong (épisode 3+).
+- `lieux/pr_feu_artifice_*` : garder pour Hong Kong (épisode 3+).
+- Plusieurs images du lot du 19/07 citent l'ancien univers « NEOCITY / Lu
+  Huan / Liu Wei » (quittance en yuans, reçu de taxi, capture de messagerie,
+  dossier scellé, dessin d'enfant…) : très utilisables pour le passé chinois
+  de la famille, mais les noms affichés dedans sont à recaler sur le canon.
 
 ## Règle d'or
 
