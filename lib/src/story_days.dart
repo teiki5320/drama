@@ -92,8 +92,9 @@ Future<void> runDay2(GameEngine e) async {
   await e.incoming(
       'aubin',
       'Comme convenu, par écrit : le protocole recommandé est hors nomenclature. '
-      'Devis : 18 240 €. Pour tenir le calendrier, le dossier doit être validé '
-      'avant le 30. Je sais que c’est brutal. Écrivez-moi si besoin.',
+      'Devis : 18 240 €. Pour tenir le calendrier, il faut un acompte de 50 % — '
+      '9 120 € — avant le 30 ; le solde à trente jours. '
+      'Je sais que c’est brutal. Écrivez-moi si besoin.',
       typing: 2600);
   c = await e.choice('aubin', const [
     ChoiceOption('Avant le 30. Compris.', reply: 'Chaque jour compte. Bon courage.'),
@@ -512,6 +513,13 @@ Future<void> runDay6(GameEngine e) async {
   e.outgoing('camille', 'Trois mois. Trente mille. Fausse fiancée. Quatorze pages.');
   await e.sleep(1200);
   await e.incoming('camille', 'PUTAIN.', typing: 900);
+  e.outgoing('camille',
+      'Dix mille à la signature. L’acompte de Tenon fait 9 120. '
+      'Ça passe, à 880 € près.');
+  await e.sleep(1000);
+  e.markRead('camille');
+  await e.incoming('camille', 'Tu as déjà fait le calcul. Évidemment.',
+      typing: 1300);
   await e.incoming('camille', 'Tu lis chaque clause. CHAQUE clause.', typing: 1400);
   await e.incoming('camille',
       'Et tu penses à Tenon avant de penser à ta fierté. C’est tout ce que je dis.',
@@ -534,7 +542,8 @@ Future<void> runDay6(GameEngine e) async {
   await e.incoming(
       'inconnu',
       'Trois mois. Fiancée officielle, en public et devant ma famille. '
-      'Contrat notarié. Discrétion absolue. 30 000 €, dont 10 000 € à la signature.',
+      'Contrat notarié. Discrétion absolue. 30 000 € — 10 000 € à la signature, '
+      'puis 10 000 € par mois.',
       typing: 2600);
   await e.incoming('inconnu',
       'Quatorze pages. Vous les lirez avant de signer. Tout est écrit.',
