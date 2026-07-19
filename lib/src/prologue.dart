@@ -14,15 +14,12 @@ Future<void> runDay1(GameEngine e) async {
       typing: 1500);
   await e.incoming('maman', 'Il pleut sur tout Paris. Couvre-toi.',
       typing: 1400);
-  await e.incomingImage(
-      'maman', 'assets/photos/ep1/pr_bouquet_pivoines_fleuriste.webp',
-      typing: 2000);
   await e.incoming('maman',
       'Le fleuriste sortait les pivoines sous la pluie. Je n’ai pas résisté.',
       typing: 1400);
   var c = await e.choice('maman', const [
     ChoiceOption('Dix minutes. Capuche promise.',
-        reply: 'Bien. Le thermos de thé est près de la porte.'),
+        reply: 'Bien. Fais-toi un thermos de thé, la pluie tient toute la journée.'),
     ChoiceOption('Maman. J’ai 24 ans.',
         reply: 'Et moi 51 ans de pluie. Couvre-toi.'),
     ChoiceOption('Déjà sur le vélo.',
@@ -149,8 +146,11 @@ Future<void> runDay1(GameEngine e) async {
       'Oh non. Il a donné sa vie pour toi, ce vélo. Paix à sa chaîne.',
       typing: 1600);
   await e.incoming('camille',
-      'Et le conducteur ? Constat ? Assurance ? Dis-moi que t’as ses infos.',
-      typing: 1700);
+      'Attends. C’est LUI, là ?? Debout à côté de sa bagnole comme si de rien n’était ??',
+      typing: 1800);
+  await e.incoming('camille',
+      'Constat ? Assurance ? Dis-moi que t’as ses infos.',
+      typing: 1500);
   c = await e.choice('camille', const [
     ChoiceOption('Il m’a tendu sa carte comme un pourboire. Je l’ai déchirée devant lui.'),
     ChoiceOption('J’ai sa carte. En quatre morceaux. Dans une flaque.'),
@@ -202,7 +202,7 @@ Future<void> runDay1(GameEngine e) async {
   await e.incoming('maman', 'Le riz est dans le rice cooker.', typing: 1400);
   await e.incomingImage('maman', 'assets/photos/ep1/pr_repas_poisson_riz_legumes.webp',
       typing: 2100);
-  await e.incoming('maman', 'Ta part. Tu rentres ce soir ?', typing: 1200);
+  await e.incoming('maman', 'Ta part. Tu passes ce soir ?', typing: 1200);
   c = await e.choice('maman', const [
     ChoiceOption('J’arrive.', reply: 'Je réchauffe.'),
     ChoiceOption('Tard. M’attends pas pour manger.',

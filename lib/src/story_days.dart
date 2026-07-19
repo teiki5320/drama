@@ -132,15 +132,20 @@ Future<void> runDay2(GameEngine e) async {
   await e.incoming('maman', c.reply!, typing: 1500);
   await e.sleep(2000);
 
-  // — 23:42, Camille (la carte) —
+  // — 23:42, Camille (la carte) — Shen est rentrée de chez Camille.
   e.setClock('23:42');
   e.outgoingImage('camille', 'assets/photos/ep1/pr_carte_recollee_bureau_nuit.webp');
-  e.outgoing('camille', 'Tu avais raison. Je l’ai recollée. Au cas où.');
+  e.outgoing('camille', 'Rentrée. Tu avais raison. Je l’ai recollée. Au cas où.');
   await e.sleep(1200);
   e.markRead('camille');
   await e.incoming('camille',
       'Garde-la. On ne sait jamais quel morceau de fierté on devra avaler.',
       typing: 1800);
+  e.outgoing('camille',
+      'Et j’ai fait la demande de crédit en ligne. Là, à l’instant.');
+  await e.sleep(900);
+  e.markRead('camille');
+  await e.incoming('camille', 'Croise les doigts. Et dors, Shen.', typing: 1400);
   await e.sleep(1500);
 }
 
@@ -203,6 +208,7 @@ Future<void> runDay3(GameEngine e) async {
 
   // — 15:48, les trois colonnes —
   e.setClock('15:48');
+  e.outgoingImage('camille', 'assets/photos/ep1/pr_carnet_comptes_table_cuisine.webp');
   e.outgoing('camille',
       'J’ai fait mes comptes. Trois colonnes : ce que j’ai, ce qu’il faut, '
       'ce qui manque.');
@@ -238,7 +244,8 @@ Future<void> runDay4(GameEngine e) async {
   // — 10:14, Camille —
   e.setClock('10:14');
   e.separator('camille', 'Samedi 18 juillet · 10:14');
-  await e.incomingImage('camille', 'assets/photos/ep1/pr_deux_cafes_mains.webp',
+  await e.incomingImage(
+      'camille', 'assets/photos/ep1/pr_croissant_cafe_terrasse_belleville.webp',
       typing: 1900);
   await e.incoming('camille',
       'Debout. Café en bas de chez toi dans vingt minutes. On s’habille comme '
@@ -254,20 +261,26 @@ Future<void> runDay4(GameEngine e) async {
   await e.incoming('camille', c.reply!, typing: 1300);
   await e.sleep(1900);
 
-  // — 11:30, le moment —
+  // — 10:34, Shen descend : la suite se passe en vrai, à la même table —
+  e.setClock('10:34');
+  e.sysline('camille',
+      'Tu descends. Camille est en terrasse, deux sucres déjà posés sur ta soucoupe.');
+  await e.sleep(1600);
+
+  // — 11:30, le moment (la scène est racontée, seuls les mots comptent) —
   e.setClock('11:30');
-  await e.incoming('camille', 'Bon. Tu as son numéro depuis jeudi soir dans ton fil.',
-      typing: 1500);
-  await e.incoming('camille', 'Écris-lui. Maintenant. Je te regarde.', typing: 1300);
+  e.sysline('camille',
+      'Camille repose sa tasse. « Tu as son numéro depuis mercredi soir. '
+      'Écris-lui. Maintenant. Je te regarde. »');
   c = await e.choice('camille', const [
-    ChoiceOption('OK. Je lui écris.', key: 'seule',
-        reply: 'Je suis là. Vas-y.'),
-    ChoiceOption('Je peux pas, Camille.', key: 'forcee',
-        reply: 'Alors donne-moi ce téléphone.'),
+    ChoiceOption('« OK. Je lui écris. »', silent: true, key: 'seule'),
+    ChoiceOption('« Je peux pas, Camille. »', silent: true, key: 'forcee'),
   ]);
-  await e.sleep(900);
-  e.markRead('camille');
-  await e.incoming('camille', c.reply!, typing: 1200);
+  if (c.key == 'seule') {
+    e.sysline('camille', '« Je suis là. Vas-y. »');
+  } else {
+    e.sysline('camille', 'Camille tend la main. « Alors donne-moi ce téléphone. »');
+  }
   await e.sleep(1500);
 
   // — 11:47, le message à Tristan —
@@ -314,19 +327,24 @@ Future<void> runDay4(GameEngine e) async {
       'Je passe ce soir : le tailleur noir de ma mère, et son chemisier blanc. '
       '38. Lundi, tu plaides ta propre cause. Habille-toi comme telle.',
       typing: 2100);
+  await e.incoming('camille',
+      'Je dépose et je file, j’ai un événement. Tu essaies, tu m’envoies une photo.',
+      typing: 1700);
   await e.sleep(1600);
   e.setClock('21:10');
-  e.outgoingImage('camille', 'assets/photos/ep1/pr_selfie_ascenseur_chemise_blanche.webp');
+  e.sysline('camille', 'Camille a déposé la housse, t’a embrassée, et filé.');
+  await e.sleep(1000);
+  e.outgoingImage('camille', 'assets/photos/ep1/pr_essayage_tailleur_noir_miroir.webp');
   e.outgoing('camille',
-      'Le seul miroir en pied de l’immeuble, c’est l’ascenseur. Verdict ?');
+      'Il m’attend sur le portant. Il a l’air plus sûr de lui que moi.');
   await e.sleep(1300);
   e.markRead('camille');
   await e.incoming('camille',
-      'Verdict : lundi, c’est lui qui sera en difficulté.',
+      'Mets-le. Lundi, c’est lui qui sera en difficulté.',
       typing: 1700);
   await e.sleep(1500);
 
-  // — 19:42, Maman —
+  // — 21:30, Maman —
   e.setClock('21:30');
   e.separator('maman', '21:30');
   await e.incoming('maman', 'Tu viens demain ? Je fais les dumplings.', typing: 1400);
@@ -384,6 +402,12 @@ Future<void> runDay5(GameEngine e) async {
   // — 20:15, Camille —
   e.setClock('20:15');
   e.separator('camille', 'Dimanche 19 juillet · 20:15');
+  await e.incomingImage(
+      'camille', 'assets/photos/ep1/pr_camille_selfie_revisions.webp',
+      typing: 2100);
+  await e.incoming('camille',
+      'État du dimanche soir. Dis-moi que tu es plus fraîche que moi.',
+      typing: 1500);
   await e.incoming('camille', 'Prête pour demain ?', typing: 1100);
   await e.incoming('camille', 'Règle n°1 : tu ne signes RIEN lundi. Promets-moi.',
       typing: 1500);
@@ -444,6 +468,15 @@ Future<void> runDay6(GameEngine e) async {
   await e.incoming('camille', 'Et rappelle-toi : tu ne signes rien.', typing: 1200);
   await e.sleep(2400);
 
+  // — 10:52, le badge promis —
+  e.setClock('10:52');
+  e.outgoingImage('camille', 'assets/photos/ep1/pr_badge_visiteur_shen.webp');
+  e.outgoing('camille', 'Badge à mon nom. Comme il avait dit.');
+  await e.sleep(1100);
+  e.markRead('camille');
+  await e.incoming('camille', 'Ils t’attendaient, donc. Respire.', typing: 1400);
+  await e.sleep(2200);
+
   // — 11:52, la sortie (le rendez-vous a eu lieu hors écran) —
   e.setClock('11:52');
   e.outgoing('camille', 'Je sors. Laisse-moi marcher dix minutes.');
@@ -451,6 +484,26 @@ Future<void> runDay6(GameEngine e) async {
   e.markRead('camille');
   await e.incoming('camille', 'J’attends. Mais pas longtemps.', typing: 1200);
   await e.sleep(2600);
+
+  // — 12:34, Camille n’attend pas plus longtemps —
+  e.setClock('12:34');
+  await e.incoming('camille', 'ALORS ??', typing: 900);
+  e.outgoing('camille', 'Trois mois. Trente mille. Fausse fiancée. Quatorze pages.');
+  await e.sleep(1200);
+  await e.incoming('camille', 'PUTAIN.', typing: 900);
+  await e.incoming('camille', 'Tu lis chaque clause. CHAQUE clause.', typing: 1400);
+  await e.incoming('camille',
+      'Et tu penses à Tenon avant de penser à ta fierté. C’est tout ce que je dis.',
+      typing: 1800);
+  final c2 = await e.choice('camille', const [
+    ChoiceOption('Je sais.', reply: 'Je sais que tu sais. Je le dis quand même.'),
+    ChoiceOption('Ma fierté est déjà dans une flaque avenue Montaigne.',
+        reply: 'Non. Ta fierté a recollé une carte. C’est différent.'),
+  ]);
+  await e.sleep(900);
+  e.markRead('camille');
+  await e.incoming('camille', c2.reply!, typing: 1600);
+  await e.sleep(2000);
 
   // — 14:30, Tristan récapitule —
   e.setClock('14:30');
@@ -462,10 +515,9 @@ Future<void> runDay6(GameEngine e) async {
       'Trois mois. Fiancée officielle, en public et devant ma famille. '
       'Contrat notarié. Discrétion absolue. 30 000 €, dont 10 000 € à la signature.',
       typing: 2600);
-  await e.incomingImage('inconnu', 'assets/photos/ep1/pr_contrat_notaire_stylo_plume.webp',
-      typing: 2200);
-  await e.incoming('inconnu', 'Le document. Quatorze pages. Lisez tout.',
-      typing: 1500);
+  await e.incoming('inconnu',
+      'Quatorze pages. Vous les lirez avant de signer. Tout est écrit.',
+      typing: 1700);
   c = await e.choice('inconnu', const [
     ChoiceOption('Pourquoi moi ?',
         reply:
@@ -480,26 +532,6 @@ Future<void> runDay6(GameEngine e) async {
   await e.sleep(1100);
   e.markRead('inconnu');
   await e.incoming('inconnu', c.reply!, typing: 2000);
-  await e.sleep(2000);
-
-  // — 15:10, Camille —
-  e.setClock('15:10');
-  await e.incoming('camille', 'ALORS ??', typing: 900);
-  e.outgoing('camille', 'Trois mois. Trente mille. Fausse fiancée. Quatorze pages.');
-  await e.sleep(1200);
-  await e.incoming('camille', 'PUTAIN.', typing: 900);
-  await e.incoming('camille', 'Tu lis chaque clause. CHAQUE clause.', typing: 1400);
-  await e.incoming('camille',
-      'Et tu penses à Tenon avant de penser à ta fierté. C’est tout ce que je dis.',
-      typing: 1800);
-  c = await e.choice('camille', const [
-    ChoiceOption('Je sais.', reply: 'Je sais que tu sais. Je le dis quand même.'),
-    ChoiceOption('Ma fierté est déjà dans une flaque avenue Montaigne.',
-        reply: 'Non. Ta fierté a recollé une carte. C’est différent.'),
-  ]);
-  await e.sleep(900);
-  e.markRead('camille');
-  await e.incoming('camille', c.reply!, typing: 1600);
   await e.sleep(2000);
 
   // — 19:30, Dr Aubin (la pression) —

@@ -35,17 +35,19 @@
 | Fichier attendu | Usage | Prompt |
 |---|---|---|
 | ~~`avatars/dr_aubin.webp`~~ | ✅ **Fait** (lot du 19/07) : `avatars/pr_aubin.webp` — homme 50aine, blouse blanche, derrière son bureau. Branché sur la fiche et le fil du Dr Aubin. | — |
-| ~~carnet de comptes~~ | ✅ **Fait** (lot du 19/07) : `quotidien/pr_carnet_comptes_table_cuisine.webp` (vue du dessus) et `pr_carnet_comptes_table_ronde.webp`. Remplacent `illustrations/ill_bureau_calculs_calculatrice` le jour où la scène repasse en photo. | — |
+| ~~carnet de comptes~~ | ✅ **Fait** (lot du 19/07) : `ep1/pr_carnet_comptes_table_cuisine.webp`, branchée au J3 (« trois colonnes »). | — |
+| **contrat vierge** | J6 : le contrat de 14 pages que Tristan annonce (scène en texte seul depuis l'audit du 19/07 — l'ancienne photo montrait un contrat déjà annoté et signé) | *« Thick unsigned legal contract on a notary's leather desk, cover page reading only "CONTRAT", fourteen numbered pages fanned slightly, black fountain pen resting beside, no handwriting, no signatures »* + bloc de style |
+| **bouquet sous la pluie** | J1 : les pivoines du fleuriste (photo retirée — l'actuelle est en plein soleil et montre les deux mains de Maman) | *« Peonies bucket outside a Paris florist in the rain, wet kraft paper, water drops, grey morning light, no people, shot quickly from under an umbrella »* + bloc de style |
+| **écran badge refusé** (optionnel) | Beat « ascenseur A » à ajouter un jour au J6 — l'existante affiche l'ancien nom « SHEN MIAO » et une date 2023 | *« Security desk monitor listing visitor names, one row highlighted red: "MARCHAND S — 47 — accès refusé", modern lobby reflections »* + bloc de style |
 | remplace `illustrations/ill_rue_paris_brouillard` | La vue de la fenêtre de Maman, matin de pluie | *« View from Parisian apartment window, Belleville rooftops in morning fog and rain, zinc roofs, soft grey light, shot on smartphone from inside, window frame edge visible »* + bloc de style |
 | remplace `illustrations/ill_rue_montmartre_pluie_nuit` | Le trajet vers Tenon (quai du métro Couronnes) | *« Paris métro platform Couronnes, rainy morning, wet floor reflections, few commuters, warm artificial light, candid smartphone shot »* + bloc de style |
 
 ## À unifier plus tard 🔶
 
-- `ep1/pr_selfie_ascenseur_chemise_blanche` : réaliste, mais le visage ne
-  correspond pas exactement à `pr_shen.webp`. À régénérer avec le portrait
-  de Shen en référence.
-- `personnages/pr_essayage_tailleur_noir_miroir` : bon candidat pour remplacer
-  le selfie d'ascenseur au jour 4 (vrai essayage devant miroir).
+- `personnages/pr_selfie_ascenseur_chemise_blanche` : sortie du jeu (audit du
+  19/07) — visage hors canon et ascenseur de tour de bureaux. Le J4 utilise
+  désormais `ep1/pr_essayage_tailleur_noir_miroir` (tailleur sur portant,
+  silhouette floue — aucun conflit de visage).
 - `personnages/pr_portrait_femme_casque_velo[_2]` et
   `pr_portrait_jeune_femme_cheveux_attaches/laches` : ressemblent fort à Shen
   (casque de livreuse !) mais le visage diffère un peu du canon — identités
@@ -64,5 +66,19 @@
 
 Une nouvelle photo n'entre dans le jeu que si :
 1. elle est photoréaliste (style `pr_shen.webp`) — préfixe `pr_` ;
-2. son contenu colle au message qui l'accompagne ;
-3. les visages correspondent aux portraits canon des personnages.
+2. son contenu colle au message qui l'accompagne (météo, heure, lieu,
+   plat annoncé…) ;
+3. les visages correspondent aux portraits canon des personnages ;
+4. **le point de vue est possible** : une photo envoyée par un personnage ne
+   montre jamais ce personnage (sauf selfie), ni une deuxième main ou
+   silhouette non identifiée — si Camille « attend », personne d'autre n'est
+   attablé sur sa photo ;
+5. aucun texte lisible (écran, document, reçu) ne contredit le canon —
+   ni ancien nom (« Shen Miao », « Lu Huan »), ni montants ou dates d'une
+   autre version de l'histoire.
+
+Et côté récit : quand deux personnages sont **physiquement ensemble**, ils ne
+s'écrivent pas — la scène passe en lignes système (voir J4 11h30), et les
+textos reprennent une fois séparés. Un rendez-vous pris par messagerie doit
+laisser une trace de sa tenue (photo, récap, « Rentrée. ») avant que la
+conversation reprenne comme si de rien n'était.
