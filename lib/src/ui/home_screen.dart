@@ -13,10 +13,14 @@ class HomeScreen extends StatelessWidget {
     super.key,
     required this.engine,
     required this.onDebugJump,
+    required this.onExit,
   });
 
   final GameEngine engine;
   final ValueChanged<int> onDebugJump;
+
+  /// Retour à l'écran d'accueil du téléphone.
+  final VoidCallback onExit;
 
   void _showDebugMenu(BuildContext context) {
     final pal = Palette.of(context);
@@ -81,9 +85,15 @@ class HomeScreen extends StatelessWidget {
           children: [
             GameClockBar(engine: engine),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 6, 8, 8),
+              padding: const EdgeInsets.fromLTRB(6, 6, 8, 8),
               child: Row(
                 children: [
+                  IconButton(
+                    onPressed: onExit,
+                    icon: Icon(Icons.arrow_back_ios_new,
+                        color: pal.chev, size: 22),
+                    tooltip: 'Accueil',
+                  ),
                   Expanded(
                     child: Text(
                       'Messages',

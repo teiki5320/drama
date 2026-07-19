@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'src/notifications.dart';
 import 'src/ui/shell.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Notifications.init();
   runApp(const DramaApp());
 }
 

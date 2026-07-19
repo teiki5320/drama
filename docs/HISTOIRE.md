@@ -150,6 +150,29 @@ Six journées jouables, validées avec l'auteur :
 | 5 | dim. 19 juil. | Les dumplings chez Maman. *« Tu avais l'air ailleurs. »* Le soir : *« Ascenseur B, pas le A. »* |
 | 6 | lun. 20 juil. | La tour. La proposition par messages : 3 mois, fiancée officielle, 14 pages, 30 000 € — 10 000 € à la signature puis 10 000 €/mois (négociable à 33 000). Les 10 000 € couvrent l'acompte de Tenon, à 880 € près — Shen fait le calcul. Aubin presse, Maman s'inquiète. *« Votre réponse ? »* — **fin d'épisode.** |
 
+## Leviers drama pour la suite (validés le 19/07)
+
+L'épisode 1 reste tel quel. Pour l'écriture des épisodes suivants, tisser
+directement dans les scripts :
+
+- **Les mensonges qui reviennent** : chaque mensonge à Maman ou Camille
+  resurgit quelques jours plus tard (recoupement, contradiction) — écrit
+  dans les scènes, pas compté par une mécanique.
+- **Le message au mauvais destinataire** : une scène où un message part
+  dans le mauvais fil, irrattrapable, au pire moment.
+- **Le silence comme arme** : un « Distribué » qui ne passe jamais à
+  « Lu », des appels manqués ×3 au réveil, un « en train d'écrire… » qui
+  s'arrête au moment clé.
+- **Les choix chronométrés** (mécanique en place depuis la 0.18.0 :
+  `e.choice(..., timeoutMs: …, timeoutOption: …)`) : à réserver aux
+  ultimatums — offres qui expirent, urgences.
+- **La banque comme thermomètre** : l'appli « Ma Banque » doit encaisser
+  chaque coup dur et chaque rentrée d'argent des scripts via
+  `e.addBankOp(date, libellé, montant)` — le joueur lit la précarité en
+  chiffres.
+- **La récompense de fin d'épisode** : chaque épisode se termine sur un
+  court générique vidéo (mécanique en place — `GeneriquePage`).
+
 L'ouverture du jeu : écran verrouillé (contexte par notifications), puis
 écran d'identité (*« Shen Marchand, 24 ans. Ce téléphone est le tien. »*),
 et la carte « Ma fiche » en haut de Messages.

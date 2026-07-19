@@ -99,6 +99,32 @@ class GameEngine extends ChangeNotifier {
           'Paiement hebdomadaire : 214,60 €. Virement sous 2 jours ouvrés.'))
       ..preview = 'Paiement hebdomadaire : 214,60 €.'
       ..previewTime = 'Hier';
+    bankBalance =
+        bankOpeningBalance + bankOps.fold<double>(0, (s, o) => s + o.amount);
+  }
+
+  // ------------------------------------------------------------- Ma Banque
+
+  /// Report du compte avant les opérations affichées.
+  static const double bankOpeningBalance = 593.15;
+
+  /// Les opérations du compte de Shen, la plus récente en premier.
+  final List<BankOp> bankOps = [
+    const BankOp('Mar. 14 juil.', 'VIREMENT SEPA LIVRAISONS PRO', 214.60),
+    const BankOp('Lun. 13 juil.', 'CARREFOUR MARKET BELLEVILLE', -18.73),
+    const BankOp('Sam. 11 juil.', 'PHARMACIE DES PYRÉNÉES', -23.90),
+    const BankOp('Ven. 10 juil.', 'LOYER STUDIO — SCI PIAT', -520.00),
+    const BankOp('Ven. 10 juil.', 'RECHARGE NAVIGO', -30.75),
+  ];
+
+  /// Solde courant, recalculé à chaque opération.
+  double bankBalance = 0;
+
+  /// Ajoute une opération (utilisé par les scripts des prochains épisodes).
+  void addBankOp(String date, String label, double amount) {
+    bankOps.insert(0, BankOp(date, label, amount));
+    bankBalance += amount;
+    notifyListeners();
   }
 
   /// Facteur sur toutes les attentes (0 dans les tests).
@@ -290,9 +316,26 @@ class GameEngine extends ChangeNotifier {
   }
 
   /// Propose des réponses au joueur et attend son choix.
-  Future<ChoiceOption> choice(String tid, List<ChoiceOption> options) {
+  ///
+  /// Avec [timeoutMs] + [timeoutOption], le choix est chronométré : passé le
+  /// délai, il se résout tout seul avec [timeoutOption] (ne pas répondre est
+  /// un choix).
+  Future<ChoiceOption> choice(
+    String tid,
+    List<ChoiceOption> options, {
+    int? timeoutMs,
+    ChoiceOption? timeoutOption,
+  }) {
     final t = thread(tid);
     final pending = PendingChoice(options);
+    if (timeoutMs != null && timeoutOption != null) {
+      final scaled = (timeoutMs * delayScale).round();
+      pending.totalMs = scaled;
+      pending.deadline = DateTime.now().add(Duration(milliseconds: scaled));
+      Timer(Duration(milliseconds: scaled), () {
+        if (t.pending == pending) resolveChoice(tid, timeoutOption);
+      });
+    }
     t.pending = pending;
     if (currentThreadId != tid) {
       _showBanner(t, 'En attente de ta réponse…');

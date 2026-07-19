@@ -63,10 +63,16 @@ Future<void> runDay1(GameEngine e) async {
       'Course #14872 — Bowl Açaï → 8 avenue Montaigne. '
       'Rémunération : 8,40 €. Acceptez sous 30 s.',
       typing: 1200);
-  c = await e.choice('plateforme', const [
-    ChoiceOption('Accepter la course', key: 'ok'),
-    ChoiceOption('Laisser passer', key: 'non'),
-  ]);
+  c = await e.choice(
+    'plateforme',
+    const [
+      ChoiceOption('Accepter la course', key: 'ok'),
+      ChoiceOption('Laisser passer', key: 'non'),
+    ],
+    timeoutMs: 30000,
+    timeoutOption:
+        const ChoiceOption('(temps écoulé)', silent: true, key: 'non'),
+  );
   if (c.key == 'ok') {
     await e.incoming('plateforme',
         'Course #14872 acceptée. Retrait : Wild Berry, rue de Ponthieu. Bonne route.',

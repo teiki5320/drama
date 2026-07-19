@@ -54,6 +54,20 @@ class PendingChoice {
 
   final List<ChoiceOption> options;
   final Completer<ChoiceOption> completer;
+
+  /// Choix chronométré : échéance et durée totale (pour la barre de compte
+  /// à rebours). Null pour un choix sans limite de temps.
+  DateTime? deadline;
+  int? totalMs;
+}
+
+/// Une opération sur le compte de Shen (appli « Ma Banque »).
+class BankOp {
+  const BankOp(this.date, this.label, this.amount);
+
+  final String date;
+  final String label;
+  final double amount;
 }
 
 /// Définition statique d'un contact.

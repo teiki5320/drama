@@ -4,6 +4,7 @@ import '../engine.dart';
 import '../models.dart';
 import '../palette.dart';
 import 'contact_sheet.dart';
+import 'generique.dart';
 import 'widgets.dart';
 
 /// L'écran unique du jeu : une conversation, les messages qui arrivent,
@@ -474,6 +475,33 @@ class _EndCard extends StatelessWidget {
               style: TextStyle(color: pal.meta, fontSize: 12.5, height: 1.7),
             ),
             const SizedBox(height: 10),
+            FilledButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const GeneriquePage(
+                    asset:
+                        'assets/videos/video_livreuse_velo_rue_pavee_brouillard.mp4',
+                    title: 'ÉPISODE 1 — QUATORZE PAGES',
+                  ),
+                ),
+              ),
+              style: FilledButton.styleFrom(
+                backgroundColor: pal.brand,
+                foregroundColor: Colors.white,
+                shape: const StadiumBorder(),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 7),
+              ),
+              child: const Text(
+                '▶  GÉNÉRIQUE DE FIN',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.8,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
             OutlinedButton(
               onPressed: onRestart,
               style: OutlinedButton.styleFrom(
@@ -542,6 +570,10 @@ class _ChoiceTray extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
+                if (pending.deadline != null) ...[
+                  _ChoiceCountdown(pending: pending),
+                  const SizedBox(height: 8),
+                ],
                 for (final opt in pending.options) ...[
                   _ChoiceButton(
                     option: opt,
@@ -551,6 +583,37 @@ class _ChoiceTray extends StatelessWidget {
                 ],
               ],
             ),
+    );
+  }
+}
+
+/// La barre de compte à rebours d'un choix chronométré.
+class _ChoiceCountdown extends StatelessWidget {
+  const _ChoiceCountdown({required this.pending});
+
+  final PendingChoice pending;
+
+  @override
+  Widget build(BuildContext context) {
+    final pal = Palette.of(context);
+    final total = pending.totalMs!;
+    final remaining = pending.deadline!.difference(DateTime.now());
+    final startFrac = total <= 0
+        ? 0.0
+        : (remaining.inMilliseconds / total).clamp(0.0, 1.0);
+    return TweenAnimationBuilder<double>(
+      key: ObjectKey(pending),
+      tween: Tween(begin: startFrac, end: 0),
+      duration: remaining.isNegative ? Duration.zero : remaining,
+      builder: (context, value, _) => ClipRRect(
+        borderRadius: BorderRadius.circular(3),
+        child: LinearProgressIndicator(
+          value: value,
+          minHeight: 5,
+          backgroundColor: pal.inBubble,
+          color: value < 0.3 ? const Color(0xFFE53935) : pal.brand,
+        ),
+      ),
     );
   }
 }

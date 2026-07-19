@@ -3,15 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../engine.dart';
+import '../models.dart';
+import '../notifications.dart';
 import '../palette.dart';
+import 'bank_screen.dart';
 import 'home_screen.dart';
 import 'intro_card.dart';
 import 'lock_screen.dart';
+import 'springboard.dart';
 import 'thread_screen.dart';
 import 'widgets.dart';
 
-/// La coquille du jeu : écran verrouillé, liste des conversations,
-/// fil ouvert, et bannières de notification.
+/// La coquille du jeu : écran verrouillé, accueil du téléphone, apps
+/// (Messages, Ma Banque), et bannières de notification.
 class GameShell extends StatefulWidget {
   const GameShell({super.key});
 
@@ -19,16 +23,26 @@ class GameShell extends StatefulWidget {
   State<GameShell> createState() => _GameShellState();
 }
 
-class _GameShellState extends State<GameShell> {
+class _GameShellState extends State<GameShell> with WidgetsBindingObserver {
   GameEngine _engine = GameEngine();
   bool _showIntro = false;
   Timer? _introTimer;
+
+  /// L'app ouverte sur le téléphone : 'home', 'messages' ou 'banque'.
+  String _app = 'home';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   void _restart() {
     _introTimer?.cancel();
     setState(() {
       _engine = GameEngine();
       _showIntro = false;
+      _app = 'home';
     });
   }
 
@@ -50,12 +64,62 @@ class _GameShellState extends State<GameShell> {
     setState(() {
       _engine = GameEngine();
       _showIntro = false;
+      _app = 'messages';
     });
     _engine.debugStart(day);
   }
 
+  void _openFromBanner(String threadId) {
+    _engine.openThread(threadId);
+    if (_app != 'messages') setState(() => _app = 'messages');
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _scheduleComeback();
+    } else if (state == AppLifecycleState.resumed) {
+      Notifications.cancelAll();
+    }
+  }
+
+  /// Programme les rappels « comme de vrais messages » quand on quitte l'app.
+  void _scheduleComeback() {
+    if (_engine.locked || _engine.ended) return;
+    ThreadState? pendingT;
+    ThreadState? unreadT;
+    for (final t in _engine.threads.values) {
+      if (t.pending != null) pendingT ??= t;
+      if (t.unread > 0) unreadT ??= t;
+    }
+    if (pendingT != null) {
+      Notifications.comeback(
+        id: 1,
+        title: pendingT.effectiveDef.name,
+        body: 'attend toujours ta réponse…',
+        delay: const Duration(minutes: 45),
+      );
+    } else if (unreadT != null) {
+      Notifications.comeback(
+        id: 1,
+        title: unreadT.effectiveDef.name,
+        body: unreadT.unread == 1
+            ? '1 message non lu'
+            : '${unreadT.unread} messages non lus',
+        delay: const Duration(minutes: 45),
+      );
+    }
+    Notifications.comeback(
+      id: 2,
+      title: 'Drama',
+      body: 'Shen a besoin de toi. La suite t’attend.',
+      delay: const Duration(hours: 23),
+    );
+  }
+
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _introTimer?.cancel();
     super.dispose();
   }
@@ -65,8 +129,11 @@ class _GameShellState extends State<GameShell> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if (!didPop && _engine.currentThreadId != null) {
+        if (didPop) return;
+        if (_engine.currentThreadId != null) {
           _engine.goHome();
+        } else if (_app != 'home') {
+          setState(() => _app = 'home');
         }
       },
       child: Scaffold(
@@ -74,20 +141,36 @@ class _GameShellState extends State<GameShell> {
           listenable: _engine,
           builder: (context, _) {
             final tid = _engine.currentThreadId;
+            final Widget page;
+            if (_app == 'banque') {
+              page = BankScreen(
+                engine: _engine,
+                onBack: () => setState(() => _app = 'home'),
+              );
+            } else if (_app == 'messages') {
+              page = tid == null
+                  ? HomeScreen(
+                      engine: _engine,
+                      onDebugJump: _debugJump,
+                      onExit: () => setState(() => _app = 'home'),
+                    )
+                  : ThreadScreen(
+                      key: ValueKey(tid),
+                      engine: _engine,
+                      threadId: tid,
+                      onRestart: _restart,
+                    );
+            } else {
+              page = Springboard(
+                engine: _engine,
+                onOpenApp: (a) => setState(() => _app = a),
+              );
+            }
             return Stack(
               children: [
-                Positioned.fill(
-                  child: tid == null
-                      ? HomeScreen(engine: _engine, onDebugJump: _debugJump)
-                      : ThreadScreen(
-                          key: ValueKey(tid),
-                          engine: _engine,
-                          threadId: tid,
-                          onRestart: _restart,
-                        ),
-                ),
+                Positioned.fill(child: page),
                 if (_engine.banner != null)
-                  _BannerOverlay(engine: _engine),
+                  _BannerOverlay(engine: _engine, onOpen: _openFromBanner),
                 if (_showIntro)
                   Positioned.fill(child: IntroCard(onDone: _dismissIntro)),
                 AnimatedSlide(
@@ -111,9 +194,10 @@ class _GameShellState extends State<GameShell> {
 }
 
 class _BannerOverlay extends StatelessWidget {
-  const _BannerOverlay({required this.engine});
+  const _BannerOverlay({required this.engine, required this.onOpen});
 
   final GameEngine engine;
+  final ValueChanged<String> onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +210,7 @@ class _BannerOverlay extends StatelessWidget {
       top: 0,
       child: SafeArea(
         child: GestureDetector(
-          onTap: () => engine.openThread(banner.threadId),
+          onTap: () => onOpen(banner.threadId),
           child: Material(
             color: pal.bannerBg,
             elevation: 8,
