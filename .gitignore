@@ -43,3 +43,10 @@ android/gradlew.bat
 android/local.properties
 android/app/release/
 android/.cxx/
+
+# Python (tools/)
+__pycache__/
+*.pyc
+
+# Harnais de test visuel (captures)
+.webshoot/

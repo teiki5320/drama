@@ -1,0 +1,722 @@
+<title>Drama — Prologue jouable</title>
+<style>
+  :root{
+    --page:#ECECF1; --page-text:#606069;
+    --phone-bg:#FFFFFF; --phone-edge:#C9C9D2;
+    --in-bubble:#E9E9EB; --in-text:#101014;
+    --out-bubble:#0A7CFF; --out-text:#FFFFFF;
+    --meta:#8A8A92; --head-bg:rgba(249,249,250,.94); --head-border:#E3E3E8;
+    --head-text:#101014; --chev:#0A7CFF;
+    --choice-text:#0A7CFF; --choice-border:rgba(10,124,255,.55); --choice-bg:rgba(10,124,255,.06);
+    --row-border:#E7E7EC; --preview:#8A8A92; --dot:#0A7CFF;
+    --pill:#E33B4E; --brand:#D91E4A;
+    --banner-bg:rgba(246,246,248,.97);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --page:#0E0E13; --page-text:#9A9AA6;
+      --phone-bg:#000000; --phone-edge:#2E2E36;
+      --in-bubble:#26262B; --in-text:#F2F2F5;
+      --out-bubble:#0A84FF;
+      --meta:#7C7C85; --head-bg:rgba(18,18,20,.94); --head-border:#232329;
+      --head-text:#F2F2F5; --chev:#409CFF;
+      --choice-text:#409CFF; --choice-border:rgba(64,156,255,.55); --choice-bg:rgba(64,156,255,.12);
+      --row-border:#1E1E24; --preview:#7C7C85;
+      --banner-bg:rgba(28,28,32,.97);
+    }
+  }
+  :root[data-theme="light"]{
+    --page:#ECECF1; --page-text:#606069;
+    --phone-bg:#FFFFFF; --phone-edge:#C9C9D2;
+    --in-bubble:#E9E9EB; --in-text:#101014;
+    --out-bubble:#0A7CFF; --out-text:#FFFFFF;
+    --meta:#8A8A92; --head-bg:rgba(249,249,250,.94); --head-border:#E3E3E8;
+    --head-text:#101014; --chev:#0A7CFF;
+    --choice-text:#0A7CFF; --choice-border:rgba(10,124,255,.55); --choice-bg:rgba(10,124,255,.06);
+    --row-border:#E7E7EC; --preview:#8A8A92; --banner-bg:rgba(246,246,248,.97);
+  }
+  :root[data-theme="dark"]{
+    --page:#0E0E13; --page-text:#9A9AA6;
+    --phone-bg:#000000; --phone-edge:#2E2E36;
+    --in-bubble:#26262B; --in-text:#F2F2F5;
+    --out-bubble:#0A84FF; --out-text:#FFFFFF;
+    --meta:#7C7C85; --head-bg:rgba(18,18,20,.94); --head-border:#232329;
+    --head-text:#F2F2F5; --chev:#409CFF;
+    --choice-text:#409CFF; --choice-border:rgba(64,156,255,.55); --choice-bg:rgba(64,156,255,.12);
+    --row-border:#1E1E24; --preview:#7C7C85; --banner-bg:rgba(28,28,32,.97);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--page);
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:14px; padding:18px 12px; min-height:100dvh;
+  }
+  .caption{
+    color:var(--page-text); font-size:12.5px; text-align:center; max-width:390px; line-height:1.5;
+  }
+  .caption .brand{color:var(--brand); font-weight:800; letter-spacing:.22em; font-size:12px;}
+
+  .phone{
+    width:min(390px,100%); height:min(800px, calc(100dvh - 84px)); min-height:560px;
+    background:var(--phone-bg); border:1px solid var(--phone-edge); border-radius:44px;
+    box-shadow:0 24px 60px rgba(0,0,0,.28);
+    display:flex; flex-direction:column; overflow:hidden; position:relative;
+  }
+
+  .statusbar{
+    flex:0 0 auto; display:flex; justify-content:space-between; align-items:center;
+    padding:14px 26px 4px; color:var(--head-text);
+    font-size:14px; font-weight:600; font-variant-numeric:tabular-nums; background:var(--head-bg);
+  }
+  .statusbar .glyphs{display:flex; align-items:center; gap:6px;}
+  .sig{display:flex; align-items:flex-end; gap:1.5px; height:11px;}
+  .sig i{width:3px; background:var(--head-text); border-radius:1px; display:block;}
+  .sig i:nth-child(1){height:4px}.sig i:nth-child(2){height:6px}
+  .sig i:nth-child(3){height:8px}.sig i:nth-child(4){height:11px}
+  .batt{width:24px; height:11.5px; border:1px solid var(--head-text); border-radius:3.5px; padding:1.5px; position:relative;}
+  .batt::after{content:""; position:absolute; right:-3.5px; top:3px; width:2px; height:5px; background:var(--head-text); border-radius:0 2px 2px 0; opacity:.5;}
+  .batt i{display:block; height:100%; width:72%; background:var(--head-text); border-radius:1.5px;}
+
+  /* ---------- notification banner ---------- */
+  .banner{
+    position:absolute; left:10px; right:10px; top:44px; z-index:30;
+    background:var(--banner-bg); border:.5px solid var(--head-border); border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+    padding:10px 12px; display:flex; gap:10px; align-items:center;
+    cursor:pointer; animation:drop .3s ease-out;
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  }
+  .banner.hide{animation:lift .25s ease-in forwards;}
+  .banner .b-name{font-size:13px; font-weight:700; color:var(--head-text);}
+  .banner .b-text{
+    font-size:13px; color:var(--preview);
+    display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  @keyframes drop{from{transform:translateY(-70px); opacity:0} to{transform:none; opacity:1}}
+  @keyframes lift{to{transform:translateY(-70px); opacity:0}}
+
+  .avatar{
+    width:44px; height:44px; border-radius:50%; flex:0 0 auto;
+    color:#fff; font-weight:600; font-size:16px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .avatar.sm{width:34px; height:34px; font-size:13px;}
+  .av-maman{background:linear-gradient(180deg,#E8637C,#D14A66);}
+  .av-camille{background:linear-gradient(180deg,#F0A24A,#E0832C);}
+  .av-plateforme{background:linear-gradient(180deg,#37B24D,#2C9440);}
+  .av-inconnu{background:linear-gradient(180deg,#9BA0AB,#7A8090);}
+
+  /* ---------- home (liste des conversations) ---------- */
+  .home{flex:1 1 auto; overflow-y:auto; display:flex; flex-direction:column;}
+  .home-title{
+    font-size:32px; font-weight:800; color:var(--head-text);
+    padding:10px 20px 8px; letter-spacing:-.02em;
+  }
+  .row{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 16px 11px 12px; border-bottom:.5px solid var(--row-border);
+    cursor:pointer; position:relative;
+  }
+  .row:active{background:var(--in-bubble);}
+  .dot{width:9px; height:9px; border-radius:50%; background:var(--dot); flex:0 0 auto; opacity:0;}
+  .row.unread .dot{opacity:1;}
+  .row .mid{flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:2px;}
+  .row .name{font-size:16px; font-weight:600; color:var(--head-text);}
+  .row .preview{
+    font-size:14px; color:var(--preview); line-height:1.3;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .row .right{flex:0 0 auto; display:flex; flex-direction:column; align-items:flex-end; gap:5px;}
+  .row .time{font-size:13px; color:var(--preview); font-variant-numeric:tabular-nums;}
+  .row .reply-pill{
+    font-size:10px; font-weight:700; letter-spacing:.06em; color:#fff;
+    background:var(--pill); border-radius:999px; padding:3px 8px;
+    animation:pop .25s ease-out;
+  }
+
+  /* ---------- conversation ---------- */
+  .head{
+    flex:0 0 auto; display:grid; grid-template-columns:44px 1fr 44px; align-items:center;
+    padding:2px 10px 8px; background:var(--head-bg);
+    border-bottom:.5px solid var(--head-border);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); z-index:2;
+  }
+  .chev{
+    color:var(--chev); font-size:28px; line-height:1; padding:0 6px;
+    background:none; border:none; cursor:pointer; font-family:inherit; text-align:left;
+  }
+  .chev:focus-visible{outline:2px solid var(--chev); outline-offset:2px;}
+  .who{display:flex; flex-direction:column; align-items:center; gap:3px;}
+  .who .name{font-size:11.5px; color:var(--head-text); font-weight:500;}
+
+  .threadhost{flex:1 1 auto; overflow-y:auto; overscroll-behavior:contain;}
+  .thread{
+    display:none; flex-direction:column; gap:3px; padding:14px 14px 10px; min-height:100%;
+  }
+  .thread.active{display:flex;}
+  .daysep{align-self:center; color:var(--meta); font-size:11.5px; font-weight:500; margin:8px 0 10px; text-align:center;}
+  .daysep b{font-weight:700;}
+  .sysline{align-self:center; color:var(--meta); font-size:12px; margin:8px 0; text-align:center;}
+  .bubble{
+    max-width:78%; padding:8px 13px 9px; border-radius:18px;
+    font-size:16px; line-height:1.32; letter-spacing:-.01em;
+    animation:pop .22s ease-out; white-space:pre-wrap; word-wrap:break-word;
+  }
+  .in{align-self:flex-start; background:var(--in-bubble); color:var(--in-text); border-bottom-left-radius:6px;}
+  .out{align-self:flex-end; background:var(--out-bubble); color:var(--out-text); border-bottom-right-radius:6px;}
+  .in + .in{margin-top:1px;}
+  .out + .in, .in + .out{margin-top:10px;}
+  .receipt{align-self:flex-end; color:var(--meta); font-size:11px; font-weight:500; margin:2px 4px 0;}
+  .typing{display:flex; gap:4px; align-items:center; padding:12px 14px;}
+  .typing i{width:8px; height:8px; border-radius:50%; background:var(--meta); opacity:.5; animation:blink 1.2s infinite;}
+  .typing i:nth-child(2){animation-delay:.18s}
+  .typing i:nth-child(3){animation-delay:.36s}
+
+  .endnote{align-self:center; text-align:center; color:var(--meta); font-size:12.5px; margin:18px 0 6px; line-height:1.7;}
+  .endnote .t{color:var(--brand); font-weight:800; letter-spacing:.2em; font-size:13px;}
+  .replay{
+    display:inline-block; margin-top:8px; padding:7px 18px;
+    border:1.5px solid var(--brand); color:var(--brand); border-radius:999px;
+    font-size:13px; font-weight:700; letter-spacing:.06em; background:none;
+    font-family:inherit; cursor:pointer;
+  }
+  .replay:focus-visible{outline:2px solid var(--brand); outline-offset:2px;}
+
+  .tray{
+    flex:0 0 auto; padding:10px 14px 8px;
+    border-top:.5px solid var(--head-border); background:var(--head-bg);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    display:flex; flex-direction:column; gap:8px; min-height:62px;
+  }
+  .tray .hint{
+    color:var(--meta); font-size:10.5px; font-weight:600; letter-spacing:.12em;
+    text-transform:uppercase; text-align:center;
+  }
+  .tray .idle{color:var(--meta); font-size:12.5px; text-align:center; padding:10px 0;}
+  .choice{
+    width:100%; text-align:left;
+    border:1.5px solid var(--choice-border); background:var(--choice-bg); color:var(--choice-text);
+    border-radius:20px; padding:10px 15px; font-size:15px; line-height:1.3;
+    font-family:inherit; cursor:pointer; animation:rise .25s ease-out;
+  }
+  .choice.silent{border-color:var(--meta); color:var(--meta); background:transparent; font-style:italic;}
+  .choice:active{transform:scale(.98);}
+  .choice:focus-visible{outline:2px solid var(--choice-text); outline-offset:2px;}
+  .homebar{flex:0 0 auto; height:20px; display:flex; align-items:center; justify-content:center; background:var(--head-bg);}
+  .homebar i{width:134px; height:5px; border-radius:3px; background:var(--head-text); opacity:.28;}
+
+  /* ---------- écran verrouillé ---------- */
+  .lock{
+    position:absolute; inset:0; z-index:50;
+    background:
+      radial-gradient(120% 90% at 20% 0%, #24304E 0%, #141A2E 45%, #0B0E1A 100%);
+    color:#F4F5FA;
+    display:flex; flex-direction:column; align-items:center;
+    padding:26px 16px 22px;
+    border-radius:inherit;
+    transition:transform .45s cubic-bezier(.32,.72,.29,1), opacity .45s;
+    cursor:pointer;
+  }
+  .lock.away{transform:translateY(-102%); opacity:.4;}
+  .lock .padlock{font-size:15px; opacity:.85; margin-top:4px;}
+  .lock .l-clock{
+    font-size:74px; font-weight:700; letter-spacing:-.03em; line-height:1;
+    margin-top:6px; font-variant-numeric:tabular-nums;
+  }
+  .lock .l-date{font-size:16px; font-weight:500; opacity:.85; margin-top:6px;}
+  .lock .notifs{
+    width:100%; display:flex; flex-direction:column; gap:8px;
+    margin-top:auto; margin-bottom:14px;
+  }
+  .notif{
+    background:rgba(250,250,252,.16);
+    -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+    border-radius:16px; padding:10px 12px;
+    display:flex; gap:10px; align-items:flex-start;
+    animation:rise .3s ease-out both;
+  }
+  .notif:nth-child(2){animation-delay:.08s}
+  .notif:nth-child(3){animation-delay:.16s}
+  .notif:nth-child(4){animation-delay:.24s}
+  .n-icon{
+    width:32px; height:32px; border-radius:8px; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center; font-size:17px;
+    background:rgba(255,255,255,.92);
+  }
+  .n-body{flex:1 1 auto; min-width:0;}
+  .n-top{display:flex; justify-content:space-between; gap:8px; margin-bottom:1px;}
+  .n-app{font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; opacity:.75;}
+  .n-time{font-size:11px; opacity:.6; flex:0 0 auto;}
+  .n-title{font-size:13.5px; font-weight:700; line-height:1.25;}
+  .n-text{font-size:13.5px; line-height:1.3; opacity:.92;}
+  .unlock-hint{
+    font-size:12.5px; font-weight:600; opacity:.8; letter-spacing:.02em;
+    animation:hintPulse 2s ease-in-out infinite;
+    background:none; border:none; color:inherit; font-family:inherit; cursor:pointer;
+  }
+  .unlock-hint:focus-visible{outline:2px solid #fff; outline-offset:3px; border-radius:6px;}
+  .lock .bar{width:134px; height:5px; border-radius:3px; background:#fff; opacity:.85; margin-top:10px;}
+  @keyframes hintPulse{0%,100%{opacity:.5; transform:none} 50%{opacity:1; transform:translateY(-3px)}}
+  @media (prefers-reduced-motion: reduce){
+    .lock{transition:none;}
+    .notif{animation:none;}
+    .unlock-hint{animation:none;}
+  }
+
+  @keyframes pop{from{transform:translateY(8px) scale(.97); opacity:0} to{transform:none; opacity:1}}
+  @keyframes rise{from{transform:translateY(10px); opacity:0} to{transform:none; opacity:1}}
+  @keyframes blink{0%,60%,100%{opacity:.35} 30%{opacity:1}}
+  @media (prefers-reduced-motion: reduce){
+    .bubble,.choice,.banner,.reply-pill{animation:none;}
+    .typing i{animation:none; opacity:.6;}
+  }
+</style>
+
+<p class="caption"><span class="brand">DRAMA</span><br>Prologue jouable — la première journée de Shen. Ouvre les conversations, réponds, tout compte.</p>
+
+<div class="phone" role="application" aria-label="Drama — prologue jouable">
+  <div class="statusbar">
+    <span id="clock">07:48</span>
+    <span class="glyphs">
+      <span class="sig"><i></i><i></i><i></i><i></i></span>
+      <span class="batt"><i></i></span>
+    </span>
+  </div>
+
+  <!-- HOME -->
+  <div class="home" id="home">
+    <div class="home-title">Messages</div>
+    <div id="rows"></div>
+  </div>
+
+  <!-- CONVERSATION -->
+  <header class="head" id="convohead" style="display:none">
+    <button class="chev" id="back" aria-label="Retour aux messages">‹</button>
+    <div class="who">
+      <div class="avatar sm" id="c-avatar"></div>
+      <span class="name" id="c-name"></span>
+    </div>
+    <span></span>
+  </header>
+  <div class="threadhost" id="threadhost" style="display:none"></div>
+  <div class="tray" id="tray" style="display:none"><div class="idle">…</div></div>
+
+  <div class="homebar"><i></i></div>
+
+  <!-- ÉCRAN VERROUILLÉ -->
+  <div class="lock" id="lock" role="button" aria-label="Déverrouiller le téléphone de Shen">
+    <div class="padlock">🔒</div>
+    <div class="l-clock">07:46</div>
+    <div class="l-date">Mercredi 15 juillet</div>
+    <div class="notifs">
+      <div class="notif">
+        <div class="n-icon">📅</div>
+        <div class="n-body">
+          <div class="n-top"><span class="n-app">Agenda</span><span class="n-time">il y a 8 min</span></div>
+          <div class="n-title">Demain 08:30 — Hôpital Tenon</div>
+          <div class="n-text">Accompagner Maman · niveau 2, couloir K</div>
+        </div>
+      </div>
+      <div class="notif">
+        <div class="n-icon">🏦</div>
+        <div class="n-body">
+          <div class="n-top"><span class="n-app">BNP Paribas</span><span class="n-time">07:02</span></div>
+          <div class="n-title">Solde : 86,44 €</div>
+          <div class="n-text">Votre découvert autorisé sera bientôt atteint.</div>
+        </div>
+      </div>
+      <div class="notif">
+        <div class="n-icon">🛵</div>
+        <div class="n-body">
+          <div class="n-top"><span class="n-app">Livraisons Pro</span><span class="n-time">hier</span></div>
+          <div class="n-title">Paiement hebdomadaire : 214,60 €</div>
+          <div class="n-text">Bonne semaine ! Objectif : gardez votre priorité A.</div>
+        </div>
+      </div>
+      <div class="notif">
+        <div class="n-icon">🥐</div>
+        <div class="n-body">
+          <div class="n-top"><span class="n-app">Messages · Camille</span><span class="n-time">hier</span></div>
+          <div class="n-text">regarde ce meme, c'est TOI 😭 — dors un peu, promis ?</div>
+        </div>
+      </div>
+    </div>
+    <button class="unlock-hint" id="unlock">Touche pour déverrouiller le téléphone de Shen</button>
+    <div class="bar"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sleep = ms => new Promise(r => setTimeout(r, reduced ? Math.min(ms, 250) : ms));
+
+  const homeEl = $('home'), rowsEl = $('rows'), headEl = $('convohead'),
+        hostEl = $('threadhost'), trayEl = $('tray'), clockEl = $('clock');
+
+  function el(tag, cls, text){
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+
+  /* ---------- threads ---------- */
+  const THREADS = {
+    maman:      { name:'Maman ❤️',       initials:'M',  av:'av-maman' },
+    camille:    { name:'Camille',        initials:'C',  av:'av-camille' },
+    plateforme: { name:'Livraisons Pro', initials:'LP', av:'av-plateforme' },
+    inconnu:    { name:'Numéro inconnu', initials:'?',  av:'av-inconnu', hidden:true },
+  };
+  Object.entries(THREADS).forEach(([id, t]) => {
+    t.id = id; t.unread = 0; t.preview = ''; t.ptime = ''; t.pending = null;
+    t.el = el('div','thread'); hostEl.appendChild(t.el);
+  });
+  THREADS.camille.preview = 'regarde ce meme, c’est TOI 😭 — dors un peu, promis ?'; THREADS.camille.ptime = 'Hier';
+  THREADS.plateforme.preview = 'Paiement hebdomadaire : 214,60 €.'; THREADS.plateforme.ptime = 'Hier';
+
+  let current = null;
+
+  function renderRows(){
+    rowsEl.replaceChildren();
+    Object.values(THREADS).forEach(t => {
+      if (t.hidden) return;
+      const row = el('div', 'row' + (t.unread ? ' unread' : ''));
+      row.setAttribute('role','button');
+      row.appendChild(el('span','dot'));
+      const av = el('div','avatar ' + t.av, t.initials); row.appendChild(av);
+      const mid = el('div','mid');
+      mid.appendChild(el('div','name', t.name));
+      mid.appendChild(el('div','preview', t.preview || ' '));
+      row.appendChild(mid);
+      const right = el('div','right');
+      right.appendChild(el('div','time', t.ptime || ''));
+      if (t.pending) right.appendChild(el('span','reply-pill','À RÉPONDRE'));
+      row.appendChild(right);
+      row.addEventListener('click', () => openThread(t.id));
+      rowsEl.appendChild(row);
+    });
+  }
+
+  function openThread(id){
+    const t = THREADS[id];
+    current = id; t.unread = 0;
+    homeEl.style.display = 'none';
+    headEl.style.display = ''; hostEl.style.display = ''; trayEl.style.display = '';
+    $('c-avatar').className = 'avatar sm ' + t.av;
+    $('c-avatar').textContent = t.initials;
+    $('c-name').textContent = t.name.replace(' ❤️','');
+    Object.values(THREADS).forEach(x => x.el.classList.toggle('active', x.id === id));
+    hostEl.scrollTop = hostEl.scrollHeight;
+    if (t.pending) showChoices(t); else idleTray();
+  }
+
+  function goHome(){
+    current = null;
+    homeEl.style.display = '';
+    headEl.style.display = 'none'; hostEl.style.display = 'none'; trayEl.style.display = 'none';
+    renderRows();
+  }
+  $('back').addEventListener('click', goHome);
+
+  function idleTray(msg){ trayEl.replaceChildren(el('div','idle', msg || '…')); }
+  function scrollBottom(){ hostEl.scrollTop = hostEl.scrollHeight; }
+
+  /* ---------- notifications ---------- */
+  let bannerEl = null;
+  function notify(t, text){
+    if (current === t.id) return;
+    if (bannerEl) bannerEl.remove();
+    const b = el('div','banner');
+    const av = el('div','avatar sm ' + t.av, t.initials);
+    const mid = el('div');
+    mid.appendChild(el('div','b-name', t.name));
+    mid.appendChild(el('div','b-text', text));
+    b.append(av, mid);
+    b.addEventListener('click', () => { b.remove(); openThread(t.id); });
+    document.querySelector('.phone').appendChild(b);
+    bannerEl = b;
+    setTimeout(() => { if (bannerEl === b){ b.classList.add('hide'); setTimeout(()=>b.remove(), 260); } }, 4200);
+  }
+
+  /* ---------- primitives du récit ---------- */
+  function setClock(h){ clockEl.textContent = h; }
+
+  function sep(tid, label){
+    const t = THREADS[tid];
+    const d = el('div','daysep'); d.innerHTML = '<b>iMessage</b><br>' + label;
+    t.el.appendChild(d);
+    if (current === tid) scrollBottom();
+  }
+  function sysline(tid, text){
+    const t = THREADS[tid];
+    t.el.appendChild(el('div','sysline', text));
+    if (current === tid) scrollBottom();
+  }
+
+  async function incoming(tid, text, typingMs){
+    const t = THREADS[tid];
+    if (t.hidden){ t.hidden = false; }
+    if (current === tid){
+      const ty = el('div','bubble in typing'); ty.append(el('i'),el('i'),el('i'));
+      t.el.appendChild(ty); scrollBottom();
+      await sleep(typingMs || 1600);
+      ty.classList.remove('typing');
+      ty.replaceChildren(document.createTextNode(text));
+      scrollBottom();
+    } else {
+      await sleep(typingMs || 1600);
+      t.el.appendChild(el('div','bubble in', text));
+      t.unread++;
+      notify(t, text);
+    }
+    t.preview = text; t.ptime = clockEl.textContent;
+    if (!current) renderRows();
+  }
+
+  function outgoing(tid, text){
+    const t = THREADS[tid];
+    const b = el('div','bubble out', text);
+    t.el.appendChild(b);
+    const r = el('div','receipt','Distribué');
+    t.el.appendChild(r);
+    t.preview = text; t.ptime = clockEl.textContent;
+    if (current === tid) scrollBottom();
+    return r;
+  }
+
+  function showChoices(t){
+    trayEl.replaceChildren(el('div','hint','À toi de répondre'));
+    t.pending.options.forEach(opt => {
+      const btn = el('button','choice' + (opt.silent ? ' silent' : ''), opt.label);
+      btn.addEventListener('click', () => {
+        const pend = t.pending; t.pending = null;
+        idleTray();
+        let receipt = null;
+        if (!opt.silent) receipt = outgoing(t.id, opt.label);
+        pend.resolve({ ...opt, receipt });
+      });
+      trayEl.appendChild(btn);
+    });
+    scrollBottom();
+  }
+
+  function choice(tid, options){
+    const t = THREADS[tid];
+    return new Promise(resolve => {
+      t.pending = { options, resolve };
+      if (current === tid) showChoices(t);
+      else { renderRows(); notify(t, 'En attente de ta réponse…'); }
+    });
+  }
+
+  function markRead(receipt){
+    if (receipt) receipt.textContent = 'Lu';
+  }
+
+  function endCard(tid){
+    const t = THREADS[tid];
+    const n = el('div','endnote');
+    const title = el('div','t','FIN DU PROLOGUE');
+    n.appendChild(title);
+    n.append('Demain, 8h30 : l’hôpital Tenon.', el('br'),
+             'Tes choix ont déjà commencé à compter.', el('br'));
+    const b = el('button','replay','↺  REJOUER LE PROLOGUE');
+    b.addEventListener('click', () => location.reload());
+    n.appendChild(b);
+    t.el.appendChild(n);
+    if (current === tid) scrollBottom();
+    idleTray('Drama — messagerie uniquement.');
+  }
+
+  /* ---------- LE PROLOGUE ---------- */
+  async function play(){
+    renderRows();
+    await sleep(1000);
+
+    /* — 07:48, Maman — */
+    setClock('07:48');
+    sep('maman', 'Aujourd’hui 07:48');
+    await incoming('maman', 'Tu pars livrer dans combien de temps ?', 1500);
+    await incoming('maman', 'Il pleut sur tout Paris. Couvre-toi.', 1400);
+    let c = await choice('maman', [
+      { label:'Dix minutes. Capuche promise.', reply:'Bien. Le thermos de thé est près de la porte.' },
+      { label:'Maman. J’ai 24 ans.', reply:'Et moi 51 ans de pluie. Couvre-toi.' },
+      { label:'Déjà sur le vélo.', reply:'Alors ne réponds pas en pédalant.' },
+    ]);
+    await sleep(700); markRead(c.receipt);
+    await incoming('maman', c.reply, 1300);
+    await incoming('maman', 'Tu as mangé quelque chose ?', 1300);
+    c = await choice('maman', [
+      { label:'Le pain au chocolat d’hier, trempé dans le thé.', reply:'Ce soir je te fais des nouilles. Des vraies.' },
+      { label:'Un truc équilibré, t’inquiète.', reply:'« Un truc équilibré. » Je note.' },
+      { label:'Pas le temps. Midi, promis.', reply:'C’est ce que tu dis tous les matins.' },
+    ]);
+    await sleep(700); markRead(c.receipt);
+    await incoming('maman', c.reply, 1400);
+    await incoming('maman', 'N’oublie pas. Demain, 8h30, Tenon. Je préfère que tu sois là.', 1900);
+    c = await choice('maman', [
+      { label:'Je serai là.', reply:'Je sais.' },
+      { label:'C’est juste un contrôle, Maman.', reply:'Oui. Juste un contrôle.' },
+      { label:'Tu veux que je pose ma matinée ?', reply:'Non. Juste toi, à 8h30.' },
+    ]);
+    await sleep(800); markRead(c.receipt);
+    await incoming('maman', c.reply, 1300);
+    await sleep(1400);
+
+    /* — 08:04, la plateforme — */
+    setClock('08:04');
+    sep('plateforme', 'Aujourd’hui 08:04');
+    await incoming('plateforme', 'Course #14872 — Bowl Açaï → 8 avenue Montaigne. Rémunération : 8,40 €. Acceptez sous 30 s.', 1200);
+    c = await choice('plateforme', [
+      { label:'Accepter la course', accepted:true },
+      { label:'Laisser passer', accepted:false },
+    ]);
+    if (c.accepted){
+      await incoming('plateforme', 'Course #14872 acceptée. Retrait : Wild Berry, rue de Ponthieu. Bonne route.', 1100);
+    } else {
+      await incoming('plateforme', 'Course réattribuée. Rappel : votre taux d’acceptation impacte votre priorité.', 1100);
+      await incoming('plateforme', 'Course #14891 — Bowl Açaï → 8 avenue Montaigne. Rémunération : 8,40 €. Acceptez sous 30 s.', 1400);
+      await choice('plateforme', [ { label:'Accepter la course' } ]);
+      await incoming('plateforme', 'Course #14891 acceptée. Retrait : Wild Berry, rue de Ponthieu. Bonne route.', 1100);
+    }
+    await sleep(1800);
+
+    /* — 08:31, l'incident (l'accident a lieu hors écran) — */
+    setClock('08:31');
+    await incoming('plateforme', '⚠️ INCIDENT — Course signalée NON LIVRÉE par le client. Pénalité : 38,00 € sur votre prochaine paie. Conseil : reprenez une course dès maintenant pour préserver vos statistiques.', 1600);
+    await sleep(2200);
+
+    /* — 11:42, Camille — */
+    setClock('11:42');
+    sep('camille', 'Aujourd’hui 11:42');
+    await incoming('camille', 'Alors, la tournée sous la flotte ? T’as survécu ?', 1500);
+    c = await choice('camille', [
+      { label:'Je me suis fait renverser.', k:'direct' },
+      { label:'Devine. Pénalité de 38 balles.', k:'oblique' },
+      { label:'Journée parfaite. Si on aime l’asphalte.', k:'vanne' },
+    ]);
+    await sleep(600); markRead(c.receipt);
+    if (c.k === 'direct'){
+      await incoming('camille', 'Attends. QUOI.', 900);
+    } else if (c.k === 'oblique'){
+      await incoming('camille', '38 balles ?? Ils t’ont fait quoi encore ?', 1300);
+      outgoing('camille', 'C’est pas eux. Je me suis fait renverser.');
+      await sleep(700);
+      await incoming('camille', 'PARDON ??', 800);
+    } else {
+      await incoming('camille', 'L’asphalte. Shen. Développe. TOUT DE SUITE.', 1300);
+      outgoing('camille', 'Une voiture m’a renversée avenue Montaigne.');
+      await sleep(700);
+    }
+    await incoming('camille', 'Renversée genre RENVERSÉE ?? T’es où, t’as mal où ??', 1400);
+    c = await choice('camille', [
+      { label:'Ça va. Le vélo est mort, pas moi.', reply:'OK. OK. Je respire.' },
+      { label:'Une bagnole noire. Le genre qui vaut ton loyer annuel en options.', reply:'Bien sûr. Ils roulent, on tombe.' },
+      { label:'Mal nulle part. J’ai juste la rage.', reply:'La rage c’est bon signe. Ça veut dire vivante.' },
+    ]);
+    await sleep(700); markRead(c.receipt);
+    await incoming('camille', c.reply, 1300);
+    await incoming('camille', 'Et le conducteur ? Constat ? Assurance ? Dis-moi que t’as ses infos.', 1700);
+    c = await choice('camille', [
+      { label:'Il m’a tendu sa carte comme un pourboire. Je l’ai déchirée devant lui.' },
+      { label:'J’ai sa carte. En quatre morceaux. Dans une flaque.' },
+      { label:'Il a proposé sa carte. J’ai refusé. Fière ou conne, choisis.' },
+    ]);
+    await sleep(900); markRead(c.receipt);
+    await incoming('camille', 'T’ES PAS SÉRIEUSE.', 1000);
+    await incoming('camille', 'Il s’appelait comment ?', 1100);
+    c = await choice('camille', [
+      { label:'T. Heng, je crois.' },
+      { label:'Tristan quelque chose. Heng ?' },
+    ]);
+    await sleep(1100); markRead(c.receipt);
+    await incoming('camille', 'Shen.', 1600);
+    await incoming('camille', 'T comme TRISTAN Heng ?? Heng International ? La tour en verre avec leur nom en lettres d’un mètre ??', 2100);
+    c = await choice('camille', [
+      { label:'…la tour de la Défense ?', reply:'LA TOUR, OUI.' },
+      { label:'Riche ou pas, il conduit comme un pied.', reply:'Je t’adore. T’es un désastre.' },
+      { label:'Tant mieux. Sa carte meurt riche.', reply:'Tu me tues. Sérieusement.' },
+    ]);
+    await sleep(800); markRead(c.receipt);
+    await incoming('camille', c.reply, 1200);
+    await incoming('camille', 'Bon. Écoute-moi : retourne chercher les morceaux. Un type pareil, son assurance te rachète dix vélos.', 2000);
+    await incoming('camille', 'Et passe me voir après. Bisous mon canard cabossé.', 1400);
+    await sleep(1800);
+
+    /* — 18:42, Maman, le soir — */
+    setClock('18:42');
+    sep('maman', '18:42');
+    await incoming('maman', 'Le riz est dans le rice cooker. Tu rentres ce soir ?', 1500);
+    c = await choice('maman', [
+      { label:'J’arrive.', reply:'Je réchauffe.' },
+      { label:'Tard. M’attends pas pour manger.', reply:'Je mets ta part de côté. Avec un mot dessus.' },
+      { label:'Je dors chez moi ce soir.', reply:'D’accord. Couvre-toi cette nuit.' },
+    ]);
+    await sleep(800); markRead(c.receipt);
+    await incoming('maman', c.reply, 1400);
+    await sleep(1600);
+
+    setClock('22:12');
+    await incoming('maman', 'Bonne nuit ma fille. À demain. 8h30.', 1500);
+    c = await choice('maman', [
+      { label:'Bonne nuit Maman ❤️', reply:'❤️' },
+      { label:'À demain.', reply:'Dors bien.' },
+      { label:'(ne pas répondre)', silent:true, reply:'Dors bien, même quand tu ne réponds pas.' },
+    ]);
+    await sleep(1000); if (c.receipt) markRead(c.receipt);
+    await incoming('maman', c.reply, 1200);
+    await sleep(2000);
+
+    /* — 22:47, le numéro inconnu — */
+    setClock('22:47');
+    THREADS.inconnu.hidden = false;
+    sep('inconnu', 'Aujourd’hui 22:47');
+    await incoming('inconnu', 'Mademoiselle Marchand. Tristan Heng.', 1900);
+    await incoming('inconnu', 'Vous êtes partie sans constat, sans un mot. On ne se quitte pas comme ça.', 2100);
+    c = await choice('inconnu', [
+      { label:'Comment vous avez eu ce numéro ?', k:'q' },
+      { label:'Il est presque 23h. On dort, chez les riches ?', k:'q' },
+      { label:'(bloquer le numéro)', silent:true, k:'block' },
+    ]);
+    if (c.k === 'block'){
+      sysline('inconnu', 'Numéro bloqué.');
+      await sleep(1600);
+      sysline('inconnu', 'Nouveau message — autre numéro inconnu');
+      await incoming('inconnu', 'Bloquer mon numéro ne bloque pas ma mémoire, Mademoiselle Marchand. À demain.', 2000);
+    } else {
+      await sleep(800); markRead(c.receipt);
+      const t = THREADS.inconnu;
+      if (current === 'inconnu'){
+        const ty = el('div','bubble in typing'); ty.append(el('i'),el('i'),el('i'));
+        t.el.appendChild(ty); scrollBottom();
+        await sleep(2600);
+        ty.remove();
+        await sleep(1200);
+      } else {
+        await sleep(2600);
+      }
+      sysline('inconnu', 'Tristan Heng a commencé à écrire… puis s’est arrêté.');
+    }
+    await sleep(1200);
+    endCard('inconnu');
+    renderRows();
+  }
+
+  goHome();
+  clockEl.textContent = '07:46';
+  const lock = $('lock');
+  let started = false;
+  function unlock(){
+    if (started) return; started = true;
+    lock.classList.add('away');
+    setTimeout(() => lock.remove(), 500);
+    play();
+  }
+  lock.addEventListener('click', unlock);
+})();
+</script>
