@@ -1,7 +1,7 @@
 name: drama
 description: "Drama — jeu narratif qui se joue entièrement dans une messagerie."
 publish_to: "none"
-version: 0.18.0+1
+version: 0.19.0+1
 
 environment:
   sdk: ">=3.5.0 <4.0.0"
@@ -10,7 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  audioplayers: ^6.1.0
   flutter_local_notifications: ^17.2.3
+  shared_preferences: ^2.3.3
   timezone: ^0.9.4
   video_player: ^2.9.2
 
@@ -25,7 +27,21 @@ flutter:
   assets:
     - assets/photos/avatars/
     - assets/photos/ep1/
+    - assets/audio/
     - assets/videos/video_livreuse_velo_rue_pavee_brouillard.mp4
+    # Souvenirs de la galerie (débloqués par le sudoku)
+    - assets/photos/lieux/pr_rizieres_coucher_soleil.webp
+    - assets/photos/lieux/pr_chambre_valise_toits_chine.webp
+    - assets/photos/lieux/pr_fleurs_iris_cour_fujian.webp
+    - assets/photos/quotidien/pr_the_plateau_gaiwan.webp
+    - assets/photos/personnages/pr_femme_60aine_pivoines_fenetre_toits.webp
+    - assets/photos/quotidien/pr_album_photos_main_jade.webp
+    - assets/photos/personnages/pr_photo_famille_maison_pierre_2010.webp
+    - assets/photos/personnages/pr_pere_et_shen_enfant.webp
+    # Fonds d'écran (paliers 3/6/9 grilles)
+    - assets/photos/lieux/pr_feu_artifice_tour_nuit.webp
+    - assets/photos/lieux/pr_rue_asiatique_neons_nuit.webp
+    - assets/photos/lieux/pr_bureau_nuit_vue_skyline_neons.webp
 
 flutter_launcher_icons:
   image_path: "assets/icon/icon.png"

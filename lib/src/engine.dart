@@ -130,6 +130,10 @@ class GameEngine extends ChangeNotifier {
   /// Facteur sur toutes les attentes (0 dans les tests).
   final double delayScale;
 
+  /// Signal sonore ('recu', 'envoye', 'banniere') — branché par l'interface,
+  /// null dans les tests.
+  void Function(String kind)? sfx;
+
   final Map<String, ThreadState> threads = {};
 
   String? currentThreadId;
@@ -233,6 +237,7 @@ class GameEngine extends ChangeNotifier {
       await sleep(typing);
       m.typing = false;
       m.text = text;
+      sfx?.call('recu');
     } else {
       await sleep(typing);
       t.messages.add(Msg.incoming(text));
@@ -256,6 +261,7 @@ class GameEngine extends ChangeNotifier {
       await sleep(typing);
       m.typing = false;
       m.imageAsset = asset;
+      sfx?.call('recu');
     } else {
       await sleep(typing);
       t.messages.add(Msg.incomingImage(asset));
@@ -271,6 +277,7 @@ class GameEngine extends ChangeNotifier {
   Msg outgoingImage(String tid, String asset) {
     final t = thread(tid);
     final m = Msg.outgoingImage(asset)..receipt = 'Distribué';
+    sfx?.call('envoye');
     t.messages.add(m);
     t.lastOutgoing = m;
     t.preview = '📷 Photo';
@@ -298,6 +305,7 @@ class GameEngine extends ChangeNotifier {
   Msg outgoing(String tid, String text) {
     final t = thread(tid);
     final m = Msg.outgoing(text)..receipt = 'Distribué';
+    sfx?.call('envoye');
     t.messages.add(m);
     t.lastOutgoing = m;
     t.preview = text;
@@ -386,6 +394,7 @@ class GameEngine extends ChangeNotifier {
     if (currentThreadId == t.def.id) return;
     final seq = ++_bannerSeq;
     banner = BannerData(threadId: t.def.id, text: text, seq: seq);
+    sfx?.call('banniere');
     notifyListeners();
     Timer(Duration(milliseconds: (4200 * delayScale).round()), () {
       if (banner?.seq == seq) {

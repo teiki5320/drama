@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../engine.dart';
+import '../rewards.dart';
 
 /// L'écran d'accueil du téléphone de Shen : fond d'écran, horloge,
-/// et les applications (Messages, Ma Banque…).
+/// et les applications (Messages, Ma Banque, Photos, Sudoku).
 class Springboard extends StatelessWidget {
   const Springboard({
     super.key,
@@ -16,17 +17,41 @@ class Springboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: Rewards.instance,
+      builder: (context, _) => _build(context),
+    );
+  }
+
+  Widget _build(BuildContext context) {
     final unread =
         engine.visibleThreads.fold<int>(0, (s, t) => s + t.unread);
     final pending =
         engine.visibleThreads.any((t) => t.pending != null);
+    final wallpaper = Rewards.instance.wallpaper;
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF141A33), Color(0xFF2C2347), Color(0xFF3B2B52)],
-        ),
+      decoration: BoxDecoration(
+        gradient: wallpaper == null
+            ? const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF141A33),
+                  Color(0xFF2C2347),
+                  Color(0xFF3B2B52)
+                ],
+              )
+            : null,
+        image: wallpaper != null
+            ? DecorationImage(
+                image: AssetImage(wallpaper),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Colors.black.withValues(alpha: 0.42),
+                  BlendMode.darken,
+                ),
+              )
+            : null,
       ),
       child: SafeArea(
         child: Column(
@@ -52,8 +77,9 @@ class Springboard extends StatelessWidget {
             ),
             const SizedBox(height: 44),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
+              padding: const EdgeInsets.symmetric(horizontal: 18),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _AppIcon(
                     label: 'Messages',
@@ -64,12 +90,23 @@ class Springboard extends StatelessWidget {
                     icon: Icons.chat_bubble,
                     onTap: () => onOpenApp('messages'),
                   ),
-                  const SizedBox(width: 22),
                   _AppIcon(
                     label: 'Ma Banque',
                     gradient: const [Color(0xFF2E8C74), Color(0xFF175A49)],
                     icon: Icons.account_balance,
                     onTap: () => onOpenApp('banque'),
+                  ),
+                  _AppIcon(
+                    label: 'Photos',
+                    gradient: const [Color(0xFFB05AA0), Color(0xFF7C3A72)],
+                    icon: Icons.photo_library,
+                    onTap: () => onOpenApp('photos'),
+                  ),
+                  _AppIcon(
+                    label: 'Sudoku',
+                    gradient: const [Color(0xFF4A6FD4), Color(0xFF2E4A9E)],
+                    icon: Icons.grid_on,
+                    onTap: () => onOpenApp('sudoku'),
                   ),
                 ],
               ),

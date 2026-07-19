@@ -6,8 +6,11 @@ import '../engine.dart';
 import '../models.dart';
 import '../notifications.dart';
 import '../palette.dart';
+import '../sfx.dart';
 import 'bank_screen.dart';
+import 'gallery_screen.dart';
 import 'home_screen.dart';
+import 'sudoku_screen.dart';
 import 'intro_card.dart';
 import 'lock_screen.dart';
 import 'springboard.dart';
@@ -24,11 +27,11 @@ class GameShell extends StatefulWidget {
 }
 
 class _GameShellState extends State<GameShell> with WidgetsBindingObserver {
-  GameEngine _engine = GameEngine();
+  GameEngine _engine = GameEngine()..sfx = Sfx.play;
   bool _showIntro = false;
   Timer? _introTimer;
 
-  /// L'app ouverte sur le téléphone : 'home', 'messages' ou 'banque'.
+  /// L'app ouverte : 'home', 'messages', 'banque', 'photos' ou 'sudoku'.
   String _app = 'home';
 
   @override
@@ -40,7 +43,7 @@ class _GameShellState extends State<GameShell> with WidgetsBindingObserver {
   void _restart() {
     _introTimer?.cancel();
     setState(() {
-      _engine = GameEngine();
+      _engine = GameEngine()..sfx = Sfx.play;
       _showIntro = false;
       _app = 'home';
     });
@@ -62,7 +65,7 @@ class _GameShellState extends State<GameShell> with WidgetsBindingObserver {
   void _debugJump(int day) {
     _introTimer?.cancel();
     setState(() {
-      _engine = GameEngine();
+      _engine = GameEngine()..sfx = Sfx.play;
       _showIntro = false;
       _app = 'messages';
     });
@@ -146,6 +149,15 @@ class _GameShellState extends State<GameShell> with WidgetsBindingObserver {
               page = BankScreen(
                 engine: _engine,
                 onBack: () => setState(() => _app = 'home'),
+              );
+            } else if (_app == 'photos') {
+              page = GalleryScreen(
+                onBack: () => setState(() => _app = 'home'),
+              );
+            } else if (_app == 'sudoku') {
+              page = SudokuScreen(
+                onBack: () => setState(() => _app = 'home'),
+                onGallery: () => setState(() => _app = 'photos'),
               );
             } else if (_app == 'messages') {
               page = tid == null
