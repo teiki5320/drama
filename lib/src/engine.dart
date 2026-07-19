@@ -62,6 +62,17 @@ const List<ThreadDef> kThreadDefs = [
   ),
 ];
 
+/// La « fiche » de Shen elle-même (écran d'identité et carte « Ma fiche »).
+const ThreadDef kShenDef = ThreadDef(
+  id: 'moi',
+  name: 'Shen Marchand',
+  headerName: 'Shen',
+  initials: 'S',
+  gradientTop: Color(0xFF8A7BC8),
+  gradientBottom: Color(0xFF6A5BA8),
+  avatarAsset: 'assets/photos/avatars/shen.webp',
+);
+
 /// Le moteur du jeu : l'état des fils, la bannière, l'horloge du récit,
 /// et les primitives que le script du prologue utilise.
 class GameEngine extends ChangeNotifier {
@@ -99,14 +110,17 @@ class GameEngine extends ChangeNotifier {
 
   // ---------------------------------------------------------------- cycle
 
-  /// Déverrouille le téléphone et lance l'histoire (une seule fois).
+  /// Déverrouille le téléphone (l'histoire démarre après l'écran d'identité).
   void unlock() {
     locked = false;
     notifyListeners();
-    if (!_started) {
-      _started = true;
-      prologueFuture = runStory(this);
-    }
+  }
+
+  /// Lance l'histoire (une seule fois).
+  void startStory() {
+    if (_started) return;
+    _started = true;
+    prologueFuture = runStory(this);
   }
 
   /// Lance l'histoire sans passer par l'écran verrouillé (tests).

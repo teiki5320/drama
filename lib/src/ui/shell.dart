@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../engine.dart';
 import '../palette.dart';
 import 'home_screen.dart';
+import 'intro_card.dart';
 import 'lock_screen.dart';
 import 'thread_screen.dart';
 import 'widgets.dart';
@@ -18,9 +21,34 @@ class GameShell extends StatefulWidget {
 
 class _GameShellState extends State<GameShell> {
   GameEngine _engine = GameEngine();
+  bool _showIntro = false;
+  Timer? _introTimer;
 
   void _restart() {
-    setState(() => _engine = GameEngine());
+    _introTimer?.cancel();
+    setState(() {
+      _engine = GameEngine();
+      _showIntro = false;
+    });
+  }
+
+  void _onUnlock() {
+    _engine.unlock();
+    setState(() => _showIntro = true);
+    _introTimer = Timer(const Duration(milliseconds: 3600), _dismissIntro);
+  }
+
+  void _dismissIntro() {
+    _introTimer?.cancel();
+    if (!mounted || !_showIntro) return;
+    setState(() => _showIntro = false);
+    _engine.startStory();
+  }
+
+  @override
+  void dispose() {
+    _introTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -51,6 +79,8 @@ class _GameShellState extends State<GameShell> {
                 ),
                 if (_engine.banner != null)
                   _BannerOverlay(engine: _engine),
+                if (_showIntro)
+                  Positioned.fill(child: IntroCard(onDone: _dismissIntro)),
                 AnimatedSlide(
                   offset: _engine.locked
                       ? Offset.zero
@@ -59,7 +89,7 @@ class _GameShellState extends State<GameShell> {
                   curve: Curves.easeInOutCubic,
                   child: IgnorePointer(
                     ignoring: !_engine.locked,
-                    child: LockScreen(onUnlock: _engine.unlock),
+                    child: LockScreen(onUnlock: _onUnlock),
                   ),
                 ),
               ],

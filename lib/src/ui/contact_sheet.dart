@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../contacts.dart';
+import '../engine.dart';
 import '../models.dart';
 import '../palette.dart';
 import 'widgets.dart';
@@ -8,9 +9,17 @@ import 'widgets.dart';
 /// Ouvre la fiche du contact, comme quand on touche le nom en haut
 /// d'une conversation dans Messages.
 void showContactSheet(BuildContext context, ThreadState thread) {
+  _showSheet(context, thread.effectiveDef, thread.contactKey, true);
+}
+
+/// La fiche de Shen elle-même (« Ma fiche » en haut de Messages).
+void showSelfSheet(BuildContext context) {
+  _showSheet(context, kShenDef, 'moi', false);
+}
+
+void _showSheet(
+    BuildContext context, ThreadDef def, String contactKey, bool showActions) {
   final pal = Palette.of(context);
-  final def = thread.effectiveDef;
-  final contactKey = thread.contactKey;
   showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -18,15 +27,25 @@ void showContactSheet(BuildContext context, ThreadState thread) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    builder: (context) => ContactSheet(def: def, contactKey: contactKey),
+    builder: (context) => ContactSheet(
+      def: def,
+      contactKey: contactKey,
+      showActions: showActions,
+    ),
   );
 }
 
 class ContactSheet extends StatelessWidget {
-  const ContactSheet({super.key, required this.def, this.contactKey});
+  const ContactSheet({
+    super.key,
+    required this.def,
+    this.contactKey,
+    this.showActions = true,
+  });
 
   final ThreadDef def;
   final String? contactKey;
+  final bool showActions;
 
   void _messagerieSeulement(BuildContext context) {
     ScaffoldMessenger.of(context)
@@ -86,28 +105,30 @@ class ContactSheet extends StatelessWidget {
                   ),
                 ],
                 const SizedBox(height: 18),
-                Row(
-                  children: [
-                    _ActionButton(
-                      icon: Icons.chat_bubble,
-                      label: 'message',
-                      onTap: () => Navigator.of(context).pop(),
-                    ),
-                    const SizedBox(width: 8),
-                    _ActionButton(
-                      icon: Icons.phone,
-                      label: 'appeler',
-                      onTap: () => _messagerieSeulement(context),
-                    ),
-                    const SizedBox(width: 8),
-                    _ActionButton(
-                      icon: Icons.videocam,
-                      label: 'vidéo',
-                      onTap: () => _messagerieSeulement(context),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 18),
+                if (showActions) ...[
+                  Row(
+                    children: [
+                      _ActionButton(
+                        icon: Icons.chat_bubble,
+                        label: 'message',
+                        onTap: () => Navigator.of(context).pop(),
+                      ),
+                      const SizedBox(width: 8),
+                      _ActionButton(
+                        icon: Icons.phone,
+                        label: 'appeler',
+                        onTap: () => _messagerieSeulement(context),
+                      ),
+                      const SizedBox(width: 8),
+                      _ActionButton(
+                        icon: Icons.videocam,
+                        label: 'vidéo',
+                        onTap: () => _messagerieSeulement(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                ],
                 if (info.fields.isEmpty && info.emptyNote != null)
                   _Cell(
                     child: Text(

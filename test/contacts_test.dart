@@ -20,6 +20,13 @@ void main() {
         reason: 'pas de photo : ce serait révéler Tristan');
   });
 
+  test('Shen a sa propre fiche (« Ma fiche »)', () {
+    final moi = kContacts['moi']!;
+    expect(moi.displayName, 'Shen Marchand');
+    expect(moi.fields, isNotEmpty);
+    expect(kShenDef.avatarAsset, isNotNull);
+  });
+
   test('Maman et Camille ont leur photo', () {
     for (final id in ['maman', 'camille']) {
       final def = kThreadDefs.firstWhere((d) => d.id == id);

@@ -136,6 +136,23 @@ réalisme d'un vrai téléphone. Pas de romances secondaires.
   arrivent dans des conversations vraies.
 - Simple avant tout : les fils principaux d'abord.
 
+## Épisode 1 — « Quatorze pages » (implémenté, v0.17)
+
+Six journées jouables, validées avec l'auteur :
+
+| Jour | Date | Ce qui se passe |
+|---|---|---|
+| 1 | mer. 15 juil. | Le quotidien, l'accident (hors écran, raconté par la pénalité de 38 €), la carte déchirée, le premier message de Tristan à 22h47. |
+| 2 | jeu. 16 juil. | Tenon. Le Dr Aubin écrit à Shen seule : protocole hors nomenclature, **18 240 € avant le 30**. Le soir, Maman demande « c'est cher ? » — mentir ou pas. À 23h42, la carte recollée (photo). |
+| 3 | ven. 17 juil. | Refus du crédit BNP. Les « trois colonnes » envoyées à Camille : *« La colonne 3 a un prénom, Shen. »* |
+| 4 | sam. 18 juil. | Camille pousse (ou envoie le message elle-même). Tristan : *« Lundi, 11h, 47ᵉ étage. »* Le joueur peut enregistrer le contact — le fil se renomme. Le tailleur noir. |
+| 5 | dim. 19 juil. | Les dumplings chez Maman. *« Tu avais l'air ailleurs. »* Le soir : *« Ascenseur B, pas le A. »* |
+| 6 | lun. 20 juil. | La tour. La proposition par messages : 3 mois, fiancée officielle, 14 pages, 30 000 € (négociable à 33 000). Aubin presse, Maman s'inquiète. *« Votre réponse ? »* — **fin d'épisode.** |
+
+L'ouverture du jeu : écran verrouillé (contexte par notifications), puis
+écran d'identité (*« Shen Marchand, 24 ans. Ce téléphone est le tien. »*),
+et la carte « Ma fiche » en haut de Messages.
+
 ## Reste à décider (avec l'auteur)
 
 - Durée couverte par l'histoire et découpage en épisodes/chapitres.

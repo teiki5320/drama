@@ -29,6 +29,18 @@ class ContactInfo {
 }
 
 const Map<String, ContactInfo> kContacts = {
+  'moi': ContactInfo(
+    displayName: 'Shen Marchand',
+    subtitle: 'Ma fiche',
+    fields: [
+      ContactField('âge', '24 ans'),
+      ContactField('métier', 'Livreuse à vélo — Livraisons Pro'),
+      ContactField('domicile', 'Belleville, Paris 20ᵉ — chez Maman'),
+      ContactField('mobile', '+33 6 24 81 07 56'),
+      ContactField('notes',
+          'Récupérer ce qu’il reste du vélo.\nArchitecte, un jour. Encore.'),
+    ],
+  ),
   'maman': ContactInfo(
     displayName: 'Maman ❤️',
     fields: [

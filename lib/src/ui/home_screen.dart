@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../engine.dart';
 import '../models.dart';
 import '../palette.dart';
+import 'contact_sheet.dart';
 import 'widgets.dart';
 
 /// La liste des conversations — l'écran d'accueil du jeu.
@@ -34,6 +35,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const _SelfCard(),
             Expanded(
               child: ListView.builder(
                 itemCount: threads.length,
@@ -42,6 +44,56 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// La carte « Ma fiche » — pour toujours savoir qui on est.
+class _SelfCard extends StatelessWidget {
+  const _SelfCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final pal = Palette.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+      child: Material(
+        color: pal.inBubble.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(14),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(14),
+          onTap: () => showSelfSheet(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+            child: Row(
+              children: [
+                const GradientAvatar(def: kShenDef, size: 40),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Shen Marchand',
+                        style: TextStyle(
+                          color: pal.headText,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        'Ma fiche',
+                        style: TextStyle(color: pal.preview, fontSize: 12.5),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right, color: pal.preview, size: 18),
+              ],
+            ),
+          ),
         ),
       ),
     );
