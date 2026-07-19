@@ -97,14 +97,14 @@ class _BannerOverlay extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: Row(
                 children: [
-                  GradientAvatar(def: thread.def, size: 34),
+                  GradientAvatar(def: thread.effectiveDef, size: 34),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          thread.def.name,
+                          thread.effectiveDef.name,
                           style: TextStyle(
                             color: pal.headText,
                             fontSize: 13,

@@ -26,23 +26,28 @@ Future<GameEngine> _playThrough({required int optionIndex}) async {
 }
 
 void main() {
-  test('le prologue se joue jusqu’à la fin (premiers choix)', () async {
+  test('l’épisode 1 se joue jusqu’à la fin (premiers choix)', () async {
     final e = await _playThrough(optionIndex: 0);
     expect(e.ended, isTrue);
     final total =
         e.threads.values.fold<int>(0, (s, t) => s + t.messages.length);
-    expect(total, greaterThan(30));
+    expect(total, greaterThan(90));
     expect(e.thread('inconnu').hidden, isFalse);
-    expect(e.gameClock, '22:47');
-    // Des photos circulent dans les conversations.
+    expect(e.thread('aubin').hidden, isFalse);
+    expect(e.thread('banque').hidden, isFalse);
+    expect(e.gameClock, '22:40');
+    // Des photos circulent régulièrement dans les conversations.
     final photos = e.threads.values
         .expand((t) => t.messages)
         .where((m) => m.imageAsset != null)
         .length;
-    expect(photos, greaterThanOrEqualTo(4));
+    expect(photos, greaterThanOrEqualTo(10));
+    // Premier choix au jour 4 : le contact Tristan est enregistré.
+    expect(e.thread('inconnu').effectiveDef.name, 'Tristan H.');
+    expect(e.thread('inconnu').contactKey, 'tristan');
   });
 
-  test('le prologue se joue jusqu’à la fin (derniers choix, blocage inclus)',
+  test('l’épisode 1 se joue jusqu’à la fin (derniers choix, blocage inclus)',
       () async {
     final e = await _playThrough(optionIndex: 2);
     expect(e.ended, isTrue);
@@ -52,6 +57,8 @@ void main() {
       inconnu.any((m) => m.text.contains('ne bloque pas ma mémoire')),
       isTrue,
     );
+    // Dernier choix au jour 4 : le contact reste un numéro inconnu.
+    expect(e.thread('inconnu').effectiveDef.name, 'Numéro inconnu');
   });
 
   test('un message reçu dans un fil fermé devient non lu + bannière', () async {

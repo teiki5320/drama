@@ -1,9 +1,9 @@
 import 'models.dart';
 import 'engine.dart';
 
-/// Le prologue : la première journée de Shen, racontée uniquement
-/// par les messages qu'elle reçoit et les réponses que le joueur choisit.
-Future<void> runPrologue(GameEngine e) async {
+/// Jour 1 — mercredi 15 juillet : l'accident, la carte déchirée,
+/// et le premier message de Tristan.
+Future<void> runDay1(GameEngine e) async {
   await e.sleep(1000);
 
   // — 07:48, Maman —
@@ -254,5 +254,4 @@ Future<void> runPrologue(GameEngine e) async {
     e.sysline('inconnu', 'Tristan Heng a commencé à écrire… puis s’est arrêté.');
   }
   await e.sleep(1200);
-  e.endPrologue();
 }

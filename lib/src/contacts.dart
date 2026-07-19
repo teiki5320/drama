@@ -62,4 +62,26 @@ const Map<String, ContactInfo> kContacts = {
     emptyNote: 'Aucune information partagée.',
     canBlock: true,
   ),
+  'tristan': ContactInfo(
+    displayName: 'Tristan H.',
+    fields: [
+      ContactField('mobile', '+33 7 68 12 47 03'),
+      ContactField('société', 'Heng International — Tour Heng, 47ᵉ étage'),
+      ContactField('notes', 'Conduit mal. Paie bien ?'),
+    ],
+  ),
+  'aubin': ContactInfo(
+    displayName: 'Dr Aubin',
+    subtitle: 'Hôpital Tenon — Oncologie',
+    fields: [
+      ContactField('secrétariat', '01 56 01 60 00'),
+      ContactField('adresse', '4 rue de la Chine, Paris 20ᵉ · cabinet 214'),
+      ContactField('notes', 'L’oncologue de Maman. Direct, mais humain.'),
+    ],
+  ),
+  'banque': ContactInfo(
+    displayName: 'BNP INFO',
+    subtitle: 'Numéro automatique',
+    emptyNote: 'Messages d’information. Ce numéro n’accepte pas de réponses.',
+  ),
 };

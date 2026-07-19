@@ -84,7 +84,9 @@ class ThreadDef {
 
 /// État vivant d'un fil de discussion.
 class ThreadState {
-  ThreadState(this.def) : hidden = def.hiddenAtStart;
+  ThreadState(this.def)
+      : hidden = def.hiddenAtStart,
+        contactKey = def.id;
 
   final ThreadDef def;
   final List<Msg> messages = [];
@@ -94,6 +96,26 @@ class ThreadState {
   String previewTime = '';
   PendingChoice? pending;
   Msg? lastOutgoing;
+
+  /// Renommage en cours de partie (ex. « Numéro inconnu » → « Tristan H. »).
+  String? nameOverride;
+  String? headerOverride;
+  String? avatarOverride;
+
+  /// Clé de la fiche contact à afficher (change quand on enregistre le contact).
+  String contactKey;
+
+  /// La définition effective, surcharges comprises.
+  ThreadDef get effectiveDef => ThreadDef(
+        id: def.id,
+        name: nameOverride ?? def.name,
+        headerName: headerOverride ?? def.headerName,
+        initials: def.initials,
+        gradientTop: def.gradientTop,
+        gradientBottom: def.gradientBottom,
+        avatarAsset: avatarOverride ?? def.avatarAsset,
+        hiddenAtStart: def.hiddenAtStart,
+      );
 }
 
 /// Bannière de notification (message reçu dans un fil non ouvert).

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'models.dart';
-import 'prologue.dart';
+import 'story.dart';
 
 /// Les contacts du prologue.
 const List<ThreadDef> kThreadDefs = [
@@ -40,6 +40,24 @@ const List<ThreadDef> kThreadDefs = [
     initials: '?',
     gradientTop: Color(0xFF9BA0AB),
     gradientBottom: Color(0xFF7A8090),
+    hiddenAtStart: true,
+  ),
+  ThreadDef(
+    id: 'aubin',
+    name: 'Dr Aubin — Tenon',
+    headerName: 'Dr Aubin',
+    initials: 'DA',
+    gradientTop: Color(0xFF3BAFB5),
+    gradientBottom: Color(0xFF2C8B90),
+    hiddenAtStart: true,
+  ),
+  ThreadDef(
+    id: 'banque',
+    name: 'BNP INFO',
+    headerName: 'BNP INFO',
+    initials: 'B',
+    gradientTop: Color(0xFF6C8A5B),
+    gradientBottom: Color(0xFF52713F),
     hiddenAtStart: true,
   ),
 ];
@@ -81,21 +99,21 @@ class GameEngine extends ChangeNotifier {
 
   // ---------------------------------------------------------------- cycle
 
-  /// Déverrouille le téléphone et lance le prologue (une seule fois).
+  /// Déverrouille le téléphone et lance l'histoire (une seule fois).
   void unlock() {
     locked = false;
     notifyListeners();
     if (!_started) {
       _started = true;
-      prologueFuture = runPrologue(this);
+      prologueFuture = runStory(this);
     }
   }
 
-  /// Lance le prologue sans passer par l'écran verrouillé (tests).
+  /// Lance l'histoire sans passer par l'écran verrouillé (tests).
   Future<void> playForTest() {
     locked = false;
     _started = true;
-    prologueFuture = runPrologue(this);
+    prologueFuture = runStory(this);
     return prologueFuture!;
   }
 
@@ -254,9 +272,25 @@ class GameEngine extends ChangeNotifier {
     pending.completer.complete(option);
   }
 
-  void endPrologue() {
+  /// Renomme un fil en cours de partie (enregistrement d'un contact).
+  void renameThread(
+    String tid, {
+    String? name,
+    String? headerName,
+    String? avatarAsset,
+    String? contactKey,
+  }) {
+    final t = thread(tid);
+    if (name != null) t.nameOverride = name;
+    if (headerName != null) t.headerOverride = headerName;
+    if (avatarAsset != null) t.avatarOverride = avatarAsset;
+    if (contactKey != null) t.contactKey = contactKey;
+    notifyListeners();
+  }
+
+  void endStory(String tid) {
     ended = true;
-    thread('inconnu').messages.add(Msg.endCard());
+    thread(tid).messages.add(Msg.endCard());
     notifyListeners();
   }
 

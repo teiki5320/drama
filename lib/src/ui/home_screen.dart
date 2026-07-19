@@ -57,6 +57,7 @@ class _ThreadRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pal = Palette.of(context);
+    final def = thread.effectiveDef;
     return InkWell(
       onTap: () => engine.openThread(thread.def.id),
       child: Container(
@@ -81,14 +82,14 @@ class _ThreadRow extends StatelessWidget {
                     )
                   : null,
             ),
-            GradientAvatar(def: thread.def),
+            GradientAvatar(def: def),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    thread.def.name,
+                    def.name,
                     style: TextStyle(
                       color: pal.headText,
                       fontSize: 16,

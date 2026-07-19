@@ -7,8 +7,10 @@ import 'widgets.dart';
 
 /// Ouvre la fiche du contact, comme quand on touche le nom en haut
 /// d'une conversation dans Messages.
-void showContactSheet(BuildContext context, ThreadDef def) {
+void showContactSheet(BuildContext context, ThreadState thread) {
   final pal = Palette.of(context);
+  final def = thread.effectiveDef;
+  final contactKey = thread.contactKey;
   showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -16,14 +18,15 @@ void showContactSheet(BuildContext context, ThreadDef def) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    builder: (context) => ContactSheet(def: def),
+    builder: (context) => ContactSheet(def: def, contactKey: contactKey),
   );
 }
 
 class ContactSheet extends StatelessWidget {
-  const ContactSheet({super.key, required this.def});
+  const ContactSheet({super.key, required this.def, this.contactKey});
 
   final ThreadDef def;
+  final String? contactKey;
 
   void _messagerieSeulement(BuildContext context) {
     ScaffoldMessenger.of(context)
@@ -39,7 +42,7 @@ class ContactSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pal = Palette.of(context);
-    final info = kContacts[def.id] ??
+    final info = kContacts[contactKey ?? def.id] ??
         ContactInfo(displayName: def.name, emptyNote: 'Aucune information.');
     final height = MediaQuery.of(context).size.height * 0.82;
     return SizedBox(

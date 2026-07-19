@@ -75,7 +75,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
       child: SafeArea(
         child: Column(
           children: [
-            _Header(engine: widget.engine, def: t.def),
+            _Header(engine: widget.engine, thread: t),
             Expanded(
               child: ListView.builder(
                 controller: _scroll,
@@ -97,14 +97,15 @@ class _ThreadScreenState extends State<ThreadScreen> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.engine, required this.def});
+  const _Header({required this.engine, required this.thread});
 
   final GameEngine engine;
-  final ThreadDef def;
+  final ThreadState thread;
 
   @override
   Widget build(BuildContext context) {
     final pal = Palette.of(context);
+    final def = thread.effectiveDef;
     return Container(
       padding: const EdgeInsets.fromLTRB(4, 2, 4, 8),
       decoration: BoxDecoration(
@@ -121,7 +122,7 @@ class _Header extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () => showContactSheet(context, def),
+              onTap: () => showContactSheet(context, thread),
               child: Column(
                 children: [
                   GradientAvatar(def: def, size: 40),
@@ -368,7 +369,7 @@ class _EndCard extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'FIN DU PROLOGUE',
+              'FIN DE L’ÉPISODE 1',
               style: TextStyle(
                 color: pal.brand,
                 fontSize: 13,
@@ -378,8 +379,9 @@ class _EndCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Demain, 8h30 : l’hôpital Tenon.\n'
-              'Tes choix ont déjà commencé à compter.',
+              'Demain, 11h30 : l’étude notariale.\n'
+              'Quatorze pages entre Tenon et ta fierté.\n'
+              'La suite dans la prochaine mise à jour.',
               textAlign: TextAlign.center,
               style: TextStyle(color: pal.meta, fontSize: 12.5, height: 1.7),
             ),
@@ -394,7 +396,7 @@ class _EndCard extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 18, vertical: 7),
               ),
               child: const Text(
-                '↺  REJOUER LE PROLOGUE',
+                '↺  REJOUER L’ÉPISODE',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
