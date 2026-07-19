@@ -78,7 +78,8 @@ Une nouvelle photo n'entre dans le jeu que si :
    autre version de l'histoire.
 
 Et côté récit : quand deux personnages sont **physiquement ensemble**, ils ne
-s'écrivent pas — la scène passe en lignes système (voir J4 11h30), et les
-textos reprennent une fois séparés. Un rendez-vous pris par messagerie doit
-laisser une trace de sa tenue (photo, récap, « Rentrée. ») avant que la
-conversation reprenne comme si de rien n'était.
+s'écrivent pas. Les lignes système (voir J4 11h30) sont l'outil de **dernier
+recours**, validé par l'auteur : on ne s'en sert que quand la messagerie ne
+peut vraiment pas porter la scène — sinon on déplace la scène hors écran et
+on la fait exister par ses traces (photo, récap, « Rentrée. ») avant que la
+conversation reprenne.
