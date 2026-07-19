@@ -49,6 +49,7 @@ const List<ThreadDef> kThreadDefs = [
     initials: 'DA',
     gradientTop: Color(0xFF3BAFB5),
     gradientBottom: Color(0xFF2C8B90),
+    avatarAsset: 'assets/photos/avatars/dr_aubin.webp',
     hiddenAtStart: true,
   ),
   ThreadDef(

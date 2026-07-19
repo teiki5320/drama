@@ -27,8 +27,8 @@ void main() {
     expect(kShenDef.avatarAsset, isNotNull);
   });
 
-  test('Maman et Camille ont leur photo', () {
-    for (final id in ['maman', 'camille']) {
+  test('Maman, Camille et le Dr Aubin ont leur photo', () {
+    for (final id in ['maman', 'camille', 'aubin']) {
       final def = kThreadDefs.firstWhere((d) => d.id == id);
       expect(def.avatarAsset, isNotNull);
     }

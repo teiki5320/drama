@@ -27,7 +27,11 @@ Tous les avatars (`shen`, `maman`, `camille`, `tristan`, `vincent`,
 `post_camille_cafe` · `post_maman_plat` · `pj_maman_plat` ·
 `j07_11h00_tour_heng_exterieur` · `j08_11h30_contrat_14_pages` ·
 `j06_22h31_tailleur_miroir` (réaliste ; visage à unifier, voir plus bas) ·
-`camera_pool/day_low_1` (pivoines).
+`camera_pool/day_low_1` (pivoines) ·
+`avatars/dr_aubin.webp` (portrait civil, repris du tampon — une version
+en blouse blanche peut être régénérée : *« French hospital oncologist,
+40s, warm direct gaze, white coat over knit sweater, hospital corridor
+bokeh »* + bloc de style + ce portrait en référence).
 
 ### Écartées du jeu ❌ (style illustration — à régénérer)
 | Fichier | Usage prévu | Prompt de régénération |
