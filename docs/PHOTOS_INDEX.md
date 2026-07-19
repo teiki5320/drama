@@ -24,7 +24,7 @@
 - `pr_tristan.webp`
 - `pr_vincent.webp`
 
-## `assets/photos/ep1` — Photos utilisées par le script de l'épisode 1 (embarquées dans l'app) (11)
+## `assets/photos/ep1` — Photos utilisées par le script de l'épisode 1 (embarquées dans l'app) (10)
 
 - `pr_accident_velo_homme_costume.webp`
 - `pr_badge_visiteur_shen.webp`
@@ -32,7 +32,6 @@
 - `pr_camille_selfie_revisions.webp`
 - `pr_carnet_comptes_table_cuisine.webp` · *(lot openart du 19/07)*
 - `pr_carte_recollee_bureau_nuit.webp`
-- `pr_croissant_partage_cafe.webp`
 - `pr_essayage_tailleur_noir_miroir.webp`
 - `pr_petit_dejeuner_croissants_livre.webp`
 - `pr_repas_poisson_riz_legumes.webp`
@@ -133,7 +132,7 @@
 - `pr_tour_contre_plongee_2.webp`
 - `pr_tour_contre_plongee_3.webp` · *(lot openart du 19/07)*
 
-## `assets/photos/quotidien` — Nourriture, thé, fleurs, objets du quotidien (27)
+## `assets/photos/quotidien` — Nourriture, thé, fleurs, objets du quotidien (28)
 
 - `pr_album_photos_main_jade.webp`
 - `pr_boite_the_long_jing.webp`
@@ -144,6 +143,7 @@
 - `pr_cafe_livre_eclair.webp`
 - `pr_carnet_comptes_table_ronde.webp` · *(lot openart du 19/07)*
 - `pr_croissant_partage_2.webp`
+- `pr_croissant_partage_cafe.webp`
 - `pr_deux_cafes_mains.webp`
 - `pr_deux_cafes_mains_2.webp`
 - `pr_diner_pates_deux.webp`
@@ -220,7 +220,6 @@
 - `video_livreuse_velo_rue_pavee_brouillard.mp4`
 - `video_the_cuisine_medicaments_deux_femmes.mp4`
 
-> Depuis l'audit du 19/07 : `ep1/` ne contient que les photos réellement
-> envoyées dans les conversations, toutes cohérentes avec le point de vue
-> de l'expéditeur. Provenance du lot openart et anciens noms : historique
-> git (`git log --follow -- <fichier>`).
+> `ep1/` ne contient que les photos réellement envoyées dans les
+> conversations, toutes cohérentes avec le point de vue de l'expéditeur.
+> Provenance du lot openart et anciens noms : `git log --follow -- <fichier>`.

@@ -189,10 +189,7 @@ Future<void> runDay1(GameEngine e) async {
       typing: 2000);
   await e.incoming('camille', 'Et passe me voir après. Bisous mon canard cabossé.',
       typing: 1400);
-  await e.incomingImage(
-      'camille', 'assets/photos/ep1/pr_croissant_partage_cafe.webp',
-      typing: 1900);
-  await e.incoming('camille', 'Motivation pour samedi. Je dis ça, je dis rien.',
+  await e.incoming('camille', 'Croissants samedi. Je dis ça, je dis rien.',
       typing: 1300);
   await e.sleep(1800);
 

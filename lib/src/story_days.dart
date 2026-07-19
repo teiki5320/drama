@@ -573,8 +573,8 @@ Future<void> runDay6(GameEngine e) async {
   e.separator('aubin', 'Lundi 20 juillet · 19:30');
   await e.incoming(
       'aubin',
-      'Sans validation du devis cette semaine, on reporte le protocole d’un mois. '
-      'Je préfère vous le dire clairement.',
+      'Sans validation du devis cette semaine, le créneau de bloc saute et '
+      'on reporte d’un mois. Je préfère vous le dire clairement.',
       typing: 2200);
   c = await e.choice('aubin', const [
     ChoiceOption('Vous l’aurez cette semaine.', reply: 'Je vous crois. Le créneau est gardé.'),

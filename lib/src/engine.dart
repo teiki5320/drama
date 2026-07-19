@@ -81,10 +81,22 @@ class GameEngine extends ChangeNotifier {
     for (final def in kThreadDefs) {
       threads[def.id] = ThreadState(def);
     }
+    // Un court historique de la veille, pour que les aperçus de la liste
+    // correspondent à de vrais messages dans les fils.
     threads['camille']!
-      ..preview = 'regarde ce meme, c’est TOI 😭 — dors un peu, promis ?'
+      ..messages.add(Msg.separator('Mardi 14 juillet · 22:58'))
+      ..messages.add(Msg.incoming(
+          'J’ai croisé ton sosie boulevard de la Villette. En pire coiffée.'))
+      ..messages.add(Msg.outgoing(
+          'Impossible. Personne n’est pire coiffée que moi à 22h.')
+        ..receipt = 'Lu')
+      ..messages.add(Msg.incoming('Dors un peu, promis ?'))
+      ..preview = 'Dors un peu, promis ?'
       ..previewTime = 'Hier';
     threads['plateforme']!
+      ..messages.add(Msg.separator('Mardi 14 juillet · 18:05'))
+      ..messages.add(Msg.incoming(
+          'Paiement hebdomadaire : 214,60 €. Virement sous 2 jours ouvrés.'))
       ..preview = 'Paiement hebdomadaire : 214,60 €.'
       ..previewTime = 'Hier';
   }
