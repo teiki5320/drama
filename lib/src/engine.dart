@@ -14,7 +14,7 @@ const List<ThreadDef> kThreadDefs = [
     initials: 'M',
     gradientTop: Color(0xFFE8637C),
     gradientBottom: Color(0xFFD14A66),
-    avatarAsset: 'assets/photos/avatars/maman.webp',
+    avatarAsset: 'assets/photos/avatars/pr_maman.webp',
   ),
   ThreadDef(
     id: 'camille',
@@ -23,7 +23,7 @@ const List<ThreadDef> kThreadDefs = [
     initials: 'C',
     gradientTop: Color(0xFFF0A24A),
     gradientBottom: Color(0xFFE0832C),
-    avatarAsset: 'assets/photos/avatars/camille.webp',
+    avatarAsset: 'assets/photos/avatars/pr_camille.webp',
   ),
   ThreadDef(
     id: 'plateforme',
@@ -70,7 +70,7 @@ const ThreadDef kShenDef = ThreadDef(
   initials: 'S',
   gradientTop: Color(0xFF8A7BC8),
   gradientBottom: Color(0xFF6A5BA8),
-  avatarAsset: 'assets/photos/avatars/shen.webp',
+  avatarAsset: 'assets/photos/avatars/pr_shen.webp',
 );
 
 /// Le moteur du jeu : l'état des fils, la bannière, l'horloge du récit,

@@ -134,7 +134,7 @@ Future<void> runDay2(GameEngine e) async {
 
   // — 23:42, Camille (la carte) —
   e.setClock('23:42');
-  e.outgoingImage('camille', 'assets/photos/ep1/j01_23h42_carte_recollee.webp');
+  e.outgoingImage('camille', 'assets/photos/ep1/pr_carte_recollee_bureau_nuit.webp');
   e.outgoing('camille', 'Tu avais raison. Je l’ai recollée. Au cas où.');
   await e.sleep(1200);
   e.markRead('camille');
@@ -238,7 +238,7 @@ Future<void> runDay4(GameEngine e) async {
   // — 10:14, Camille —
   e.setClock('10:14');
   e.separator('camille', 'Samedi 18 juillet · 10:14');
-  await e.incomingImage('camille', 'assets/photos/ep1/post_camille_cafe.webp',
+  await e.incomingImage('camille', 'assets/photos/ep1/pr_deux_cafes_mains.webp',
       typing: 1900);
   await e.incoming('camille',
       'Debout. Café en bas de chez toi dans vingt minutes. On s’habille comme '
@@ -302,7 +302,7 @@ Future<void> runDay4(GameEngine e) async {
     e.renameThread('inconnu',
         name: 'Tristan H.',
         headerName: 'Tristan H.',
-        avatarAsset: 'assets/photos/avatars/tristan.webp',
+        avatarAsset: 'assets/photos/avatars/pr_tristan.webp',
         contactKey: 'tristan');
     e.sysline('inconnu', 'Contact enregistré : Tristan H.');
   }
@@ -316,7 +316,7 @@ Future<void> runDay4(GameEngine e) async {
       typing: 2100);
   await e.sleep(1600);
   e.setClock('21:10');
-  e.outgoingImage('camille', 'assets/photos/ep1/j06_22h31_tailleur_miroir.webp');
+  e.outgoingImage('camille', 'assets/photos/ep1/pr_selfie_ascenseur_chemise_blanche.webp');
   e.outgoing('camille',
       'Le seul miroir en pied de l’immeuble, c’est l’ascenseur. Verdict ?');
   await e.sleep(1300);
@@ -347,7 +347,7 @@ Future<void> runDay5(GameEngine e) async {
   // — 11:32, Maman —
   e.setClock('11:32');
   e.separator('maman', 'Dimanche 19 juillet · 11:32');
-  await e.incomingImage('maman', 'assets/photos/ep1/pj_maman_plat.webp',
+  await e.incomingImage('maman', 'assets/photos/ep1/pr_bol_nouilles_boeuf.webp',
       typing: 2000);
   await e.incoming('maman',
       'Le bouillon d’abord. Les dumplings ensuite — la pâte repose. '
@@ -435,7 +435,7 @@ Future<void> runDay6(GameEngine e) async {
   // — 10:12, devant la tour —
   e.setClock('10:12');
   e.separator('camille', 'Lundi 20 juillet · 10:12');
-  e.outgoingImage('camille', 'assets/photos/ep1/j07_11h00_tour_heng_exterieur.webp');
+  e.outgoingImage('camille', 'assets/photos/ep1/pr_tour_heng_contre_plongee.webp');
   e.outgoing('camille', 'J’y suis.');
   await e.sleep(1200);
   e.markRead('camille');
@@ -462,7 +462,7 @@ Future<void> runDay6(GameEngine e) async {
       'Trois mois. Fiancée officielle, en public et devant ma famille. '
       'Contrat notarié. Discrétion absolue. 30 000 €, dont 10 000 € à la signature.',
       typing: 2600);
-  await e.incomingImage('inconnu', 'assets/photos/ep1/j08_11h30_contrat_14_pages.webp',
+  await e.incomingImage('inconnu', 'assets/photos/ep1/pr_contrat_notaire_stylo_plume.webp',
       typing: 2200);
   await e.incoming('inconnu', 'Le document. Quatorze pages. Lisez tout.',
       typing: 1500);

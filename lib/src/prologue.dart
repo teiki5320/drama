@@ -15,7 +15,7 @@ Future<void> runDay1(GameEngine e) async {
   await e.incoming('maman', 'Il pleut sur tout Paris. Couvre-toi.',
       typing: 1400);
   await e.incomingImage(
-      'maman', 'assets/photos/camera_pool/day_low_1.webp',
+      'maman', 'assets/photos/camera_pool/pr_bouquet_pivoines_fleuriste.webp',
       typing: 2000);
   await e.incoming('maman',
       'Le fleuriste sortait les pivoines sous la pluie. Je n’ai pas résisté.',
@@ -142,7 +142,7 @@ Future<void> runDay1(GameEngine e) async {
   e.markRead('camille');
   await e.incoming('camille', c.reply!, typing: 1300);
   await e.sleep(600);
-  e.outgoingImage('camille', 'assets/photos/ep1/j01_08h17_velo_casse_montaigne.webp');
+  e.outgoingImage('camille', 'assets/photos/ep1/pr_accident_velo_homme_costume.webp');
   await e.sleep(900);
   e.markRead('camille');
   await e.incoming('camille',
@@ -190,7 +190,7 @@ Future<void> runDay1(GameEngine e) async {
   await e.incoming('camille', 'Et passe me voir après. Bisous mon canard cabossé.',
       typing: 1400);
   await e.incomingImage(
-      'camille', 'assets/photos/ep1/post_shen_camille_croissants.webp',
+      'camille', 'assets/photos/ep1/pr_croissant_partage_cafe.webp',
       typing: 1900);
   await e.incoming('camille', 'Motivation pour samedi. Je dis ça, je dis rien.',
       typing: 1300);
@@ -200,7 +200,7 @@ Future<void> runDay1(GameEngine e) async {
   e.setClock('18:42');
   e.separator('maman', '18:42');
   await e.incoming('maman', 'Le riz est dans le rice cooker.', typing: 1400);
-  await e.incomingImage('maman', 'assets/photos/ep1/post_maman_plat.webp',
+  await e.incomingImage('maman', 'assets/photos/ep1/pr_repas_poisson_riz_legumes.webp',
       typing: 2100);
   await e.incoming('maman', 'Ta part. Tu rentres ce soir ?', typing: 1200);
   c = await e.choice('maman', const [
