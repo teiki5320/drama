@@ -9,7 +9,7 @@ Future<void> runDay1(GameEngine e) async {
 
   // — 07:48, Maman —
   e.setClock('07:48');
-  e.separator('maman', 'Aujourd’hui 07:48');
+  e.separator('maman', 'Mercredi 15 juillet · 07:48');
   await e.incoming('maman', 'Tu pars livrer dans combien de temps ?',
       typing: 1500);
   await e.incoming('maman', 'Il pleut sur tout Paris. Couvre-toi.',
@@ -57,7 +57,7 @@ Future<void> runDay1(GameEngine e) async {
 
   // — 08:04, la plateforme —
   e.setClock('08:04');
-  e.separator('plateforme', 'Aujourd’hui 08:04');
+  e.separator('plateforme', 'Mercredi 15 juillet · 08:04');
   await e.incoming(
       'plateforme',
       'Course #14872 — Bowl Açaï → 8 avenue Montaigne. '
@@ -101,7 +101,7 @@ Future<void> runDay1(GameEngine e) async {
 
   // — 11:42, Camille —
   e.setClock('11:42');
-  e.separator('camille', 'Aujourd’hui 11:42');
+  e.separator('camille', 'Mercredi 15 juillet · 11:42');
   await e.incoming('camille', 'Alors, la tournée sous la flotte ? T’as survécu ?',
       typing: 1500);
   c = await e.choice('camille', const [
@@ -231,7 +231,7 @@ Future<void> runDay1(GameEngine e) async {
 
   // — 22:47, le numéro inconnu —
   e.setClock('22:47');
-  e.separator('inconnu', 'Aujourd’hui 22:47');
+  e.separator('inconnu', 'Mercredi 15 juillet · 22:47');
   await e.incoming('inconnu', 'Mademoiselle Marchand. Tristan Heng.',
       typing: 1900);
   await e.incoming('inconnu',
@@ -247,7 +247,8 @@ Future<void> runDay1(GameEngine e) async {
     await e.sleep(1600);
     e.sysline('inconnu', 'Nouveau message — autre numéro inconnu');
     await e.incoming('inconnu',
-        'Bloquer mon numéro ne bloque pas ma mémoire, Mademoiselle Marchand. À demain.',
+        'Bloquer mon numéro ne bloque pas ma mémoire, Mademoiselle Marchand. '
+        'Je ne suis pas pressé.',
         typing: 2000);
   } else {
     await e.sleep(800);

@@ -295,7 +295,9 @@ Future<void> runDay4(GameEngine e) async {
       'quitte pas comme ça. Vous vouliez quoi, exactement ?');
   await e.sleep(2400);
   e.markRead('inconnu');
-  await e.incoming('inconnu', 'Vous répondez. Enfin.', typing: 2000);
+  await e.incoming('inconnu',
+      'Trois jours. Vous savez faire attendre, Mademoiselle Marchand.',
+      typing: 2000);
   await e.incoming('inconnu',
       'Pas par écrit. Lundi, 11h, Tour Heng, 47ᵉ étage. Un badge sera à votre nom.',
       typing: 2200);
