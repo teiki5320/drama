@@ -166,7 +166,7 @@ Future<void> runDay3(GameEngine e) async {
 
   // — 10:02, Camille —
   e.setClock('10:02');
-  e.separator('camille', '10:02');
+  e.separator('camille', 'Vendredi 17 juillet · 10:02');
   await e.incoming('camille', 'La banque a dit quoi ?', typing: 1100);
   var c = await e.choice('camille', const [
     ChoiceOption('Refus. Pas de garant.', reply: 'Évidemment. Aide sociale ?'),
@@ -196,7 +196,7 @@ Future<void> runDay3(GameEngine e) async {
 
   // — 12:18, Maman (le quotidien continue) —
   e.setClock('12:18');
-  e.separator('maman', '12:18');
+  e.separator('maman', 'Vendredi 17 juillet · 12:18');
   await e.incoming('maman', 'Tu manges ?', typing: 900);
   c = await e.choice('maman', const [
     ChoiceOption('Oui. Un bowl.', reply: 'Pas trop de sel.'),
@@ -222,6 +222,7 @@ Future<void> runDay3(GameEngine e) async {
 
   // — 18:30, Dr Aubin —
   e.setClock('18:30');
+  e.separator('aubin', 'Vendredi 17 juillet · 18:30');
   await e.incoming(
       'aubin',
       'Point calendrier : le créneau de bloc se réserve dix jours à l’avance. '
@@ -265,7 +266,8 @@ Future<void> runDay4(GameEngine e) async {
   // — 10:34, Shen descend : la suite se passe en vrai, à la même table —
   e.setClock('10:34');
   e.sysline('camille',
-      'Tu descends. Camille est en terrasse, deux sucres déjà posés sur ta soucoupe.');
+      'Tu descends. Camille est à la table près de la vitrine, '
+      'deux sucres déjà posés sur ta soucoupe.');
   await e.sleep(1600);
 
   // — 11:30, le moment (la scène est racontée, seuls les mots comptent) —
@@ -368,7 +370,7 @@ Future<void> runDay4(GameEngine e) async {
 
   // — 21:30, Maman —
   e.setClock('21:30');
-  e.separator('maman', '21:30');
+  e.separator('maman', 'Samedi 18 juillet · 21:30');
   await e.incoming('maman', 'Tu viens demain ? Je fais les dumplings.', typing: 1400);
   c = await e.choice('maman', const [
     ChoiceOption('Évidemment.', reply: 'Midi. Pas 14h, ma fille. Midi.'),
@@ -390,7 +392,7 @@ Future<void> runDay5(GameEngine e) async {
   await e.incomingImage('maman', 'assets/photos/ep1/pr_bol_nouilles_boeuf.webp',
       typing: 2000);
   await e.incoming('maman',
-      'Le bouillon d’abord. Les dumplings ensuite — la pâte repose. '
+      'Les nouilles d’abord. Les dumplings ensuite — la pâte repose. '
       'Viens avant qu’elle ne m’obéisse plus.',
       typing: 1700);
   var c = await e.choice('maman', const [
@@ -446,6 +448,7 @@ Future<void> runDay5(GameEngine e) async {
 
   // — 22:30, Tristan —
   e.setClock('22:30');
+  e.separator('inconnu', 'Dimanche 19 juillet · 22:30');
   await e.incoming('inconnu', 'Demain. Ne soyez pas en retard. Ascenseur B, pas le A.',
       typing: 2000);
   c = await e.choice('inconnu', const [
@@ -536,6 +539,7 @@ Future<void> runDay6(GameEngine e) async {
 
   // — 14:30, Tristan récapitule —
   e.setClock('14:30');
+  e.separator('inconnu', 'Lundi 20 juillet · 14:30');
   await e.incoming('inconnu',
       'Récapitulatif de notre échange, puisque vous avez demandé du temps :',
       typing: 2000);
@@ -566,6 +570,7 @@ Future<void> runDay6(GameEngine e) async {
 
   // — 19:30, Dr Aubin (la pression) —
   e.setClock('19:30');
+  e.separator('aubin', 'Lundi 20 juillet · 19:30');
   await e.incoming(
       'aubin',
       'Sans validation du devis cette semaine, on reporte le protocole d’un mois. '

@@ -198,7 +198,7 @@ Future<void> runDay1(GameEngine e) async {
 
   // — 18:42, Maman, le soir —
   e.setClock('18:42');
-  e.separator('maman', '18:42');
+  e.separator('maman', 'Mercredi 15 juillet · 18:42');
   await e.incoming('maman', 'Le riz est dans le rice cooker.', typing: 1400);
   await e.incomingImage('maman', 'assets/photos/ep1/pr_repas_poisson_riz_legumes.webp',
       typing: 2100);
