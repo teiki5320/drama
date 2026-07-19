@@ -3,6 +3,7 @@ import 'engine.dart';
 
 /// Jour 2 — jeudi 16 juillet : Tenon. Le diagnostic, le devis, la carte recollée.
 Future<void> runDay2(GameEngine e) async {
+  e.setDate('Jeudi 16 juillet');
   // — 06:30, Maman —
   e.setClock('06:30');
   e.separator('maman', 'Jeudi 16 juillet · 06:30');
@@ -145,6 +146,7 @@ Future<void> runDay2(GameEngine e) async {
 
 /// Jour 3 — vendredi 17 juillet : le refus de la banque, les trois colonnes.
 Future<void> runDay3(GameEngine e) async {
+  e.setDate('Vendredi 17 juillet');
   // — 09:14, la banque —
   e.setClock('09:14');
   e.separator('banque', 'Vendredi 17 juillet · 09:14');
@@ -232,6 +234,7 @@ Future<void> runDay3(GameEngine e) async {
 
 /// Jour 4 — samedi 18 juillet : Camille pousse, Shen écrit à Tristan.
 Future<void> runDay4(GameEngine e) async {
+  e.setDate('Samedi 18 juillet');
   // — 10:14, Camille —
   e.setClock('10:14');
   e.separator('camille', 'Samedi 18 juillet · 10:14');
@@ -340,6 +343,7 @@ Future<void> runDay4(GameEngine e) async {
 
 /// Jour 5 — dimanche 19 juillet : les dumplings, la veille d'armes.
 Future<void> runDay5(GameEngine e) async {
+  e.setDate('Dimanche 19 juillet');
   // — 11:32, Maman —
   e.setClock('11:32');
   e.separator('maman', 'Dimanche 19 juillet · 11:32');
@@ -411,6 +415,7 @@ Future<void> runDay5(GameEngine e) async {
 
 /// Jour 6 — lundi 20 juillet : le 47ᵉ étage, la proposition. Fin d'épisode.
 Future<void> runDay6(GameEngine e) async {
+  e.setDate('Lundi 20 juillet');
   // — 08:40, Maman —
   e.setClock('08:40');
   e.separator('maman', 'Lundi 20 juillet · 08:40');

@@ -75,6 +75,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
       child: SafeArea(
         child: Column(
           children: [
+            GameClockBar(engine: widget.engine),
             _Header(engine: widget.engine, thread: t),
             Expanded(
               child: ListView.builder(

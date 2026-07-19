@@ -27,11 +27,7 @@ Tous les avatars (`shen`, `maman`, `camille`, `tristan`, `vincent`,
 `post_camille_cafe` · `post_maman_plat` · `pj_maman_plat` ·
 `j07_11h00_tour_heng_exterieur` · `j08_11h30_contrat_14_pages` ·
 `j06_22h31_tailleur_miroir` (réaliste ; visage à unifier, voir plus bas) ·
-`camera_pool/day_low_1` (pivoines) ·
-`avatars/dr_aubin.webp` (portrait civil, repris du tampon — une version
-en blouse blanche peut être régénérée : *« French hospital oncologist,
-40s, warm direct gaze, white coat over knit sweater, hospital corridor
-bokeh »* + bloc de style + ce portrait en référence).
+`camera_pool/day_low_1` (pivoines).
 
 ### Écartées du jeu ❌ (style illustration — à régénérer)
 | Fichier | Usage prévu | Prompt de régénération |
@@ -39,6 +35,7 @@ bokeh »* + bloc de style + ce portrait en référence).
 | `j02_belleville_matin_brouillard` | La vue de la fenêtre de Maman, matin de pluie | *« View from Parisian apartment window, Belleville rooftops in morning fog and rain, zinc roofs, soft grey light, shot on smartphone from inside, window frame edge visible »* + bloc de style |
 | `j02_metro_couronnes_pluie` | Le trajet vers Tenon (quai du métro Couronnes) | *« Paris métro platform Couronnes, rainy morning, wet floor reflections, few commuters, warm artificial light, candid smartphone shot »* + bloc de style |
 | `j03_15h48_trois_colonnes` | Le carnet de comptes de Shen (3 colonnes chiffrées) | *« Open notebook on small kitchen table, handwritten three columns of numbers in blue pen, calculator, cold tea, harsh honest daylight, shot from above with smartphone »* + bloc de style |
+| `avatars/dr_aubin.webp` (MANQUANTE) | Portrait du Dr Aubin — **homme**, oncologue à Tenon | *« French hospital oncologist, man in his 50s, short greying hair, white coat over shirt, warm direct gaze, hospital office background softly blurred, portrait »* + bloc de style. Dès que le fichier est déposé sous ce nom, me le dire : je le branche (fil, bannières, fiche). |
 
 En attendant leur régénération, ces trois moments passent par le texte seul
 (ou une image de remplacement conforme). Dès qu'une version réaliste est

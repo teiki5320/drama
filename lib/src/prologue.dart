@@ -4,6 +4,7 @@ import 'engine.dart';
 /// Jour 1 — mercredi 15 juillet : l'accident, la carte déchirée,
 /// et le premier message de Tristan.
 Future<void> runDay1(GameEngine e) async {
+  e.setDate('Mercredi 15 juillet');
   await e.sleep(1000);
 
   // — 07:48, Maman —

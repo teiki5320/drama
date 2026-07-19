@@ -45,6 +45,15 @@ class _GameShellState extends State<GameShell> {
     _engine.startStory();
   }
 
+  void _debugJump(int day) {
+    _introTimer?.cancel();
+    setState(() {
+      _engine = GameEngine();
+      _showIntro = false;
+    });
+    _engine.debugStart(day);
+  }
+
   @override
   void dispose() {
     _introTimer?.cancel();
@@ -69,7 +78,7 @@ class _GameShellState extends State<GameShell> {
               children: [
                 Positioned.fill(
                   child: tid == null
-                      ? HomeScreen(engine: _engine)
+                      ? HomeScreen(engine: _engine, onDebugJump: _debugJump)
                       : ThreadScreen(
                           key: ValueKey(tid),
                           engine: _engine,

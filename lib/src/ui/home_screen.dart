@@ -3,14 +3,70 @@ import 'package:flutter/material.dart';
 import '../engine.dart';
 import '../models.dart';
 import '../palette.dart';
+import '../story.dart';
 import 'contact_sheet.dart';
 import 'widgets.dart';
 
 /// La liste des conversations — l'écran d'accueil du jeu.
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.engine});
+  const HomeScreen({
+    super.key,
+    required this.engine,
+    required this.onDebugJump,
+  });
 
   final GameEngine engine;
+  final ValueChanged<int> onDebugJump;
+
+  void _showDebugMenu(BuildContext context) {
+    final pal = Palette.of(context);
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: pal.threadBg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 14),
+            Text(
+              'MENU DEBUG — ALLER AU JOUR',
+              style: TextStyle(
+                color: pal.meta,
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.4,
+              ),
+            ),
+            const SizedBox(height: 6),
+            for (var i = 0; i < kDayLabels.length; i++)
+              ListTile(
+                dense: true,
+                leading: Text(
+                  'J${i + 1}',
+                  style: TextStyle(
+                    color: pal.chev,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                title: Text(
+                  kDayLabels[i],
+                  style: TextStyle(color: pal.headText, fontSize: 15),
+                ),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  onDebugJump(i + 1);
+                },
+              ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +79,29 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            GameClockBar(engine: engine),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 8),
-              child: Text(
-                'Messages',
-                style: TextStyle(
-                  color: pal.headText,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.6,
-                ),
+              padding: const EdgeInsets.fromLTRB(20, 6, 8, 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Messages',
+                      style: TextStyle(
+                        color: pal.headText,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.6,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _showDebugMenu(context),
+                    icon: Icon(Icons.bug_report_outlined,
+                        color: pal.meta, size: 22),
+                    tooltip: 'Menu debug',
+                  ),
+                ],
               ),
             ),
             const _SelfCard(),

@@ -61,6 +61,27 @@ void main() {
     expect(e.thread('inconnu').effectiveDef.name, 'Numéro inconnu');
   });
 
+  test('le menu debug démarre directement au jour choisi', () async {
+    final engine = GameEngine(delayScale: 0);
+    engine.addListener(() {
+      for (final th in engine.threads.values) {
+        final pending = th.pending;
+        if (pending != null) {
+          scheduleMicrotask(() {
+            if (th.pending == pending) {
+              engine.resolveChoice(th.def.id, pending.options.first);
+            }
+          });
+        }
+      }
+    });
+    await engine.debugStart(5);
+    expect(engine.ended, isTrue);
+    expect(engine.gameDate, 'Lundi 20 juillet');
+    // Les jours 1-4 n'ont pas été joués : la banque n'est jamais apparue.
+    expect(engine.thread('banque').hidden, isTrue);
+  });
+
   test('un message reçu dans un fil fermé devient non lu + bannière', () async {
     final engine = GameEngine(delayScale: 0);
     await engine.incoming('camille', 'coucou', typing: 0);

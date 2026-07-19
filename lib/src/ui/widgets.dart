@@ -1,7 +1,37 @@
 import 'package:flutter/material.dart';
 
+import '../engine.dart';
 import '../models.dart';
 import '../palette.dart';
+
+/// La barre du récit, tout en haut : la date et l'heure de l'histoire,
+/// pour toujours savoir où on en est.
+class GameClockBar extends StatelessWidget {
+  const GameClockBar({super.key, required this.engine});
+
+  final GameEngine engine;
+
+  @override
+  Widget build(BuildContext context) {
+    final pal = Palette.of(context);
+    return Container(
+      width: double.infinity,
+      color: pal.headBg,
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
+      child: Text(
+        '${engine.gameDate}  ·  ${engine.gameClock}',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: pal.meta,
+          fontSize: 11.5,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.4,
+          fontFeatures: const [FontFeature.tabularFigures()],
+        ),
+      ),
+    );
+  }
+}
 
 /// Avatar d'un contact : sa photo si elle existe, sinon la pastille
 /// dégradée avec initiales, comme dans Messages.

@@ -49,7 +49,6 @@ const List<ThreadDef> kThreadDefs = [
     initials: 'DA',
     gradientTop: Color(0xFF3BAFB5),
     gradientBottom: Color(0xFF2C8B90),
-    avatarAsset: 'assets/photos/avatars/dr_aubin.webp',
     hiddenAtStart: true,
   ),
   ThreadDef(
@@ -98,6 +97,7 @@ class GameEngine extends ChangeNotifier {
   bool locked = true;
   bool ended = false;
   String gameClock = '07:46';
+  String gameDate = 'Mercredi 15 juillet';
   BannerData? banner;
 
   int _bannerSeq = 0;
@@ -122,6 +122,16 @@ class GameEngine extends ChangeNotifier {
     if (_started) return;
     _started = true;
     prologueFuture = runStory(this);
+  }
+
+  /// Menu debug : démarre directement à un jour donné (1-based),
+  /// sans écran verrouillé ni écran d'identité.
+  Future<void> debugStart(int day) {
+    locked = false;
+    _started = true;
+    prologueFuture = runStoryFrom(this, day);
+    notifyListeners();
+    return prologueFuture!;
   }
 
   /// Lance l'histoire sans passer par l'écran verrouillé (tests).
@@ -154,6 +164,11 @@ class GameEngine extends ChangeNotifier {
 
   void setClock(String value) {
     gameClock = value;
+    notifyListeners();
+  }
+
+  void setDate(String value) {
+    gameDate = value;
     notifyListeners();
   }
 
