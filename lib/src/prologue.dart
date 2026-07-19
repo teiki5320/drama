@@ -14,10 +14,11 @@ Future<void> runDay1(GameEngine e) async {
   await e.incoming('maman', 'Il pleut sur tout Paris. Couvre-toi.',
       typing: 1400);
   await e.incomingImage(
-      'maman', 'assets/photos/ep1/j02_belleville_matin_brouillard.webp',
+      'maman', 'assets/photos/camera_pool/day_low_1.webp',
       typing: 2000);
-  await e.incoming('maman', 'Regarde-moi ce brouillard. Même Belleville a froid.',
-      typing: 1300);
+  await e.incoming('maman',
+      'Le fleuriste sortait les pivoines sous la pluie. Je n’ai pas résisté.',
+      typing: 1400);
   var c = await e.choice('maman', const [
     ChoiceOption('Dix minutes. Capuche promise.',
         reply: 'Bien. Le thermos de thé est près de la porte.'),

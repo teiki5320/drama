@@ -33,8 +33,7 @@ Future<void> runDay2(GameEngine e) async {
   ]);
   await e.sleep(600);
   e.markRead('camille');
-  e.outgoingImage('camille', 'assets/photos/ep1/j02_metro_couronnes_pluie.webp');
-  e.outgoing('camille', 'En route.');
+  e.outgoing('camille', 'En route. Métro Couronnes, pluie comprise.');
   await e.sleep(800);
   await e.incoming('camille', 'Courage. Je suis là, quoi qu’il sorte de ce rendez-vous.',
       typing: 1500);
@@ -202,10 +201,11 @@ Future<void> runDay3(GameEngine e) async {
 
   // — 15:48, les trois colonnes —
   e.setClock('15:48');
-  e.outgoingImage('camille', 'assets/photos/ep1/j03_15h48_trois_colonnes.webp');
   e.outgoing('camille',
-      'Mes calculs. Colonne 1 : ce que j’ai. Colonne 2 : ce qu’il faut. '
-      'Colonne 3 : ce qui manque.');
+      'J’ai fait mes comptes. Trois colonnes : ce que j’ai, ce qu’il faut, '
+      'ce qui manque.');
+  await e.sleep(900);
+  e.outgoing('camille', 'La troisième est la plus longue.');
   await e.sleep(1300);
   e.markRead('camille');
   await e.incoming('camille', 'La colonne 3 a un prénom, Shen.', typing: 1600);
@@ -308,13 +308,14 @@ Future<void> runDay4(GameEngine e) async {
   // — 17:40, Camille (le tailleur) —
   e.setClock('17:40');
   await e.incoming('camille',
-      'Je passe ce soir avec le tailleur noir de ma mère. 38. Lundi, tu plaides '
-      'ta propre cause. Habille-toi comme telle.',
+      'Je passe ce soir : le tailleur noir de ma mère, et son chemisier blanc. '
+      '38. Lundi, tu plaides ta propre cause. Habille-toi comme telle.',
       typing: 2100);
   await e.sleep(1600);
   e.setClock('21:10');
   e.outgoingImage('camille', 'assets/photos/ep1/j06_22h31_tailleur_miroir.webp');
-  e.outgoing('camille', 'Verdict ?');
+  e.outgoing('camille',
+      'Le seul miroir en pied de l’immeuble, c’est l’ascenseur. Verdict ?');
   await e.sleep(1300);
   e.markRead('camille');
   await e.incoming('camille',
@@ -345,8 +346,9 @@ Future<void> runDay5(GameEngine e) async {
   await e.incomingImage('maman', 'assets/photos/ep1/pj_maman_plat.webp',
       typing: 2000);
   await e.incoming('maman',
-      'La pâte repose. Viens avant qu’elle ne m’obéisse plus.',
-      typing: 1500);
+      'Le bouillon d’abord. Les dumplings ensuite — la pâte repose. '
+      'Viens avant qu’elle ne m’obéisse plus.',
+      typing: 1700);
   var c = await e.choice('maman', const [
     ChoiceOption('J’arrive, garde-m’en.', reply: 'Je ne promets rien.'),
     ChoiceOption('Tu es la seule à faire obéir la pâte.',
