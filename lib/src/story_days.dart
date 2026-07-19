@@ -281,6 +281,7 @@ Future<void> runDay4(GameEngine e) async {
   } else {
     e.sysline('camille', 'Camille tend la main. « Alors donne-moi ce téléphone. »');
   }
+  final camilleAEcrit = c.key == 'forcee';
   await e.sleep(1500);
 
   // — 11:47, le message à Tristan —
@@ -321,6 +322,24 @@ Future<void> runDay4(GameEngine e) async {
         contactKey: 'tristan');
     e.sysline('inconnu', 'Contact enregistré : Tristan H.');
   }
+  await e.sleep(1800);
+
+  // — 12:05, retour à la table : Camille a tout suivi —
+  e.setClock('12:05');
+  if (camilleAEcrit) {
+    e.sysline('camille',
+        'Camille te rend ton téléphone. « Lundi. 11h. Tour Heng. '
+        'Tu as entendu comme moi. »');
+  } else {
+    e.sysline('camille',
+        'Camille a lu par-dessus ton épaule. « Lundi. 11h. Tour Heng. » '
+        'Elle repose sa tasse, très calme. Trop calme.');
+  }
+  e.sysline('camille',
+      '« Deux jours pour faire de toi quelqu’un qui plaide sa propre cause. '
+      'On commence par la tenue. »');
+  await e.sleep(1200);
+  e.sysline('camille', 'Elle t’embrasse et file vers le métro.');
   await e.sleep(1800);
 
   // — 17:40, Camille (le tailleur) —

@@ -1,7 +1,7 @@
 name: drama
 description: "Drama — jeu narratif qui se joue entièrement dans une messagerie."
 publish_to: "none"
-version: 0.17.9+1
+version: 0.17.10+1
 
 environment:
   sdk: ">=3.5.0 <4.0.0"
