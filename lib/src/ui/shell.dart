@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 
 import '../engine.dart';
 import '../models.dart';
+import '../music.dart';
 import '../notifications.dart';
 import '../palette.dart';
 import '../sfx.dart';
 import 'bank_screen.dart';
 import 'gallery_screen.dart';
 import 'home_screen.dart';
+import 'music_screen.dart';
 import 'sudoku_screen.dart';
 import 'intro_card.dart';
 import 'lock_screen.dart';
@@ -51,6 +53,7 @@ class _GameShellState extends State<GameShell> with WidgetsBindingObserver {
 
   void _onUnlock() {
     _engine.unlock();
+    Music.instance.autoStart();
     setState(() => _showIntro = true);
     _introTimer = Timer(const Duration(milliseconds: 3600), _dismissIntro);
   }
@@ -152,6 +155,10 @@ class _GameShellState extends State<GameShell> with WidgetsBindingObserver {
               );
             } else if (_app == 'photos') {
               page = GalleryScreen(
+                onBack: () => setState(() => _app = 'home'),
+              );
+            } else if (_app == 'musique') {
+              page = MusicScreen(
                 onBack: () => setState(() => _app = 'home'),
               );
             } else if (_app == 'sudoku') {

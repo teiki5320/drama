@@ -17,9 +17,9 @@
 
 | Fichier | Rôle dans le jeu | Prompt (Suno/Udio) |
 |---|---|---|
-| `pluie_sur_belleville.mp3` | Le thème principal — l'accueil, les matins | *lofi piano, gentle rain ambience, melancholic but warm, slow tempo 70 bpm, vinyl crackle, soft tape saturation, small Paris apartment at dawn, instrumental, no vocals, seamless loop, subtle* |
-| `nuit_blanche.mp3` | Les soirs de doute (diagnostic, la réponse à Tristan) | *ambient neo-classical, felt piano, sparse notes, distant city hum at night, quiet tension, minor key, slow string swells far in the background, instrumental, no vocals, seamless loop* |
-| `fujian.mp3` | Les souvenirs de Chine, le passé du père | *guzheng and soft felt piano duet, chinese traditional meets lofi, nostalgic, rice terraces at dawn, gentle and spacious, instrumental, no vocals, seamless loop* |
+| ~~`pluie_sur_belleville.mp3`~~ ✅ reçu (« dawn in the rain », 3 min 28) | Le thème principal — l'accueil, les matins | *lofi piano, gentle rain ambience, melancholic but warm, slow tempo 70 bpm, vinyl crackle, soft tape saturation, small Paris apartment at dawn, instrumental, no vocals, seamless loop, subtle* |
+| ~~`nuit_blanche.mp3`~~ ✅ reçu (« midnight static », 3 min 29) | Les soirs de doute (diagnostic, la réponse à Tristan) | *ambient neo-classical, felt piano, sparse notes, distant city hum at night, quiet tension, minor key, slow string swells far in the background, instrumental, no vocals, seamless loop* |
+| ~~`fujian.mp3`~~ ✅ reçu (« dawn over rice terraces », 3 min 42) | Les souvenirs de Chine, le passé du père | *guzheng and soft felt piano duet, chinese traditional meets lofi, nostalgic, rice terraces at dawn, gentle and spacious, instrumental, no vocals, seamless loop* |
 | `quarante_septieme_etage.mp3` | L'univers Heng — tours, marbre, argent | *minimal electronic pulse, cold marble lobby ambience, quiet luxury tension, deep soft sub bass, sparse piano notes, cinematic restraint, instrumental, no vocals, seamless loop* |
 | `deux_sucres.mp3` | Camille — les cafés, la légèreté | *upbeat mellow lofi jazz, brushed drums, rhodes piano, parisian café morning, warm and playful, light swing, instrumental, no vocals, seamless loop* |
 

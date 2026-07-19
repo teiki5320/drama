@@ -108,6 +108,12 @@ class Springboard extends StatelessWidget {
                     icon: Icons.grid_on,
                     onTap: () => onOpenApp('sudoku'),
                   ),
+                  _AppIcon(
+                    label: 'Musique',
+                    gradient: const [Color(0xFFD4573B), Color(0xFF8E2F1C)],
+                    icon: Icons.music_note,
+                    onTap: () => onOpenApp('musique'),
+                  ),
                 ],
               ),
             ),

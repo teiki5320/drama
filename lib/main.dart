@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'src/music.dart';
 import 'src/notifications.dart';
 import 'src/rewards.dart';
 import 'src/sfx.dart';
@@ -9,6 +10,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Notifications.init();
   await Sfx.init();
+  await Music.instance.init();
   await Rewards.instance.load();
   runApp(const DramaApp());
 }
